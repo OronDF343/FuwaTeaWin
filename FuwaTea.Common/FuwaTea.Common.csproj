@@ -45,6 +45,7 @@
     <Compile Include="Exceptions\ErrorCallback.cs" />
     <Compile Include="Exceptions\IDepthElement.cs" />
     <Compile Include="Collections\OneToManyDictionary.cs" />
+    <Compile Include="PathUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

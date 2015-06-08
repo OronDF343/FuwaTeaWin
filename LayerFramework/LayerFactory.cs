@@ -40,5 +40,10 @@ namespace LayerFramework
         }
 
         public static IElementFactory GetFactory(string layerName) { return Layers[layerName.ToLowerInvariant()]; }
+
+        public static IElementFactory GetFactory(Type elementType)
+        {
+            return Layers.Values.First(f => f.ElementInterfaceType.IsAssignableFrom(elementType));
+        }
     }
 }

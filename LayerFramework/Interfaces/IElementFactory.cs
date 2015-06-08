@@ -7,6 +7,8 @@ namespace LayerFramework.Interfaces
     public interface IElementFactory
     {
         string LayerName { get; }
+        Type ElementInterfaceType { get; }
+        Type AttributeType { get; }
         void LoadFolder(string folder, ErrorCallback errorCallback);
         TInterface GetElement<TInterface>(Func<Type, bool> selector = null)
             where TInterface : class;

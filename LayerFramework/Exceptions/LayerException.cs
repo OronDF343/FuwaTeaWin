@@ -3,28 +3,25 @@ using FuwaTea.Common.Exceptions;
 
 namespace LayerFramework.Exceptions
 {
-    public class LayerException : Exception, IDepthElement
+    public abstract class LayerException : Exception, IDepthElement
     {
-        public LayerException(string layer)
+        public LayerException()
         {
-            LayerName = layer;
             DisplayDepth = 0;
         }
 
-        public LayerException(string layer, string message)
+        public LayerException(string message)
             : base(message)
         {
-            LayerName = layer;
             DisplayDepth = 0;
         }
 
-        public LayerException(string layer, Exception innerException, int fallbackDisplayDepth = 1)
-            : this(layer, "", innerException, fallbackDisplayDepth) { }
+        public LayerException(Exception innerException, int fallbackDisplayDepth = 1)
+            : this("", innerException, fallbackDisplayDepth) { }
 
-        public LayerException(string layer, string message, Exception innerException, int fallbackDisplayDepth = 1)
+        public LayerException(string message, Exception innerException, int fallbackDisplayDepth = 1)
             : base(message, innerException)
         {
-            LayerName = layer;
             DisplayDepth = innerException is IDepthElement ? ((IDepthElement)innerException).DisplayDepth + 1 : fallbackDisplayDepth;
         }
 
@@ -34,6 +31,6 @@ namespace LayerFramework.Exceptions
         /// </summary>
         public int DisplayDepth { get; private set; }
 
-        public string LayerName { get; set; }
+        public abstract string LayerName { get; }
     }
 }

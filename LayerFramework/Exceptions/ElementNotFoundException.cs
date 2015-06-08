@@ -5,8 +5,8 @@ namespace LayerFramework.Exceptions
     public class ElementNotFoundException : LayerException
     {
         public ElementNotFoundException(string layer, Type modelType)
-            : base(layer)
         {
+            _layerName = layer;
             ElementType = modelType;
         }
 
@@ -16,5 +16,8 @@ namespace LayerFramework.Exceptions
         {
             get { return string.Format("No {0} layer elements found for type {1}!", LayerName, ElementType.FullName); }
         }
+
+        private readonly string _layerName;
+        public override string LayerName { get { return _layerName; } }
     }
 }

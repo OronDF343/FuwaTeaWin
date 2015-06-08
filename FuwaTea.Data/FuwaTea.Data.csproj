@@ -37,6 +37,10 @@
       <HintPath>..\packages\NAudio.1.7.3\lib\net35\NAudio.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NAudio.Flac, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Playback\NAudio\NAudio.Flac.dll</HintPath>
+    </Reference>
     <Reference Include="NAudio.Vorbis, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.Vorbis.1.0.0.0\lib\net35\NAudio.Vorbis.dll</HintPath>
       <Private>True</Private>
@@ -60,7 +64,23 @@
   <ItemGroup>
     <Compile Include="DataLayerDefinition.cs" />
     <Compile Include="DataElementAttribute.cs" />
+    <Compile Include="DataSourceException.cs" />
     <Compile Include="IDataElement.cs" />
+    <Compile Include="Playback\NAudio\CoreCodec.cs" />
+    <Compile Include="Playback\NAudio\FlacCodec.cs" />
+    <Compile Include="Playback\NAudio\IWaveStreamProvider.cs" />
+    <Compile Include="Playback\NAudio\MediaFoundationCodec.cs" />
+    <Compile Include="Playback\NAudio\VorbisCodec.cs" />
+    <Compile Include="Playlist\AlbumArt\AlbumArtStreamLoader.cs" />
+    <Compile Include="Playlist\AlbumArt\IAlbumArtStreamLoader.cs" />
+    <Compile Include="Playlist\IPlaylistReader.cs" />
+    <Compile Include="Playlist\IPlaylistWriter.cs" />
+    <Compile Include="Playlist\M3UPlaylistWriter.cs" />
+    <Compile Include="Playlist\M3UPlaylistReader.cs" />
+    <Compile Include="Playlist\MusicInfoModel.cs" />
+    <Compile Include="Playlist\Tags\ITagReader.cs" />
+    <Compile Include="Playlist\Tags\ITagWriter.cs" />
+    <Compile Include="Playlist\Tags\TagLibReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -75,6 +95,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Playback\NAudio\NAudio.Flac.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
