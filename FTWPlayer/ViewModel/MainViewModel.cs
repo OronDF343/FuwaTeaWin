@@ -101,8 +101,6 @@ namespace FTWPlayer.ViewModel
                 new TabItem {Header = "HELP"}
             };
 
-            //Begin post-UI-loading
-            MiscUtils.ParseClArgs(Environment.GetCommandLineArgs().ToList());
             // TODO: this is testing
             var plm = LayerFactory.GetElement<IPlaylistManager>(); // TODO: remove logic reference
             if (plm.SelectedPlaylist == null)
@@ -122,6 +120,9 @@ namespace FTWPlayer.ViewModel
             PlaybackManager.EqualizerBands.Add(new EqualizerBand { Bandwidth = 1f, Frequency = 4000, Gain = 0 });
             PlaybackManager.EqualizerBands.Add(new EqualizerBand { Bandwidth = 1f, Frequency = 8000, Gain = 0 });
             PlaybackManager.EqualizerBands.Add(new EqualizerBand { Bandwidth = 1f, Frequency = 16000, Gain = 0 });
+
+            //Begin post-UI-loading
+            MiscUtils.ParseClArgs(Environment.GetCommandLineArgs().ToList());
         }
 
         private readonly DispatcherTimer _tmr;

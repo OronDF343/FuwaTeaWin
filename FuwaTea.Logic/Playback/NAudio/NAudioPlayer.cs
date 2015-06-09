@@ -60,23 +60,29 @@ namespace FuwaTea.Logic.Playback.NAudio
             }
             // Init codec
             _waveStream = _currentCodec.CreateWaveStream(path);
-            // Create BalanceSampleProvider
             // Check if the WaveStream supports ISampleProvider and is IeeeFloat format. If so, cast it.
-            _balanceSampleProvider = new BalanceSampleProvider(_currentCodec.IsSampleProvider &&
-                                                               _waveStream.WaveFormat.Encoding == WaveFormatEncoding.IeeeFloat
-                                                               ? _waveStream as ISampleProvider
-                                                               : _waveStream.ToSampleProvider());
-            // Create VolumeSampleProvider
-            _volumeSampleProvider = new VolumeSampleProvider(_balanceSampleProvider);
+            var sp = _currentCodec.IsSampleProvider &&
+                     _waveStream.WaveFormat.Encoding == WaveFormatEncoding.IeeeFloat
+                         ? _waveStream as ISampleProvider
+                         : _waveStream.ToSampleProvider();
+            // Balance only works for stereo, skip it if not stereo
+            if (_waveStream.WaveFormat.Channels == 2)
+            {
+                // Create BalanceSampleProvider if stereo
+                _balanceSampleProvider = new BalanceSampleProvider(sp);
+                // Create VolumeSampleProvider
+                _volumeSampleProvider = new VolumeSampleProvider(_balanceSampleProvider);
+                // Restore volume settings
+                _balanceSampleProvider.LeftVolume = (float)LeftVolume;
+                _balanceSampleProvider.RightVolume = (float)RightVolume;
+            }
+            else _volumeSampleProvider = new VolumeSampleProvider(sp);
             // Create Equalizer
             _equalizer = new Equalizer(_volumeSampleProvider, EqualizerBands) { Enabled = EnableEqualizer };
             // Init player
             _wavePlayer.Init(_equalizer);
             // Subscribe to stop event
             _wavePlayer.PlaybackStopped += WavePlayer_PlaybackStopped;
-            // Restore volume settings
-            _balanceSampleProvider.LeftVolume = (float)LeftVolume;
-            _balanceSampleProvider.RightVolume = (float)RightVolume;
             _volumeSampleProvider.Volume = (float)Volume;
         }
 
