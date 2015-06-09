@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
-namespace FuwaTea.Common
+namespace FuwaTea.Lib
 {
     public static class PathUtils
     {
@@ -34,6 +35,42 @@ namespace FuwaTea.Common
             }
 
             return relativePath;
+        }
+
+        public static IEnumerable<FileInfo> EnumerateFilesEx(this DirectoryInfo path)
+        {
+            var queue = new Queue<DirectoryInfo>();
+            queue.Enqueue(path);
+            IEnumerable<FileSystemInfo> tmp;
+            while (queue.Count > 0)
+            {
+                path = queue.Dequeue();
+                try
+                {
+                    tmp = path.GetFiles();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    continue;
+                }
+
+                foreach (var t in tmp)
+                    yield return t as FileInfo;
+
+                try
+                {
+                    tmp = path.GetDirectories();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    continue;
+                }
+
+                foreach (var subDir in tmp)
+                    queue.Enqueue(subDir as DirectoryInfo);
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using FuwaTea.Common.Models;
 
 namespace FuwaTea.Data.Playlist.AlbumArt
 {

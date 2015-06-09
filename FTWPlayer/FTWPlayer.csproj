@@ -56,7 +56,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.1.1.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
@@ -86,6 +89,36 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\BooleanToZIndexConverter.cs" />
+    <Compile Include="Converters\DivisionConverter.cs" />
+    <Compile Include="Converters\DoubleSubtractConverter.cs" />
+    <Compile Include="Converters\FloatToDoubleConverter.cs" />
+    <Compile Include="Converters\NegativeDoubleConverter.cs" />
+    <Compile Include="Converters\PositionTimeSpanStringConverter.cs" />
+    <Compile Include="Converters\StringFormatterConverter.cs" />
+    <Compile Include="Converters\TimeSpanDifferenceToGridLengthConverter.cs" />
+    <Compile Include="Converters\TimeSpanFormatterConverter.cs" />
+    <Compile Include="Converters\UnitsConverter.cs" />
+    <Compile Include="Converters\VolumeConverter.cs" />
+    <Compile Include="Localization\LocalizationProvider.cs" />
+    <Compile Include="Localization\Strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="MiscUtils.cs" />
+    <Compile Include="NativeMethods.cs" />
+    <Compile Include="Tabs\AlbumArtDisplay.xaml.cs">
+      <DependentUpon>AlbumArtDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\EqualizerControl.xaml.cs">
+      <DependentUpon>EqualizerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Tabs\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -98,24 +131,40 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Skins\GlacierSkin.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Skins\MainSkin.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Tabs\AlbumArtDisplay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Tabs\EqualizerControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Tabs\SettingsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
+    <EmbeddedResource Include="Localization\Strings.he.resx" />
+    <EmbeddedResource Include="Localization\Strings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -131,6 +180,14 @@
     <ProjectReference Include="..\FuwaTea.Common\FuwaTea.Common.csproj">
       <Project>{495bf25f-5c9c-4db2-8319-a54cc3f5e230}</Project>
       <Name>FuwaTea.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FuwaTea.Lib\FuwaTea.Lib.csproj">
+      <Project>{a9bb4650-68cc-4640-9b5a-65f4aa80c2ab}</Project>
+      <Name>FuwaTea.Lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FuwaTea.Logic\FuwaTea.Logic.csproj">
+      <Project>{78196827-f053-4e3e-bc26-1134c89f9d6a}</Project>
+      <Name>FuwaTea.Logic</Name>
     </ProjectReference>
     <ProjectReference Include="..\FuwaTea.Presentation\FuwaTea.Presentation.csproj">
       <Project>{42262d83-e80d-4f04-9e66-e22f7a1e5488}</Project>

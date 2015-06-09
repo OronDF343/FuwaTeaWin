@@ -22,5 +22,148 @@ namespace FTWPlayer.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("AboveNormal")]
+        public global::System.Diagnostics.ProcessPriorityClass ProcessPriority {
+            get {
+                return ((global::System.Diagnostics.ProcessPriorityClass)(this["ProcessPriority"]));
+            }
+            set {
+                this["ProcessPriority"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:00:20")]
+        public global::System.TimeSpan InstanceCreationTimeout {
+            get {
+                return ((global::System.TimeSpan)(this["InstanceCreationTimeout"]));
+            }
+            set {
+                this["InstanceCreationTimeout"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool RememberVolume {
+            get {
+                return ((bool)(this["RememberVolume"]));
+            }
+            set {
+                this["RememberVolume"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.0")]
+        public decimal LastVolume {
+            get {
+                return ((decimal)(this["LastVolume"]));
+            }
+            set {
+                this["LastVolume"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool VolumeFadeOutOnExit {
+            get {
+                return ((bool)(this["VolumeFadeOutOnExit"]));
+            }
+            set {
+                this["VolumeFadeOutOnExit"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public double MaxEqualizerGain {
+            get {
+                return ((double)(this["MaxEqualizerGain"]));
+            }
+            set {
+                this["MaxEqualizerGain"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowToolTips {
+            get {
+                return ((bool)(this["ShowToolTips"]));
+            }
+            set {
+                this["ShowToolTips"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool OverrideDefaultLanguage {
+            get {
+                return ((bool)(this["OverrideDefaultLanguage"]));
+            }
+            set {
+                this["OverrideDefaultLanguage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SelectedLanguage {
+            get {
+                return ((string)(this["SelectedLanguage"]));
+            }
+            set {
+                this["SelectedLanguage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowInTaskbar {
+            get {
+                return ((bool)(this["ShowInTaskbar"]));
+            }
+            set {
+                this["ShowInTaskbar"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Topmost {
+            get {
+                return ((bool)(this["Topmost"]));
+            }
+            set {
+                this["Topmost"] = value;
+            }
+        }
     }
 }

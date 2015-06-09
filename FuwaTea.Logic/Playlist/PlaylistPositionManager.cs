@@ -1,0 +1,119 @@
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using FuwaTea.Common.Models;
+
+namespace FuwaTea.Logic.Playlist
+{
+    public class PlaylistPositionManager : IPlaylistPositionManager // TODO: thread safe?
+    {
+        public PlaylistPositionManager() // TODO: shouldn't exist
+            : this(new Playlist()) { }
+
+        public PlaylistPositionManager(IPlaylist pm)
+        {
+            _playlist = pm;
+            _playlist.CollectionChanged +=
+                (sender, args) => { if (args.NewItems.Contains(Current)) OnPropertyChanged("Current"); OnPropertyChanged("ElementCount"); };
+        }
+
+        private readonly IPlaylist _playlist;
+
+        private bool _shuffle;
+
+        public bool EnableShuffle
+        {
+            get
+            {
+                return _shuffle;
+            }
+            set
+            {
+                var temp = _shuffle;
+                _shuffle = value;
+                if (temp != _shuffle) OnPropertyChanged();
+                if (ElementCount < 1) return;
+                if (!temp && _shuffle) CurrentIndex = _playlist.AbsoluteToShuffled(CurrentIndex);
+                else if (temp && !_shuffle) CurrentIndex = _playlist.ShuffledToAbsolute(CurrentIndex);
+            }
+        }
+
+        public MusicInfoModel Current
+        {
+            get { return _playlist.Count > CurrentIndex ? _playlist[EnsureAbsoluteIndex(CurrentIndex)] : null; }
+        }
+
+        private int _index;
+
+        public int CurrentIndex
+        {
+            get { return _index; }
+            private set
+            {
+                var temp = _index;
+                _index = value;
+                if (temp == _index) return;
+                OnPropertyChanged("CurrentIndexAbsolute");
+                OnPropertyChanged();
+                OnPropertyChanged("Current");
+            }
+        }
+
+        public int CurrentIndexAbsolute { get { return EnsureAbsoluteIndex(CurrentIndex); } }
+        public int ElementCount { get { return _playlist.Count; } }
+
+        private int EnsureAbsoluteIndex(int index)
+        {
+            return EnableShuffle ? _playlist.ShuffledToAbsolute(index) : index;
+        }
+
+        private int OptionallyShuffledIndex(int index)
+        {
+            return EnableShuffle ? _playlist.AbsoluteToShuffled(index) : index;
+        }
+
+        public bool Next()
+        {
+            var isEnd = CurrentIndex >= _playlist.Count - 1;
+            JumpTo(isEnd ? 0 : CurrentIndex + 1);
+            return !isEnd;
+        }
+
+        public bool Previous()
+        {
+            var isBegin = CurrentIndex == 0;
+            JumpTo(isBegin ? _playlist.Count - 1 : CurrentIndex - 1);
+            return !isBegin;
+        }
+
+        public void JumpTo(int index)
+        {
+            CurrentIndex = index;
+        }
+
+        public void JumpToAbsolute(int index)
+        {
+            CurrentIndex = OptionallyShuffledIndex(index);
+        }
+
+        public void Reset()
+        {
+            _index = OptionallyShuffledIndex(0);
+            OnPropertyChanged("CurrentIndexAbsolute");
+            OnPropertyChanged("CurrentIndex");
+            OnPropertyChanged("Current");
+        }
+
+        public MusicInfoModel Peek(int index)
+        {
+            return _playlist[EnsureAbsoluteIndex(index)];
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+}

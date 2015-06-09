@@ -40,12 +40,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IPresentationElement.cs" />
+    <Compile Include="Playback\IPlaybackManager.cs" />
+    <Compile Include="Playback\PlaybackManager.cs" />
+    <Compile Include="PresentationElementAttribute.cs" />
+    <Compile Include="PresentationLayerDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FuwaTea.Common\FuwaTea.Common.csproj">
       <Project>{495bf25f-5c9c-4db2-8319-a54cc3f5e230}</Project>
       <Name>FuwaTea.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FuwaTea.Lib\FuwaTea.Lib.csproj">
+      <Project>{a9bb4650-68cc-4640-9b5a-65f4aa80c2ab}</Project>
+      <Name>FuwaTea.Lib</Name>
     </ProjectReference>
     <ProjectReference Include="..\FuwaTea.Logic\FuwaTea.Logic.csproj">
       <Project>{78196827-f053-4e3e-bc26-1134c89f9d6a}</Project>

@@ -1,4 +1,6 @@
-﻿namespace FuwaTea.Data.Playlist.Tags
+﻿using FuwaTea.Common.Models;
+
+namespace FuwaTea.Data.Playlist.Tags
 {
     public interface ITagReader : IDataElement
     {

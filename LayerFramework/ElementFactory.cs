@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FuwaTea.Common.Exceptions;
+using FuwaTea.Lib.Exceptions;
 using LayerFramework.Attributes;
 using LayerFramework.Exceptions;
 using LayerFramework.Interfaces;
@@ -46,7 +46,7 @@ namespace LayerFramework
             where TInterface : class //TElement
         {
             var elemType = typeof(TInterface);
-            if (!elemType.IsAssignableFrom(typeof(TElement))) throw new InvalidOperationException(elemType.Name + " does not belong to this layer!");
+            if (!typeof(TElement).IsAssignableFrom(elemType)) throw new InvalidOperationException(elemType.Name + " does not belong to this layer!");
             var entries = _elements.Where(e => elemType.IsAssignableFrom(e) && (selector == null || selector(e)));
             var etype = entries.FirstOrDefault();
             if (etype == default(Type)) throw new ElementNotFoundException(LayerName, elemType);
@@ -97,7 +97,7 @@ namespace LayerFramework
             where TInterface : class //TElement
         {
             var elemType = typeof(TInterface);
-            if (!elemType.IsAssignableFrom(typeof(TElement))) throw new InvalidOperationException(elemType.Name + " does not belong to this layer!");
+            if (!typeof(TElement).IsAssignableFrom(elemType)) throw new InvalidOperationException(elemType.Name + " does not belong to this layer!");
             var entries = _elements.Where(e => elemType.IsAssignableFrom(e)
                                                  && (selector == null || selector(e))).ToList();
             if (entries.Count < 1) throw new ElementNotFoundException(LayerName, elemType);

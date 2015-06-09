@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using FuwaTea.Common.Exceptions;
+using FuwaTea.Lib.Exceptions;
 
 namespace LayerFramework.Interfaces
 {

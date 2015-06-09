@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Reflection;
-using FuwaTea.Common.Exceptions;
+using FuwaTea.Lib.Exceptions;
 
 namespace LayerFramework.Exceptions
 {

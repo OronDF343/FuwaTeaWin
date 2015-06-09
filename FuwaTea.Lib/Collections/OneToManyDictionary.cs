@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FuwaTea.Common.Collections
+namespace FuwaTea.Lib.Collections
 {
     public class OneToManyDictionary<TKey, TValue> : Dictionary<TKey, HashSet<TValue>>
     {

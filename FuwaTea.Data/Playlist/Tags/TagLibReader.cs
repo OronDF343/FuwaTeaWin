@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using FuwaTea.Common.Models;
 using TagLib;
+using File = TagLib.File;
 
 namespace FuwaTea.Data.Playlist.Tags
 {
@@ -11,7 +13,7 @@ namespace FuwaTea.Data.Playlist.Tags
         {
             using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                var tagFile = TagLib.File.Create(new StreamFileAbstraction(path, stream, stream));
+                var tagFile = File.Create(new StreamFileAbstraction(path, stream, stream));
                 var model = new MusicInfoModel(path, tagFile.Tag, tagFile.Properties.Duration,
                                                tagFile.Properties.AudioBitrate);
                 tagFile.Dispose(); // TODO: check if there is ObjectDisposedException

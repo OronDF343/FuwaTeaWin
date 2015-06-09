@@ -77,7 +77,6 @@
     <Compile Include="Playlist\IPlaylistWriter.cs" />
     <Compile Include="Playlist\M3UPlaylistWriter.cs" />
     <Compile Include="Playlist\M3UPlaylistReader.cs" />
-    <Compile Include="Playlist\MusicInfoModel.cs" />
     <Compile Include="Playlist\Tags\ITagReader.cs" />
     <Compile Include="Playlist\Tags\ITagWriter.cs" />
     <Compile Include="Playlist\Tags\TagLibReader.cs" />
@@ -87,6 +86,10 @@
     <ProjectReference Include="..\FuwaTea.Common\FuwaTea.Common.csproj">
       <Project>{495bf25f-5c9c-4db2-8319-a54cc3f5e230}</Project>
       <Name>FuwaTea.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FuwaTea.Lib\FuwaTea.Lib.csproj">
+      <Project>{a9bb4650-68cc-4640-9b5a-65f4aa80c2ab}</Project>
+      <Name>FuwaTea.Lib</Name>
     </ProjectReference>
     <ProjectReference Include="..\LayerFramework\LayerFramework.csproj">
       <Project>{f9d64a69-bcdf-4e7d-83a0-24e7a537842f}</Project>

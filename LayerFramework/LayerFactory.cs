@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FuwaTea.Common.Exceptions;
+using FuwaTea.Lib.Exceptions;
 using LayerFramework.Attributes;
 using LayerFramework.Interfaces;
 
@@ -11,7 +11,7 @@ namespace LayerFramework
     {
         private static readonly Dictionary<string, IElementFactory> Layers = new Dictionary<string, IElementFactory>();
 
-        public static void LoadFolder(string folder, ErrorCallback errorCallback)
+        public static void LoadFolder(string folder, ErrorCallback errorCallback, bool loadElements = false)
         {
             var exp = from t in AssemblyLoader.GetTypesFromFolder(folder, errorCallback)
                                               .FindTypesWithAttribute<LayerDefinitionAttribute>()
@@ -20,17 +20,16 @@ namespace LayerFramework
                       where typeof(IBasicElement).IsAssignableFrom(t.Value.InterfaceType)
                       where typeof(Attribute).IsAssignableFrom(t.Value.AttributeType)
                       select t;
-            // TODO: update others to IsAssignableFrom
             foreach (var p in exp)
             {
                 try
                 {
-                    Layers.Add(p.Value.LayerName.ToLowerInvariant(),
-                               TryUtils.TryCreateInstance<IElementFactory>(typeof(ElementFactory<IBasicElement,
-                                                                                                 ElementAttribute>).GetGenericTypeDefinition()
-                                                                                                                   .MakeGenericType(p.Value.InterfaceType,
-                                                                                                                                    p.Value.AttributeType),
-                                                                           p.Value.LayerName));
+                    var type = typeof(ElementFactory<IBasicElement, ElementAttribute>).GetGenericTypeDefinition()
+                                                                                      .MakeGenericType(p.Value.InterfaceType,
+                                                                                                       p.Value.AttributeType);
+                    var layer = TryUtils.TryCreateInstance<IElementFactory>(type, p.Value.LayerName);
+                    Layers.Add(p.Value.LayerName.ToLowerInvariant(), layer);
+                    if (loadElements) layer.LoadFolder(folder, errorCallback);
                 }
                 catch (Exception e)
                 {
@@ -44,6 +43,23 @@ namespace LayerFramework
         public static IElementFactory GetFactory(Type elementType)
         {
             return Layers.Values.First(f => f.ElementInterfaceType.IsAssignableFrom(elementType));
+        }
+
+        public static TInterface GetElement<TInterface>(Func<Type, bool> selector = null)
+            where TInterface : class
+        {
+            return GetFactory(typeof(TInterface)).GetElement<TInterface>(selector);
+        }
+
+        public static IEnumerable<TInterface> GetElements<TInterface>(ErrorCallback errorCallback)
+            where TInterface : class
+        {
+            return GetFactory(typeof(TInterface)).GetElements<TInterface>(errorCallback);
+        }
+        public static IEnumerable<TInterface> GetElements<TInterface>(Func<Type, bool> selector = null, ErrorCallback errorCallback = null)
+            where TInterface : class
+        {
+            return GetFactory(typeof(TInterface)).GetElements<TInterface>(selector, errorCallback);
         }
     }
 }

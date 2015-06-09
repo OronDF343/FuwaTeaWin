@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FuwaTea.Common.Exceptions
+namespace FuwaTea.Lib.Exceptions
 {
     public delegate void ErrorCallback(Exception arg1);
 }

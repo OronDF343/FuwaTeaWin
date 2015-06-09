@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using FuwaTea.Common.Collections;
-using FuwaTea.Common.Exceptions;
+using FuwaTea.Lib.Collections;
+using FuwaTea.Lib.Exceptions;
 using LayerFramework.Attributes;
 using LayerFramework.Exceptions;
 

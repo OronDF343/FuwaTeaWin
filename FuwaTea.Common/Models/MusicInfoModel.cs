@@ -2,7 +2,7 @@
 using System.IO;
 using TagLib;
 
-namespace FuwaTea.Data.Playlist
+namespace FuwaTea.Common.Models
 {
     public class MusicInfoModel
     {
@@ -13,7 +13,7 @@ namespace FuwaTea.Data.Playlist
         public string FileType { get { return Path.GetExtension(FilePath); } }
         public TimeSpan Duration { get; private set; }
         public int Bitrate { get; private set; }
-        public Tag Tag { get; private set; }
+        public Tag Tag { get; private set; } // TODO: create new tag and remove taglib dependency from common
 
         public MusicInfoModel(string path, Tag tag, TimeSpan duration, int bitrate)
         {

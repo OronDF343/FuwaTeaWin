@@ -1,4 +1,4 @@
-﻿namespace FuwaTea.Common.Exceptions
+﻿namespace FuwaTea.Lib.Exceptions
 {
     public interface IDepthElement
     {
