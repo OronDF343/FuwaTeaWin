@@ -50,10 +50,10 @@ namespace FTWPlayer
                 var pm = LayerFactory.GetElement<IPlaybackManager>();
                 var key = Registry.LocalMachine.CreateSubKey(string.Format(@"Software\Clients\Media\{0}\Capabilities\FileAssociations", prod));
                 var exts = key.GetValueNames();
-                var f = exts.Where(s => !pm.SupportedFileTypes.Contains(s.TrimStart('.')));
-                var t = pm.SupportedFileTypes.Where(s => !exts.Contains("." + s));
+                var f = exts.Where(s => !pm.SupportedFileTypes.Contains(s));
+                var t = pm.SupportedFileTypes.Where(s => !exts.Contains(s));
                 foreach (var s in f) key.DeleteValue(s);
-                foreach (var s in t) key.SetValue("." + s, prod + ".AudioFileGeneric", RegistryValueKind.String);
+                foreach (var s in t) key.SetValue(s, prod + ".AudioFileGeneric", RegistryValueKind.String);
                 Shutdown();
                 return;
             }

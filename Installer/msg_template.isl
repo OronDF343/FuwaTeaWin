@@ -1,0 +1,16 @@
+[CustomMessages]
+MainFiles=
+GUILanguages=
+Hebrew=
+Icons=
+CreateDesktopIcon=
+Tasks=
+UpdateFileAssociations=
+ResetConfig=
+UninstallIcon=
+FileExtGeneric=
+PlayWith=
+AddToPlaylist=
+AppDescription=
+UpdatingFileAssociations=
+ConfigureFileAssociations=
