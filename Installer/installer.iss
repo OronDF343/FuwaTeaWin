@@ -80,6 +80,7 @@ Root: HKLM; Subkey: "Software\OronDF343"; Flags: uninsdeletekeyifempty
 Root: HKLM; Subkey: "Software\OronDF343\FuwaTeaWin"; Flags: uninsdeletekey; ValueType: string; ValueName: "InstallLocation"; ValueData: "{app}"
 Root: HKCR; Subkey: "FuwaTeaWin.AudioFileGeneric"; Flags: uninsdeletekey; ValueType: string; ValueData: "{cm:FileExtGeneric}"
 Root: HKCR; Subkey: "FuwaTeaWin.AudioFileGeneric\DefaultIcon"; ValueType: string; ValueData: """{app}\FTWPlayer.exe"",0"
+Root: HKCR; Subkey: "FuwaTeaWin.AudioFileGeneric\shell"; ValueType: string; ValueData: "Play"
 Root: HKCR; Subkey: "FuwaTeaWin.AudioFileGeneric\shell\Play"; ValueType: string; ValueData: "{cm:PlayWith,FTW Player}"
 Root: HKCR; Subkey: "FuwaTeaWin.AudioFileGeneric\shell\Play\command"; ValueType: string; ValueData: """{app}\FTWPlayer.exe"" ""%1"""
 Root: HKCR; Subkey: "FuwaTeaWin.AudioFileGeneric\shell\AddToPlaylist"; ValueType: string; ValueData: "{cm:AddToPlaylist,FTW Player}"
