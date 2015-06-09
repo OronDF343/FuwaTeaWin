@@ -12,7 +12,7 @@ namespace FuwaTea.Logic.Playlist.AlbumArt
         public AlbumArtLocator()
         {
             // TODO: C#6 properties default values
-            LocationPriority = new AlbumArtLocations[]
+            LocationPriority = new[]
             {
                 AlbumArtLocations.Custom,
                 AlbumArtLocations.Embedded,

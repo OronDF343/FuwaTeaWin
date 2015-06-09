@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using FuwaTea.Common.Models;
-using FuwaTea.Logic.Playlist;
 
 namespace FuwaTea.Presentation.Playback
 {

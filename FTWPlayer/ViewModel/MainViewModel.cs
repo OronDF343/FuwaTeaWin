@@ -16,12 +16,12 @@ using FTWPlayer.Tabs;
 using FuwaTea.Annotations;
 using FuwaTea.Common.Models;
 using FuwaTea.Lib;
+using FuwaTea.Logic.Playlist;
 using FuwaTea.Logic.Playlist.AlbumArt;
 using FuwaTea.Presentation.Playback;
 using GalaSoft.MvvmLight.CommandWpf;
 using LayerFramework;
 using WPFLocalizeExtension.Engine;
-using FuwaTea.Logic.Playlist;
 
 namespace FTWPlayer.ViewModel
 {

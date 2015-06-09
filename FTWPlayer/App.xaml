@@ -5,22 +5,22 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModel="clr-namespace:FTWPlayer.ViewModel"
              mc:Ignorable="d">
-    
+
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Skins/MainSkin.xaml"/>
+                <ResourceDictionary Source="Skins/MainSkin.xaml" />
                 <!--<ResourceDictionary Source="Skins/GlacierSkin.xaml"/>-->
             </ResourceDictionary.MergedDictionaries>
             <!--Global View Model Locator-->
-            <viewModel:ViewModelLocator x:Key="Locator"/>
+            <viewModel:ViewModelLocator x:Key="Locator" />
             <Storyboard x:Key="VolumeFadeOut">
                 <BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="DataContext.UpdateRememberVolume">
-                    <DiscreteBooleanKeyFrame KeyTime="0" Value="False"/>
+                    <DiscreteBooleanKeyFrame KeyTime="0" Value="False" />
                 </BooleanAnimationUsingKeyFrames>
-                <DecimalAnimation To="0.0" Duration="0:0:0.7" Storyboard.TargetProperty="DataContext.Volume"/>
+                <DecimalAnimation To="0.0" Duration="0:0:0.7" Storyboard.TargetProperty="DataContext.Volume" />
             </Storyboard>
         </ResourceDictionary>
     </Application.Resources>
-    
+
 </Application>
