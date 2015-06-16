@@ -7,13 +7,16 @@ A compact, modular and free open-source music player for Windows.
 
 **This repository isn't set up quite yet, please check back later for more info.**
 
+Contributing: ReSharper is recommended. A DotSettings file is included.
+
 Please use the appropriate ANSI codepage for installer language files (*.isl) and licenses - unicode is not supported.
 Example: msg_he.isl and gplv3-hebrew.txt are encoded in Windows-1255.
 
-LICENSE: GPLv3.
-Please respect the licenses of all the referenced libraries.
+Compiling: Visual Studio 2013 required. Community Edition is recommended. Installer requires a relatively new version of Inno Setup **Unicode**.
 
-Works on Windows Vista, 7, 8, 8.1, 10 (build 10122 and up). Requires .NET Framework 4.5.1 or 4.5.2.
+Runs on Windows Vista, 7, 8, 8.1, 10 (build 10122 and up). Requires .NET Framework 4.5.1 or 4.5.2.
+
+**Release ETA: None (don't ask for one)**
 
 Contact
 -------
@@ -26,6 +29,9 @@ Twitter: [@OronDF343](https://twitter.com/OronDF343)
 
 License:
 --------
+
+LICENSE: GPLv3.
+Please respect the licenses of all the referenced libraries.
 
     FuwaTeaWin: FTW Player
     A compact, modular and free open-source music player for Windows.
