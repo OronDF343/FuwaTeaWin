@@ -7,7 +7,7 @@ A compact, modular and free open-source music player for Windows.
 
 **This repository isn't set up quite yet, please check back later.**
 
-LICENSE: PortableSettingsProvider can't be licensed under the GPL, please stand by for an update.
+LICENSE: GPLv3.
 Please respect the licenses of all the referenced libraries.
 
 Works on Windows Vista, 7, 8, 8.1, 10 (build 10122 and up). Requires .NET Framework 4.5.1 or 4.5.2.

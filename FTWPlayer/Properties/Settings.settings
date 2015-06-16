@@ -1,44 +1,38 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)"
-              GeneratedClassNamespace="FTWPlayer.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="FTWPlayer.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="ProcessPriority" Provider="FuwaTea.Lib.PortableSettingsProvider"
-             Type="System.Diagnostics.ProcessPriorityClass" Scope="User">
+    <Setting Name="ProcessPriority" Provider="FuwaTea.Lib.PortableSettingsProvider" Roaming="true" Type="System.Diagnostics.ProcessPriorityClass" Scope="User">
       <Value Profile="(Default)">AboveNormal</Value>
     </Setting>
-    <Setting Name="InstanceCreationTimeout" Provider="FuwaTea.Lib.PortableSettingsProvider" Type="System.TimeSpan"
-             Scope="User">
+    <Setting Name="InstanceCreationTimeout" Provider="FuwaTea.Lib.PortableSettingsProvider" Roaming="true" Type="System.TimeSpan" Scope="User">
       <Value Profile="(Default)">00:00:20</Value>
     </Setting>
-    <Setting Name="RememberVolume" Provider="FuwaTea.Lib.PortableSettingsProvider" Type="System.Boolean" Scope="User">
+    <Setting Name="RememberVolume" Provider="FuwaTea.Lib.PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="LastVolume" Provider="FuwaTea.Lib.PortableSettingsProvider" Type="System.Decimal" Scope="User">
+    <Setting Name="LastVolume" Provider="FuwaTea.Lib.PortableSettingsProvider" Roaming="true" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">1.0</Value>
     </Setting>
-    <Setting Name="VolumeFadeOutOnExit" Provider="FuwaTea.Lib.PortableSettingsProvider" Type="System.Boolean"
-             Scope="User">
+    <Setting Name="VolumeFadeOutOnExit" Provider="FuwaTea.Lib.PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="MaxEqualizerGain" Provider="FuwaTea.Lib.PortableSettingsProvider" Type="System.Double" Scope="User">
+    <Setting Name="MaxEqualizerGain" Provider="FuwaTea.Lib.PortableSettingsProvider" Roaming="true" Type="System.Double" Scope="User">
       <Value Profile="(Default)">10</Value>
     </Setting>
-    <Setting Name="ShowToolTips" Provider="FuwaTea.Lib.PortableSettingsProvider" Type="System.Boolean" Scope="User">
+    <Setting Name="ShowToolTips" Provider="FuwaTea.Lib.PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="OverrideDefaultLanguage" Provider="FuwaTea.Lib.PortableSettingsProvider" Type="System.Boolean"
-             Scope="User">
+    <Setting Name="OverrideDefaultLanguage" Provider="FuwaTea.Lib.PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="SelectedLanguage" Provider="FuwaTea.Lib.PortableSettingsProvider" Type="System.String" Scope="User">
+    <Setting Name="SelectedLanguage" Provider="FuwaTea.Lib.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="ShowInTaskbar" Provider="FuwaTea.Lib.PortableSettingsProvider" Type="System.Boolean" Scope="User">
+    <Setting Name="ShowInTaskbar" Provider="FuwaTea.Lib.PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="Topmost" Provider="FuwaTea.Lib.PortableSettingsProvider" Type="System.Boolean" Scope="User">
+    <Setting Name="Topmost" Provider="FuwaTea.Lib.PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>

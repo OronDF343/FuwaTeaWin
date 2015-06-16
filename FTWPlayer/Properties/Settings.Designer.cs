@@ -27,6 +27,7 @@ namespace FTWPlayer.Properties {
         [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("AboveNormal")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public global::System.Diagnostics.ProcessPriorityClass ProcessPriority {
             get {
                 return ((global::System.Diagnostics.ProcessPriorityClass)(this["ProcessPriority"]));
@@ -40,6 +41,7 @@ namespace FTWPlayer.Properties {
         [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("00:00:20")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public global::System.TimeSpan InstanceCreationTimeout {
             get {
                 return ((global::System.TimeSpan)(this["InstanceCreationTimeout"]));
@@ -53,6 +55,7 @@ namespace FTWPlayer.Properties {
         [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public bool RememberVolume {
             get {
                 return ((bool)(this["RememberVolume"]));
@@ -66,6 +69,7 @@ namespace FTWPlayer.Properties {
         [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1.0")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public decimal LastVolume {
             get {
                 return ((decimal)(this["LastVolume"]));
@@ -79,6 +83,7 @@ namespace FTWPlayer.Properties {
         [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public bool VolumeFadeOutOnExit {
             get {
                 return ((bool)(this["VolumeFadeOutOnExit"]));
@@ -92,6 +97,7 @@ namespace FTWPlayer.Properties {
         [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public double MaxEqualizerGain {
             get {
                 return ((double)(this["MaxEqualizerGain"]));
@@ -105,6 +111,7 @@ namespace FTWPlayer.Properties {
         [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public bool ShowToolTips {
             get {
                 return ((bool)(this["ShowToolTips"]));
@@ -118,6 +125,7 @@ namespace FTWPlayer.Properties {
         [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public bool OverrideDefaultLanguage {
             get {
                 return ((bool)(this["OverrideDefaultLanguage"]));
@@ -131,6 +139,7 @@ namespace FTWPlayer.Properties {
         [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public string SelectedLanguage {
             get {
                 return ((string)(this["SelectedLanguage"]));
@@ -144,6 +153,7 @@ namespace FTWPlayer.Properties {
         [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public bool ShowInTaskbar {
             get {
                 return ((bool)(this["ShowInTaskbar"]));
@@ -157,6 +167,7 @@ namespace FTWPlayer.Properties {
         [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public bool Topmost {
             get {
                 return ((bool)(this["Topmost"]));

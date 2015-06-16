@@ -1,43 +1,69 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Specialized;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
-using System.Xml;
-using System.Xml.Serialization;
+using System.Threading;
+using System.Xml.Linq;
+using System.Xml.XPath;
+using FuwaTea.Annotations;
 
 namespace FuwaTea.Lib
 {
+    // Retrieved from http://www.codeproject.com/Articles/20917/Creating-a-Custom-Settings-Provider?msg=4759869#xx4759869xx (deBUGer!)
+    // Which was derived from http://www.codeproject.com/Articles/20917/Creating-a-Custom-Settings-Provider?msg=2934144#xx2934144xx (gpgemini)
+    // Which was ported from http://www.codeproject.com/Articles/20917/Creating-a-Custom-Settings-Provider (CodeChimp - CPOL license)
+    // Derived again after all that. (OronDF343)
+
+    // Util functions
+    public static class XExtensions
+    {
+        public static XElement GetOrAddElement([NotNull] this XContainer parent, [NotNull] XName name)
+        {
+            var element = parent.Element(name);
+            if (element == null)
+            {
+                element = new XElement(name);
+                parent.Add(element);
+            }
+            return element;
+        }
+    }
+
+    // TODO: Logging
     public class PortableSettingsProvider : SettingsProvider
     {
-        // Define some static strings later used in our XML creation
-        // XML Root node
-        const string XmlRoot = "configuration";
+        const string SettingsRootName = "Settings";
+        const string RoamingSettingsRootName = "Roaming";
+        const string LocalSettingsRootName = "Local";
 
-        // Configuration declaration node
-        const string ConfigNode = "configSections";
+        readonly string _fileName;
+        readonly Lazy<XDocument> _settingsXml;
 
-        // Configuration section group declaration node
-        const string GroupNode = "sectionGroup";
+        public static readonly string DefaultDirectory = Assembly.GetEntryAssembly().GetUserDataPath();
+        public static readonly string DefaultFileName = Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location) + ".settings";
 
-        // User section node
-        const string UserNode = "userSettings";
+        public PortableSettingsProvider()
+            : this(DefaultDirectory, DefaultFileName)
+        {
+        }
 
-        // Application Specific Node
-        readonly string _appNode = Assembly.GetEntryAssembly().GetName().Name + ".Properties.Settings";
+        public PortableSettingsProvider([NotNull] string settingsDirectory, [NotNull] string settingsFileName)
+        {
+            Directory.CreateDirectory(settingsDirectory);
 
-        private XmlDocument _xmlDoc;
+            _fileName = Path.Combine(settingsDirectory, settingsFileName);
+            _settingsXml = new Lazy<XDocument>(() => LoadOrCreateSettings(_fileName), LazyThreadSafetyMode.PublicationOnly);
+        }
 
-
-
-        // Override the Initialize method
         public override void Initialize(string name, NameValueCollection config)
         {
             base.Initialize(ApplicationName, config);
         }
 
-        // Override the ApplicationName property, returning the solution name.  No need to set anything, we just need to
-        // retrieve information, though the set method still needs to be defined.
         public override string ApplicationName
         {
             get
@@ -47,256 +73,93 @@ namespace FuwaTea.Lib
             set { }
         }
 
-        // Simply returns the name of the settings file, which is the solution name plus ".config"
-        public virtual string GetSettingsFilename()
+        public override SettingsPropertyValueCollection GetPropertyValues(SettingsContext context, SettingsPropertyCollection props)
         {
-            return ApplicationName + ".config";
-        }
+            // Create new collection of values
+            var values = new SettingsPropertyValueCollection();
 
-        // Gets current executable path in order to determine where to read and write the config file
-        public virtual string GetAppPath()
-        {
-            // TODO: update if other usage is updated
-            // TODO: this has temporary company and app names until the name is normalized
-            return Assembly.GetEntryAssembly().GetUserDataPath("OronDF343", "SJE");
-        }
-
-        // Retrieve settings from the configuration file
-        public override SettingsPropertyValueCollection GetPropertyValues(SettingsContext sContext, SettingsPropertyCollection settingsColl)
-        {
-            // Create a collection of values to return
-            var retValues = new SettingsPropertyValueCollection();
-
-            // Create a temporary SettingsPropertyValue to reuse
-
-            // Loop through the list of settings that the application has requested and add them
-            // to our collection of return values.
-            foreach (SettingsProperty sProp in settingsColl)
+            // Iterate through the settings to be retrieved
+            foreach (SettingsProperty setting in props)
             {
-                var setVal = new SettingsPropertyValue(sProp) {IsDirty = false, SerializedValue = GetSetting(sProp)};
-                retValues.Add(setVal);
+                values.Add(new SettingsPropertyValue(setting)
+                {
+                    IsDirty = false,
+                    SerializedValue = GetValue(setting),
+                });
             }
-            return retValues;
+            return values;
         }
 
-        // Save any of the applications settings that have changed (flagged as "dirty")
-        public override void SetPropertyValues(SettingsContext sContext, SettingsPropertyValueCollection settingsColl)
+        public override void SetPropertyValues(SettingsContext context, SettingsPropertyValueCollection properties)
         {
-            // Set the values in XML
-            foreach (SettingsPropertyValue spVal in settingsColl)
+            // Only dirty settings are included in properties, and only ones relevant to this provider
+            foreach (SettingsPropertyValue propertyValue in properties)
             {
-                SetSetting(spVal);
+                SetValue(propertyValue);
             }
 
-            // Write the XML file to disk
             try
             {
-                XmlConfig.Save(Path.Combine(GetAppPath(), GetSettingsFilename()));
+                _settingsXml.Value.Save(_fileName);
             }
             catch (Exception ex)
             {
-                // Create an informational message for the user if we cannot save the settings.
-                // Enable whichever applies to your application type.
-
-                // Uncomment the following line to enable a MessageBox for forms-based apps
-                //System.Windows.Forms.MessageBox.Show(ex.Message, "Error writting configuration file to disk", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-
-                // Uncomment the following line to enable a console message for console-based apps
-                Console.WriteLine("Error writing configuration file to disk: " + ex.Message); // TODO: handle this differently
+                //Log.WriteError(string.Concat(Errors.Save_Settings_Error, ":", Environment.NewLine), ex);
             }
         }
 
-        private XmlDocument XmlConfig
+        XElement SettingsRoot
         {
-            get
-            {
-                // Check if we already have accessed the XML config file. If the xmlDoc object is empty, we have not.
-                if (_xmlDoc != null) return _xmlDoc;
-                _xmlDoc = new XmlDocument();
-
-                // If we have not loaded the config, try reading the file from disk.
-                try
-                {
-                    _xmlDoc.Load(Path.Combine(GetAppPath(), GetSettingsFilename()));
-                }
-
-                    // If the file does not exist on disk, catch the exception then create the XML template for the file.
-                catch (Exception)
-                {
-                    // XML Declaration
-                    // <?xml version="1.0" encoding="utf-8"?>
-                    var dec = _xmlDoc.CreateXmlDeclaration("1.0", "utf-8", null);
-                    _xmlDoc.AppendChild(dec);
-
-                    // Create root node and append to the document
-                    // <configuration>
-                    var rootNode = _xmlDoc.CreateElement(XmlRoot);
-                    _xmlDoc.AppendChild(rootNode);
-
-                    // Create Configuration Sections node and add as the first node under the root
-                    // <configSections>
-                    var configNode = _xmlDoc.CreateElement(ConfigNode);
-                    _xmlDoc.DocumentElement.PrependChild(configNode);
-
-                    // Create the user settings section group declaration and append to the config node above
-                    // <sectionGroup name="userSettings"...>
-                    var groupNode = _xmlDoc.CreateElement(GroupNode);
-                    groupNode.SetAttribute("name", UserNode);
-                    groupNode.SetAttribute("type", "System.Configuration.UserSettingsGroup");
-                    configNode.AppendChild(groupNode);
-
-                    // Create the Application section declaration and append to the groupNode above
-                    // <section name="AppName.Properties.Settings"...>
-                    var newSection = _xmlDoc.CreateElement("section");
-                    newSection.SetAttribute("name", _appNode);
-                    newSection.SetAttribute("type", "System.Configuration.ClientSettingsSection");
-                    groupNode.AppendChild(newSection);
-
-                    // Create the userSettings node and append to the root node
-                    // <userSettings>
-                    var userNode = _xmlDoc.CreateElement(UserNode);
-                    _xmlDoc.DocumentElement.AppendChild(userNode);
-
-                    // Create the Application settings node and append to the userNode above
-                    // <AppName.Properties.Settings>
-                    var appNode = _xmlDoc.CreateElement(_appNode);
-                    userNode.AppendChild(appNode);
-                }
-                return _xmlDoc;
-            }
+            get { return _settingsXml.Value.Root; }
         }
 
-        // Retrieve values from the configuration file, or if the setting does not exist in the file, 
-        // retrieve the value from the application's default configuration
-        private object GetSetting(SettingsProperty setProp)
+        object GetValue(SettingsProperty setting)
         {
-            object retVal;
+            var propertyPath = IsRoaming(setting)
+               ? string.Concat("./", RoamingSettingsRootName, "/", setting.Name)
+               : string.Concat("./", LocalSettingsRootName, "/", Environment.MachineName, "/", setting.Name);
+
+            var propertyElement = SettingsRoot.XPathSelectElement(propertyPath);
+            return propertyElement == null ? setting.DefaultValue : propertyElement.Value;
+        }
+
+        void SetValue(SettingsPropertyValue setting)
+        {
+            var parentElement = IsRoaming(setting.Property)
+                                    ? SettingsRoot.GetOrAddElement(RoamingSettingsRootName)
+                                    : SettingsRoot.GetOrAddElement(LocalSettingsRootName)
+                                                  .GetOrAddElement(Environment.MachineName);
+
+            parentElement.GetOrAddElement(setting.Name).Value = setting.SerializedValue.ToString();
+        }
+
+        static XDocument LoadOrCreateSettings(string filePath)
+        {
+            XDocument settingsXml = null;
             try
             {
-                // Search for the specific settings node we are looking for in the configuration file.
-                // If it exists, return the InnerText or InnerXML of its first child node, depending on the setting type.
+                settingsXml = XDocument.Load(filePath);
 
-                // If the setting is serialized as a string, return the text stored in the config
-                if (setProp.SerializeAs.ToString() == "String")
+                Debug.Assert(settingsXml.Root != null, "Null XML root!"); // TODO: Proper assert
+                if (settingsXml.Root.Name.LocalName != SettingsRootName)
                 {
-                    return XmlConfig.SelectSingleNode("//setting[@name='" + setProp.Name + "']").FirstChild.InnerText;
-                }
-
-                    // If the setting is stored as XML, deserialize it and return the proper object.  This only supports
-                    // StringCollections at the moment - I will likely add other types as I use them in applications.
-                var settingType = setProp.PropertyType.ToString();
-                var xmlData = XmlConfig.SelectSingleNode("//setting[@name='" + setProp.Name + "']").FirstChild.InnerXml;
-                var xs = new XmlSerializer(typeof(string[]));
-                var data = (string[])xs.Deserialize(new XmlTextReader(xmlData, XmlNodeType.Element, null));
-
-                switch (settingType)
-                {
-                    case "System.Collections.Specialized.StringCollection":
-                        var sc = new StringCollection();
-                        sc.AddRange(data);
-                        return sc;
-                    default:
-                        return "";
+                    //Log.WriteError(string.Format(Errors.Invalid_Settings_Format_0, filePath));
+                    settingsXml = null;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // Check to see if a default value is defined by the application.
-                // If so, return that value, using the same rules for settings stored as Strings and XML as above
-                if ((setProp.DefaultValue != null))
-                {
-                    if (setProp.SerializeAs.ToString() == "String")
-                    {
-                        retVal = setProp.DefaultValue.ToString();
-                    }
-                    else
-                    {
-                        var settingType = setProp.PropertyType.ToString();
-                        var xmlData = setProp.DefaultValue.ToString();
-                        var xs = new XmlSerializer(typeof(string[]));
-                        var data = (string[])xs.Deserialize(new XmlTextReader(xmlData, XmlNodeType.Element, null));
-
-                        switch (settingType)
-                        {
-                            case "System.Collections.Specialized.StringCollection":
-                                var sc = new StringCollection();
-                                sc.AddRange(data);
-                                return sc;
-
-                            default: return "";
-                        }
-                    }
-                }
-                else
-                {
-                    retVal = "";
-                }
+                //Log.WriteError(string.Format(Errors.Invalid_Settings_File_0, filePath), ex);
             }
-            return retVal;
+
+            return settingsXml
+                   ?? new XDocument(new XDeclaration("1.0", "utf-8", "yes"),
+                                    new XElement(SettingsRootName, string.Empty));
         }
 
-        private void SetSetting(SettingsPropertyValue setProp)
+        static bool IsRoaming(SettingsProperty property)
         {
-            // Define the XML path under which we want to write our settings if they do not already exist
-            XmlNode settingNode;
-
-            try
-            {
-                // Search for the specific settings node we want to update.
-                // If it exists, return its first child node, (the <value>data here</value> node)
-                settingNode = XmlConfig.SelectSingleNode("//setting[@name='" + setProp.Name + "']").FirstChild;
-            }
-            catch (Exception)
-            {
-                settingNode = null;
-            }
-
-            // If we have a pointer to an actual XML node, update the value stored there
-            if ((settingNode != null))
-            {
-                if (setProp.Property.SerializeAs.ToString() == "String")
-                {
-                    settingNode.InnerText = setProp.SerializedValue.ToString();
-                }
-                else
-                {
-                    // Write the object to the config serialized as Xml - we must remove the Xml declaration when writing
-                    // the value, otherwise .Net's configuration system complains about the additional declaration.
-                    settingNode.InnerXml = setProp.SerializedValue.ToString().Replace(@"<?xml version=""1.0"" encoding=""utf-16""?>", "");
-                }
-            }
-            else
-            {
-                // If the value did not already exist in this settings file, create a new entry for this setting
-
-                // Search for the application settings node (<Appname.Properties.Settings>) and store it.
-                var tmpNode = XmlConfig.SelectSingleNode("//" + _appNode);
-
-                // Create a new settings node and assign its name as well as how it will be serialized
-                var newSetting = _xmlDoc.CreateElement("setting");
-                newSetting.SetAttribute("name", setProp.Name);
-
-                newSetting.SetAttribute("serializeAs", setProp.Property.SerializeAs.ToString() == "String" ? "String" : "Xml");
-
-                // Append this node to the application settings node (<Appname.Properties.Settings>)
-                tmpNode.AppendChild(newSetting);
-
-                // Create an element under our named settings node, and assign it the value we are trying to save
-                var valueElement = _xmlDoc.CreateElement("value");
-                if (setProp.Property.SerializeAs.ToString() == "String")
-                {
-                    valueElement.InnerText = setProp.SerializedValue.ToString();
-                }
-                else
-                {
-                    // Write the object to the config serialized as Xml - we must remove the Xml declaration when writing
-                    // the value, otherwise .Net's configuration system complains about the additional declaration
-                    valueElement.InnerXml = setProp.SerializedValue.ToString().Replace(@"<?xml version=""1.0"" encoding=""utf-16""?>", "");
-                }
-
-                //Append this new element under the setting node we created above
-                newSetting.AppendChild(valueElement);
-            }
+            return property.Attributes.Cast<DictionaryEntry>().Any(a => a.Value is SettingsManageabilityAttribute);
         }
     }
 }
