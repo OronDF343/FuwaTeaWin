@@ -14,3 +14,5 @@ AddToPlaylist=
 AppDescription=
 UpdatingFileAssociations=
 ConfigureFileAssociations=
+NoDotNet=
+DelUserData=

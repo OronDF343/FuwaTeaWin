@@ -14,3 +14,5 @@ AddToPlaylist=Add to %1's playlist
 AppDescription=Test Version
 UpdatingFileAssociations=Updating file associations...
 ConfigureFileAssociations=Open file associations configuration window
+NoDotNet=This application requires Microsoft .NET Framework %1.%nPlease update it using Windows Update, then run this installer again.
+DelUserData=Would you like to remove the user preferences as well?
