@@ -7,6 +7,9 @@ A compact, modular and free open-source music player for Windows.
 
 **This repository isn't set up quite yet, please check back later for more info.**
 
+Please use the appropriate ANSI codepage for installer language files (*.isl) and licenses - unicode is not supported.
+Example: msg_he.isl and gplv3-hebrew.txt are encoded in Windows-1255.
+
 LICENSE: GPLv3.
 Please respect the licenses of all the referenced libraries.
 
