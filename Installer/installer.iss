@@ -79,7 +79,7 @@ Type: dirifempty; Name: "{localappdata}\{#Company}"; Check: CheckDelUserData
 
 [Languages]
 Name: "en"; MessagesFile: "compiler:Default.isl,msg_en.isl"; LicenseFile: "..\LICENSE.txt"
-Name: "he"; MessagesFile: "compiler:Languages\Hebrew.isl,msg_he.isl"; LicenseFile: "LICENSE_he.txt"
+Name: "he"; MessagesFile: "compiler:Languages\Hebrew.isl,msg_he.isl"; LicenseFile: "gplv3-hebrew.txt"
 
 [Registry]
 Root: HKLM; Subkey: "Software\{#Company}"; Flags: uninsdeletekeyifempty
