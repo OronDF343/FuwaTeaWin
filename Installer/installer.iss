@@ -133,7 +133,7 @@ function IsDotNetDetected(version: string; service: cardinal): boolean;
 //    'v4.5'          .NET Framework 4.5
 //    'v4.5.1'        .NET Framework 4.5.1
 //    'v4.5.2'        .NET Framework 4.5.2
-//    'v4.6\RC'        .NET Framework 4.5.2
+//    'v4.6\RC'        .NET Framework 4.6 RC
 //
 // service -- Specify any non-negative integer for the required service pack level:
 //    0               No service packs required
