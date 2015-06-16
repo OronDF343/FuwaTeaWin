@@ -68,8 +68,8 @@ Name: "{group}\{cm:UninstallIcon,FTW Player}"; Filename: "{uninstallexe}"; Flags
 Type: filesandordirs; Name: "{localappdata}\OronDF343\FuwaTeaWin\*"; Tasks: reset
 
 [UninstallDelete]
-Type: filesandordirs; Name: "{localappdata}\OronDF343\FuwaTeaWin"
-Type: dirifempty; Name: "{localappdata}\OronDF343"
+Type: filesandordirs; Name: "{localappdata}\OronDF343\FuwaTeaWin"; Check: CheckDelUserData
+Type: dirifempty; Name: "{localappdata}\OronDF343"; Check: CheckDelUserData
 
 [Languages]
 Name: "en"; MessagesFile: "compiler:Default.isl,msg_en.isl"; LicenseFile: "LICENSE.txt"
@@ -102,3 +102,95 @@ Filename: "{app}\FTWPlayer.exe"; Parameters: "--configure-file-associations"; De
 [UninstallRun]
 Filename: "{app}\FTWPlayer.exe"; Parameters: "--clean-up-file-associations"; RunOnceId: "CUFA"
  
+[Code]
+var
+    delUserData: boolean;
+
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+begin
+    if CurUninstallStep = usUninstall then
+        if MsgBox('Would you like to remove the user preferences as well?', mbConfirmation, MB_YESNO) = IDYES then
+            delUserData := true;
+end;
+
+function CheckDelUserData(): boolean;
+begin
+    result := delUserData;
+end;
+
+// Source: http://www.kynosarges.org/DotNetVersion.html
+// Updated to .NET 4.5.1, 4.5.2, 4.6RC
+function IsDotNetDetected(version: string; service: cardinal): boolean;
+// Indicates whether the specified version and service pack of the .NET Framework is installed.
+//
+// version -- Specify one of these strings for the required .NET Framework version:
+//    'v1.1.4322'     .NET Framework 1.1
+//    'v2.0.50727'    .NET Framework 2.0
+//    'v3.0'          .NET Framework 3.0
+//    'v3.5'          .NET Framework 3.5
+//    'v4\Client'     .NET Framework 4.0 Client Profile
+//    'v4\Full'       .NET Framework 4.0 Full Installation
+//    'v4.5'          .NET Framework 4.5
+//    'v4.5.1'        .NET Framework 4.5.1
+//    'v4.5.2'        .NET Framework 4.5.2
+//    'v4.6\RC'        .NET Framework 4.5.2
+//
+// service -- Specify any non-negative integer for the required service pack level:
+//    0               No service packs required
+//    1, 2, etc.      Service pack 1, 2, etc. required
+var
+    key, verCopy: string;
+    install, release, serviceCount: cardinal;
+    check45, success: boolean;
+begin
+    // .NET 4.5 installs as update to .NET 4.0 Full
+    if Pos('v4.', version) = 1 then begin
+		verCopy := version;
+        version := 'v4\Full';
+        check45 := true;
+    end else
+        check45 := false;
+
+    // installation key group for all .NET versions
+    key := 'SOFTWARE\Microsoft\NET Framework Setup\NDP\' + version;
+
+    // .NET 3.0 uses value InstallSuccess in subkey Setup
+    if Pos('v3.0', version) = 1 then begin
+        success := RegQueryDWordValue(HKLM, key + '\Setup', 'InstallSuccess', install);
+    end else begin
+        success := RegQueryDWordValue(HKLM, key, 'Install', install);
+    end;
+
+    // .NET 4.0/4.5 uses value Servicing instead of SP
+    if Pos('v4', version) = 1 then begin
+        success := success and RegQueryDWordValue(HKLM, key, 'Servicing', serviceCount);
+    end else begin
+        success := success and RegQueryDWordValue(HKLM, key, 'SP', serviceCount);
+    end;
+
+    // .NET 4.5+ uses additional value Release
+    if check45 then begin
+        success := success and RegQueryDWordValue(HKLM, key, 'Release', release);
+		if verCopy = 'v4.5.1' then
+		    success := success and (release >= 378675)
+		else if verCopy = 'v4.5.2' then
+		    success := success and (release >= 379893)
+		else if verCopy = 'v4.6\RC' then
+		    success := success and (release >= 393273)
+		else
+            success := success and (release >= 378389);
+    end;
+
+    result := success and (install = 1) and (serviceCount >= service);
+end;
+
+function InitializeSetup(): Boolean;
+begin
+    if not IsDotNetDetected('v4.5.1', 0) then begin
+        MsgBox('This application requires Microsoft .NET Framework 4.5.1.'#13#13
+               'Please use Windows Update to install this version,'#13
+               'and then re-run this setup program.', mbInformation, MB_OK);
+        result := false;
+    end else
+        result := true;
+end;

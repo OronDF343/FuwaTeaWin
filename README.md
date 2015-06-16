@@ -5,7 +5,7 @@ The successor to [Sky Jukebox](https://github.com/OronDF343/Sky-Jukebox).
 
 A compact, modular and free open-source music player for Windows.
 
-**This repository isn't set up quite yet, please check back later.**
+**This repository isn't set up quite yet, please check back later for more info.**
 
 LICENSE: GPLv3.
 Please respect the licenses of all the referenced libraries.
