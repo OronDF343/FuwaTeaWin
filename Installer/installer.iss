@@ -3,6 +3,7 @@
 #define LongName 'FTW Player'
 #define Company 'OronDF343'
 #define DotNetVersion '4.5.1'
+#define BuildPath '..\bin\Release'
 
 [Setup]
 AppId={#ShortName}
@@ -43,27 +44,27 @@ Name: "reset"; Description: "{cm:ResetConfig}"; GroupDescription: "{cm:Tasks}"; 
 Name: "{localappdata}\{#Company}\{#ShortName}"; Components: main
 
 [Files]
-Source: "..\bin\Release\FTWPlayer.exe"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "..\bin\Release\FuwaTea.Wpf.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "..\bin\Release\FuwaTea.Presentation.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "..\bin\Release\FuwaTea.Logic.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "..\bin\Release\FuwaTea.Data.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "..\bin\Release\FuwaTea.Common.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "..\bin\Release\LayerFramework.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "..\bin\Release\FuwaTea.Lib.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "..\bin\Release\GalaSoft.MvvmLight.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "..\bin\Release\GalaSoft.MvvmLight.Extras.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "..\bin\Release\GalaSoft.MvvmLight.Platform.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "..\bin\Release\Microsoft.Practices.ServiceLocation.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "..\bin\Release\System.Windows.Interactivity.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "..\bin\Release\WPFLocalizeExtension.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "..\bin\Release\XAMLMarkupExtensions.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "..\bin\Release\TagLib.Portable.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "..\bin\Release\NAudio.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "..\bin\Release\NAudio.Flac.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "..\bin\Release\NAudio.Vorbis.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "..\bin\Release\NVorbis.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "..\bin\Release\he\FTWPlayer.resources.dll"; DestDir: "{app}\he"; Components: localization\hebrew; Flags: ignoreversion
+Source: "{#BuildPath}\FTWPlayer.exe"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\FuwaTea.Wpf.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\FuwaTea.Presentation.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\FuwaTea.Logic.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\FuwaTea.Data.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\FuwaTea.Common.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\LayerFramework.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\FuwaTea.Lib.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\GalaSoft.MvvmLight.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\GalaSoft.MvvmLight.Extras.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\GalaSoft.MvvmLight.Platform.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\Microsoft.Practices.ServiceLocation.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\System.Windows.Interactivity.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\WPFLocalizeExtension.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\XAMLMarkupExtensions.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\TagLib.Portable.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\NAudio.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\NAudio.Flac.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\NAudio.Vorbis.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\NVorbis.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\he\FTWPlayer.resources.dll"; DestDir: "{app}\he"; Components: localization\hebrew; Flags: ignoreversion
 
 [Icons]
 Name: "{commondesktop}\{#LongName}"; Filename: "{app}\FTWPlayer.exe"; WorkingDir: "{app}"; Tasks: desktopicon
