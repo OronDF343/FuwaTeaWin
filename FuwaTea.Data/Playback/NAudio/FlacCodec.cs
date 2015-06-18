@@ -15,13 +15,16 @@
 //     along with FuwaTeaWin.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 
+using System;
 using System.Collections.Generic;
+using LayerFramework.Attributes;
 using NAudio.Flac;
 using NAudio.Wave;
 
 namespace FuwaTea.Data.Playback.NAudio
 {
     [DataElement("FLAC file reader (non-MF)")]
+    [OSFilter(FilterActions.Whitelist, PlatformID.Win32NT, FilterRules.LessThan, "10.0.0.0")]
     public class FlacCodec : IWaveStreamProvider
     {
         public WaveStream CreateWaveStream(string path)
