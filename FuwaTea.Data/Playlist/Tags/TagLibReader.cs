@@ -15,6 +15,7 @@
 //     along with FuwaTeaWin.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using FuwaTea.Common.Models;
@@ -30,10 +31,15 @@ namespace FuwaTea.Data.Playlist.Tags
         {
             using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                var tagFile = File.Create(new StreamFileAbstraction(path, stream, stream));
-                var model = new MusicInfoModel(path, tagFile.Tag, tagFile.Properties.Duration,
-                                               tagFile.Properties.AudioBitrate);
-                tagFile.Dispose(); // TODO: check if there is ObjectDisposedException
+                File tagFile = null;
+                try { tagFile = File.Create(new StreamFileAbstraction(path, stream, stream)); }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+                var model = tagFile == null ? new MusicInfoModel(path, null, TimeSpan.Zero, 0)
+                                            : new MusicInfoModel(path, tagFile.Tag, tagFile.Properties.Duration, tagFile.Properties.AudioBitrate);
+                if (tagFile != null) tagFile.Dispose(); // TODO: check if there is ObjectDisposedException
                 stream.Close();
                 return model;
             }
