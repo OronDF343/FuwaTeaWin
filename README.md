@@ -14,7 +14,7 @@ Example: msg_he.isl and gplv3-hebrew.txt are encoded in Windows-1255.
 
 Compiling: Visual Studio 2013 required. Community Edition is recommended. Installer requires a relatively new version of Inno Setup **Unicode**.
 
-Runs on Windows Vista, 7, 8, 8.1, 10 (build 10122 and up). Requires .NET Framework 4.5.1 or 4.5.2.
+Runs on Windows Vista, 7, 8, 8.1, 10 (build 10122 and up). Requires .NET Framework 4.5.1 or newer.
 
 **Release ETA: None (don't ask for one)**
 
