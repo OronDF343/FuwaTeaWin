@@ -61,6 +61,15 @@ namespace FTWPlayer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EQUALIZER.
+        /// </summary>
+        internal static string EqualizerTabHeader {
+            get {
+                return ResourceManager.GetString("EqualizerTabHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Next.
         /// </summary>
         internal static string NextToolTip {
@@ -111,6 +120,15 @@ namespace FTWPlayer.Localization {
         internal static string ResumeToolTip {
             get {
                 return ResourceManager.GetString("ResumeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SETTINGS.
+        /// </summary>
+        internal static string SettingsTabHeader {
+            get {
+                return ResourceManager.GetString("SettingsTabHeader", resourceCulture);
             }
         }
         

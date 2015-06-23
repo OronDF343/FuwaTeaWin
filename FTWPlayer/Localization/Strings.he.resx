@@ -141,4 +141,10 @@
   <data name="WelcomeText" xml:space="preserve">
     <value>גרסת ניסוי של FuwaTeaWin</value>
   </data>
+  <data name="EqualizerTabHeader" xml:space="preserve">
+    <value>EQ</value>
+  </data>
+  <data name="SettingsTabHeader" xml:space="preserve">
+    <value>הגדרות</value>
+  </data>
 </root>

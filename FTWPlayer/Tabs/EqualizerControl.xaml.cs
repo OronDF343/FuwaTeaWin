@@ -23,7 +23,7 @@ namespace FTWPlayer.Tabs
     /// <summary>
     /// Interaction logic for EqualizerControl.xaml
     /// </summary>
-    public partial class EqualizerControl : UserControl
+    public partial class EqualizerControl
     {
         public EqualizerControl(MainViewModel mvm)
         {

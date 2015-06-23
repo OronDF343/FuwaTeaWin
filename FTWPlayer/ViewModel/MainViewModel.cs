@@ -112,9 +112,9 @@ namespace FTWPlayer.ViewModel
             Tabs = new ObservableCollection<TabItem>
             {
                 new AlbumArtDisplay(this),
-                new TabItem {Header = "EQUALIZER", Content = new EqualizerControl(this)},
+                new EqualizerControl(this),
                 new TabItem {Header = "LIBRARY"},
-                new TabItem {Header = "SETTINGS", Content = new SettingsView()},
+                new SettingsView(),
                 new TabItem {Header = "HELP"}
             };
 

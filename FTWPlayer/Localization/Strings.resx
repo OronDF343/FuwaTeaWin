@@ -142,4 +142,10 @@
     <value>FuwaTeaWin Testing Version</value>
     <comment>Scrolling text that is shown when no file is loaded</comment>
   </data>
+  <data name="EqualizerTabHeader" xml:space="preserve">
+    <value>EQUALIZER</value>
+  </data>
+  <data name="SettingsTabHeader" xml:space="preserve">
+    <value>SETTINGS</value>
+  </data>
 </root>

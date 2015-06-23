@@ -22,7 +22,7 @@ namespace FTWPlayer.Tabs
     /// <summary>
     /// Interaction logic for SettingsView.xaml
     /// </summary>
-    public partial class SettingsView : UserControl
+    public partial class SettingsView
     {
         public SettingsView()
         {
