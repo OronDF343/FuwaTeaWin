@@ -26,6 +26,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{8CCF1E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Lib", "FuwaTea.Lib\FuwaTea.Lib.csproj", "{A9BB4650-68CC-4640-9B5A-65F4AA80C2AB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LayerFramework.Logging", "LayerFramework.Logging\LayerFramework.Logging.csproj", "{B16E5E2F-1B42-4AA3-9CB6-D0CC4658C06A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,10 @@ Global
 		{A9BB4650-68CC-4640-9B5A-65F4AA80C2AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9BB4650-68CC-4640-9B5A-65F4AA80C2AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9BB4650-68CC-4640-9B5A-65F4AA80C2AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B16E5E2F-1B42-4AA3-9CB6-D0CC4658C06A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B16E5E2F-1B42-4AA3-9CB6-D0CC4658C06A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B16E5E2F-1B42-4AA3-9CB6-D0CC4658C06A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B16E5E2F-1B42-4AA3-9CB6-D0CC4658C06A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

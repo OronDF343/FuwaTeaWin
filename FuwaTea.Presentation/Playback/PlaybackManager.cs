@@ -26,6 +26,7 @@ using FuwaTea.Common.Models;
 using FuwaTea.Logic.Playback;
 using FuwaTea.Logic.Playlist;
 using LayerFramework;
+using LayerFramework.Logging;
 
 namespace FuwaTea.Presentation.Playback
 {
@@ -34,6 +35,7 @@ namespace FuwaTea.Presentation.Playback
     {
         public PlaybackManager()
         {
+            Logger.DebugMessage("Begin PM Init", this);
             _playlistManager = LayerFactory.GetElement<IPlaylistManager>();
             _playlistManager.PropertyChanged += (sender, args) =>
             {
