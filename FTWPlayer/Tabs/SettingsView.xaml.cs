@@ -15,8 +15,6 @@
 //     along with FuwaTeaWin.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 
-using System.Windows.Controls;
-
 namespace FTWPlayer.Tabs
 {
     /// <summary>

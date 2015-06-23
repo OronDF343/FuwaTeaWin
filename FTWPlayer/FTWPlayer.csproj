@@ -100,6 +100,7 @@
     <Compile Include="Converters\TimeSpanFormatterConverter.cs" />
     <Compile Include="Converters\UnitsConverter.cs" />
     <Compile Include="Converters\VolumeConverter.cs" />
+    <Compile Include="IUIPart.cs" />
     <Compile Include="Localization\LocalizationProvider.cs" />
     <Compile Include="Localization\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -114,9 +115,17 @@
     <Compile Include="Tabs\EqualizerControl.xaml.cs">
       <DependentUpon>EqualizerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Tabs\EqualizerTab.cs" />
+    <Compile Include="Tabs\HelpTab.cs" />
+    <Compile Include="Tabs\ITab.cs" />
+    <Compile Include="Tabs\LibraryTab.cs" />
+    <Compile Include="Tabs\PlayerTab.cs" />
+    <Compile Include="Tabs\SettingsTab.cs" />
     <Compile Include="Tabs\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UILayerDefinition.cs" />
+    <Compile Include="UIPartAttribute.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">

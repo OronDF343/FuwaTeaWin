@@ -29,6 +29,8 @@ namespace LayerFramework
 {
     public static class AssemblyLoader
     {
+        private static readonly string[] ExecutableFileFilters = {"*.dll", "*.exe"};
+
         private static Type[] TryGetTypes(this Assembly a, ErrorCallback errorCallback)
         {
             try
@@ -87,10 +89,10 @@ namespace LayerFramework
         public static IEnumerable<Type> GetTypesFromFolder(string folder, ErrorCallback errorCallback, ProcessorArchitecture? pa = null)
         {
             if (pa == null) pa = Assembly.GetCallingAssembly().GetName().ProcessorArchitecture;
-            return Directory.GetFiles(folder, "*.dll")
-                            .Select(dll => GetTypes(dll, errorCallback, pa.Value))
-                            .Where(ts => ts != null)
-                            .SelectMany(ts => ts);
+            return ExecutableFileFilters.SelectMany(s => Directory.EnumerateFiles(folder, s))
+                                           .Select(dll => GetTypes(dll, errorCallback, pa.Value))
+                                           .Where(ts => ts != null)
+                                           .SelectMany(ts => ts);
         }
 
         public static Dictionary<Type, TAttribute> FindTypesWithAttribute<TAttribute>(this IEnumerable<Type> types) where TAttribute : Attribute

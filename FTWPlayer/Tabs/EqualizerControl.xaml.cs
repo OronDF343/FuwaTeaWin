@@ -15,9 +15,6 @@
 //     along with FuwaTeaWin.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 
-using System.Windows.Controls;
-using FTWPlayer.ViewModel;
-
 namespace FTWPlayer.Tabs
 {
     /// <summary>
@@ -25,10 +22,10 @@ namespace FTWPlayer.Tabs
     /// </summary>
     public partial class EqualizerControl
     {
-        public EqualizerControl(MainViewModel mvm)
+        public EqualizerControl(EqualizerTab vm)
         {
             InitializeComponent();
-            DataContext = mvm;
+            DataContext = vm;
         }
     }
 }

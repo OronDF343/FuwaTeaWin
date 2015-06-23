@@ -25,8 +25,6 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using FTWPlayer.Properties;
 using FTWPlayer.Tabs;
@@ -34,7 +32,6 @@ using FuwaTea.Annotations;
 using FuwaTea.Common.Models;
 using FuwaTea.Lib;
 using FuwaTea.Logic.Playlist;
-using FuwaTea.Logic.Playlist.AlbumArt;
 using FuwaTea.Presentation.Playback;
 using GalaSoft.MvvmLight.CommandWpf;
 using LayerFramework;
@@ -108,15 +105,9 @@ namespace FTWPlayer.ViewModel
             MouseLeaveSeekAreaCommand = new RelayCommand<MouseEventArgs>(MouseLeaveSeekArea);
             DragEnterCommand = new RelayCommand<DragEventArgs>(DragEnter);
             DropCommand = new RelayCommand<DragEventArgs>(Drop);
-            ResetEqCommand = new RelayCommand<RoutedEventArgs>(ResetEq);
-            Tabs = new ObservableCollection<TabItem>
-            {
-                new AlbumArtDisplay(this),
-                new EqualizerControl(this),
-                new TabItem {Header = "LIBRARY"},
-                new SettingsView(),
-                new TabItem {Header = "HELP"}
-            };
+
+            // Load tabs
+            Tabs = new ObservableCollection<TabItem>(LayerFactory.GetElements<ITab>().OrderBy(t => t.Index).Select(t => t.TabObject));
 
             // TODO: this is testing
             var plm = LayerFactory.GetElement<IPlaylistManager>(); // TODO: remove logic reference
@@ -302,17 +293,6 @@ namespace FTWPlayer.ViewModel
             }
         }
 
-        public ICommand ResetEqCommand { get; set; }
-
-        private void ResetEq(RoutedEventArgs e)
-        {
-            // TODO: EqualizerManager
-            foreach (var band in PlaybackManager.EqualizerBands)
-            {
-                band.Gain = 0;
-            }
-        }
-
         #endregion
 
         public ObservableCollection<TabItem> Tabs { get; private set; }
@@ -364,27 +344,6 @@ namespace FTWPlayer.ViewModel
             get { return ((bool)(GetValue(UpdateRememberVolumeProperty))); }
             set { SetValue(UpdateRememberVolumeProperty, value); }
         }
-        #endregion
-
-        #region Testing: Album Art Display
-
-        public ImageSource CurrentAlbumArt
-        {
-            get
-            {
-                if (PlaybackManager.Current == null) return null;
-                var s = LayerFactory.GetElement<IAlbumArtLocator>().GetAlbumArt(PlaybackManager.Current);
-                if (s == null) return null;
-                var bi = new BitmapImage();
-                bi.BeginInit();
-                bi.CacheOption = BitmapCacheOption.OnLoad;
-                bi.StreamSource = s;
-                bi.EndInit();
-                return bi;
-                // TODO: CLEAN UP MEMORY USAGE - STILL IN USE AFTER SWITCHING - HIGH USAGE
-            }
-        }
-
         #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;

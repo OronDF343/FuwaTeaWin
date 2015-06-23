@@ -15,8 +15,6 @@
 //     along with FuwaTeaWin.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 
-using FTWPlayer.ViewModel;
-
 namespace FTWPlayer.Tabs
 {
     /// <summary>
@@ -24,10 +22,10 @@ namespace FTWPlayer.Tabs
     /// </summary>
     public partial class AlbumArtDisplay
     {
-        public AlbumArtDisplay(MainViewModel mv)
+        public AlbumArtDisplay(PlayerTab vm)
         {
             InitializeComponent();
-            DataContext = mv;
+            DataContext = vm;
         }
     }
 }
