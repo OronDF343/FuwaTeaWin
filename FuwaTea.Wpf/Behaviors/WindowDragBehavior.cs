@@ -16,7 +16,6 @@
 #endregion
 
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace FuwaTea.Wpf.Behaviors
@@ -24,11 +23,11 @@ namespace FuwaTea.Wpf.Behaviors
     public class WindowDragBehavior : ControlledBehaviorBase<Window>
     {
         public static readonly DependencyProperty ExcludedControlProperty =
-            DependencyProperty.Register("ExcludedControl", typeof(Control), typeof(WindowDragBehavior), new PropertyMetadata(null));
+            DependencyProperty.Register("ExcludedControl", typeof(FrameworkElement), typeof(WindowDragBehavior), new PropertyMetadata(null));
 
-        public Control ExcludedControl // TODO: Make this a collection somehow
+        public FrameworkElement ExcludedControl // TODO: Make this a collection somehow
         {
-            get { return (Control)GetValue(ExcludedControlProperty); }
+            get { return (FrameworkElement)GetValue(ExcludedControlProperty); }
             set { SetValue(ExcludedControlProperty, value); }
         }
 

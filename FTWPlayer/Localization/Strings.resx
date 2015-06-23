@@ -123,6 +123,9 @@
   <data name="PauseToolTip" xml:space="preserve">
     <value>Pause</value>
   </data>
+  <data name="PlayerTabHeader" xml:space="preserve">
+    <value>PLAYER</value>
+  </data>
   <data name="PlayToolTip" xml:space="preserve">
     <value>Play</value>
   </data>

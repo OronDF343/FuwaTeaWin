@@ -79,6 +79,15 @@ namespace FTWPlayer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PLAYER.
+        /// </summary>
+        internal static string PlayerTabHeader {
+            get {
+                return ResourceManager.GetString("PlayerTabHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Play.
         /// </summary>
         internal static string PlayToolTip {

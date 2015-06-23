@@ -111,7 +111,7 @@ namespace FTWPlayer.ViewModel
             ResetEqCommand = new RelayCommand<RoutedEventArgs>(ResetEq);
             Tabs = new ObservableCollection<TabItem>
             {
-                new TabItem {Header = "PLAYER", Content = new AlbumArtDisplay(this)},
+                new AlbumArtDisplay(this),
                 new TabItem {Header = "EQUALIZER", Content = new EqualizerControl(this)},
                 new TabItem {Header = "LIBRARY"},
                 new TabItem {Header = "SETTINGS", Content = new SettingsView()},

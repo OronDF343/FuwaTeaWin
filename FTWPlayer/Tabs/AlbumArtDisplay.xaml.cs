@@ -15,7 +15,6 @@
 //     along with FuwaTeaWin.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 
-using System.Windows.Controls;
 using FTWPlayer.ViewModel;
 
 namespace FTWPlayer.Tabs
@@ -23,7 +22,7 @@ namespace FTWPlayer.Tabs
     /// <summary>
     /// Interaction logic for AlbumArtDisplay.xaml
     /// </summary>
-    public partial class AlbumArtDisplay : UserControl
+    public partial class AlbumArtDisplay
     {
         public AlbumArtDisplay(MainViewModel mv)
         {
