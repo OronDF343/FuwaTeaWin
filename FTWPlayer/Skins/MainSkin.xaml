@@ -236,6 +236,7 @@
     <Style TargetType="{x:Type TabControl}">
         <Setter Property="Background" Value="{DynamicResource DefaultBrush}" />
         <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="ItemContainerStyle" Value="{DynamicResource {x:Type TabItem}}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TabControl}">

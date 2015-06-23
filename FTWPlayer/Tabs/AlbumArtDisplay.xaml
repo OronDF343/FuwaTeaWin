@@ -6,7 +6,6 @@
          xmlns:lex="http://wpflocalizeextension.codeplex.com"
          mc:Ignorable="d"
          d:DesignHeight="300" d:DesignWidth="300"
-         Style="{DynamicResource {x:Type TabItem}}"
          Header="{lex:BLoc PlayerTabHeader}"> <!-- BLoc should be used because of an error with Loc -->
     <Grid Background="Transparent"> <!-- Background is set so IsMouseOver works to disable dragging -->
         <Image Source="{Binding CurrentAlbumArt}" />
