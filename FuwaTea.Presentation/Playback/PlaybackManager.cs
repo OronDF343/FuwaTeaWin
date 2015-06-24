@@ -26,7 +26,7 @@ using FuwaTea.Common.Models;
 using FuwaTea.Logic.Playback;
 using FuwaTea.Logic.Playlist;
 using LayerFramework;
-using LayerFramework.Logging;
+using log4net;
 
 namespace FuwaTea.Presentation.Playback
 {
@@ -35,25 +35,41 @@ namespace FuwaTea.Presentation.Playback
     {
         public PlaybackManager()
         {
-            Logger.DebugMessage("Begin PM Init", this);
+            LogManager.GetLogger(GetType()).Info("Initializing Playback Manager");
+            LogManager.GetLogger(GetType()).Debug("Get IPlaylistManager");
             _playlistManager = LayerFactory.GetElement<IPlaylistManager>();
             _playlistManager.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName != "SelectedPlaylist") return;
+                LogManager.GetLogger(GetType()).Debug("SelectedPlaylist changed!");
                 Stop();
-                _positionManagerRef.PropertyChanged -= PositionManagerRefOnPropertyChanged;
-                _positionManagerRef = _playlistManager.SelectedPlaylist == null ? _nullManager : _playlistManager.SelectedPlaylist.PositionManager;
-                _positionManagerRef.EnableShuffle = _shuffle;
-                _positionManagerRef.PropertyChanged += PositionManagerRefOnPropertyChanged;
-                _positionManagerRef.Reset();
+                ChangePositionManager();
                 OnPropertyChangedCustom("ElementCount");
                 OnPropertyChangedCustom("Current");
                 LoadCurrentFile();
             };
-            _positionManagerRef = _playlistManager.SelectedPlaylist == null ? _nullManager : _playlistManager.SelectedPlaylist.PositionManager;
-            _positionManagerRef.PropertyChanged += PositionManagerRefOnPropertyChanged;
-            _audioPlayers = LayerFactory.GetElements<IAudioPlayer>().ToList();
+            ChangePositionManager(true);
+            LogManager.GetLogger(GetType()).Debug("Get all IAudioPlayer");
+            _audioPlayers = LayerFactory.GetElements<IAudioPlayer>(e => LogManager.GetLogger(GetType()).Error("Problem loading an IAudioPlayer: ", e)).ToList();
             EqualizerBands = new ObservableCollection<EqualizerBand>();
+        }
+
+        private void ChangePositionManager(bool initial = false)
+        {
+            if (!initial) _positionManagerRef.PropertyChanged -= PositionManagerRefOnPropertyChanged;
+            else LogManager.GetLogger(GetType()).Warn("Initial PositionManager setup");
+
+            if (_playlistManager.SelectedPlaylist == null)
+            {
+                LogManager.GetLogger(GetType()).Debug("New SelectedPlaylist is null -> Use dummy PositionManager");
+                _positionManagerRef = _nullManager;
+            }
+            else
+                _positionManagerRef = _playlistManager.SelectedPlaylist.PositionManager;
+            
+            _positionManagerRef.EnableShuffle = _shuffle;
+            _positionManagerRef.PropertyChanged += PositionManagerRefOnPropertyChanged;
+            _positionManagerRef.Reset();
         }
 
         private void PositionManagerRefOnPropertyChanged(object sender, PropertyChangedEventArgs args)

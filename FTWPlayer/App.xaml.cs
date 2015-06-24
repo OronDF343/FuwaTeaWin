@@ -29,6 +29,8 @@ using FuwaTea.Lib;
 using FuwaTea.Presentation.Playback;
 using GalaSoft.MvvmLight.Threading;
 using LayerFramework;
+using log4net;
+using log4net.Config;
 using Microsoft.Win32;
 
 namespace FTWPlayer
@@ -48,14 +50,15 @@ namespace FTWPlayer
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            // Error handling: TODO: create ErrorDialog
-            //AppDomain.CurrentDomain.UnhandledException +=
-            //    (s, args) =>
-            //    {
-            //        var em = new ErrorMessage((Exception)args.ExceptionObject);
-            //        em.ShowDialog();
-
-            //    };
+#if DEBUG
+            XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(Assembly.GetExecutingAssembly().GetExeFolder(),
+                                                                        "logconfig-debug.xml")));
+#else
+            XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(Assembly.GetExecutingAssembly().GetExeFolder(),
+                                                                        "logconfig.xml")));
+#endif
+            // TODO: create ErrorDialog
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) => LogManager.GetLogger(GetType()).Fatal("An unhandled exception occured:", (Exception)args.ExceptionObject);
 
             // Get ClArgs:
             var clArgs = Environment.GetCommandLineArgs().ToList();
