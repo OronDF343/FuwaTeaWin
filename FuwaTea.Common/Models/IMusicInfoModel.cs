@@ -21,24 +21,15 @@ using TagLib;
 
 namespace FuwaTea.Common.Models
 {
-    public class MusicInfoModel
+    public interface IMusicInfoModel
     {
-        public Guid UniqueId { get; private set; }
-        public FileInfo FileInfo { get; private set; }
-        public string FilePath { get { return FileInfo.FullName; } }
-        public string FileName { get { return FileInfo.Name; } }
-        public string FileType { get { return Path.GetExtension(FilePath); } }
-        public TimeSpan Duration { get; private set; }
-        public int Bitrate { get; private set; }
-        public Tag Tag { get; private set; } // TODO: create new tag and remove taglib dependency from common
-
-        public MusicInfoModel(string path, Tag tag, TimeSpan duration, int bitrate)
-        {
-            FileInfo = new FileInfo(path);
-            Tag = tag;
-            Duration = duration;
-            Bitrate = bitrate;
-            UniqueId = Guid.NewGuid();
-        }
+        Guid UniqueId { get; }
+        FileInfo FileInfo { get; }
+        string FilePath { get; }
+        string FileName { get; }
+        string FileType { get; }
+        TimeSpan Duration { get; }
+        int Bitrate { get; }
+        Tag Tag { get; } // TODO: create new tag and remove taglib dependency from common
     }
 }

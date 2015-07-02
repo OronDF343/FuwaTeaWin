@@ -30,7 +30,7 @@ namespace FuwaTea.Logic.Playlist.AlbumArt
         [NotNull]
         HashSet<string> ImageTypeDictionary { get; set; }
 
-        Stream GetAlbumArt(MusicInfoModel m);
+        Stream GetAlbumArt(IMusicInfoModel m);
 
         //TODO: SetCustomImage, GetCustomImage via Cache
     }

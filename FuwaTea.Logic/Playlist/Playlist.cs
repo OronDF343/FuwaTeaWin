@@ -31,7 +31,7 @@ using LayerFramework;
 
 namespace FuwaTea.Logic.Playlist
 {
-    public class Playlist : ObservableCollection<MusicInfoModel>, IPlaylist
+    public class Playlist : ObservableCollection<IMusicInfoModel>, IPlaylist
     {
         public Playlist()
         {
@@ -50,7 +50,7 @@ namespace FuwaTea.Logic.Playlist
                 Add(s);
         }
 
-        public void AddRange(IEnumerable<MusicInfoModel> items)
+        public void AddRange(IEnumerable<IMusicInfoModel> items)
         {
             foreach (var item in items)
                 Add(item);
@@ -108,9 +108,9 @@ namespace FuwaTea.Logic.Playlist
                 Move(selection[i], Count - selection.Length + i);
         }
 
-        public void Sort(Comparison<MusicInfoModel> comparison)
+        public void Sort(Comparison<IMusicInfoModel> comparison)
         {
-            ArrayList.Adapter(this).Sort(new SortComparer<MusicInfoModel>(comparison));
+            ArrayList.Adapter(this).Sort(new SortComparer<IMusicInfoModel>(comparison));
         }
 
         public IPlaylistPositionManager PositionManager { get; private set; }
@@ -131,7 +131,7 @@ namespace FuwaTea.Logic.Playlist
             }
         }
 
-        public int ShuffledIndexOf(MusicInfoModel item)
+        public int ShuffledIndexOf(IMusicInfoModel item)
         {
             if (Count == 0) return 0; 
             if (_shuffleMap.Length != Count) Reshuffle();

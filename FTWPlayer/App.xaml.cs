@@ -153,8 +153,8 @@ namespace FTWPlayer
 
         protected override void OnExit(ExitEventArgs e)
         {
-            Dispose();
             Settings.Default.Save();
+            Dispose();
             base.OnExit(e);
         }
 

@@ -42,7 +42,7 @@ namespace FuwaTea.Logic.Playlist.AlbumArt
         public AlbumArtLocations[] LocationPriority { get; set; }
         public HashSet<string> ImageTypeDictionary { get; set; }
 
-        public Stream GetAlbumArt(MusicInfoModel m)
+        public Stream GetAlbumArt(IMusicInfoModel m)
         {
             //TODO: Incomplete
             Stream img = null;

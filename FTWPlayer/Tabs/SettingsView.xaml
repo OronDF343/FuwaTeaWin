@@ -4,8 +4,11 @@
          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
          xmlns:lex="http://wpflocalizeextension.codeplex.com"
+         xmlns:prop="clr-namespace:FTWPlayer.Properties"
+         xmlns:system="clr-namespace:System;assembly=mscorlib"
          mc:Ignorable="d"
          d:DesignHeight="300" d:DesignWidth="300"
+         x:Name="Settings"
          Header="{lex:BLoc SettingsTabHeader}">
     <TabControl Style="{DynamicResource SettingsTabControlStyle}">
         <TabItem Style="{DynamicResource SettingsTabItemStyle}">
@@ -19,6 +22,35 @@
                     <TextBlock Grid.Row="1" Text="Example 1" FontWeight="Bold" />
                 </Grid>
             </TabItem.Header>
+            <ListView ItemsSource="{Binding Source={x:Static prop:Settings.Default}, Path=PropertyValues}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Name">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Label Content="{Binding Name}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Value">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ContentControl Content="{Binding PropertyValue}" x:Name="cc">
+                                        <ContentControl.Resources>
+                                            <DataTemplate DataType="{x:Type system:String}">
+                                                <TextBox Text="{Binding .}" HorizontalAlignment="Stretch"/>
+                                            </DataTemplate>
+                                            <DataTemplate DataType="{x:Type system:Boolean}">
+                                                <CheckBox IsChecked="{Binding .}" HorizontalAlignment="Stretch"/>
+                                            </DataTemplate>
+                                        </ContentControl.Resources>
+                                    </ContentControl>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </TabItem>
         <TabItem Style="{DynamicResource SettingsTabItemStyle}">
             <TabItem.Header>

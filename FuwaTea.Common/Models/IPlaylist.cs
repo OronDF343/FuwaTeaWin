@@ -22,11 +22,11 @@ using System.ComponentModel;
 
 namespace FuwaTea.Common.Models
 {
-    public interface IPlaylist : IList<MusicInfoModel>, INotifyCollectionChanged, INotifyPropertyChanged
+    public interface IPlaylist : IList<IMusicInfoModel>, INotifyCollectionChanged, INotifyPropertyChanged
     {
         void Add(string musicFile);
         void AddFromPlaylist(string playlistFile);
-        void AddRange(IEnumerable<MusicInfoModel> items);
+        void AddRange(IEnumerable<IMusicInfoModel> items);
 
         void Move(int selection, int newIndex);
         void Move(int[] selection, int newStartIndex);
@@ -35,11 +35,11 @@ namespace FuwaTea.Common.Models
         void MoveToTop(int[] selection);
         void MoveToBottom(int[] selection);
 
-        void Sort(Comparison<MusicInfoModel> comparison);
+        void Sort(Comparison<IMusicInfoModel> comparison);
 
         IPlaylistPositionManager PositionManager { get; }
         void Reshuffle();
-        int ShuffledIndexOf(MusicInfoModel item);
+        int ShuffledIndexOf(IMusicInfoModel item);
         int AbsoluteToShuffled(int index);
         int ShuffledToAbsolute(int index);
 

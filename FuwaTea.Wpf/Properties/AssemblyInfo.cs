@@ -21,6 +21,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
+using System.Windows.Markup;
+
 [assembly: AssemblyTitle("FuwaTea.Wpf")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
@@ -37,6 +39,13 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("ef4e86ae-4b2d-44f3-93b4-cbad359f5f8e")]
+
+[assembly: XmlnsDefinition("https://github.com/OronDF343/FuwaTeaWin", "FuwaTea.Wpf")]
+[assembly: XmlnsDefinition("https://github.com/OronDF343/FuwaTeaWin", "FuwaTea.Wpf.Behaviors")]
+[assembly: XmlnsDefinition("https://github.com/OronDF343/FuwaTeaWin", "FuwaTea.Wpf.Controls")]
+[assembly: XmlnsDefinition("https://github.com/OronDF343/FuwaTeaWin", "FuwaTea.Wpf.Extensions")]
+[assembly: XmlnsDefinition("https://github.com/OronDF343/FuwaTeaWin", "FuwaTea.Wpf.Helpers")]
+[assembly: XmlnsPrefix("https://github.com/OronDF343/FuwaTeaWin", "fuwa")]
 
 // Version information for an assembly consists of the following four values:
 //

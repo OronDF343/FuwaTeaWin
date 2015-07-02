@@ -22,9 +22,10 @@ namespace FTWPlayer.Tabs
     /// </summary>
     public partial class SettingsView
     {
-        public SettingsView()
+        public SettingsView(SettingsTab st)
         {
             InitializeComponent();
+            DataContext = st;
         }
     }
 }

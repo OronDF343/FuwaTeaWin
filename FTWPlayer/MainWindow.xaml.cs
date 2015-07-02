@@ -61,9 +61,9 @@ namespace FTWPlayer
             var exitToolStripMenuItem = new ToolStripMenuItem();
 
             _controlNotifyIcon.BalloonTipIcon = ToolTipIcon.Info;
-            _controlNotifyIcon.BalloonTipTitle = "Project Mousou";
+            _controlNotifyIcon.BalloonTipTitle = "FTW Player";
             _controlNotifyIcon.ContextMenuStrip = iconContextMenuStrip;
-            _controlNotifyIcon.Text = "Project Mousou";
+            _controlNotifyIcon.Text = "FTW Player";
             _controlNotifyIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location); // TODO: this is temporary
             _controlNotifyIcon.Visible = true;
             _controlNotifyIcon.DoubleClick += (sender, e) => Show();

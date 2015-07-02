@@ -1,4 +1,9 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.ComponentModel;
+using System.Configuration;
+using System.Runtime.CompilerServices;
+using System.Windows.Controls;
+using FuwaTea.Annotations;
 
 namespace FTWPlayer.Tabs
 {
@@ -7,7 +12,7 @@ namespace FTWPlayer.Tabs
     {
         public SettingsTab()
         {
-            TabObject = new SettingsView();
+            TabObject = new SettingsView(this);
         }
         public TabItem TabObject { get; private set; }
         public decimal Index { get { return 3; } }

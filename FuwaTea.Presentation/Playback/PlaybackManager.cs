@@ -147,7 +147,7 @@ namespace FuwaTea.Presentation.Playback
             }
         }
 
-        public MusicInfoModel Current { get { return _positionManagerRef.Current; } }
+        public IMusicInfoModel Current { get { return _positionManagerRef.Current; } }
         public int CurrentIndex { get { return _positionManagerRef.CurrentIndex; } }
         public int CurrentIndexAbsolute { get { return _positionManagerRef.CurrentIndexAbsolute; } }
         public int ElementCount { get { return _positionManagerRef.ElementCount; } }
@@ -227,7 +227,7 @@ namespace FuwaTea.Presentation.Playback
             _positionManagerRef.Reset();
         }
 
-        public MusicInfoModel Peek(int index)
+        public IMusicInfoModel Peek(int index)
         {
             return _positionManagerRef.Peek(index);
         }

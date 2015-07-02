@@ -27,7 +27,7 @@ namespace FuwaTea.Data.Playlist.Tags
     [DataElement("TagLib# tag reader")]
     public class TagLibReader : ITagReader
     {
-        public MusicInfoModel ReadTag(string path)
+        public IMusicInfoModel ReadTag(string path)
         {
             using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
             {

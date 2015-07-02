@@ -6,11 +6,9 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:command="http://www.galasoft.ch/mvvmlight"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
-        xmlns:behaviors="clr-namespace:FuwaTea.Wpf.Behaviors;assembly=FuwaTea.Wpf"
-        xmlns:controls="clr-namespace:FuwaTea.Wpf.Controls;assembly=FuwaTea.Wpf"
         xmlns:converters="clr-namespace:FTWPlayer.Converters"
-        xmlns:helpers="clr-namespace:FuwaTea.Wpf.Helpers;assembly=FuwaTea.Wpf"
         xmlns:prop="clr-namespace:FTWPlayer.Properties"
+        xmlns:fuwa="https://github.com/OronDF343/FuwaTeaWin"
         xmlns:ignore="http://www.ignore.com"
         mc:Ignorable="d ignore"
         xmlns:diagnostics="clr-namespace:System.Diagnostics;assembly=WindowsBase"
@@ -20,13 +18,14 @@
         SourceInitialized="MainWindow_OnSourceInitialized" Closed="MainWindow_OnClosed"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         WindowStyle="None" AllowsTransparency="True" ResizeMode="NoResize" Background="Transparent"
-        helpers:WindowPositioner.AutoPosition="BottomRight"
+        fuwa:WindowPositioner.AutoPosition="BottomRight"
         AllowDrop="True" FlowDirection="LeftToRight"
-        ShowInTaskbar="{Binding Source={x:Static prop:Settings.Default}, Path=ShowInTaskbar}"
-        Topmost="{Binding Source={x:Static prop:Settings.Default}, Path=Topmost}"
+        ShowInTaskbar="{fuwa:Cfg ShowInTaskbar}"
+        Topmost="{fuwa:Cfg Topmost}"
         lex:LocalizeDictionary.DesignCulture="he"
         lex:ResxLocalizationProvider.DefaultAssembly="FTWPlayer"
-        lex:ResxLocalizationProvider.DefaultDictionary="Strings">
+        lex:ResxLocalizationProvider.DefaultDictionary="Strings"
+        fuwa:ConfigSource.Repository="{x:Static prop:Settings.Default}">
     <!-- FFR: These property values enable hardware acceleration (because they make this a layered window):
          WindowStyle = None
          AllowsTransparency = True
@@ -46,11 +45,11 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <i:Interaction.Behaviors>
-        <behaviors:ExtendedCloseBehavior Storyboard="{DynamicResource ClosingAnimation}"
+        <fuwa:ExtendedCloseBehavior Storyboard="{DynamicResource ClosingAnimation}"
                                          VolumeFadeOutStoryboard="{StaticResource VolumeFadeOut}"
-                                         VolumeFadeOut="{Binding Source={x:Static prop:Settings.Default}, Path=VolumeFadeOutOnExit}" />
-        <behaviors:OpenBehavior Storyboard="{DynamicResource LoadedAnimation}" />
-        <behaviors:WindowDragBehavior Enabled="{Binding AllowDrag}"
+                                         VolumeFadeOut="{fuwa:Cfg VolumeFadeOutOnExit}" />
+        <fuwa:OpenBehavior Storyboard="{DynamicResource LoadedAnimation}" />
+        <fuwa:WindowDragBehavior Enabled="{Binding AllowDrag}"
                                       ExcludedControl="{Binding ElementName=TabControl, Path=SelectedContent}" />
     </i:Interaction.Behaviors>
     <Window.Style>
@@ -127,7 +126,7 @@
 
                 <!-- Ugly implementation, but it does the job. -->
                 <Canvas Grid.Row="1" ClipToBounds="True" Margin="1,0">
-                    <controls:ScrollingTextBlockComponent FontSize="15"
+                    <fuwa:ScrollingTextBlockComponent FontSize="15"
                                                           Foreground="{DynamicResource TextBrush}"
                                                           Background="Transparent"
                                                           TextAlignment="Center"
@@ -135,7 +134,7 @@
                                                           DelayModifier="0.005"
                                                           TargetWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Canvas}, Path=ActualWidth}"
                                                           Spacing="16">
-                        <controls:ScrollingTextBlockComponent.ScrollingText>
+                        <fuwa:ScrollingTextBlockComponent.ScrollingText>
                             <MultiBinding Converter="{StaticResource StrFmtConv}">
                                 <Binding Path="ScrollingTextFormatString" />
                                 <lex:BLoc Key="WelcomeText" />
@@ -143,8 +142,8 @@
                                 <Binding Path="PlaybackManager.Current.Tag.JoinedPerformers" />
                                 <Binding Path="PlaybackManager.Current.Tag.Title" />
                             </MultiBinding>
-                        </controls:ScrollingTextBlockComponent.ScrollingText>
-                    </controls:ScrollingTextBlockComponent>
+                        </fuwa:ScrollingTextBlockComponent.ScrollingText>
+                    </fuwa:ScrollingTextBlockComponent>
                 </Canvas>
 
                 <TextBlock Grid.Row="1"
@@ -168,43 +167,43 @@
                     </TextBlock.Text>
                 </TextBlock>
                 <Button Grid.Row="1" Grid.Column="1" Content="{DynamicResource PreviousButtonContent}"
-                        helpers:OptionalToolTip.ToolTipEnabled="{Binding Source={x:Static prop:Settings.Default}, Path=ShowToolTips}"
-                        helpers:OptionalToolTip.ToolTipContent="{lex:Loc PreviousToolTip}">
+                        fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}"
+                        fuwa:OptionalToolTip.ToolTipContent="{lex:Loc PreviousToolTip}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <command:EventToCommand Command="{Binding PreviousCommand}" PassEventArgsToCommand="True" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </Button>
-                <Button Grid.Row="1" Grid.Column="2" helpers:DynamicStyle.BaseStyle="{DynamicResource {x:Type Button}}"
-                        helpers:OptionalToolTip.ToolTipEnabled="{Binding Source={x:Static prop:Settings.Default}, Path=ShowToolTips}">
+                <Button Grid.Row="1" Grid.Column="2" fuwa:DynamicStyle.BaseStyle="{DynamicResource {x:Type Button}}"
+                        fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <command:EventToCommand Command="{Binding PlayPauseResumeCommand}"
                                                     PassEventArgsToCommand="True" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                    <helpers:DynamicStyle.DerivedStyle>
+                    <fuwa:DynamicStyle.DerivedStyle>
                         <Style TargetType="Button">
                             <Setter Property="Content" Value="{DynamicResource PlayButtonContent}" />
-                            <Setter Property="helpers:OptionalToolTip.ToolTipContent" Value="{lex:Loc PlayToolTip}" />
+                            <Setter Property="fuwa:OptionalToolTip.ToolTipContent" Value="{lex:Loc PlayToolTip}" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding PlaybackManager.CurrentState}" Value="Playing">
                                     <Setter Property="Content" Value="{DynamicResource PauseButtonContent}" />
-                                    <Setter Property="helpers:OptionalToolTip.ToolTipContent"
+                                    <Setter Property="fuwa:OptionalToolTip.ToolTipContent"
                                             Value="{lex:Loc PauseToolTip}" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding PlaybackManager.CurrentState}" Value="Paused">
-                                    <Setter Property="helpers:OptionalToolTip.ToolTipContent"
+                                    <Setter Property="fuwa:OptionalToolTip.ToolTipContent"
                                             Value="{lex:Loc ResumeToolTip}" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </helpers:DynamicStyle.DerivedStyle>
+                    </fuwa:DynamicStyle.DerivedStyle>
                 </Button>
                 <Button Grid.Row="1" Grid.Column="3" Content="{DynamicResource NextButtonContent}"
-                        helpers:OptionalToolTip.ToolTipEnabled="{Binding Source={x:Static prop:Settings.Default}, Path=ShowToolTips}"
-                        helpers:OptionalToolTip.ToolTipContent="{lex:Loc NextToolTip}">
+                        fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}"
+                        fuwa:OptionalToolTip.ToolTipContent="{lex:Loc NextToolTip}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <command:EventToCommand Command="{Binding NextCommand}" PassEventArgsToCommand="True" />
@@ -212,8 +211,8 @@
                     </i:Interaction.Triggers>
                 </Button>
                 <Button Grid.Row="1" Grid.Column="4" Content="{DynamicResource StopButtonContent}"
-                        helpers:OptionalToolTip.ToolTipEnabled="{Binding Source={x:Static prop:Settings.Default}, Path=ShowToolTips}"
-                        helpers:OptionalToolTip.ToolTipContent="{lex:Loc StopToolTip}">
+                        fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}"
+                        fuwa:OptionalToolTip.ToolTipContent="{lex:Loc StopToolTip}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <command:EventToCommand Command="{Binding StopCommand}" PassEventArgsToCommand="True" />
@@ -221,7 +220,7 @@
                     </i:Interaction.Triggers>
                 </Button>
                 <Button x:Name="VolumeButton" Grid.Row="1" Grid.Column="5"
-                        helpers:DynamicStyle.BaseStyle="{DynamicResource {x:Type Button}}">
+                        fuwa:DynamicStyle.BaseStyle="{DynamicResource {x:Type Button}}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <command:EventToCommand Command="{Binding MuteClickCommand}" PassEventArgsToCommand="True" />
@@ -234,7 +233,7 @@
                                                    CommandParameter="{Binding ElementName=VolumeSlider}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                    <helpers:DynamicStyle.DerivedStyle>
+                    <fuwa:DynamicStyle.DerivedStyle>
                         <Style TargetType="Button">
                             <Setter Property="Content" Value="{DynamicResource VolumeButtonContent}" />
                             <Style.Triggers>
@@ -243,7 +242,7 @@
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </helpers:DynamicStyle.DerivedStyle>
+                    </fuwa:DynamicStyle.DerivedStyle>
                 </Button>
                 <Slider x:Name="VolumeSlider" Grid.Row="1" Grid.Column="6" Orientation="Horizontal"
                         AutoToolTipPlacement="TopLeft"
@@ -251,14 +250,14 @@
                         Minimum="0" Maximum="100" Interval="1" LargeChange="10" SmallChange="5"
                         IsSnapToTickEnabled="True" TickFrequency="1"
                         Width="0" VerticalAlignment="Center"
-                        helpers:DynamicStyle.BaseStyle="{DynamicResource VolumeSliderStyle}">
+                        fuwa:DynamicStyle.BaseStyle="{DynamicResource VolumeSliderStyle}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseLeave">
                             <i:InvokeCommandAction Command="{Binding VolumeMouseLeaveCommand}"
                                                    CommandParameter="{Binding ElementName=VolumeButton}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                    <helpers:DynamicStyle.DerivedStyle>
+                    <fuwa:DynamicStyle.DerivedStyle>
                         <Style TargetType="Slider">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding ShowVolumeSlider}" Value="True">
@@ -279,15 +278,15 @@
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </helpers:DynamicStyle.DerivedStyle>
+                    </fuwa:DynamicStyle.DerivedStyle>
                 </Slider>
-                <Button Grid.Row="1" Grid.Column="7" helpers:DynamicStyle.BaseStyle="{DynamicResource {x:Type Button}}">
+                <Button Grid.Row="1" Grid.Column="7" fuwa:DynamicStyle.BaseStyle="{DynamicResource {x:Type Button}}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <command:EventToCommand Command="{Binding ShuffleCommand}" PassEventArgsToCommand="True" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                    <helpers:DynamicStyle.DerivedStyle>
+                    <fuwa:DynamicStyle.DerivedStyle>
                         <Style TargetType="Button">
                             <Setter Property="Content" Value="{DynamicResource InactiveShuffleButtonContent}" />
                             <Style.Triggers>
@@ -296,15 +295,15 @@
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </helpers:DynamicStyle.DerivedStyle>
+                    </fuwa:DynamicStyle.DerivedStyle>
                 </Button>
-                <Button Grid.Row="1" Grid.Column="8" helpers:DynamicStyle.BaseStyle="{DynamicResource {x:Type Button}}">
+                <Button Grid.Row="1" Grid.Column="8" fuwa:DynamicStyle.BaseStyle="{DynamicResource {x:Type Button}}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <command:EventToCommand Command="{Binding RepeatCommand}" PassEventArgsToCommand="True" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                    <helpers:DynamicStyle.DerivedStyle>
+                    <fuwa:DynamicStyle.DerivedStyle>
                         <Style TargetType="Button">
                             <Setter Property="Content" Value="{DynamicResource InactiveRepeatButtonContent}" />
                             <Style.Triggers>
@@ -316,15 +315,15 @@
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </helpers:DynamicStyle.DerivedStyle>
+                    </fuwa:DynamicStyle.DerivedStyle>
                 </Button>
-                <Button Grid.Row="1" Grid.Column="9" helpers:DynamicStyle.BaseStyle="{DynamicResource {x:Type Button}}">
+                <Button Grid.Row="1" Grid.Column="9" fuwa:DynamicStyle.BaseStyle="{DynamicResource {x:Type Button}}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <command:EventToCommand Command="{Binding ExpandCommand}" PassEventArgsToCommand="True" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                    <helpers:DynamicStyle.DerivedStyle>
+                    <fuwa:DynamicStyle.DerivedStyle>
                         <Style TargetType="Button">
                             <Setter Property="Content" Value="{DynamicResource ResizeUpButtonContent}" />
                             <Style.Triggers>
@@ -333,7 +332,7 @@
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </helpers:DynamicStyle.DerivedStyle>
+                    </fuwa:DynamicStyle.DerivedStyle>
                 </Button>
                 <Button Grid.Row="1" Grid.Column="10" Content="{DynamicResource MinimizeButtonContent}"
                         Click="MinimizeButton_OnClick" />
@@ -343,7 +342,7 @@
                 <!-- Progress Bar -->
                 <Grid Grid.Column="0" Grid.ColumnSpan="12"
                       Panel.ZIndex="{Binding ShiftMode, Converter={StaticResource BZiConv}}"
-                      helpers:CopyToToolTipTag.Enabled="True">
+                      fuwa:CopyToToolTipTag.Enabled="True">
                     <Grid.Style>
                         <Style TargetType="Grid">
                             <Setter Property="Grid.Row" Value="1" />
@@ -416,7 +415,7 @@
             <!-- Expanded part -->
             <TabControl x:Name="TabControl" Grid.Row="0" ItemsSource="{Binding Tabs}"
                         Visibility="{Binding Expanded, Converter={StaticResource BoolVisConv}}"
-                        helpers:FlowDirectionUpdater.AutoUpdateMode="Enabled" />
+                        fuwa:FlowDirectionUpdater.AutoUpdateMode="Enabled" />
         </Grid>
     </Border>
 </Window>

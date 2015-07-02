@@ -54,7 +54,7 @@ namespace FuwaTea.Logic.Playlist
             }
         }
 
-        public MusicInfoModel Current
+        public IMusicInfoModel Current
         {
             get { return _playlist.Count > CurrentIndex ? _playlist[EnsureAbsoluteIndex(CurrentIndex)] : null; }
         }
@@ -120,7 +120,7 @@ namespace FuwaTea.Logic.Playlist
             OnPropertyChanged("Current");
         }
 
-        public MusicInfoModel Peek(int index)
+        public IMusicInfoModel Peek(int index)
         {
             return _playlist[EnsureAbsoluteIndex(index)];
         }

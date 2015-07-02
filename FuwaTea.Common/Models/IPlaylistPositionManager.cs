@@ -22,7 +22,7 @@ namespace FuwaTea.Common.Models
     public interface IPlaylistPositionManager : INotifyPropertyChanged
     {
         bool EnableShuffle { get; set; }
-        MusicInfoModel Current { get; }
+        IMusicInfoModel Current { get; }
         int CurrentIndex { get; }
         int CurrentIndexAbsolute { get; }
         int ElementCount { get; }
@@ -32,6 +32,6 @@ namespace FuwaTea.Common.Models
         void JumpTo(int index);
         void JumpToAbsolute(int index);
         void Reset();
-        MusicInfoModel Peek(int index);
+        IMusicInfoModel Peek(int index);
     }
 }

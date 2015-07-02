@@ -49,7 +49,8 @@
     <Compile Include="Models\EqualizerBand.cs" />
     <Compile Include="Models\IPlaylist.cs" />
     <Compile Include="Models\IPlaylistPositionManager.cs" />
-    <Compile Include="Models\MusicInfoModel.cs" />
+    <Compile Include="Models\ISettingsPropertyModel.cs" />
+    <Compile Include="Models\IMusicInfoModel.cs" />
     <Compile Include="Models\PlaybackErrorEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

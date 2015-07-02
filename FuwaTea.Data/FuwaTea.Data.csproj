@@ -79,6 +79,7 @@
     <Compile Include="Playlist\M3UPlaylistReader.cs" />
     <Compile Include="Playlist\Tags\ITagReader.cs" />
     <Compile Include="Playlist\Tags\ITagWriter.cs" />
+    <Compile Include="Playlist\Tags\MusicInfoModel.cs" />
     <Compile Include="Playlist\Tags\TagLibReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

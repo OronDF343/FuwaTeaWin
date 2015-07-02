@@ -26,7 +26,7 @@ namespace FuwaTea.Data.Playlist.AlbumArt
     [DataElement("Album Art Loader")]
     public class AlbumArtStreamLoader : IAlbumArtStreamLoader
     {
-        public Stream GetEmbeddedImage(MusicInfoModel m)
+        public Stream GetEmbeddedImage(IMusicInfoModel m)
         {
             var img = m.Tag.Pictures.FirstOrDefault(p => p.Type == PictureType.FrontCover);
             return img == default(IPicture) ? null : new MemoryStream(img.Data.Data, false);
