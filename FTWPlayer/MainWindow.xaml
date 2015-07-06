@@ -14,7 +14,7 @@
         xmlns:diagnostics="clr-namespace:System.Diagnostics;assembly=WindowsBase"
         Height="34"
         Width="540"
-        Title="Project Mousou"
+        Title="FTW Player"
         SourceInitialized="MainWindow_OnSourceInitialized" Closed="MainWindow_OnClosed"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         WindowStyle="None" AllowsTransparency="True" ResizeMode="NoResize" Background="Transparent"
