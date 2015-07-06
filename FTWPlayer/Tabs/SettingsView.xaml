@@ -5,6 +5,8 @@
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
          xmlns:lex="http://wpflocalizeextension.codeplex.com"
          xmlns:tabs="clr-namespace:FTWPlayer.Tabs"
+         xmlns:fuwa="https://github.com/OronDF343/FuwaTeaWin"
+         xmlns:properties="clr-namespace:FTWPlayer.Properties"
          mc:Ignorable="d"
          d:DesignHeight="300" d:DesignWidth="300"
          x:Name="Settings"
@@ -24,19 +26,19 @@
             <DataGrid ItemsSource="{Binding SettingsPropertyValues}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
                 <DataGrid.Resources>
                     <DataTemplate x:Key="StringDataTemplate">
-                        <TextBlock Text="{Binding PropertyValue}" VerticalAlignment="Center" Padding="5"/>
+                        <TextBlock Text="{fuwa:CfgDynBinding {Binding Name}, Repository={x:Static properties:Settings.Default}}" VerticalAlignment="Center" Padding="5"/>
                     </DataTemplate>
                     <DataTemplate x:Key="BooleanDataTemplate">
-                        <CheckBox IsChecked="{Binding PropertyValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <CheckBox IsChecked="{fuwa:CfgDynBinding {Binding Name, Mode=OneWay}, Repository={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </DataTemplate>
                     <DataTemplate x:Key="StringEditingDataTemplate">
-                        <TextBox Text="{Binding PropertyValue}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                        <TextBox Text="{fuwa:CfgDynBinding {Binding Name}, Repository={x:Static properties:Settings.Default}}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                     </DataTemplate>
                     <DataTemplate x:Key="BooleanEditingDataTemplate">
-                        <CheckBox IsChecked="{Binding PropertyValue}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <CheckBox IsChecked="{fuwa:CfgDynBinding {Binding Name, Mode=OneWay}, Repository={x:Static properties:Settings.Default}}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </DataTemplate>
                     <DataTemplate x:Key="DefaultTemplate">
-                        <TextBlock Text="{Binding PropertyValue}" VerticalAlignment="Center" Padding="5"/>
+                        <Label Content="{fuwa:CfgDynBinding {Binding Name}, Repository={x:Static properties:Settings.Default}}" VerticalAlignment="Center" Padding="5"/>
                     </DataTemplate>
                     <tabs:SettingsTemplateSelector x:Key="SettingsTemplateSelector"/>
                     <tabs:SettingsEditingTemplateSelector x:Key="SettingsEditingTemplateSelector"/>
