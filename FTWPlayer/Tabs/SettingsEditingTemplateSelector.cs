@@ -13,7 +13,7 @@ namespace FTWPlayer.Tabs
             if (elem == null || spv == null) return base.SelectTemplate(item, container);
             if (spv.PropertyValue is bool) return elem.TryFindResource("BooleanEditingDataTemplate") as DataTemplate;
             if (spv.PropertyValue is string) return elem.TryFindResource("StringEditingDataTemplate") as DataTemplate;
-            return base.SelectTemplate(item, container);
+            return elem.TryFindResource("DefaultTemplate") as DataTemplate ?? base.SelectTemplate(item, container);
         }
     }
 }

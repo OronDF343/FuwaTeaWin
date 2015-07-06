@@ -24,16 +24,19 @@
             <DataGrid ItemsSource="{Binding SettingsPropertyValues}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
                 <DataGrid.Resources>
                     <DataTemplate x:Key="StringDataTemplate">
-                        <TextBlock Text="{Binding PropertyValue}" HorizontalAlignment="Stretch"/>
+                        <TextBlock Text="{Binding PropertyValue}" VerticalAlignment="Center" Padding="5"/>
                     </DataTemplate>
                     <DataTemplate x:Key="BooleanDataTemplate">
-                        <CheckBox IsChecked="{Binding PropertyValue}" HorizontalAlignment="Stretch" IsEnabled="False"/>
+                        <CheckBox IsChecked="{Binding PropertyValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </DataTemplate>
                     <DataTemplate x:Key="StringEditingDataTemplate">
-                        <TextBox Text="{Binding PropertyValue}" HorizontalAlignment="Stretch"/>
+                        <TextBox Text="{Binding PropertyValue}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                     </DataTemplate>
                     <DataTemplate x:Key="BooleanEditingDataTemplate">
-                        <CheckBox IsChecked="{Binding PropertyValue}" HorizontalAlignment="Stretch"/>
+                        <CheckBox IsChecked="{Binding PropertyValue}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </DataTemplate>
+                    <DataTemplate x:Key="DefaultTemplate">
+                        <TextBlock Text="{Binding PropertyValue}" VerticalAlignment="Center" Padding="5"/>
                     </DataTemplate>
                     <tabs:SettingsTemplateSelector x:Key="SettingsTemplateSelector"/>
                     <tabs:SettingsEditingTemplateSelector x:Key="SettingsEditingTemplateSelector"/>
@@ -42,7 +45,7 @@
                     <DataGridTemplateColumn Header="Name" IsReadOnly="True">
                         <DataGridTemplateColumn.CellTemplate>
                              <DataTemplate>
-                                <Label Content="{Binding Name}"/>
+                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Padding="5"/>
                              </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
