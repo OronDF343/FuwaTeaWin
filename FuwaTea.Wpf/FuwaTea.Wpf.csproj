@@ -78,8 +78,6 @@
     <Compile Include="Controls\ScrollingTextBlockComponent.xaml.cs">
       <DependentUpon>ScrollingTextBlockComponent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Extensions\CfgBinding.cs" />
-    <Compile Include="Extensions\BCfgExtension.cs" />
     <Compile Include="Extensions\CfgExtension.cs" />
     <Compile Include="Helpers\ConfigSource.cs" />
     <Compile Include="Helpers\CopyToToolTipTag.cs" />

@@ -1,9 +1,8 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
 using System.Configuration;
-using System.Runtime.CompilerServices;
+using System.Linq;
 using System.Windows.Controls;
-using FuwaTea.Annotations;
+using FTWPlayer.Properties;
 
 namespace FTWPlayer.Tabs
 {
@@ -13,8 +12,10 @@ namespace FTWPlayer.Tabs
         public SettingsTab()
         {
             TabObject = new SettingsView(this);
+            SettingsPropertyValues = new ObservableCollection<SettingsPropertyValue>(Settings.Default.PropertyValues.OfType<SettingsPropertyValue>());
         }
         public TabItem TabObject { get; private set; }
         public decimal Index { get { return 3; } }
+        public ObservableCollection<SettingsPropertyValue> SettingsPropertyValues { get; private set; } 
     }
 }

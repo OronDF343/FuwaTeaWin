@@ -126,6 +126,8 @@
     <Compile Include="Tabs\LibraryTab.cs" />
     <Compile Include="Tabs\PlayerTab.cs" />
     <Compile Include="Tabs\SettingsTab.cs" />
+    <Compile Include="Tabs\SettingsEditingTemplateSelector.cs" />
+    <Compile Include="Tabs\SettingsTemplateSelector.cs" />
     <Compile Include="Tabs\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>

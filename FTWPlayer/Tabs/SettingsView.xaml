@@ -4,8 +4,7 @@
          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
          xmlns:lex="http://wpflocalizeextension.codeplex.com"
-         xmlns:prop="clr-namespace:FTWPlayer.Properties"
-         xmlns:system="clr-namespace:System;assembly=mscorlib"
+         xmlns:tabs="clr-namespace:FTWPlayer.Tabs"
          mc:Ignorable="d"
          d:DesignHeight="300" d:DesignWidth="300"
          x:Name="Settings"
@@ -19,38 +18,37 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
                     <ContentPresenter Content="{DynamicResource Example1Content}" />
-                    <TextBlock Grid.Row="1" Text="Example 1" FontWeight="Bold" />
+                    <TextBlock Grid.Row="1" Text="All Settings" FontWeight="Bold" />
                 </Grid>
             </TabItem.Header>
-            <ListView ItemsSource="{Binding Source={x:Static prop:Settings.Default}, Path=PropertyValues}">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Name">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Label Content="{Binding Name}"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="Value">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <ContentControl Content="{Binding PropertyValue}" x:Name="cc">
-                                        <ContentControl.Resources>
-                                            <DataTemplate DataType="{x:Type system:String}">
-                                                <TextBox Text="{Binding .}" HorizontalAlignment="Stretch"/>
-                                            </DataTemplate>
-                                            <DataTemplate DataType="{x:Type system:Boolean}">
-                                                <CheckBox IsChecked="{Binding .}" HorizontalAlignment="Stretch"/>
-                                            </DataTemplate>
-                                        </ContentControl.Resources>
-                                    </ContentControl>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
+            <DataGrid ItemsSource="{Binding SettingsPropertyValues}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
+                <DataGrid.Resources>
+                    <DataTemplate x:Key="StringDataTemplate">
+                        <TextBlock Text="{Binding PropertyValue}" HorizontalAlignment="Stretch"/>
+                    </DataTemplate>
+                    <DataTemplate x:Key="BooleanDataTemplate">
+                        <CheckBox IsChecked="{Binding PropertyValue}" HorizontalAlignment="Stretch" IsEnabled="False"/>
+                    </DataTemplate>
+                    <DataTemplate x:Key="StringEditingDataTemplate">
+                        <TextBox Text="{Binding PropertyValue}" HorizontalAlignment="Stretch"/>
+                    </DataTemplate>
+                    <DataTemplate x:Key="BooleanEditingDataTemplate">
+                        <CheckBox IsChecked="{Binding PropertyValue}" HorizontalAlignment="Stretch"/>
+                    </DataTemplate>
+                    <tabs:SettingsTemplateSelector x:Key="SettingsTemplateSelector"/>
+                    <tabs:SettingsEditingTemplateSelector x:Key="SettingsEditingTemplateSelector"/>
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Name" IsReadOnly="True">
+                        <DataGridTemplateColumn.CellTemplate>
+                             <DataTemplate>
+                                <Label Content="{Binding Name}"/>
+                             </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Value" CellTemplateSelector="{StaticResource SettingsTemplateSelector}" CellEditingTemplateSelector="{StaticResource SettingsEditingTemplateSelector}"/>
+                </DataGrid.Columns>
+            </DataGrid>
         </TabItem>
         <TabItem Style="{DynamicResource SettingsTabItemStyle}">
             <TabItem.Header>
