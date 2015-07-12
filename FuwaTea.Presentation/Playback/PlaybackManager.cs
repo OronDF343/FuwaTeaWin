@@ -243,16 +243,23 @@ namespace FuwaTea.Presentation.Playback
 
             if (_currentPlayer == null || !_currentPlayer.SupportedFileTypes.Contains(Current.FileType))
                 _currentPlayer = _audioPlayers.FirstOrDefault(p => p.SupportedFileTypes.Contains(Current.FileType));
-            if (_currentPlayer == null) throw new NotSupportedException("File type not supported"); // TODO: custom exception type
+            if (_currentPlayer == null)
+            {
+                LogManager.GetLogger(GetType()).ErrorFormat("Failed to load {0}: Unsupported file type!", Current.FilePath);
+                // TODO: show messages from this function
+                return;
+            }
             if (_currentPlayer.EqualizerBands == null)
                 _currentPlayer.EqualizerBands = EqualizerBands;
             try
             {
                 _currentPlayer.Load(Current.FilePath, new AudioOutputDevice()); // TODO: IAudioDevice implementation
             } 
-            catch// (Exception ex)
+            catch (Exception ex)
             {
-                throw; // TODO: custom exception type
+                LogManager.GetLogger(GetType()).Error(string.Format("Failed to load {0} for playback on the device {1} because the selected IAudioPlayer {2} threw an exception:", Current.FilePath, "\"default\"", _currentPlayer.GetType().FullName), ex);
+                // TODO: show messages from this function
+                return;
             }
             OnPropertyChangedCustom("Duration");
             _currentPlayer.PlaybackFinished += CurrentPlayer_PlaybackFinished;

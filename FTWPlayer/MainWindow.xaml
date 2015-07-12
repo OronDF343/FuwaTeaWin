@@ -12,7 +12,8 @@
         xmlns:ignore="http://www.ignore.com"
         mc:Ignorable="d ignore"
         xmlns:diagnostics="clr-namespace:System.Diagnostics;assembly=WindowsBase"
-        Height="34"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        Height="540"
         Width="540"
         Title="FTW Player"
         SourceInitialized="MainWindow_OnSourceInitialized" Closed="MainWindow_OnClosed"
@@ -52,40 +53,6 @@
         <fuwa:WindowDragBehavior Enabled="{Binding AllowDrag}"
                                       ExcludedControl="{Binding ElementName=TabControl, Path=SelectedContent}" />
     </i:Interaction.Behaviors>
-    <Window.Style>
-        <Style TargetType="Window">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Expanded}" Value="True">
-                    <DataTrigger.EnterActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MaxHeight">
-                                    <DiscreteDoubleKeyFrame KeyTime="0" Value="540" />
-                                </DoubleAnimationUsingKeyFrames>
-                                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MinHeight">
-                                    <DiscreteDoubleKeyFrame KeyTime="0" Value="540" />
-                                </DoubleAnimationUsingKeyFrames>
-                                <DoubleAnimation By="-506" Duration="0:0:0" Storyboard.TargetProperty="Top" />
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </DataTrigger.EnterActions>
-                    <DataTrigger.ExitActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MinHeight">
-                                    <DiscreteDoubleKeyFrame KeyTime="0" Value="34" />
-                                </DoubleAnimationUsingKeyFrames>
-                                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MaxHeight">
-                                    <DiscreteDoubleKeyFrame KeyTime="0" Value="34" />
-                                </DoubleAnimationUsingKeyFrames>
-                                <DoubleAnimation By="506" Duration="0:0:0" Storyboard.TargetProperty="Top" />
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </DataTrigger.ExitActions>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Style>
     <Window.Resources>
         <converters:TimeSpanDifferenceToGridLengthConverter x:Key="TsGlConv" />
         <converters:BooleanToZIndexConverter x:Key="BZiConv" />
@@ -98,8 +65,44 @@
     </Window.Resources>
 
     <!-- Fake Background & Border -->
-    <Border Style="{DynamicResource WindowBorderStyle}">
-        <Grid>
+    <Canvas>
+        <Border fuwa:DynamicStyle.BaseStyle="{DynamicResource WindowBorderStyle}" Width="540">
+            <fuwa:DynamicStyle.DerivedStyle>
+                <Style TargetType="Border">
+                    <Setter Property="Canvas.Top" Value="506"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Expanded}" Value="True">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MaxHeight">
+                                            <DiscreteDoubleKeyFrame KeyTime="0" Value="540" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MinHeight">
+                                            <DiscreteDoubleKeyFrame KeyTime="0" Value="540" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimation By="-506" Duration="0:0:0" Storyboard.TargetProperty="(Canvas.Top)" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MinHeight">
+                                            <DiscreteDoubleKeyFrame KeyTime="0" Value="34" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MaxHeight">
+                                            <DiscreteDoubleKeyFrame KeyTime="0" Value="34" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimation By="506" Duration="0:0:0" Storyboard.TargetProperty="(Canvas.Top)" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </fuwa:DynamicStyle.DerivedStyle>
+            <Grid x:Name="MainGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition MinHeight="32" MaxHeight="40" />
@@ -417,5 +420,7 @@
                         Visibility="{Binding Expanded, Converter={StaticResource BoolVisConv}}"
                         fuwa:FlowDirectionUpdater.AutoUpdateMode="Enabled" />
         </Grid>
-    </Border>
+        </Border>
+        <!-- Insert modal messages here -->
+    </Canvas>
 </Window>

@@ -4,7 +4,7 @@
     <wpf:ResourceDictionaryIdentifier x:Key="Identifier"
                                       Id="Default"
                                       Name="Default Icons"
-                                      Description="This is the default icon set for [Project Mousou]. Use color themes to make it more colorfull!"
+                                      Description="This is the default icon set for FuwaTeaWin. Use color themes to make it more colorfull!"
                                       Version="1.0"
                                       Author="Styling by OronDF343; Icons by iconmonstr"
                                       Homepage="https://orondf343.wordpress.com/"
