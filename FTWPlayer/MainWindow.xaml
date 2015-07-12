@@ -66,35 +66,23 @@
 
     <!-- Fake Background & Border -->
     <Canvas>
-        <Border fuwa:DynamicStyle.BaseStyle="{DynamicResource WindowBorderStyle}" Width="540">
+        <Border x:Name="MainBorder" fuwa:DynamicStyle.BaseStyle="{DynamicResource WindowBorderStyle}" Width="540" Canvas.Bottom="0">
             <fuwa:DynamicStyle.DerivedStyle>
                 <Style TargetType="Border">
-                    <Setter Property="Canvas.Top" Value="506"/>
+                    <Setter Property="Height" Value="34"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Expanded}" Value="True">
                             <DataTrigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MaxHeight">
-                                            <DiscreteDoubleKeyFrame KeyTime="0" Value="540" />
-                                        </DoubleAnimationUsingKeyFrames>
-                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MinHeight">
-                                            <DiscreteDoubleKeyFrame KeyTime="0" Value="540" />
-                                        </DoubleAnimationUsingKeyFrames>
-                                        <DoubleAnimation By="-506" Duration="0:0:0" Storyboard.TargetProperty="(Canvas.Top)" />
+                                        <DoubleAnimation Storyboard.TargetProperty="Height" From="34" To="540" Duration="0:0:0.77"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </DataTrigger.EnterActions>
                             <DataTrigger.ExitActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MinHeight">
-                                            <DiscreteDoubleKeyFrame KeyTime="0" Value="34" />
-                                        </DoubleAnimationUsingKeyFrames>
-                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MaxHeight">
-                                            <DiscreteDoubleKeyFrame KeyTime="0" Value="34" />
-                                        </DoubleAnimationUsingKeyFrames>
-                                        <DoubleAnimation By="506" Duration="0:0:0" Storyboard.TargetProperty="(Canvas.Top)" />
+                                        <DoubleAnimation Storyboard.TargetProperty="Height" From="540" To="34" Duration="0:0:0.77"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </DataTrigger.ExitActions>
@@ -123,7 +111,7 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" MaxHeight="8" />
                     <RowDefinition Height="32" />
                 </Grid.RowDefinitions>
 
@@ -417,7 +405,6 @@
             </Grid>
             <!-- Expanded part -->
             <TabControl x:Name="TabControl" Grid.Row="0" ItemsSource="{Binding Tabs}"
-                        Visibility="{Binding Expanded, Converter={StaticResource BoolVisConv}}"
                         fuwa:FlowDirectionUpdater.AutoUpdateMode="Enabled" />
         </Grid>
         </Border>
