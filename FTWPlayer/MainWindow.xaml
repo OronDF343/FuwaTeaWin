@@ -12,7 +12,6 @@
         xmlns:ignore="http://www.ignore.com"
         mc:Ignorable="d ignore"
         xmlns:diagnostics="clr-namespace:System.Diagnostics;assembly=WindowsBase"
-        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         Height="540"
         Width="540"
         Title="FTW Player"
