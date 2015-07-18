@@ -12,8 +12,8 @@ AppPublisher={#Company}
 AppPublisherURL=https://orondf343.wordpress.com/
 AppSupportURL=https://github.com/{#Company}/{#ShortName}/issues
 AppUpdatesURL=https://github.com/{#Company}/{#ShortName}/releases
-AppVersion=0.0.0.1
-VersionInfoVersion=0.0.0.1
+AppVersion=0.0.0.2
+VersionInfoVersion=0.0.0.2
 AppCopyright=Copyright (C) 2015 {#Company}
 
 OutputBaseFilename=ftwplayer_setup
@@ -59,6 +59,8 @@ Source: "{#BuildPath}\Microsoft.Practices.ServiceLocation.dll"; DestDir: "{app}"
 Source: "{#BuildPath}\System.Windows.Interactivity.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\WPFLocalizeExtension.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\XAMLMarkupExtensions.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\log4net.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\logconfig.xml"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\TagLib.Portable.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\NAudio.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\NAudio.Flac.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
