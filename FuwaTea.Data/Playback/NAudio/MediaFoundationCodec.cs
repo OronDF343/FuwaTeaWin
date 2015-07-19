@@ -22,7 +22,7 @@ using NAudio.Wave;
 
 namespace FuwaTea.Data.Playback.NAudio
 {
-    [DataElement("MediaFoundation on Windows Vista and higher (WMA, M4A, AAC) (M4A/AAC on Windows Vista requires KB2117917)")]
+    [DataElement("MediaFoundation on Windows Vista and higher (MP3, WMA, M4A, AAC) (M4A/AAC on Windows Vista requires KB2117917)")]
     [OSFilter(FilterActions.Whitelist, PlatformID.Win32NT, FilterRules.GreaterThan, "6.0.0.0")]
     public class MediaFoundationVistaCodec : IWaveStreamProvider
     {
@@ -31,7 +31,7 @@ namespace FuwaTea.Data.Playback.NAudio
             return new AudioFileReader(path);
         }
 
-        public IEnumerable<string> SupportedFileTypes { get { return new[] {".wma", ".m4a", ".aac"}; } }
+        public IEnumerable<string> SupportedFileTypes { get { return new[] { ".mp3", ".wma", ".m4a", ".aac" }; } }
         public bool IsSampleProvider { get { return true; } }
         public bool CanResume { get { return true; } }
         public bool CanSeek { get { return true; } }

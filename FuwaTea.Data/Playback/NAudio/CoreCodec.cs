@@ -28,7 +28,7 @@ namespace FuwaTea.Data.Playback.NAudio
             return new AudioFileReader(path);
         }
 
-        public IEnumerable<string> SupportedFileTypes { get { return new[] {".mp3", ".wav", ".aiff"}; } }
+        public IEnumerable<string> SupportedFileTypes { get { return new[] {".wav", ".aiff"}; } }
         public bool IsSampleProvider { get { return true; } }
         public bool CanResume { get { return true; } }
         public bool CanSeek { get { return true; } }
