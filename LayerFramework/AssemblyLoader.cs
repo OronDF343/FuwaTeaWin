@@ -64,7 +64,7 @@ namespace LayerFramework
             try { n = AssemblyName.GetAssemblyName(assembly); }
             catch (Exception e)
             {
-                errorCallback(e);
+                errorCallback(new Exception("Invalid executable file!", e));
                 return null;
             }
             if (!EvaluateProcessorArchitecture(pa.Value, n, errorCallback)) return null;
@@ -96,7 +96,7 @@ namespace LayerFramework
         {
             if (pa == null) pa = Assembly.GetCallingAssembly().GetName().ProcessorArchitecture;
             return ExecutableFileFilters.SelectMany(s => Directory.EnumerateFiles(folder, s))
-                                        .Where(s => !s.Equals("unins000.exe", StringComparison.OrdinalIgnoreCase))
+                                        .Where(s => !s.EndsWith("unins000.exe", StringComparison.OrdinalIgnoreCase))
                                         .Select(dll => GetTypes(dll, errorCallback, pa.Value))
                                         .Where(ts => ts != null)
                                         .SelectMany(ts => ts);
