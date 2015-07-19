@@ -30,7 +30,6 @@ using FTWPlayer.Properties;
 using FTWPlayer.Tabs;
 using FuwaTea.Annotations;
 using FuwaTea.Common.Models;
-using FuwaTea.Lib;
 using FuwaTea.Logic.Playlist;
 using FuwaTea.Presentation.Playback;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -49,8 +48,6 @@ namespace FTWPlayer.ViewModel
             LocalizeDictionary.Instance.SetCurrentThreadCulture = true;
             LocalizeDictionary.Instance.Culture = string.IsNullOrWhiteSpace(Settings.Default.SelectedLanguage) ? CultureInfo.CurrentUICulture : CultureInfo.CreateSpecificCulture(Settings.Default.SelectedLanguage);
             Settings.Default.SelectedLanguage = LocalizeDictionary.Instance.Culture.IetfLanguageTag;
-
-            LayerFactory.LoadFolder(Assembly.GetEntryAssembly().GetExeFolder(), Console.WriteLine, true);
 
             PlaybackManager = LayerFactory.GetElement<IPlaybackManager>();
 

@@ -79,6 +79,8 @@ Type: filesandordirs; Name: "{localappdata}\{#Company}\{#ShortName}\*"; Tasks: r
 [UninstallDelete]
 Type: filesandordirs; Name: "{localappdata}\{#Company}\{#ShortName}"; Check: CheckDelUserData
 Type: dirifempty; Name: "{localappdata}\{#Company}"; Check: CheckDelUserData
+Type: files; Name: "{app}\ftw.log*"
+Type: files; Name: "{app}\ClArgs.txt"
 
 [Languages]
 Name: "en"; MessagesFile: "compiler:Default.isl,msg_en.isl"; LicenseFile: "..\LICENSE.txt"

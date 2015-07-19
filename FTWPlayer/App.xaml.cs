@@ -26,6 +26,7 @@ using System.Threading;
 using System.Windows;
 using FTWPlayer.Properties;
 using FuwaTea.Lib;
+using FuwaTea.Lib.Exceptions;
 using FuwaTea.Presentation.Playback;
 using GalaSoft.MvvmLight.Threading;
 using LayerFramework;
@@ -57,6 +58,8 @@ namespace FTWPlayer
             XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(Assembly.GetExecutingAssembly().GetExeFolder(),
                                                                         "logconfig.xml")));
 #endif
+            ErrorCallback ec = ex => LogManager.GetLogger(GetType()).Warn("AssemblyLoader reported an error:", ex);
+
             // TODO: create ErrorDialog
             AppDomain.CurrentDomain.UnhandledException += (sender, args) => LogManager.GetLogger(GetType()).Fatal("An unhandled exception occured:", (Exception)args.ExceptionObject);
 
@@ -66,7 +69,7 @@ namespace FTWPlayer
             var prod = Assembly.GetEntryAssembly().GetProduct();
             if (clArgs.Contains("--setup-file-associations") && isinst)
             {
-                LayerFactory.LoadFolder(Assembly.GetEntryAssembly().GetExeFolder(), Console.WriteLine, true);
+                LayerFactory.LoadFolder(Assembly.GetEntryAssembly().GetExeFolder(), ec, true);
                 var pm = LayerFactory.GetElement<IPlaybackManager>();
                 var key = Registry.LocalMachine.CreateSubKey(string.Format(@"Software\Clients\Media\{0}\Capabilities\FileAssociations", prod));
                 var exts = key.GetValueNames();
@@ -79,8 +82,6 @@ namespace FTWPlayer
             }
             if (clArgs.Contains("--clean-up-file-associations") && isinst)
             {
-                LayerFactory.LoadFolder(Assembly.GetEntryAssembly().GetExeFolder(), Console.WriteLine, true);
-                var pm = LayerFactory.GetElement<IPlaybackManager>();
                 var key = Registry.LocalMachine.CreateSubKey(string.Format(@"Software\Clients\Media\{0}\Capabilities\FileAssociations", prod));
                 foreach (var s in key.GetValueNames()) key.DeleteValue(s);
                 Shutdown();
@@ -141,6 +142,9 @@ namespace FTWPlayer
                     }
                 }
             }
+
+            // Load layers:
+            LayerFactory.LoadFolder(Assembly.GetEntryAssembly().GetExeFolder(), ec, true);
 
             // Set Priority: 
             Process.GetCurrentProcess().PriorityClass = Settings.Default.ProcessPriority;

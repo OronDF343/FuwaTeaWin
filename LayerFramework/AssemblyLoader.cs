@@ -60,7 +60,13 @@ namespace LayerFramework
             if (TypeCache.ContainsKey(assembly)) return TypeCache[assembly];
             // first make sure that the dll has a compatible processor architecture
             if (pa == null) pa = Assembly.GetCallingAssembly().GetName().ProcessorArchitecture;
-            var n = AssemblyName.GetAssemblyName(assembly);
+            AssemblyName n;
+            try { n = AssemblyName.GetAssemblyName(assembly); }
+            catch (Exception e)
+            {
+                errorCallback(e);
+                return null;
+            }
             if (!EvaluateProcessorArchitecture(pa.Value, n, errorCallback)) return null;
             // now load it and get the types
             var a = Assembly.LoadFrom(assembly);
@@ -90,9 +96,10 @@ namespace LayerFramework
         {
             if (pa == null) pa = Assembly.GetCallingAssembly().GetName().ProcessorArchitecture;
             return ExecutableFileFilters.SelectMany(s => Directory.EnumerateFiles(folder, s))
-                                           .Select(dll => GetTypes(dll, errorCallback, pa.Value))
-                                           .Where(ts => ts != null)
-                                           .SelectMany(ts => ts);
+                                        .Where(s => !s.Equals("unins000.exe", StringComparison.OrdinalIgnoreCase))
+                                        .Select(dll => GetTypes(dll, errorCallback, pa.Value))
+                                        .Where(ts => ts != null)
+                                        .SelectMany(ts => ts);
         }
 
         public static Dictionary<Type, TAttribute> FindTypesWithAttribute<TAttribute>(this IEnumerable<Type> types) where TAttribute : Attribute
