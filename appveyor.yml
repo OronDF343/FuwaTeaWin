@@ -1,4 +1,4 @@
-version: 0.0.0.{build}
+version: 0.0.1.{build}
 configuration: Release
 clone_folder: C:\projects\fuwateawin
 assembly_info:
@@ -14,8 +14,13 @@ build:
   verbosity: minimal
 after_build:
 - iscc /DVersionNumber=%APPVEYOR_BUILD_VERSION% Installer\installer.iss
+- 7z a ftwplayer_portable.zip bin\$(Configuration)\*.dll
+- 7z a ftwplayer_portable.zip bin\$(Configuration)\*.exe
+- 7z a ftwplayer_portable.zip bin\$(Configuration)\logconfig.xml
+- 7z a ftwplayer_portable.zip bin\$(Configuration)\logconfig-debug.xml
+- 7z a ftwplayer_portable.zip bin\$(Configuration)\he
 artifacts:
-- path: bin\$(Configuration)
+- path: ftwplayer_portable.zip
   name: Portable
 - path: Installer\Output\ftwplayer_setup.exe
   name: Installer
