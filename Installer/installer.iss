@@ -4,7 +4,10 @@
 #define Company 'OronDF343'
 #define DotNetVersion '4.5.1'
 #define BuildPath '..\bin\Release'
+ 
+#ifndef VersionNumber
 #define VersionNumber '0.0.0.0'
+#endif
 
 [Setup]
 AppId={#ShortName}
