@@ -4,6 +4,7 @@
 #define Company 'OronDF343'
 #define DotNetVersion '4.5.1'
 #define BuildPath '..\bin\Release'
+#define VersionNumber '0.0.0.0'
 
 [Setup]
 AppId={#ShortName}
@@ -12,8 +13,8 @@ AppPublisher={#Company}
 AppPublisherURL=https://orondf343.wordpress.com/
 AppSupportURL=https://github.com/{#Company}/{#ShortName}/issues
 AppUpdatesURL=https://github.com/{#Company}/{#ShortName}/releases
-AppVersion=0.0.0.2
-VersionInfoVersion=0.0.0.2
+AppVersion={#VersionNumber}
+VersionInfoVersion={#VersionNumber}
 AppCopyright=Copyright (C) 2015 {#Company}
 
 OutputBaseFilename=ftwplayer_setup
