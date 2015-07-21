@@ -1,22 +1,23 @@
 FuwaTeaWin: FTW Player
 ======================
 
+**NEW** Click here to download a test build: [![Build status](https://ci.appveyor.com/api/projects/status/11ro9m9publ63xuy/branch/master?svg=true)](https://ci.appveyor.com/project/OronDF343/fuwateawin/branch/master)
+
 The successor to [Sky Jukebox](https://github.com/OronDF343/Sky-Jukebox).
 
 A compact, modular and free open-source music player for Windows.
 
-**This repository isn't set up quite yet, please check back later for more info.**
+Runs on Windows Vista, 7, 8, 8.1, 10 (build 10122 and up). Requires .NET Framework 4.5.1 or newer.
 
-Contributing:
+**Release ETA: None (don't ask for one)**
+
+Contributing
+------------
 
 Please use the appropriate ANSI codepage for installer language files (*.isl) and licenses - unicode is not supported.
 Example: msg_he.isl and gplv3-hebrew.txt are encoded in Windows-1255.
 
 Compiling: Visual Studio 2013 or 2015 required. Community Edition is recommended. Installer requires Inno Setup **Unicode** v5.5.6 or newer.
-
-Runs on Windows Vista, 7, 8, 8.1, 10 (build 10122 and up). Requires .NET Framework 4.5.1 or newer.
-
-**Release ETA: None (don't ask for one)**
 
 Contact
 -------
