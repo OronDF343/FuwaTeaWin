@@ -19,7 +19,7 @@ AppCopyright=Copyright (C) 2015 {#Company}
 
 OutputBaseFilename=ftwplayer_setup
 SolidCompression=yes
-SetupMutex=FTWSetup
+; SetupMutex=FTWSetup
 
 MinVersion=6.0
 DefaultDirName={reg:HKLM\Software\{#Company}\{#ShortName},Path|{pf}\{#LongName}}
