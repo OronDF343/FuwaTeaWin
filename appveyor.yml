@@ -14,11 +14,11 @@ build:
   verbosity: minimal
 after_build:
 - iscc /DVersionNumber=%APPVEYOR_BUILD_VERSION% Installer\installer.iss
-- 7z a ftwplayer_portable.zip bin\$(Configuration)\*.dll
-- 7z a ftwplayer_portable.zip bin\$(Configuration)\*.exe
-- 7z a ftwplayer_portable.zip bin\$(Configuration)\logconfig.xml
-- 7z a ftwplayer_portable.zip bin\$(Configuration)\logconfig-debug.xml
-- 7z a ftwplayer_portable.zip bin\$(Configuration)\he
+- 7z a ftwplayer_portable.zip bin\Release\*.dll
+- 7z a ftwplayer_portable.zip bin\Release\*.exe
+- 7z a ftwplayer_portable.zip bin\Release\logconfig.xml
+- 7z a ftwplayer_portable.zip bin\Release\logconfig-debug.xml
+- 7z a ftwplayer_portable.zip bin\Release\he
 artifacts:
 - path: ftwplayer_portable.zip
   name: Portable
