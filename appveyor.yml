@@ -1,0 +1,23 @@
+version: 0.0.0.{build}
+configuration: Release
+clone_folder: C:\projects\fuwateawin
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+install:
+- choco install -y InnoSetup
+- set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"
+build:
+  verbosity: minimal
+after_build:
+- iscc /DVersionNumber=%APPVEYOR_BUILD_VERSION% Installer\installer.iss
+artifacts:
+- path: bin\$(Configuration)
+  name: Portable
+- path: Installer\Output\ftwplayer_setup.exe
+  name: Installer
+deploy:
+- provider: Local
