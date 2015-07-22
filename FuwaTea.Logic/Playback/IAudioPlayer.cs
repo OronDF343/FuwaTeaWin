@@ -82,10 +82,6 @@ namespace FuwaTea.Logic.Playback
         /// An event which must be fired only when the end of the audio file is reached (and playback stops).
         /// </summary>
         event EventHandler PlaybackFinished;
-        /// <summary>
-        /// An event which must be fired only if there is an error during playback (anywhere except for the Load function).
-        /// </summary>
-        event EventHandler<PlaybackErrorEventArgs> PlaybackError;
 
         /// <summary>
         /// Gets or sets the playback volume. Default is 1.0.

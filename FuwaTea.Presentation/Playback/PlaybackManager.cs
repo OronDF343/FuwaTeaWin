@@ -44,8 +44,8 @@ namespace FuwaTea.Presentation.Playback
                 LogManager.GetLogger(GetType()).Debug("SelectedPlaylist changed!");
                 Stop();
                 ChangePositionManager();
-                OnPropertyChangedCustom("ElementCount");
-                OnPropertyChangedCustom("Current");
+                OnPropertyChanged("ElementCount");
+                OnPropertyChanged("Current");
                 LoadCurrentFile();
             };
             ChangePositionManager(true);
@@ -118,12 +118,6 @@ namespace FuwaTea.Presentation.Playback
         public event PropertyChangedEventHandler PropertyChanged;
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChangedCustom(string propertyName)
         {
             var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
@@ -261,15 +255,14 @@ namespace FuwaTea.Presentation.Playback
                 // TODO: show messages from this function
                 return;
             }
-            OnPropertyChangedCustom("Duration");
+            OnPropertyChanged("Duration");
             _currentPlayer.PlaybackFinished += CurrentPlayer_PlaybackFinished;
-            _currentPlayer.PlaybackError += CurrentPlayer_PlaybackError;
-            OnPropertyChangedCustom("CanResume");
-            OnPropertyChangedCustom("CanSeek");
+            OnPropertyChanged("CanResume");
+            OnPropertyChanged("CanSeek");
             _currentPlayer.Volume = Volume;
             _currentPlayer.LeftVolume = LeftVolume;
             _currentPlayer.RightVolume = RightVolume;
-            OnPropertyChangedCustom("IsEqualizerSupported");
+            OnPropertyChanged("IsEqualizerSupported");
             _currentPlayer.EnableEqualizer = EnableEqualizer;
             // Make sure the position shown is up-to-date
             SendPositionUpdate();
@@ -279,12 +272,11 @@ namespace FuwaTea.Presentation.Playback
         {
             if (_currentPlayer == null) return;
             _currentPlayer.PlaybackFinished -= CurrentPlayer_PlaybackFinished;
-            _currentPlayer.PlaybackError -= CurrentPlayer_PlaybackError;
             _currentPlayer.Unload();
-            OnPropertyChangedCustom("Duration");
-            OnPropertyChangedCustom("CanResume");
-            OnPropertyChangedCustom("CanSeek");
-            OnPropertyChangedCustom("IsEqualizerSupported");
+            OnPropertyChanged("Duration");
+            OnPropertyChanged("CanResume");
+            OnPropertyChanged("CanSeek");
+            OnPropertyChanged("IsEqualizerSupported");
         }
 
         private void CurrentPlayer_PlaybackFinished(object sender, EventArgs eventArgs)
@@ -315,12 +307,6 @@ namespace FuwaTea.Presentation.Playback
                 CurrentState = PlaybackState.Stopped;
                 PlayPauseResume();
             }
-        }
-
-        private void CurrentPlayer_PlaybackError(object sender, PlaybackErrorEventArgs args)
-        {
-            var handler = PlaybackError;
-            if (handler != null) handler(this, args);
         }
 
         public bool IsSomethingLoaded { get { return _currentPlayer != null && _currentPlayer.IsSomethingLoaded; } }
@@ -386,7 +372,7 @@ namespace FuwaTea.Presentation.Playback
 
         public void SendPositionUpdate()
         {
-            OnPropertyChangedCustom("Position");
+            OnPropertyChanged("Position");
         }
 
         public bool CanResume { get { return _currentPlayer != null && _currentPlayer.CanResume; } }
@@ -425,8 +411,6 @@ namespace FuwaTea.Presentation.Playback
                 OnPropertyChanged();
             }
         }
-
-        public event EventHandler<PlaybackErrorEventArgs> PlaybackError;
 
         public bool IsEqualizerSupported { get { return _currentPlayer != null && _currentPlayer.IsEqualizerSupported; } }
 

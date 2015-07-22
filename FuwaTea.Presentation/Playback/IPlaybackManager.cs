@@ -69,11 +69,6 @@ namespace FuwaTea.Presentation.Playback
         decimal RightVolume { get; set; }
 
         /// <summary>
-        /// An event which must be fired only if there is an error during playback (anywhere except for the Load function).
-        /// </summary>
-        event EventHandler<PlaybackErrorEventArgs> PlaybackError;
-
-        /// <summary>
         /// 
         /// </summary>
         bool IsEqualizerSupported { get; }

@@ -20,12 +20,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using FuwaTea.Common.Models;
 using FuwaTea.Data.Playback.NAudio;
 using LayerFramework;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
+using log4net;
 
 namespace FuwaTea.Logic.Playback.NAudio
 {
@@ -60,7 +60,6 @@ namespace FuwaTea.Logic.Playback.NAudio
         private BalanceSampleProvider _balanceSampleProvider;
         private VolumeSampleProvider _volumeSampleProvider;
         private Equalizer _equalizer;
-        private volatile bool _userStopped = true;
         #endregion
 
         public void Load(string path, IAudioOutputDevice device)
@@ -98,28 +97,28 @@ namespace FuwaTea.Logic.Playback.NAudio
             _equalizer = new Equalizer(_volumeSampleProvider, EqualizerBands) { Enabled = EnableEqualizer };
             // Init player
             _wavePlayer.Init(_equalizer);
-            // Subscribe to stop event
-            _wavePlayer.PlaybackStopped += WavePlayer_PlaybackStopped;
             _volumeSampleProvider.Volume = (float)Volume;
         }
 
         private void WavePlayer_PlaybackStopped(object sender, StoppedEventArgs e)
         {
-            if (_userStopped) return;
             if (e.Exception == null && PlaybackFinished != null) PlaybackFinished(this, new EventArgs());
-            else if (PlaybackError != null) PlaybackError(this, new PlaybackErrorEventArgs("Playback has stopped due to an error!", e.Exception, false));
+            else LogManager.GetLogger(GetType()).Error("Playback has stopped due to an error!", e.Exception);
         }
 
         public void Unload()
         {
-            if (_wavePlayer != null)
-            {
-                _wavePlayer.PlaybackStopped -= WavePlayer_PlaybackStopped;
-                _wavePlayer.Stop();
-            }
+            Stop();
+            // BUG: The waveplayer needs to be disposed because it doesn't unload the previous stream properly. TODO: Report this to NAudio.
+            _wavePlayer.Dispose();
+            _wavePlayer = null;
             if (_waveStream != null)
             {
-                _waveStream.Dispose();
+                try { _waveStream.Dispose(); }
+                catch (Exception e)
+                {
+                    LogManager.GetLogger(GetType()).Error("Failed to dispose WaveStream!", e);
+                }
                 _waveStream = null;
             }
             _balanceSampleProvider = null;
@@ -132,29 +131,27 @@ namespace FuwaTea.Logic.Playback.NAudio
 
         public void Play()
         {
-            _userStopped = false;
+            _wavePlayer.PlaybackStopped += WavePlayer_PlaybackStopped;
             _wavePlayer.Play();
         }
 
         public void Pause()
         {
-            _userStopped = true;
+            _wavePlayer.PlaybackStopped -= WavePlayer_PlaybackStopped;
             _wavePlayer.Pause();
         }
 
         public void Resume()
         {
-            _userStopped = false;
+            _wavePlayer.PlaybackStopped += WavePlayer_PlaybackStopped;
             _wavePlayer.Play();
         }
 
         public void Stop()
         {
-            _userStopped = true;
+            _wavePlayer.PlaybackStopped -= WavePlayer_PlaybackStopped;
             if (_wavePlayer != null) _wavePlayer.Stop();
             Position = TimeSpan.Zero;
-            // BUG: delay needed here, otherwise PlaybackFinished is fired. 40ms is minimum on my PC. Consider unsubscribing from event instead of using bool value
-            Thread.Sleep(100);
         }
 
         public TimeSpan Duration
@@ -172,7 +169,6 @@ namespace FuwaTea.Logic.Playback.NAudio
         public bool CanSeek { get { return _waveStream != null && _waveStream.CanSeek; } }
 
         public event EventHandler PlaybackFinished;
-        public event EventHandler<PlaybackErrorEventArgs> PlaybackError;
 
         private decimal _volume = 1.0m;
         public decimal Volume
