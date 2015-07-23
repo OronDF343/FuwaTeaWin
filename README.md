@@ -2,6 +2,7 @@ FuwaTeaWin: FTW Player
 ======================
 
 **NEW** Click here to download a test build: [![Build status](https://ci.appveyor.com/api/projects/status/11ro9m9publ63xuy/branch/master?svg=true)](https://ci.appveyor.com/project/OronDF343/fuwateawin/branch/master)
+Only 3MB to install, 1MB to download!
 
 The successor to [Sky Jukebox](https://github.com/OronDF343/Sky-Jukebox).
 
@@ -18,6 +19,13 @@ Please use the appropriate ANSI codepage for installer language files (*.isl) an
 Example: msg_he.isl and gplv3-hebrew.txt are encoded in Windows-1255.
 
 Compiling: Visual Studio 2013 or 2015 required. Community Edition is recommended. Installer requires Inno Setup **Unicode** v5.5.6 or newer.
+
+Donations:
+----------
+
+Soon I will begin accepting donations via PayPal (probably in August).
+
+You don't have to donate to me, donating is just an especially nice way of saying thanks :)
 
 Contact
 -------
