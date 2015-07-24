@@ -143,10 +143,20 @@ namespace FTWPlayer
                 }
             }
 
+            // Upgrade settings:
+            var ver = Settings.Default.LastVersion;
+            var cver = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            if (!string.Equals(ver, cver, StringComparison.OrdinalIgnoreCase))
+            {
+                Settings.Default.Upgrade();
+                Settings.Default.LastVersion = cver;
+                Settings.Default.Save();
+            }
+
             // Load layers:
             LayerFactory.LoadFolder(Assembly.GetEntryAssembly().GetExeFolder(), ec, true);
 
-            // Set Priority: 
+            // Set priority: 
             Process.GetCurrentProcess().PriorityClass = Settings.Default.ProcessPriority;
 
             // Manually show main window (pervents loading it on shutdown)
@@ -162,7 +172,7 @@ namespace FTWPlayer
             base.OnExit(e);
         }
 
-        private void Dispose(Boolean disposing)
+        private void Dispose(bool disposing)
         {
             if (disposing && (_mutex != null))
             {

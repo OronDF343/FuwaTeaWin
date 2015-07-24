@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using FuwaTea.Annotations;
@@ -9,39 +11,67 @@ using LayerFramework;
 namespace FTWPlayer.Tabs
 {
     [UIPart("Player Tab")]
-    public class PlayerTab : ITab
+    public class PlayerTab : ITab, INotifyPropertyChanged
     {
         public PlayerTab()
         {
             PlaybackManager = LayerFactory.GetElement<IPlaybackManager>();
             TabObject = new AlbumArtDisplay(this);
+            PlaybackManager.PropertyChanged += PlaybackManager_PropertyChanged;
         }
 
-        #region Testing: Album Art Display
-
-        [UsedImplicitly]
-        public ImageSource CurrentAlbumArt
+        private void PlaybackManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            get
+            // TODO: Still leaks memory, also memory is not freed when changing to null. At least changing to a smaller image helps *somewhat*.
+            // For now, users who care about the app using over 100MB of memory should avoid loading very large images or switching between songs too often.
+            if (e.PropertyName != "Current") return;
+            if (PlaybackManager.Current == null)
             {
-                if (PlaybackManager.Current == null) return null;
-                var s = LayerFactory.GetElement<IAlbumArtLocator>().GetAlbumArt(PlaybackManager.Current);
-                if (s == null) return null;
+                CurrentAlbumArt = null;
+                return;
+            }
+            var s = LayerFactory.GetElement<IAlbumArtLocator>().GetAlbumArt(PlaybackManager.Current);
+            if (s == null)
+            {
+                CurrentAlbumArt = null;
+                return;
+            }
+            using (s)
+            {
                 var bi = new BitmapImage();
                 bi.BeginInit();
                 bi.CacheOption = BitmapCacheOption.OnLoad;
                 bi.StreamSource = s;
                 bi.EndInit();
-                return bi;
-                // TODO: CLEAN UP MEMORY USAGE - STILL IN USE AFTER SWITCHING - HIGH USAGE
+                CurrentAlbumArt = bi;
+                s.Close();
             }
         }
 
-        #endregion
+        private ImageSource _albumArt = null;
+        [UsedImplicitly]
+        public ImageSource CurrentAlbumArt
+        {
+            get { return _albumArt; }
+            private set
+            {
+                _albumArt = value;
+                OnPropertyChanged();
+            }
+        }
 
         public TabItem TabObject { get; private set; }
         public decimal Index { get { return 0; } }
 
         public IPlaybackManager PlaybackManager { get; private set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
