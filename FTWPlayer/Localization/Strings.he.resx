@@ -147,4 +147,10 @@
   <data name="SettingsTabHeader" xml:space="preserve">
     <value>הגדרות</value>
   </data>
+  <data name="ExitToolTip" xml:space="preserve">
+    <value>יציאה</value>
+  </data>
+  <data name="ShowToolTip" xml:space="preserve">
+    <value>הצג חלון</value>
+  </data>
 </root>

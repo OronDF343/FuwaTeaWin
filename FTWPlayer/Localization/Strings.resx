@@ -148,4 +148,10 @@
   <data name="SettingsTabHeader" xml:space="preserve">
     <value>SETTINGS</value>
   </data>
+  <data name="ExitToolTip" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="ShowToolTip" xml:space="preserve">
+    <value>Show Window</value>
+  </data>
 </root>

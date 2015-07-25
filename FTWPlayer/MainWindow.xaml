@@ -10,12 +10,13 @@
         xmlns:prop="clr-namespace:FTWPlayer.Properties"
         xmlns:fuwa="https://github.com/OronDF343/FuwaTeaWin"
         xmlns:ignore="http://www.ignore.com"
+        xmlns:hc="http://www.hardcodet.net/taskbar"
         mc:Ignorable="d ignore"
         xmlns:diagnostics="clr-namespace:System.Diagnostics;assembly=WindowsBase"
         Height="540"
         Width="540"
         Title="FTW Player"
-        SourceInitialized="MainWindow_OnSourceInitialized" Closed="MainWindow_OnClosed"
+        SourceInitialized="MainWindow_OnSourceInitialized"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         WindowStyle="None" AllowsTransparency="True" ResizeMode="NoResize" Background="Transparent"
         fuwa:WindowPositioner.AutoPosition="BottomRight"
@@ -407,6 +408,60 @@
                             fuwa:FlowDirectionUpdater.AutoUpdateMode="Enabled"/>
             </Grid>
         </Border>
+        <hc:TaskbarIcon ToolTip="FTW Player" TrayMouseDoubleClick="MaximizeButton_OnClick">
+            <hc:TaskbarIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="{lex:BLoc PreviousToolTip}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <command:EventToCommand Command="{Binding PreviousCommand}"
+                                                        PassEventArgsToCommand="True"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
+                    <MenuItem>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <command:EventToCommand Command="{Binding PlayPauseResumeCommand}"
+                                                        PassEventArgsToCommand="True"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <MenuItem.Style>
+                            <Style TargetType="MenuItem">
+                                <Setter Property="Header" Value="{lex:BLoc PlayToolTip}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding PlaybackManager.CurrentState}" Value="Playing">
+                                        <Setter Property="Header" Value="{lex:BLoc PauseToolTip}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding PlaybackManager.CurrentState}" Value="Paused">
+                                        <Setter Property="Header" Value="{lex:BLoc ResumeToolTip}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </MenuItem.Style>
+                    </MenuItem>
+                    <MenuItem Header="{lex:BLoc NextToolTip}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <command:EventToCommand Command="{Binding NextCommand}"
+                                                        PassEventArgsToCommand="True"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
+                    <MenuItem Header="{lex:BLoc StopToolTip}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <command:EventToCommand Command="{Binding StopCommand}"
+                                                        PassEventArgsToCommand="True"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem Header="{lex:BLoc ShowToolTip}" Click="MaximizeButton_OnClick" FontWeight="Bold"/>
+                    <MenuItem Header="{lex:BLoc ExitToolTip}" Click="CloseButton_OnClick"/>
+                </ContextMenu>
+            </hc:TaskbarIcon.ContextMenu>
+        </hc:TaskbarIcon>
         <!-- Insert modal messages here -->
     </Canvas>
 </Window>
