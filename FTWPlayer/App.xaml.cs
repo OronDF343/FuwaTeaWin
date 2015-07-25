@@ -119,7 +119,7 @@ namespace FTWPlayer
                     _mutex = null;
                     if (clArgs.Count > 1)
                     {
-                        File.WriteAllLines(Path.Combine(Assembly.GetEntryAssembly().GetExeFolder(), @"ClArgs.txt"), clArgs); // TODO: find better way of passing args
+                        File.WriteAllLines(Path.Combine(Assembly.GetExecutingAssembly().GetUserDataPath(), @"ClArgs.txt"), clArgs); // TODO: find better way of passing args
                         NativeMethods.SendMessage(NativeMethods.HWND_BROADCAST, Message, IntPtr.Zero, IntPtr.Zero);
                     }
                     Shutdown();

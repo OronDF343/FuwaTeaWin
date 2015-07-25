@@ -138,8 +138,6 @@ namespace FTWPlayer
             source.AddHook(HwndSourceHook); // should never be null
             // Continue:
             InitNotifyIcon();
-            //LocalizeDictionary.Instance.Culture = CultureInfo.CreateSpecificCulture("he");
-            //FlowDirectionUpdater.UpdateFlowDirection(FlowDirection.RightToLeft);
         }
 
         private IntPtr HwndSourceHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -147,7 +145,7 @@ namespace FTWPlayer
             if (msg == ((App)Application.Current).Message)
             {
                 Show();
-                var clArgs = File.ReadAllLines(Path.Combine(Assembly.GetEntryAssembly().GetExeFolder(), @"ClArgs.txt")).ToList(); // TODO: find better way of passing args
+                var clArgs = File.ReadAllLines(Path.Combine(Assembly.GetExecutingAssembly().GetUserDataPath(), @"ClArgs.txt")).ToList(); // TODO: find better way of passing args
                 // TODO: better handling of clArgs
                 // TODO: finish this
                 MiscUtils.ParseClArgs(clArgs);
