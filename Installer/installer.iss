@@ -64,6 +64,7 @@ Source: "{#BuildPath}\Microsoft.Practices.ServiceLocation.dll"; DestDir: "{app}"
 Source: "{#BuildPath}\System.Windows.Interactivity.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\WPFLocalizeExtension.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\XAMLMarkupExtensions.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\Hardcodet.Wpf.TaskbarNotification.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\log4net.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\logconfig.xml"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\TagLib.Portable.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
