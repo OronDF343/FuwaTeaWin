@@ -34,6 +34,7 @@ using FuwaTea.Presentation.Playback;
 using GalaSoft.MvvmLight.CommandWpf;
 using LayerFramework;
 using WPFLocalizeExtension.Engine;
+using FuwaTea.Wpf.Keyboard;
 
 namespace FTWPlayer.ViewModel
 {
@@ -127,7 +128,35 @@ namespace FTWPlayer.ViewModel
 
             //Begin post-UI-loading
             MiscUtils.ParseClArgs(Environment.GetCommandLineArgs().ToList());
+            _kbdListen = new KeyboardListener();
+            _kbdListen.KeyDown += _kbdListen_KeyDown;
+            Settings.Default.PropertyChanged += (s, e) => 
+            {
+                if (e.PropertyName.Equals("EnableKeyboardHook", StringComparison.OrdinalIgnoreCase))
+                    _kbdListen.IsEnabled = Settings.Default.EnableKeyboardHook;
+            };
         }
+
+        private void _kbdListen_KeyDown(object sender, RawKeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.MediaPlayPause:
+                    PlayPauseResumeButtonClick(new RoutedEventArgs());
+                    break;
+                case Key.MediaPreviousTrack:
+                    PreviousButtonClick(new RoutedEventArgs());
+                    break;
+                case Key.MediaNextTrack:
+                    NextButtonClick(new RoutedEventArgs());
+                    break;
+                case Key.MediaStop:
+                    StopButtonClick(new RoutedEventArgs());
+                    break;
+            }
+        }
+
+        private readonly KeyboardListener _kbdListen;
 
         private readonly DispatcherTimer _tmr;
         private void Tick(object sender, EventArgs e)

@@ -88,6 +88,8 @@
     <Compile Include="Helpers\FlowDirectionUpdater.cs" />
     <Compile Include="Helpers\OptionalToolTip.cs" />
     <Compile Include="Helpers\WindowPositioner.cs" />
+    <Compile Include="Keyboard\KeyboardListener.cs" />
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceDictionaryIdentifier.cs" />
   </ItemGroup>
