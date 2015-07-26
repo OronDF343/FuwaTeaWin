@@ -61,6 +61,15 @@ namespace FTWPlayer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change to Compact Mode.
+        /// </summary>
+        internal static string CompactToolTip {
+            get {
+                return ResourceManager.GetString("CompactToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to EQUALIZER.
         /// </summary>
         internal static string EqualizerTabHeader {
@@ -75,6 +84,24 @@ namespace FTWPlayer.Localization {
         internal static string ExitToolTip {
             get {
                 return ResourceManager.GetString("ExitToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change to Expanded Mode.
+        /// </summary>
+        internal static string ExpandToolTip {
+            get {
+                return ResourceManager.GetString("ExpandToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide Window.
+        /// </summary>
+        internal static string HideToolTip {
+            get {
+                return ResourceManager.GetString("HideToolTip", resourceCulture);
             }
         }
         
@@ -124,6 +151,33 @@ namespace FTWPlayer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Repeat (Entire list).
+        /// </summary>
+        internal static string RepeatAllToolTip {
+            get {
+                return ResourceManager.GetString("RepeatAllToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Repeat (Off).
+        /// </summary>
+        internal static string RepeatOffToolTip {
+            get {
+                return ResourceManager.GetString("RepeatOffToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Repeat (Current song).
+        /// </summary>
+        internal static string RepeatSingleToolTip {
+            get {
+                return ResourceManager.GetString("RepeatSingleToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resume.
         /// </summary>
         internal static string ResumeToolTip {
@@ -151,11 +205,38 @@ namespace FTWPlayer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Shuffle (Off).
+        /// </summary>
+        internal static string ShuffleOffToolTip {
+            get {
+                return ResourceManager.GetString("ShuffleOffToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shuffle (On).
+        /// </summary>
+        internal static string ShuffleOnToolTip {
+            get {
+                return ResourceManager.GetString("ShuffleOnToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stop.
         /// </summary>
         internal static string StopToolTip {
             get {
                 return ResourceManager.GetString("StopToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Volume.
+        /// </summary>
+        internal static string VolumeToolTip {
+            get {
+                return ResourceManager.GetString("VolumeToolTip", resourceCulture);
             }
         }
         

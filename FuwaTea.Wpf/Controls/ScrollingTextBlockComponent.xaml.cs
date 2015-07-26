@@ -33,6 +33,15 @@ namespace FuwaTea.Wpf.Controls
         public ScrollingTextBlockComponent()
         {
             InitializeComponent();
+            var dpd = DependencyPropertyDescriptor.FromProperty(FlowDirectionProperty, typeof(ScrollingTextBlockComponent));
+            if (dpd != null)
+            {
+                dpd.AddValueChanged(this, delegate
+                {
+                    var tx = GetValue(ScrollingTextProperty);
+                    ScrollingTextChanged(this, new DependencyPropertyChangedEventArgs(ScrollingTextProperty, tx, tx));
+                });
+            }
         }
 
         public static readonly DependencyProperty ScrollingTextProperty = DependencyProperty.Register("ScrollingText", typeof(string),
@@ -62,7 +71,6 @@ namespace FuwaTea.Wpf.Controls
 
         private static void ScrollingTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (e.OldValue == e.NewValue) return;
             var tbox = d as ScrollingTextBlockComponent;
             if (tbox == null) return;
             if (DesignerProperties.GetIsInDesignMode(tbox)) { tbox.Text = (string)e.NewValue; return; }
@@ -89,7 +97,12 @@ namespace FuwaTea.Wpf.Controls
                 new FormattedText(tbox.Text, CultureInfo.CurrentCulture, tbox.FlowDirection, typeface, tbox.FontSize,
                                   tbox.Foreground).WidthIncludingTrailingWhitespace;
             // If the text direction should be different from the flowdirection, correct the animation
-            // FlowDirection doesn't affect the animation at all because of this
+            // FlowDirection doesn't affect the animation at all because of this, but it does affect the text itself
+            // FD  Str rev
+            // RTL RTL n
+            // RTL LTR y
+            // LTR RTL y
+            // LTR LTR n
             var reverse = IsRtlString((string)e.NewValue) ^ tbox.FlowDirection == FlowDirection.RightToLeft;
             var doubleAnimation = new DoubleAnimation
             {

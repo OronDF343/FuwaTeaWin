@@ -23,6 +23,8 @@ using System.Windows;
 using System.Windows.Interop;
 using FTWPlayer.ViewModel;
 using FuwaTea.Lib;
+using FuwaTea.Wpf.Helpers;
+using WPFLocalizeExtension.Engine;
 
 namespace FTWPlayer
 {
@@ -49,6 +51,8 @@ namespace FTWPlayer
             // Single Instance Application hook
             var source = (HwndSource)PresentationSource.FromVisual(this);
             source.AddHook(HwndSourceHook); // should never be null
+            // Needs to happen here:
+            FlowDirectionUpdater.UpdateFlowDirection(LocalizeDictionary.Instance.Culture.TextInfo.IsRightToLeft ? FlowDirection.RightToLeft : FlowDirection.LeftToRight);
         }
 
         private IntPtr HwndSourceHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)

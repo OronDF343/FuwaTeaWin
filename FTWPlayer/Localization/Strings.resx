@@ -154,4 +154,31 @@
   <data name="ShowToolTip" xml:space="preserve">
     <value>Show Window</value>
   </data>
+  <data name="HideToolTip" xml:space="preserve">
+    <value>Hide Window</value>
+  </data>
+  <data name="CompactToolTip" xml:space="preserve">
+    <value>Change to Compact Mode</value>
+  </data>
+  <data name="ExpandToolTip" xml:space="preserve">
+    <value>Change to Expanded Mode</value>
+  </data>
+  <data name="RepeatAllToolTip" xml:space="preserve">
+    <value>Repeat (Entire list)</value>
+  </data>
+  <data name="RepeatOffToolTip" xml:space="preserve">
+    <value>Repeat (Off)</value>
+  </data>
+  <data name="RepeatSingleToolTip" xml:space="preserve">
+    <value>Repeat (Current song)</value>
+  </data>
+  <data name="ShuffleOffToolTip" xml:space="preserve">
+    <value>Shuffle (Off)</value>
+  </data>
+  <data name="ShuffleOnToolTip" xml:space="preserve">
+    <value>Shuffle (On)</value>
+  </data>
+  <data name="VolumeToolTip" xml:space="preserve">
+    <value>Volume</value>
+  </data>
 </root>

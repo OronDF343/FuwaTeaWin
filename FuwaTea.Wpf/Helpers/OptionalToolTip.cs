@@ -53,6 +53,7 @@ namespace FuwaTea.Wpf.Helpers
         private static ToolTip CreateBoundToolTip(DependencyObject d)
         {
             var tt = new ToolTip();
+            FlowDirectionUpdater.SetAutoUpdateMode(tt, d.IsPropertySet(ToolTipFlowDirectionUpdateModeProperty) ? GetToolTipFlowDirectionUpdateMode(d) : AutoUpdateMode.Enabled);
             var b1 = new Binding { Source = d, Path = new PropertyPath(ToolTipStyleProperty) };
             BindingOperations.SetBinding(tt, FrameworkElement.StyleProperty, b1);
             var b2 = new Binding { Source = d, Path = new PropertyPath(ToolTipContentProperty) };
@@ -86,6 +87,28 @@ namespace FuwaTea.Wpf.Helpers
         }
 
         public static void SetToolTipContent(DependencyObject obj, object value)
+        {
+            obj.SetValue(ToolTipContentProperty, value);
+        }
+
+        public static readonly DependencyProperty ToolTipFlowDirectionUpdateModeProperty =
+            DependencyProperty.RegisterAttached("ToolTipFlowDirectionUpdateMode",
+                                                typeof(AutoUpdateMode),
+                                                typeof(OptionalToolTip),
+                                                new PropertyMetadata(ToolTipFlowDirectionUpdateModeChanged));
+
+        private static void ToolTipFlowDirectionUpdateModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var elem = ((FrameworkElement)d);
+            if (elem.ToolTip != null) FlowDirectionUpdater.SetAutoUpdateMode((DependencyObject)elem.ToolTip, (AutoUpdateMode)e.NewValue);
+        }
+
+        public static AutoUpdateMode GetToolTipFlowDirectionUpdateMode(DependencyObject obj)
+        {
+            return (AutoUpdateMode)obj.GetValue(ToolTipContentProperty);
+        }
+
+        public static void SetToolTipFlowDirectionUpdateMode(DependencyObject obj, AutoUpdateMode value)
         {
             obj.SetValue(ToolTipContentProperty, value);
         }

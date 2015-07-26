@@ -153,4 +153,31 @@
   <data name="ShowToolTip" xml:space="preserve">
     <value>הצג חלון</value>
   </data>
+  <data name="HideToolTip" xml:space="preserve">
+    <value>הסתר חלון</value>
+  </data>
+  <data name="CompactToolTip" xml:space="preserve">
+    <value>הקטן חלון</value>
+  </data>
+  <data name="ExpandToolTip" xml:space="preserve">
+    <value>הגדל חלון</value>
+  </data>
+  <data name="RepeatAllToolTip" xml:space="preserve">
+    <value>חזור על כל הרשימה</value>
+  </data>
+  <data name="RepeatOffToolTip" xml:space="preserve">
+    <value>חזור על ה- (מכובה)</value>
+  </data>
+  <data name="RepeatSingleToolTip" xml:space="preserve">
+    <value>חזור על השיר הנוכחי</value>
+  </data>
+  <data name="ShuffleOffToolTip" xml:space="preserve">
+    <value>אקראי (מכובה)</value>
+  </data>
+  <data name="ShuffleOnToolTip" xml:space="preserve">
+    <value>אקראי (מופעל)</value>
+  </data>
+  <data name="VolumeToolTip" xml:space="preserve">
+    <value>עוצמה</value>
+  </data>
 </root>
