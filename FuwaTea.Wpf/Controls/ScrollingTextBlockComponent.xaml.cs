@@ -39,7 +39,7 @@ namespace FuwaTea.Wpf.Controls
                 dpd.AddValueChanged(this, delegate
                 {
                     var tx = GetValue(ScrollingTextProperty);
-                    ScrollingTextChanged(this, new DependencyPropertyChangedEventArgs(ScrollingTextProperty, tx, tx));
+                    ScrollingTextChanged(this, new DependencyPropertyChangedEventArgs(ScrollingTextProperty, tx + " [INVALID]", tx));
                 });
             }
         }
@@ -71,6 +71,7 @@ namespace FuwaTea.Wpf.Controls
 
         private static void ScrollingTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            if (e.OldValue == e.NewValue) return;
             var tbox = d as ScrollingTextBlockComponent;
             if (tbox == null) return;
             if (DesignerProperties.GetIsInDesignMode(tbox)) { tbox.Text = (string)e.NewValue; return; }
