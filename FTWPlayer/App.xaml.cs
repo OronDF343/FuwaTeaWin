@@ -51,6 +51,9 @@ namespace FTWPlayer
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            // TODO: create ErrorDialog
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) => LogManager.GetLogger(GetType()).Fatal("An unhandled exception occured:", (Exception)args.ExceptionObject);
+
 #if DEBUG
             XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(Assembly.GetExecutingAssembly().GetExeFolder(),
                                                                         "logconfig-debug.xml")));
@@ -58,10 +61,10 @@ namespace FTWPlayer
             XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(Assembly.GetExecutingAssembly().GetExeFolder(),
                                                                         "logconfig.xml")));
 #endif
-            ErrorCallback ec = ex => LogManager.GetLogger(GetType()).Warn("AssemblyLoader reported an error:", ex);
 
-            // TODO: create ErrorDialog
-            AppDomain.CurrentDomain.UnhandledException += (sender, args) => LogManager.GetLogger(GetType()).Fatal("An unhandled exception occured:", (Exception)args.ExceptionObject);
+            LogManager.GetLogger(GetType()).Info("Exceptions are tracked, logging is configured, begin loading!");
+
+            ErrorCallback ec = ex => LogManager.GetLogger(GetType()).Warn("AssemblyLoader reported an error:", ex);
 
             // Get ClArgs:
             var clArgs = Environment.GetCommandLineArgs().ToList();
@@ -69,6 +72,7 @@ namespace FTWPlayer
             var prod = Assembly.GetEntryAssembly().GetProduct();
             if (clArgs.Contains("--setup-file-associations") && isinst)
             {
+                LogManager.GetLogger(GetType()).Info("Detected argument: Setup File Associations");
                 LayerFactory.LoadFolder(Assembly.GetEntryAssembly().GetExeFolder(), ec, true);
                 var pm = LayerFactory.GetElement<IPlaybackManager>();
                 var key = Registry.LocalMachine.CreateSubKey(string.Format(@"Software\Clients\Media\{0}\Capabilities\FileAssociations", prod));
@@ -82,6 +86,7 @@ namespace FTWPlayer
             }
             if (clArgs.Contains("--clean-up-file-associations") && isinst)
             {
+                LogManager.GetLogger(GetType()).Info("Detected argument: Clean Up File Associations");
                 var key = Registry.LocalMachine.CreateSubKey(string.Format(@"Software\Clients\Media\{0}\Capabilities\FileAssociations", prod));
                 foreach (var s in key.GetValueNames()) key.DeleteValue(s);
                 Shutdown();
@@ -89,6 +94,7 @@ namespace FTWPlayer
             }
             if (clArgs.Contains("--configure-file-associations") && isinst)
             {
+                LogManager.GetLogger(GetType()).Info("Detected argument: Configure File Associations");
                 var assocUi = new ApplicationAssociationRegistrationUI();
                 try
                 {
@@ -106,16 +112,17 @@ namespace FTWPlayer
                 return;
             }
 
+            LogManager.GetLogger(GetType()).Info("Normal startup will begin");
             bool mutexCreated;
             var mutexName = prod + (isinst ? "|Installed" : "|Portable");
             _mutex = new Mutex(true, mutexName, out mutexCreated);
             Message = (int)NativeMethods.RegisterWindowMessage(mutexName);
 
-
             if (!mutexCreated)
             {
                 if (!clArgs.Contains("--wait")) // TODO: better handling of clArgs
                 {
+                    LogManager.GetLogger(GetType()).Info("Another instance is already open - send our arguments to it");
                     _mutex = null;
                     if (clArgs.Count > 1)
                     {
@@ -127,6 +134,7 @@ namespace FTWPlayer
                 }
                 if (!_mutex.WaitOne(Settings.Default.InstanceCreationTimeout))
                 {
+                    LogManager.GetLogger(GetType()).Fatal("Failed to create an instance: The operation has timed out.");
                     MessageBox.Show("Failed to create an instance: The operation has timed out.", "Single Instance Application", MessageBoxButton.OK, MessageBoxImage.Error);
                     Shutdown();
                     return;
@@ -136,6 +144,7 @@ namespace FTWPlayer
                     _mutex = new Mutex(true, mutexName, out mutexCreated);
                     if (!mutexCreated)
                     {
+                        LogManager.GetLogger(GetType()).Fatal("Failed to create an instance: Cannot open or create the Mutex!");
                         MessageBox.Show("Failed to create an instance: Cannot open or create the Mutex!", "Single Instance Application", MessageBoxButton.OK, MessageBoxImage.Error);
                         Shutdown();
                         return;
@@ -148,6 +157,7 @@ namespace FTWPlayer
             var cver = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             if (!string.Equals(ver, cver, StringComparison.OrdinalIgnoreCase))
             {
+                LogManager.GetLogger(GetType()).Info("The settings are from an older version, upgrading now");
                 Settings.Default.Upgrade();
                 Settings.Default.LastVersion = cver;
                 Settings.Default.Save();
@@ -158,7 +168,8 @@ namespace FTWPlayer
 
             // Set priority: 
             Process.GetCurrentProcess().PriorityClass = Settings.Default.ProcessPriority;
-
+            
+            LogManager.GetLogger(GetType()).Info("Ready to open the main window!");
             // Manually show main window (pervents loading it on shutdown)
             MainWindow = new MainWindow();
             MainWindow.Show();
@@ -174,12 +185,10 @@ namespace FTWPlayer
 
         private void Dispose(bool disposing)
         {
-            if (disposing && (_mutex != null))
-            {
-                _mutex.ReleaseMutex();
-                _mutex.Close();
-                _mutex = null;
-            }
+            if (!disposing || (_mutex == null)) return;
+            _mutex.ReleaseMutex();
+            _mutex.Close();
+            _mutex = null;
         }
 
         public void Dispose()
