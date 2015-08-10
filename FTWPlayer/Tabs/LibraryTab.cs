@@ -6,7 +6,7 @@ namespace FTWPlayer.Tabs
     public class LibraryTab : ITab
     {
         public LibraryTab() { TabObject = new TabItem {Header = "LIBRARY"}; }
-        public TabItem TabObject { get; private set; }
-        public decimal Index { get { return 2; } }
+        public TabItem TabObject { get; }
+        public decimal Index => 2;
     }
 }

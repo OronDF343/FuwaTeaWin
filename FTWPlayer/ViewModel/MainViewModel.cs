@@ -56,18 +56,15 @@ namespace FTWPlayer.ViewModel
             _tmr.Stop();
             PlaybackManager.PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName == "EnableShuffle")
-                    RaisePropertyChanged("PositionTextFormatString");
-                if (args.PropertyName == "CurrentIndex" || args.PropertyName == "ElementCount")
-                    RaisePropertyChanged("OneBasedCurrentIndex");
-                if (args.PropertyName == "CurrentIndexAbsolute" || args.PropertyName == "ElementCount")
-                    RaisePropertyChanged("OneBasedCurrentIndexAbsolute");
-                if (args.PropertyName == "Current")
-                {
-                    RaisePropertyChanged("CurrentAlbumArt"); // Testing: Album Art Display
-                    RaisePropertyChanged("ScrollingTextFormatString"); // Testing: Scrolling Text
-                }
-                if (args.PropertyName != "CurrentState") return;
+                if (args.PropertyName == nameof(IPlaybackManager.EnableShuffle))
+                    RaisePropertyChanged(nameof(PositionTextFormatString));
+                if (args.PropertyName == nameof(IPlaybackManager.CurrentIndex) || args.PropertyName == nameof(PlaybackManager.ElementCount))
+                    RaisePropertyChanged(nameof(OneBasedCurrentIndex));
+                if (args.PropertyName == nameof(IPlaybackManager.CurrentIndexAbsolute) || args.PropertyName == nameof(PlaybackManager.ElementCount))
+                    RaisePropertyChanged(nameof(OneBasedCurrentIndexAbsolute));
+                if (args.PropertyName == nameof(IPlaybackManager.Current))
+                    RaisePropertyChanged(nameof(ScrollingTextFormatString)); // Testing: Scrolling Text
+                if (args.PropertyName != nameof(IPlaybackManager.CurrentState)) return;
                 switch (PlaybackManager.CurrentState)
                 {
                     case PlaybackState.Stopped:
@@ -82,8 +79,7 @@ namespace FTWPlayer.ViewModel
                         break;
                 }
             };
-
-            // TODO: C#6 cleanup
+            
             PreviousCommand = new RelayCommand<RoutedEventArgs>(PreviousButtonClick);
             PlayPauseResumeCommand = new RelayCommand<RoutedEventArgs>(PlayPauseResumeButtonClick);
             NextCommand = new RelayCommand<RoutedEventArgs>(NextButtonClick);
@@ -129,7 +125,7 @@ namespace FTWPlayer.ViewModel
             //Begin post-UI-loading
             MiscUtils.ParseClArgs(Environment.GetCommandLineArgs().ToList());
             _kbdListen = new KeyboardListener();
-            _kbdListen.KeyDown += _kbdListen_KeyDown;
+            _kbdListen.KeyDown += KbdListen_KeyDown;
             Settings.Default.PropertyChanged += (s, e) => 
             {
                 if (e.PropertyName.Equals("EnableKeyboardHook", StringComparison.OrdinalIgnoreCase))
@@ -137,7 +133,7 @@ namespace FTWPlayer.ViewModel
             };
         }
 
-        private void _kbdListen_KeyDown(object sender, RawKeyEventArgs e)
+        private void KbdListen_KeyDown(object sender, RawKeyEventArgs e)
         {
             switch (e.Key)
             {
@@ -164,7 +160,7 @@ namespace FTWPlayer.ViewModel
             PlaybackManager.SendPositionUpdate();
         }
 
-        public IPlaybackManager PlaybackManager { get; private set; }
+        public IPlaybackManager PlaybackManager { get; }
 
         #region Commands
 
@@ -274,8 +270,8 @@ namespace FTWPlayer.ViewModel
         private void ToolTipUpdate(MouseEventArgs e)
         {
             if (!ShiftMode) return;
-            RaisePropertyChanged("MouseX");
-            RaisePropertyChanged("MouseY");
+            RaisePropertyChanged(nameof(MouseX));
+            RaisePropertyChanged(nameof(MouseY));
         }
 
         public ICommand SeekCommand { get; set; }
@@ -334,13 +330,13 @@ namespace FTWPlayer.ViewModel
         private bool _allowDrag = true;
         public bool AllowDrag { get { return _allowDrag; } set { _allowDrag = value; RaisePropertyChanged(); } }
 
-        public Point CurrentMousePosition { get { return NativeMethods.CorrectGetPosition(); } }
-        public double MouseX { get { return CurrentMousePosition.X; } }
-        public double MouseY { get { return CurrentMousePosition.Y; } }
+        public Point CurrentMousePosition => NativeMethods.CorrectGetPosition();
+        public double MouseX => CurrentMousePosition.X;
+        public double MouseY => CurrentMousePosition.Y;
 
-        public string ScrollingTextFormatString { get { return PlaybackManager.Current != null ? "{1} - {2}" : "{0}"; } }
+        public string ScrollingTextFormatString => PlaybackManager.Current != null ? "{1} - {2}" : "{0}";
 
-        public string PositionTextFormatString { get { return PlaybackManager.EnableShuffle ? "{0} ({1}) / {2} > {3} / {4}" : "{0} / {2} > {3} / {4}"; } }
+        public string PositionTextFormatString => PlaybackManager.EnableShuffle ? "{0} ({1}) / {2} > {3} / {4}" : "{0} / {2} > {3} / {4}";
         public int OneBasedCurrentIndex { get { return PlaybackManager.ElementCount > 0 ? PlaybackManager.CurrentIndex + 1 : 0; } set { PlaybackManager.JumpTo(value - 1); } }
         public int OneBasedCurrentIndexAbsolute { get { return PlaybackManager.ElementCount > 0 ? PlaybackManager.CurrentIndexAbsolute + 1 : 0; } set { PlaybackManager.JumpToAbsolute(value - 1); } }
 
@@ -377,7 +373,7 @@ namespace FTWPlayer.ViewModel
         private void RaisePropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public void Dispose()

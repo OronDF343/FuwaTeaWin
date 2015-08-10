@@ -31,7 +31,7 @@ namespace FuwaTea.Lib
         /// <returns></returns>
         public static string GetExeFolder(this Assembly a)
         {
-            var exeFile = Assembly.GetExecutingAssembly().Location;
+            var exeFile = a.Location;
             return Path.GetDirectoryName(exeFile);
         }
 
@@ -42,7 +42,7 @@ namespace FuwaTea.Lib
             var com = company ?? ((AssemblyCompanyAttribute)Attribute.GetCustomAttribute(a, typeof(AssemblyCompanyAttribute), false)).Company;
             var product = appName ?? ((AssemblyProductAttribute)Attribute.GetCustomAttribute(a, typeof(AssemblyProductAttribute), false)).Product;
             // Check if a copy is installed
-            var key = Registry.LocalMachine.OpenSubKey(string.Format(@"Software\{0}\{1}", com, product));
+            var key = Registry.LocalMachine.OpenSubKey($@"Software\{com}\{product}");
             // If no key exists, it isn't installed
             if (key == null) return false;
             // Get location installed to

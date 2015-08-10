@@ -39,14 +39,13 @@ namespace LayerFramework.Exceptions
         public LayerException(string message, Exception innerException, int fallbackDisplayDepth = 1)
             : base(message, innerException)
         {
-            DisplayDepth = innerException is IDepthElement ? ((IDepthElement)innerException).DisplayDepth + 1 : fallbackDisplayDepth;
+            DisplayDepth = (innerException as IDepthElement)?.DisplayDepth + 1 ?? fallbackDisplayDepth;
         }
-
-        // TODO: When C# 6.0 is released, add initializer = 0 and remove the assignment from the first two constructors.
+        
         /// <summary>
         /// How many layers of Inner Exceptions contain useful info?
         /// </summary>
-        public int DisplayDepth { get; private set; }
+        public int DisplayDepth { get; }
 
         public abstract string LayerName { get; }
     }

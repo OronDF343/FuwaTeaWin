@@ -62,7 +62,7 @@ namespace FuwaTea.Wpf.Keyboard
         /// <summary>
         /// Hook ID
         /// </summary>
-        private IntPtr _hookId = IntPtr.Zero;
+        private IntPtr _hookId;
 
         /// <summary>
         /// Asynchronous callback hook.

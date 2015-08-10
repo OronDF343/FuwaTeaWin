@@ -17,10 +17,10 @@ namespace FTWPlayer.Tabs
             TabObject = new EqualizerControl(this);
         }
 
-        public TabItem TabObject { get; private set; }
-        public decimal Index { get { return 1; } }
+        public TabItem TabObject { get; }
+        public decimal Index => 1;
 
-        public IPlaybackManager PlaybackManager { get; private set; }
+        public IPlaybackManager PlaybackManager { get; }
 
         public ICommand ResetEqCommand { get; set; }
 

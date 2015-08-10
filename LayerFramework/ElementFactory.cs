@@ -30,9 +30,9 @@ namespace LayerFramework
     {
         public ElementFactory(string name) { LayerName = name; }
 
-        public string LayerName { get; private set; }
-        public Type ElementInterfaceType { get { return typeof(TElement); } }
-        public Type AttributeType { get { return typeof(TAttribute); } }
+        public string LayerName { get; }
+        public Type ElementInterfaceType => typeof(TElement);
+        public Type AttributeType => typeof(TAttribute);
 
         public void LoadFolder(string folder, ErrorCallback errorCallback)
         {

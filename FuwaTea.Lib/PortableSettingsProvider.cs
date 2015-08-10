@@ -10,6 +10,7 @@ using System.Threading;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using FuwaTea.Annotations;
+using log4net;
 
 namespace FuwaTea.Lib
 {
@@ -104,14 +105,11 @@ namespace FuwaTea.Lib
             }
             catch (Exception ex)
             {
-                //Log.WriteError(string.Concat(Errors.Save_Settings_Error, ":", Environment.NewLine), ex);
+                LogManager.GetLogger(GetType()).Error("Failed to save the setting!", ex);
             }
         }
 
-        XElement SettingsRoot
-        {
-            get { return _settingsXml.Value.Root; }
-        }
+        XElement SettingsRoot => _settingsXml.Value.Root;
 
         object GetValue(SettingsProperty setting)
         {
@@ -120,7 +118,7 @@ namespace FuwaTea.Lib
                : string.Concat("./", LocalSettingsRootName, "/", Environment.MachineName, "/", setting.Name);
 
             var propertyElement = SettingsRoot.XPathSelectElement(propertyPath);
-            return propertyElement == null ? setting.DefaultValue : propertyElement.Value;
+            return propertyElement?.Value ?? setting.DefaultValue;
         }
 
         void SetValue(SettingsPropertyValue setting)
@@ -143,13 +141,13 @@ namespace FuwaTea.Lib
                 Debug.Assert(settingsXml.Root != null, "Null XML root!"); // TODO: Proper assert
                 if (settingsXml.Root.Name.LocalName != SettingsRootName)
                 {
-                    //Log.WriteError(string.Format(Errors.Invalid_Settings_Format_0, filePath));
+                    LogManager.GetLogger(typeof(PortableSettingsProvider)).Error("Invalid settings format!");
                     settingsXml = null;
                 }
             }
             catch (Exception ex)
             {
-                //Log.WriteError(string.Format(Errors.Invalid_Settings_File_0, filePath), ex);
+                LogManager.GetLogger(typeof(PortableSettingsProvider)).Error("Invalid settings file!", ex);
             }
 
             return settingsXml

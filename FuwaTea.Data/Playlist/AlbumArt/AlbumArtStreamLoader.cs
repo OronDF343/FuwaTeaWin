@@ -57,6 +57,7 @@ namespace FuwaTea.Data.Playlist.AlbumArt
             return new FileStream(pathToImage, FileMode.Open, FileAccess.Read, FileShare.Read);
         }
 
-        public IEnumerable<string> SupportedFileTypes { get { return null; } } // TODO: Not Applicable?
+        public IEnumerable<string> SupportedFileTypes => null;
+        // TODO: Not Applicable?
     }
 }

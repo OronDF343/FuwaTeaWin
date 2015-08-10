@@ -24,7 +24,7 @@ namespace FTWPlayer.Tabs
         {
             // TODO: Still leaks memory, also memory is not freed when changing to null. At least changing to a smaller image helps *somewhat*.
             // For now, users who care about the app using over 100MB of memory should avoid loading very large images or switching between songs too often.
-            if (e.PropertyName != "Current") return;
+            if (e.PropertyName != nameof(PlaybackManager.Current)) return;
             if (PlaybackManager.Current == null)
             {
                 CurrentAlbumArt = null;
@@ -48,7 +48,7 @@ namespace FTWPlayer.Tabs
             }
         }
 
-        private ImageSource _albumArt = null;
+        private ImageSource _albumArt;
         [UsedImplicitly]
         public ImageSource CurrentAlbumArt
         {
@@ -60,10 +60,10 @@ namespace FTWPlayer.Tabs
             }
         }
 
-        public TabItem TabObject { get; private set; }
-        public decimal Index { get { return 0; } }
+        public TabItem TabObject { get; }
+        public decimal Index => 0;
 
-        public IPlaybackManager PlaybackManager { get; private set; }
+        public IPlaybackManager PlaybackManager { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -71,7 +71,7 @@ namespace FTWPlayer.Tabs
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

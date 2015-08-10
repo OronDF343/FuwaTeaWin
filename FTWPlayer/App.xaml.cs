@@ -75,7 +75,13 @@ namespace FTWPlayer
                 LogManager.GetLogger(GetType()).Info("Detected argument: Setup File Associations");
                 LayerFactory.LoadFolder(Assembly.GetEntryAssembly().GetExeFolder(), ec, true);
                 var pm = LayerFactory.GetElement<IPlaybackManager>();
-                var key = Registry.LocalMachine.CreateSubKey(string.Format(@"Software\Clients\Media\{0}\Capabilities\FileAssociations", prod));
+                var key = Registry.LocalMachine.CreateSubKey($@"Software\Clients\Media\{prod}\Capabilities\FileAssociations");
+                if (key == null)
+                {
+                    LogManager.GetLogger(GetType()).Error("Failed to create/open registry subkey!");
+                    Shutdown();
+                    return;
+                }
                 var exts = key.GetValueNames();
                 var f = exts.Where(s => !pm.SupportedFileTypes.Contains(s));
                 var t = pm.SupportedFileTypes.Where(s => !exts.Contains(s));
@@ -87,8 +93,9 @@ namespace FTWPlayer
             if (clArgs.Contains("--clean-up-file-associations") && isinst)
             {
                 LogManager.GetLogger(GetType()).Info("Detected argument: Clean Up File Associations");
-                var key = Registry.LocalMachine.CreateSubKey(string.Format(@"Software\Clients\Media\{0}\Capabilities\FileAssociations", prod));
-                foreach (var s in key.GetValueNames()) key.DeleteValue(s);
+                var key = Registry.LocalMachine.CreateSubKey($@"Software\Clients\Media\{prod}\Capabilities\FileAssociations");
+                if (key != null) foreach (var s in key.GetValueNames()) key.DeleteValue(s);
+                else LogManager.GetLogger(GetType()).Error("Failed to create/open registry subkey!");
                 Shutdown();
                 return;
             }

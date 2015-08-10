@@ -43,10 +43,7 @@ namespace FuwaTea.Logic.Playback.NAudio
         /// <summary>
         /// WaveFormat
         /// </summary>
-        public WaveFormat WaveFormat
-        {
-            get { return _source.WaveFormat; }
-        }
+        public WaveFormat WaveFormat => _source.WaveFormat;
 
         /// <summary>
         /// Reads samples from this sample provider

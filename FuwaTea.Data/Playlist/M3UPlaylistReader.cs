@@ -29,10 +29,10 @@ namespace FuwaTea.Data.Playlist
         {
             try
             {
-                var dir = Path.GetDirectoryName(path).TrimEnd('\\');
+                var dir = Path.GetDirectoryName(path)?.TrimEnd('\\');
                 return new List<string>(from f in File.ReadAllLines(path)
                                         where !string.IsNullOrWhiteSpace(f) && !f.StartsWith("#EXT")
-                                        select f[1] == ':' || f.StartsWith("\\\\") ? f : (dir + "\\" + f));
+                                        select f[1] == ':' || f.StartsWith(@"\\") ? f : (dir + @"\" + f));
             }
             catch (Exception e)
             {
@@ -40,6 +40,6 @@ namespace FuwaTea.Data.Playlist
             }
         }
 
-        public IEnumerable<string> SupportedFileTypes { get { return new[] {".m3u", ".m3u8"}; } }
+        public IEnumerable<string> SupportedFileTypes => new[] {".m3u", ".m3u8"};
     }
 }

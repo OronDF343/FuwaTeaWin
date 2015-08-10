@@ -28,20 +28,17 @@ namespace FuwaTea.Wpf.Controls
     /// <summary>
     /// Put this in a <see cref="Canvas"/> with ClipToBounds="True"
     /// </summary>
-    public partial class ScrollingTextBlockComponent : TextBlock
+    public partial class ScrollingTextBlockComponent
     {
         public ScrollingTextBlockComponent()
         {
             InitializeComponent();
             var dpd = DependencyPropertyDescriptor.FromProperty(FlowDirectionProperty, typeof(ScrollingTextBlockComponent));
-            if (dpd != null)
+            dpd?.AddValueChanged(this, delegate
             {
-                dpd.AddValueChanged(this, delegate
-                {
-                    var tx = GetValue(ScrollingTextProperty);
-                    ScrollingTextChanged(this, new DependencyPropertyChangedEventArgs(ScrollingTextProperty, tx + " [INVALID]", tx));
-                });
-            }
+                var tx = GetValue(ScrollingTextProperty);
+                ScrollingTextChanged(this, new DependencyPropertyChangedEventArgs(ScrollingTextProperty, tx + " [INVALID]", tx));
+            });
         }
 
         public static readonly DependencyProperty ScrollingTextProperty = DependencyProperty.Register("ScrollingText", typeof(string),
@@ -115,12 +112,12 @@ namespace FuwaTea.Wpf.Controls
             tbox.TranslateTransform.BeginAnimation(TranslateTransform.XProperty, doubleAnimation);
         }
 
-        public static double Round(double src)
+        private static double Round(double src)
         {
             return double.Parse(src.ToString("F2"));
         }
 
-        public static bool IsRtlString(string s)
+        private static bool IsRtlString(string s)
         {
             if (s.Length < 1) return false;
             var c = char.ConvertToUtf32(s, 0);

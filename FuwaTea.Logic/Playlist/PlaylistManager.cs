@@ -34,7 +34,7 @@ namespace FuwaTea.Logic.Playlist
             LoadedPlaylists = new Dictionary<string, IPlaylist>();
         }
 
-        public Dictionary<string, IPlaylist> LoadedPlaylists { get; private set; }
+        public Dictionary<string, IPlaylist> LoadedPlaylists { get; }
 
         private string _selectedId;
         public string SelectedPlaylistId
@@ -44,12 +44,12 @@ namespace FuwaTea.Logic.Playlist
             {
                 if (LoadedPlaylists.ContainsKey(value)) _selectedId = value;
                 OnPropertyChanged();
-                OnPropertyChanged("SelectedPlaylist");
+                OnPropertyChanged(nameof(SelectedPlaylist));
             }
         }
 
-        public IPlaylist SelectedPlaylist { get { return SelectedPlaylistId != null && LoadedPlaylists.ContainsKey(SelectedPlaylistId) ? LoadedPlaylists[SelectedPlaylistId] : null; } }
-        public IEnumerable<string> ReadableFileTypes { get { return LayerFactory.GetElements<IPlaylistReader>().SelectMany(r => r.SupportedFileTypes); } }
+        public IPlaylist SelectedPlaylist => SelectedPlaylistId != null && LoadedPlaylists.ContainsKey(SelectedPlaylistId) ? LoadedPlaylists[SelectedPlaylistId] : null;
+        public IEnumerable<string> ReadableFileTypes => LayerFactory.GetElements<IPlaylistReader>().SelectMany(r => r.SupportedFileTypes);
 
         public void CreatePlaylist(string name)
         {
@@ -62,7 +62,7 @@ namespace FuwaTea.Logic.Playlist
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

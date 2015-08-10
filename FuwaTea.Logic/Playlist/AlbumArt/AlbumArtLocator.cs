@@ -26,21 +26,15 @@ namespace FuwaTea.Logic.Playlist.AlbumArt
     [LogicElement("Album Art Locator")]
     public class AlbumArtLocator : IAlbumArtLocator
     {
-        public AlbumArtLocator()
+        public AlbumArtLocations[] LocationPriority { get; set; } =
         {
-            // TODO: C#6 properties default values
-            LocationPriority = new[]
-            {
-                AlbumArtLocations.Custom,
-                AlbumArtLocations.Embedded,
-                AlbumArtLocations.InFolder,
-                AlbumArtLocations.UpFolder,
-                AlbumArtLocations.DownFolder
-            };
-            ImageTypeDictionary = new HashSet<string> { ".jpg", ".png", ".bmp" }; // TODO
-        }
-        public AlbumArtLocations[] LocationPriority { get; set; }
-        public HashSet<string> ImageTypeDictionary { get; set; }
+            AlbumArtLocations.Custom,
+            AlbumArtLocations.Embedded,
+            AlbumArtLocations.InFolder,
+            AlbumArtLocations.UpFolder,
+            AlbumArtLocations.DownFolder
+        };
+        public HashSet<string> ImageTypeDictionary { get; set; } = new HashSet<string> { ".jpg", ".png", ".bmp" };
 
         public Stream GetAlbumArt(IMusicInfoModel m)
         {
@@ -58,7 +52,7 @@ namespace FuwaTea.Logic.Playlist.AlbumArt
                         img = loader.GetImageInFolder(m.FileInfo.DirectoryName, ImageTypeDictionary);
                         break;
                     case AlbumArtLocations.UpFolder:
-                        if (m.FileInfo.Directory.Parent != null)
+                        if (m.FileInfo.Directory?.Parent != null)
                             img = loader.GetImageInFolder(m.FileInfo.Directory.Parent.FullName, ImageTypeDictionary);
                         break;
                     case AlbumArtLocations.DownFolder:

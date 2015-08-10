@@ -14,8 +14,8 @@ namespace FTWPlayer.Tabs
             TabObject = new SettingsView(this);
             SettingsPropertyValues = new ObservableCollection<SettingsPropertyValue>(Settings.Default.PropertyValues.OfType<SettingsPropertyValue>());
         }
-        public TabItem TabObject { get; private set; }
-        public decimal Index { get { return 3; } }
+        public TabItem TabObject { get; }
+        public decimal Index => 3;
         public ObservableCollection<SettingsPropertyValue> SettingsPropertyValues { get; private set; } 
     }
 }

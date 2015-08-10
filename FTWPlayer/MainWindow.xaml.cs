@@ -50,7 +50,7 @@ namespace FTWPlayer
         {
             // Single Instance Application hook
             var source = (HwndSource)PresentationSource.FromVisual(this);
-            source.AddHook(HwndSourceHook); // should never be null
+            source?.AddHook(HwndSourceHook); // should never be null
             // Needs to happen here:
             FlowDirectionUpdater.UpdateFlowDirection(LocalizeDictionary.Instance.Culture.TextInfo.IsRightToLeft ? FlowDirection.RightToLeft : FlowDirection.LeftToRight);
         }

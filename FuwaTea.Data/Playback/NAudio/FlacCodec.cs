@@ -32,9 +32,9 @@ namespace FuwaTea.Data.Playback.NAudio
             return new FlacReader(path);
         }
 
-        public IEnumerable<string> SupportedFileTypes { get { return new[] {".flac"}; } }
-        public bool IsSampleProvider { get { return true; } }
-        public bool CanResume { get { return true; } }
-        public bool CanSeek { get { return true; } }
+        public IEnumerable<string> SupportedFileTypes => new[] {".flac"};
+        public bool IsSampleProvider => true;
+        public bool CanResume => true;
+        public bool CanSeek => true;
     }
 }

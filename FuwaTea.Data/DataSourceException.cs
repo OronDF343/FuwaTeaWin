@@ -33,6 +33,6 @@ namespace FuwaTea.Data
             : base(message, innerException) { SourcePath = path; }
 
         public string SourcePath { get; set; }
-        public override string LayerName { get { return "Data"; } }
+        public override string LayerName => "Data";
     }
 }

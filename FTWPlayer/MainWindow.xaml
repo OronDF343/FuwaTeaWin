@@ -12,7 +12,6 @@
         xmlns:ignore="http://www.ignore.com"
         xmlns:hc="http://www.hardcodet.net/taskbar"
         mc:Ignorable="d ignore"
-        xmlns:diagnostics="clr-namespace:System.Diagnostics;assembly=WindowsBase"
         Height="540"
         Width="540"
         Title="FTW Player"
@@ -347,12 +346,13 @@
                             fuwa:OptionalToolTip.ToolTipContent="{lex:Loc ExitToolTip}" />
 
                     <!-- Progress Bar -->
+                    <!-- ReSharper disable once Xaml.MissingGridIndex -->
                     <Grid Grid.Column="0" Grid.ColumnSpan="12"
                           Panel.ZIndex="{Binding ShiftMode, Converter={StaticResource BZiConv}}"
                           fuwa:CopyToToolTipTag.Enabled="True">
                         <Grid.Style>
                             <Style TargetType="Grid">
-                                <Setter Property="Grid.Row" Value="1" />
+                                <Setter Property="Row" Value="1" />
                                 <Setter Property="Height" Value="32" />
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Expanded}" Value="True">

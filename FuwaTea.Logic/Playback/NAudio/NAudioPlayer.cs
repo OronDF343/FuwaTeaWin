@@ -71,7 +71,7 @@ namespace FuwaTea.Logic.Playback.NAudio
             // Create player if needed
             if (_lastDevice != device.AsGuid() || _wavePlayer == null)
             {
-                if (_wavePlayer != null) _wavePlayer.Dispose();
+                _wavePlayer?.Dispose();
                 _wavePlayer = new DirectSoundOut(_lastDevice = device.AsGuid());
             }
             // Init codec
@@ -126,7 +126,7 @@ namespace FuwaTea.Logic.Playback.NAudio
             _equalizer = null;
         }
 
-        public bool IsSomethingLoaded { get { return _waveStream != null; } }
+        public bool IsSomethingLoaded => _waveStream != null;
         public IEnumerable<string> SupportedFileTypes { get { return _codecs.SelectMany(c => c.SupportedFileTypes).Distinct(); } }
 
         public void Play()
@@ -150,23 +150,20 @@ namespace FuwaTea.Logic.Playback.NAudio
         public void Stop()
         {
             _wavePlayer.PlaybackStopped -= WavePlayer_PlaybackStopped;
-            if (_wavePlayer != null) _wavePlayer.Stop();
+            _wavePlayer?.Stop();
             Position = TimeSpan.Zero;
         }
 
-        public TimeSpan Duration
-        {
-            get { return _waveStream != null ? _waveStream.TotalTime : TimeSpan.Zero; }
-        }
+        public TimeSpan Duration => _waveStream?.TotalTime ?? TimeSpan.Zero;
 
         public TimeSpan Position
         {
-            get { return _waveStream != null ? _waveStream.CurrentTime : TimeSpan.Zero; }
+            get { return _waveStream?.CurrentTime ?? TimeSpan.Zero; }
             set { if (_waveStream != null) _waveStream.CurrentTime = value; }
         }
 
-        public bool CanResume { get { return true; } }
-        public bool CanSeek { get { return _waveStream != null && _waveStream.CanSeek; } }
+        public bool CanResume => true;
+        public bool CanSeek => _waveStream != null && _waveStream.CanSeek;
 
         public event EventHandler PlaybackFinished;
 
@@ -201,7 +198,7 @@ namespace FuwaTea.Logic.Playback.NAudio
             }
         }
 
-        public bool IsEqualizerSupported { get { return true; } }
+        public bool IsEqualizerSupported => true;
         private bool _enableEqualizer;
         public bool EnableEqualizer
         {

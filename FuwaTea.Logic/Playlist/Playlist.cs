@@ -69,8 +69,8 @@ namespace FuwaTea.Logic.Playlist
             {
 
                 var j = 1;
-                for (; !(selection[j - 1] < newStartIndex && selection[j] >= newStartIndex); ++j);
-                 // IndexOutOfRange happens in unexpected case
+                for (; !(selection[j - 1] < newStartIndex && selection[j] >= newStartIndex); ++j) { }
+                // IndexOutOfRange happens in unexpected case
                 var arr1 = new int[j];
                 var arr2 = new int[selection.Length - j];
                 Array.Copy(selection, arr1, arr1.Length);
@@ -83,6 +83,7 @@ namespace FuwaTea.Logic.Playlist
         public void MoveUp(int[] selection)
         {
             Array.Sort(selection);
+            // ReSharper disable once ForCanBeConvertedToForeach
             for (var i = 0; i < selection.Length; ++i)
                 Move(selection[i], selection[i] - 1);
         }
@@ -113,7 +114,7 @@ namespace FuwaTea.Logic.Playlist
             ArrayList.Adapter(this).Sort(new SortComparer<IMusicInfoModel>(comparison));
         }
 
-        public IPlaylistPositionManager PositionManager { get; private set; }
+        public IPlaylistPositionManager PositionManager { get; }
 
         private int[] _shuffleMap;
         private readonly Random _randomizer = new Random();

@@ -50,7 +50,7 @@ namespace FuwaTea.Wpf.Extensions
             while (_repo == null && ep != null)
             {
                 _repo = ConfigSource.GetRepository(ep);
-                ep = ep is FrameworkElement ? ((FrameworkElement)ep).Parent : null;
+                ep = (ep as FrameworkElement)?.Parent;
             }
             if (_repo != null) _repo.PropertyChanged += RepoOnPropertyChanged;
             return _repo != null;

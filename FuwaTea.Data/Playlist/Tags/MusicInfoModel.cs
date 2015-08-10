@@ -24,14 +24,14 @@ namespace FuwaTea.Data.Playlist.Tags
 {
     public class MusicInfoModel : IMusicInfoModel
     {
-        public Guid UniqueId { get; private set; }
-        public FileInfo FileInfo { get; private set; }
-        public string FilePath { get { return FileInfo.FullName; } }
-        public string FileName { get { return FileInfo.Name; } }
-        public string FileType { get { return Path.GetExtension(FilePath); } }
-        public TimeSpan Duration { get; private set; }
-        public int Bitrate { get; private set; }
-        public Tag Tag { get; private set; } // TODO: create new tag and remove taglib dependency from common
+        public Guid UniqueId { get; }
+        public FileInfo FileInfo { get; }
+        public string FilePath => FileInfo.FullName;
+        public string FileName => FileInfo.Name;
+        public string FileType => Path.GetExtension(FilePath);
+        public TimeSpan Duration { get; }
+        public int Bitrate { get; }
+        public Tag Tag { get; } // TODO: create new tag and remove taglib dependency from common
 
         public MusicInfoModel(string path, Tag tag, TimeSpan duration, int bitrate)
         {

@@ -54,7 +54,7 @@ namespace FuwaTea.Wpf.Helpers
 
         private static void StylesChanged(DependencyObject target, DependencyPropertyChangedEventArgs e)
         {
-            if (!typeof(FrameworkElement).IsAssignableFrom(target.GetType()))
+            if (!(target is FrameworkElement))
                 throw new InvalidCastException("Target must be FrameworkElement");
 
             var element = (FrameworkElement)target;
@@ -74,11 +74,11 @@ namespace FuwaTea.Wpf.Helpers
             element.Style = MergeStyles(styles);
         }
 
-        private static Style MergeStyles(ICollection<Style> Styles)
+        private static Style MergeStyles(ICollection<Style> styles)
         {
             var newStyle = new Style();
 
-            foreach (var style in Styles)
+            foreach (var style in styles)
             {
                 foreach (var setter in style.Setters)
                     newStyle.Setters.Add(setter);

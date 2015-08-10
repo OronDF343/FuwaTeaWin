@@ -18,7 +18,7 @@ Contributing
 Please use the appropriate ANSI codepage for installer language files (*.isl) and licenses - unicode is not supported.
 Example: msg_he.isl and gplv3-hebrew.txt are encoded in Windows-1255.
 
-Compiling: Visual Studio 2013 or 2015 required. Community Edition is recommended. Installer requires Inno Setup **Unicode** v5.5.6 or newer.
+Compiling: **Visual Studio 2015** required (uses new C#6 features). Community Edition is recommended. Installer requires Inno Setup **Unicode** v5.5.6 or newer.
 
 Donations:
 ----------

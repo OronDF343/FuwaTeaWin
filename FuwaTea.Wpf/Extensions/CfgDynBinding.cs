@@ -40,7 +40,7 @@ namespace FuwaTea.Wpf.Extensions
 
         private void UpdateNewValue()
         {
-            OnPropertyChanged("Value");
+            OnPropertyChanged(nameof(Value));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -49,7 +49,7 @@ namespace FuwaTea.Wpf.Extensions
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 
@@ -60,7 +60,7 @@ namespace FuwaTea.Wpf.Extensions
             Binding = cb;
         }
 
-        internal CfgDynBinding Binding { get; private set; }
+        internal CfgDynBinding Binding { get; }
 
         internal string Key { get; private set; }
 

@@ -39,6 +39,8 @@ namespace FuwaTea.Data.Playlist
             }
         }
 
-        public IEnumerable<string> SupportedFileTypes { get { return new[] { ".m3u", ".m3u8" }; } } // TODO: add description for each type
+        public IEnumerable<string> SupportedFileTypes => new[] { ".m3u", ".m3u8" };
+
+        // TODO: add description for each type
     }
 }

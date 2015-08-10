@@ -22,7 +22,7 @@ namespace LayerFramework.Exceptions
 {
     public class ActivatorException : Exception, IDepthElement
     {
-        public Type TryType { get; private set; }
+        public Type TryType { get; }
 
         public ActivatorException(Type tryType, Exception innerException)
             : base("", innerException)
@@ -30,14 +30,8 @@ namespace LayerFramework.Exceptions
             TryType = tryType;
         }
 
-        public override string Message
-        {
-            get { return string.Format("Failed to create an instance of the type {0}!", TryType.FullName); }
-        }
+        public override string Message => $"Failed to create an instance of the type {TryType.FullName}!";
 
-        public int DisplayDepth
-        {
-            get { return InnerException is IDepthElement ? ((IDepthElement)InnerException).DisplayDepth + 1 : 1; }
-        }
+        public int DisplayDepth => (InnerException as IDepthElement)?.DisplayDepth + 1 ?? 1;
     }
 }

@@ -23,18 +23,14 @@ namespace LayerFramework.Exceptions
     {
         public ElementNotFoundException(string layer, Type modelType)
         {
-            _layerName = layer;
+            LayerName = layer;
             ElementType = modelType;
         }
 
-        public Type ElementType { get; private set; }
+        public Type ElementType { get; }
 
-        public override string Message
-        {
-            get { return string.Format("No {0} layer elements found for type {1}!", LayerName, ElementType.FullName); }
-        }
+        public override string Message => $"No {LayerName} layer elements found for type {ElementType.FullName}!";
 
-        private readonly string _layerName;
-        public override string LayerName { get { return _layerName; } }
+        public override string LayerName { get; }
     }
 }

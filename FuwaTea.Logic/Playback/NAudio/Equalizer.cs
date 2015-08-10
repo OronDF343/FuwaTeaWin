@@ -100,10 +100,7 @@ namespace FuwaTea.Logic.Playback.NAudio
             CreateFilters();
         }
 
-        public WaveFormat WaveFormat
-        {
-            get { return _sourceProvider.WaveFormat; }
-        }
+        public WaveFormat WaveFormat => _sourceProvider.WaveFormat;
 
         public int Read(float[] buffer, int offset, int count)
         {

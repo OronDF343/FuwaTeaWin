@@ -22,7 +22,7 @@ using System.Windows.Media;
 
 namespace FTWPlayer
 {
-    internal class NativeMethods
+    internal static class NativeMethods
     {
         // Mouse stuff:
         [StructLayout(LayoutKind.Sequential)]

@@ -39,34 +39,28 @@ namespace FuwaTea.Data.Playlist.Tags
                 }
                 var model = tagFile == null ? new MusicInfoModel(path, null, TimeSpan.Zero, 0)
                                             : new MusicInfoModel(path, tagFile.Tag, tagFile.Properties.Duration, tagFile.Properties.AudioBitrate);
-                if (tagFile != null) tagFile.Dispose(); // TODO: check if there is ObjectDisposedException
+                tagFile?.Dispose(); // TODO: check if there is ObjectDisposedException
                 stream.Close();
                 return model;
             }
         }
 
-        public IEnumerable<string> SupportedFileTypes 
+        public IEnumerable<string> SupportedFileTypes => new[]
         {
-            get // TODO: double-check
-            {
-                return new[]
-                {
-                    ".aac",
-                    ".m4a",
-                    ".aiff",
-                    ".ape",
-                    ".asf",
-                    ".aud",
-                    ".flac",
-                    ".ogg",
-                    ".mp3",
-                    ".wav",
-                    ".wv",
-                    ".adts",
-                    ".wma",
-                    ".mka"
-                };
-            }
-        }
+            ".aac",
+            ".m4a",
+            ".aiff",
+            ".ape",
+            ".asf",
+            ".aud",
+            ".flac",
+            ".ogg",
+            ".mp3",
+            ".wav",
+            ".wv",
+            ".adts",
+            ".wma",
+            ".mka"
+        };
     }
 }

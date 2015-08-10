@@ -30,7 +30,7 @@ namespace FuwaTea.Logic.Playlist
         {
             _playlist = pm;
             _playlist.CollectionChanged +=
-                (sender, args) => { if (args.NewItems.Contains(Current)) OnPropertyChanged("Current"); OnPropertyChanged("ElementCount"); };
+                (sender, args) => { if (args.NewItems.Contains(Current)) OnPropertyChanged(nameof(Current)); OnPropertyChanged(nameof(ElementCount)); };
         }
 
         private readonly IPlaylist _playlist;
@@ -54,10 +54,7 @@ namespace FuwaTea.Logic.Playlist
             }
         }
 
-        public IMusicInfoModel Current
-        {
-            get { return _playlist.Count > CurrentIndex ? _playlist[EnsureAbsoluteIndex(CurrentIndex)] : null; }
-        }
+        public IMusicInfoModel Current => _playlist.Count > CurrentIndex ? _playlist[EnsureAbsoluteIndex(CurrentIndex)] : null;
 
         private int _index;
 
@@ -69,14 +66,14 @@ namespace FuwaTea.Logic.Playlist
                 var temp = _index;
                 _index = value;
                 if (temp == _index) return;
-                OnPropertyChanged("CurrentIndexAbsolute");
+                OnPropertyChanged(nameof(CurrentIndexAbsolute));
                 OnPropertyChanged();
-                OnPropertyChanged("Current");
+                OnPropertyChanged(nameof(Current));
             }
         }
 
-        public int CurrentIndexAbsolute { get { return EnsureAbsoluteIndex(CurrentIndex); } }
-        public int ElementCount { get { return _playlist.Count; } }
+        public int CurrentIndexAbsolute => EnsureAbsoluteIndex(CurrentIndex);
+        public int ElementCount => _playlist.Count;
 
         private int EnsureAbsoluteIndex(int index)
         {
@@ -115,9 +112,9 @@ namespace FuwaTea.Logic.Playlist
         public void Reset()
         {
             _index = OptionallyShuffledIndex(0);
-            OnPropertyChanged("CurrentIndexAbsolute");
-            OnPropertyChanged("CurrentIndex");
-            OnPropertyChanged("Current");
+            OnPropertyChanged(nameof(CurrentIndexAbsolute));
+            OnPropertyChanged(nameof(CurrentIndex));
+            OnPropertyChanged(nameof(Current));
         }
 
         public IMusicInfoModel Peek(int index)
@@ -130,7 +127,7 @@ namespace FuwaTea.Logic.Playlist
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -31,10 +31,10 @@ namespace FuwaTea.Data.Playback.NAudio
             return new AudioFileReader(path);
         }
 
-        public IEnumerable<string> SupportedFileTypes { get { return new[] { ".mp3", ".wma", ".m4a", ".aac" }; } }
-        public bool IsSampleProvider { get { return true; } }
-        public bool CanResume { get { return true; } }
-        public bool CanSeek { get { return true; } }
+        public IEnumerable<string> SupportedFileTypes => new[] { ".mp3", ".wma", ".m4a", ".aac" };
+        public bool IsSampleProvider => true;
+        public bool CanResume => true;
+        public bool CanSeek => true;
     }
 
     [DataElement("MediaFoundation on Windows 7 and higher (ADTS)")]
@@ -46,10 +46,10 @@ namespace FuwaTea.Data.Playback.NAudio
             return new AudioFileReader(path);
         }
 
-        public IEnumerable<string> SupportedFileTypes { get { return new[] { ".adts" }; } }
-        public bool IsSampleProvider { get { return true; } }
-        public bool CanResume { get { return true; } }
-        public bool CanSeek { get { return true; } }
+        public IEnumerable<string> SupportedFileTypes => new[] { ".adts" };
+        public bool IsSampleProvider => true;
+        public bool CanResume => true;
+        public bool CanSeek => true;
     }
 
     [DataElement("MediaFoundation on Windows 8 and higher (AC3)")]
@@ -61,10 +61,10 @@ namespace FuwaTea.Data.Playback.NAudio
             return new AudioFileReader(path);
         }
 
-        public IEnumerable<string> SupportedFileTypes { get { return new[] { ".ac3" }; } }
-        public bool IsSampleProvider { get { return true; } }
-        public bool CanResume { get { return true; } }
-        public bool CanSeek { get { return true; } }
+        public IEnumerable<string> SupportedFileTypes => new[] { ".ac3" };
+        public bool IsSampleProvider => true;
+        public bool CanResume => true;
+        public bool CanSeek => true;
     }
 
     [DataElement("MediaFoundation on Windows 10 and higher (FLAC)")]
@@ -76,9 +76,9 @@ namespace FuwaTea.Data.Playback.NAudio
             return new AudioFileReader(path);
         }
 
-        public IEnumerable<string> SupportedFileTypes { get { return new[] { ".flac" }; } }
-        public bool IsSampleProvider { get { return true; } }
-        public bool CanResume { get { return true; } }
-        public bool CanSeek { get { return true; } }
+        public IEnumerable<string> SupportedFileTypes => new[] { ".flac" };
+        public bool IsSampleProvider => true;
+        public bool CanResume => true;
+        public bool CanSeek => true;
     }
 }

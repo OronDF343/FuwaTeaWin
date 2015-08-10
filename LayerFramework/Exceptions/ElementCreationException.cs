@@ -24,18 +24,14 @@ namespace LayerFramework.Exceptions
         public ElementCreationException(string layer, Type elementType, Exception innerException, int fallbackDisplayDepth = 1)
             : base(innerException, fallbackDisplayDepth)
         {
-            _layerName = layer;
+            LayerName = layer;
             ElementType = elementType;
         }
 
-        public Type ElementType { get; private set; }
+        public Type ElementType { get; }
 
-        public override string Message
-        {
-            get { return string.Format("Failed to create an instance of the {0} layer element {1}!", LayerName, ElementType.FullName); }
-        }
+        public override string Message => $"Failed to create an instance of the {LayerName} layer element {ElementType.FullName}!";
 
-        private readonly string _layerName;
-        public override string LayerName { get { return _layerName; } }
+        public override string LayerName { get; }
     }
 }

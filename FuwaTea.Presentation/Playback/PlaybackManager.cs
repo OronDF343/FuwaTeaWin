@@ -40,12 +40,12 @@ namespace FuwaTea.Presentation.Playback
             _playlistManager = LayerFactory.GetElement<IPlaylistManager>();
             _playlistManager.PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName != "SelectedPlaylist") return;
+                if (args.PropertyName != nameof(IPlaylistManager.SelectedPlaylist)) return;
                 LogManager.GetLogger(GetType()).Debug("SelectedPlaylist changed!");
                 Stop();
                 ChangePositionManager();
-                OnPropertyChanged("ElementCount");
-                OnPropertyChanged("Current");
+                OnPropertyChanged(nameof(ElementCount));
+                OnPropertyChanged(nameof(Current));
                 LoadCurrentFile();
             };
             ChangePositionManager(true);
@@ -74,7 +74,7 @@ namespace FuwaTea.Presentation.Playback
 
         private void PositionManagerRefOnPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
-            if (args.PropertyName == "Current")
+            if (args.PropertyName == nameof(IPlaylistPositionManager.Current))
             {
                 // No matter what, when the current song changes it is played here. No need to do this anywhere else!
                 // If we were playing before, continue playing. If we were stopped, don't continue. Simple.
@@ -84,9 +84,9 @@ namespace FuwaTea.Presentation.Playback
                 LoadCurrentFile();
                 if (previousState != PlaybackState.Stopped) PlayPauseResume();
             }
-            if (args.PropertyName == "EnableShuffle") return;
+            if (args.PropertyName == nameof(IPlaylistPositionManager.EnableShuffle)) return;
             var handler = PropertyChanged;
-            if (handler != null) handler(this, args);
+            handler?.Invoke(this, args);
         }
 
         private readonly IPlaylistManager _playlistManager;
@@ -120,7 +120,7 @@ namespace FuwaTea.Presentation.Playback
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 
@@ -141,10 +141,10 @@ namespace FuwaTea.Presentation.Playback
             }
         }
 
-        public IMusicInfoModel Current { get { return _positionManagerRef.Current; } }
-        public int CurrentIndex { get { return _positionManagerRef.CurrentIndex; } }
-        public int CurrentIndexAbsolute { get { return _positionManagerRef.CurrentIndexAbsolute; } }
-        public int ElementCount { get { return _positionManagerRef.ElementCount; } }
+        public IMusicInfoModel Current => _positionManagerRef.Current;
+        public int CurrentIndex => _positionManagerRef.CurrentIndex;
+        public int CurrentIndexAbsolute => _positionManagerRef.CurrentIndexAbsolute;
+        public int ElementCount => _positionManagerRef.ElementCount;
 
         public bool Next()
         {
@@ -251,18 +251,18 @@ namespace FuwaTea.Presentation.Playback
             } 
             catch (Exception ex)
             {
-                LogManager.GetLogger(GetType()).Error(string.Format("Failed to load {0} for playback on the device {1} because the selected IAudioPlayer {2} threw an exception:", Current.FilePath, "\"default\"", _currentPlayer.GetType().FullName), ex);
+                LogManager.GetLogger(GetType()).Error($"Failed to load {Current.FilePath} for playback on the device {"\"default\""} because the selected IAudioPlayer {_currentPlayer.GetType().FullName} threw an exception:", ex);
                 // TODO: show messages from this function
                 return;
             }
-            OnPropertyChanged("Duration");
+            OnPropertyChanged(nameof(Duration));
             _currentPlayer.PlaybackFinished += CurrentPlayer_PlaybackFinished;
-            OnPropertyChanged("CanResume");
-            OnPropertyChanged("CanSeek");
+            OnPropertyChanged(nameof(CanResume));
+            OnPropertyChanged(nameof(CanSeek));
             _currentPlayer.Volume = Volume;
             _currentPlayer.LeftVolume = LeftVolume;
             _currentPlayer.RightVolume = RightVolume;
-            OnPropertyChanged("IsEqualizerSupported");
+            OnPropertyChanged(nameof(IsEqualizerSupported));
             _currentPlayer.EnableEqualizer = EnableEqualizer;
             // Make sure the position shown is up-to-date
             SendPositionUpdate();
@@ -273,10 +273,10 @@ namespace FuwaTea.Presentation.Playback
             if (_currentPlayer == null) return;
             _currentPlayer.PlaybackFinished -= CurrentPlayer_PlaybackFinished;
             _currentPlayer.Unload();
-            OnPropertyChanged("Duration");
-            OnPropertyChanged("CanResume");
-            OnPropertyChanged("CanSeek");
-            OnPropertyChanged("IsEqualizerSupported");
+            OnPropertyChanged(nameof(Duration));
+            OnPropertyChanged(nameof(CanResume));
+            OnPropertyChanged(nameof(CanSeek));
+            OnPropertyChanged(nameof(IsEqualizerSupported));
         }
 
         private void CurrentPlayer_PlaybackFinished(object sender, EventArgs eventArgs)
@@ -309,7 +309,7 @@ namespace FuwaTea.Presentation.Playback
             }
         }
 
-        public bool IsSomethingLoaded { get { return _currentPlayer != null && _currentPlayer.IsSomethingLoaded; } }
+        public bool IsSomethingLoaded => _currentPlayer != null && _currentPlayer.IsSomethingLoaded;
 
         public IEnumerable<string> SupportedFileTypes { get { return _audioPlayers.SelectMany(p => p.SupportedFileTypes); } }
 
@@ -337,7 +337,7 @@ namespace FuwaTea.Presentation.Playback
 
         public void Stop()
         {
-            if (_currentPlayer != null) _currentPlayer.Stop();
+            _currentPlayer?.Stop();
             CurrentState = PlaybackState.Stopped;
         }
 
@@ -357,11 +357,11 @@ namespace FuwaTea.Presentation.Playback
         private LoopTypes _loop;
         public LoopTypes LoopType { get { return _loop; } set { _loop = value; OnPropertyChanged(); } }
         
-        public TimeSpan Duration { get { return _currentPlayer != null ? _currentPlayer.Duration : TimeSpan.Zero; } }
+        public TimeSpan Duration => _currentPlayer?.Duration ?? TimeSpan.Zero;
 
         public TimeSpan Position
         {
-            get { return _currentPlayer != null ? _currentPlayer.Position : TimeSpan.Zero; }
+            get { return _currentPlayer?.Position ?? TimeSpan.Zero; }
             set
             {
                 if (_currentPlayer == null) return;
@@ -372,11 +372,11 @@ namespace FuwaTea.Presentation.Playback
 
         public void SendPositionUpdate()
         {
-            OnPropertyChanged("Position");
+            OnPropertyChanged(nameof(Position));
         }
 
-        public bool CanResume { get { return _currentPlayer != null && _currentPlayer.CanResume; } }
-        public bool CanSeek { get { return _currentPlayer != null && _currentPlayer.CanSeek; } }
+        public bool CanResume => _currentPlayer != null && _currentPlayer.CanResume;
+        public bool CanSeek => _currentPlayer != null && _currentPlayer.CanSeek;
 
         private decimal _volume = 1.0m;
         public decimal Volume
@@ -412,7 +412,7 @@ namespace FuwaTea.Presentation.Playback
             }
         }
 
-        public bool IsEqualizerSupported { get { return _currentPlayer != null && _currentPlayer.IsEqualizerSupported; } }
+        public bool IsEqualizerSupported => _currentPlayer != null && _currentPlayer.IsEqualizerSupported;
 
         private bool _enableEq;
         public bool EnableEqualizer
@@ -429,6 +429,6 @@ namespace FuwaTea.Presentation.Playback
             }
         }
 
-        public ObservableCollection<EqualizerBand> EqualizerBands { get; private set; }
+        public ObservableCollection<EqualizerBand> EqualizerBands { get; }
     }
 }
