@@ -126,9 +126,10 @@ namespace FTWPlayer.ViewModel
             MiscUtils.ParseClArgs(Environment.GetCommandLineArgs().ToList());
             _kbdListen = new KeyboardListener();
             _kbdListen.KeyDown += KbdListen_KeyDown;
+            _kbdListen.IsEnabled = Settings.Default.EnableKeyboardHook;
             Settings.Default.PropertyChanged += (s, e) => 
             {
-                if (e.PropertyName.Equals("EnableKeyboardHook", StringComparison.OrdinalIgnoreCase))
+                if (e.PropertyName == nameof(Settings.Default.EnableKeyboardHook))
                     _kbdListen.IsEnabled = Settings.Default.EnableKeyboardHook;
             };
         }
