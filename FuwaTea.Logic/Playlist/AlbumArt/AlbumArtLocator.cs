@@ -58,7 +58,8 @@ namespace FuwaTea.Logic.Playlist.AlbumArt
                         img = loader.GetImageInFolder(m.FileInfo.DirectoryName, ImageTypeDictionary);
                         break;
                     case AlbumArtLocations.UpFolder:
-                        img = loader.GetImageInFolder(m.FileInfo.Directory.Parent.FullName, ImageTypeDictionary);
+                        if (m.FileInfo.Directory.Parent != null)
+                            img = loader.GetImageInFolder(m.FileInfo.Directory.Parent.FullName, ImageTypeDictionary);
                         break;
                     case AlbumArtLocations.DownFolder:
                         // TODO: implement logic
