@@ -80,10 +80,9 @@
     <Compile Include="Playlist\IPlaylistWriter.cs" />
     <Compile Include="Playlist\M3UPlaylistWriter.cs" />
     <Compile Include="Playlist\M3UPlaylistReader.cs" />
-    <Compile Include="Playlist\Tags\ITagReader.cs" />
-    <Compile Include="Playlist\Tags\ITagWriter.cs" />
-    <Compile Include="Playlist\Tags\MusicInfoModel.cs" />
-    <Compile Include="Playlist\Tags\TagLibReader.cs" />
+    <Compile Include="Playlist\Tags\Picture.cs" />
+    <Compile Include="Playlist\Tags\TagLibProvider.cs" />
+    <Compile Include="Playlist\Tags\TagProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

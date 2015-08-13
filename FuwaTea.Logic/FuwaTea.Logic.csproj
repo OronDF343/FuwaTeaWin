@@ -61,6 +61,7 @@
     <Compile Include="Playlist\AlbumArt\AlbumArtLocator.cs" />
     <Compile Include="Playlist\AlbumArt\IAlbumArtLocator.cs" />
     <Compile Include="Playlist\IPlaylistManager.cs" />
+    <Compile Include="Playlist\MusicInfoModel.cs" />
     <Compile Include="Playlist\Playlist.cs" />
     <Compile Include="Playlist\PlaylistManager.cs" />
     <Compile Include="Playlist\PlaylistPositionManager.cs" />

@@ -39,10 +39,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="TagLib.Portable, Version=2.1.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL">
-      <HintPath>..\packages\TagLib.Portable.1.0.2\lib\portable-net45+win8+wpa81\TagLib.Portable.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\EqualizerBand.cs" />
@@ -50,11 +46,15 @@
     <Compile Include="Models\IPlaylistPositionManager.cs" />
     <Compile Include="Models\ISettingsPropertyModel.cs" />
     <Compile Include="Models\IMusicInfoModel.cs" />
+    <Compile Include="Models\TagData.cs" />
     <Compile Include="Models\PlaybackErrorEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\FuwaTea.Lib\FuwaTea.Lib.csproj">
+      <Project>{a9bb4650-68cc-4640-9b5a-65f4aa80c2ab}</Project>
+      <Name>FuwaTea.Lib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

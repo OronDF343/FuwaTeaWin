@@ -17,7 +17,6 @@
 
 using System;
 using System.IO;
-using TagLib;
 
 namespace FuwaTea.Common.Models
 {
@@ -30,6 +29,6 @@ namespace FuwaTea.Common.Models
         string FileType { get; }
         TimeSpan Duration { get; }
         int Bitrate { get; }
-        Tag Tag { get; } // TODO: create new tag and remove taglib dependency from common
+        TagData Tag { get; } // TODO: create new tag and remove taglib dependency from common
     }
 }

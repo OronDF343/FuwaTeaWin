@@ -18,9 +18,9 @@
 using System;
 using System.IO;
 using FuwaTea.Common.Models;
-using TagLib;
+using FuwaTea.Data.Playlist.Tags;
 
-namespace FuwaTea.Data.Playlist.Tags
+namespace FuwaTea.Logic.Playlist
 {
     public class MusicInfoModel : IMusicInfoModel
     {
@@ -31,14 +31,23 @@ namespace FuwaTea.Data.Playlist.Tags
         public string FileType => Path.GetExtension(FilePath);
         public TimeSpan Duration { get; }
         public int Bitrate { get; }
-        public Tag Tag { get; } // TODO: create new tag and remove taglib dependency from common
+        public TagData Tag { get; } // TODO: create new tag and remove taglib dependency from common
 
-        public MusicInfoModel(string path, Tag tag, TimeSpan duration, int bitrate)
+        public MusicInfoModel(string path, TagData tag, TimeSpan duration, int bitrate)
         {
             FileInfo = new FileInfo(path);
             Tag = tag;
             Duration = duration;
             Bitrate = bitrate;
+            UniqueId = Guid.NewGuid();
+        }
+
+        public MusicInfoModel(string path, TagProvider tagProvider)
+        {
+            FileInfo = new FileInfo(path);
+            Tag = tagProvider;
+            Duration = tagProvider.Duration;
+            Bitrate = tagProvider.Bitrate;
             UniqueId = Guid.NewGuid();
         }
     }

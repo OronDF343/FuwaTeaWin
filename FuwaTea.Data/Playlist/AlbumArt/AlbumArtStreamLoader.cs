@@ -20,6 +20,8 @@ using System.IO;
 using System.Linq;
 using FuwaTea.Common.Models;
 using TagLib;
+using IPicture = FuwaTea.Common.Models.IPicture;
+using PictureType = FuwaTea.Common.Models.PictureType;
 
 namespace FuwaTea.Data.Playlist.AlbumArt
 {
@@ -29,7 +31,7 @@ namespace FuwaTea.Data.Playlist.AlbumArt
         public Stream GetEmbeddedImage(IMusicInfoModel m)
         {
             var img = m.Tag.Pictures.FirstOrDefault(p => p.Type == PictureType.FrontCover);
-            return img == default(IPicture) ? null : new MemoryStream(img.Data.Data, false);
+            return img == default(IPicture) ? null : new MemoryStream(img.Data, false);
         }
 
         public Stream GetImageInFolder(string folder, HashSet<string> filetypeWhitelist, List<string> filenameWhitelist = null)
