@@ -15,17 +15,19 @@
 //     along with FuwaTeaWin.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 
-namespace FTWPlayer.Tabs
+using FTWPlayer.ViewModels;
+
+namespace FTWPlayer.Views
 {
     /// <summary>
-    /// Interaction logic for SettingsView.xaml
+    /// Interaction logic for AlbumArtView.xaml
     /// </summary>
-    public partial class SettingsView
+    public partial class AlbumArtView
     {
-        public SettingsView(SettingsTab st)
+        public AlbumArtView(PlayerViewModel vm)
         {
             InitializeComponent();
-            DataContext = st;
+            DataContext = vm;
         }
     }
 }

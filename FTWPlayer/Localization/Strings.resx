@@ -181,4 +181,7 @@
   <data name="VolumeToolTip" xml:space="preserve">
     <value>Volume</value>
   </data>
+  <data name="LibraryTabHeader" xml:space="preserve">
+    <value>LIBRARY</value>
+  </data>
 </root>

@@ -21,7 +21,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Interop;
-using FTWPlayer.ViewModel;
+using FTWPlayer.ViewModels;
 using FuwaTea.Lib;
 using FuwaTea.Wpf.Helpers;
 using WPFLocalizeExtension.Engine;

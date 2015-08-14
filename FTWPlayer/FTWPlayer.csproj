@@ -119,27 +119,30 @@
     </Compile>
     <Compile Include="MiscUtils.cs" />
     <Compile Include="NativeMethods.cs" />
-    <Compile Include="Tabs\AlbumArtDisplay.xaml.cs">
-      <DependentUpon>AlbumArtDisplay.xaml</DependentUpon>
+    <Compile Include="Views\AlbumArtView.xaml.cs">
+      <DependentUpon>AlbumArtView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tabs\EqualizerControl.xaml.cs">
+    <Compile Include="Views\EqualizerControl.xaml.cs">
       <DependentUpon>EqualizerControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tabs\EqualizerTab.cs" />
-    <Compile Include="Tabs\HelpTab.cs" />
-    <Compile Include="Tabs\ITab.cs" />
-    <Compile Include="Tabs\LibraryTab.cs" />
-    <Compile Include="Tabs\PlayerTab.cs" />
-    <Compile Include="Tabs\SettingsTab.cs" />
-    <Compile Include="Tabs\SettingsEditingTemplateSelector.cs" />
-    <Compile Include="Tabs\SettingsTemplateSelector.cs" />
-    <Compile Include="Tabs\SettingsView.xaml.cs">
+    <Compile Include="ViewModels\EqualizerViewModel.cs" />
+    <Compile Include="ViewModels\HelpViewModel.cs" />
+    <Compile Include="ViewModels\ITab.cs" />
+    <Compile Include="ViewModels\LibraryViewModel.cs" />
+    <Compile Include="Views\LibraryView.xaml.cs">
+      <DependentUpon>LibraryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\PlayerViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\Utils\SettingsEditingTemplateSelector.cs" />
+    <Compile Include="ViewModels\Utils\SettingsTemplateSelector.cs" />
+    <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UILayerDefinition.cs" />
     <Compile Include="UIPartAttribute.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -160,15 +163,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Tabs\AlbumArtDisplay.xaml">
+    <Page Include="Views\AlbumArtView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Tabs\EqualizerControl.xaml">
+    <Page Include="Views\EqualizerControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Tabs\SettingsView.xaml">
+    <Page Include="Views\LibraryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

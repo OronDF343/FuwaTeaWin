@@ -1,11 +1,11 @@
 ﻿using System.Windows.Controls;
 
-namespace FTWPlayer.Tabs
+namespace FTWPlayer.ViewModels
 {
     [UIPart("Help Tab")]
-    public class HelpTab : ITab
+    public class HelpViewModel : ITab
     {
-        public HelpTab() { TabObject = new TabItem { Header = "HELP" }; }
+        public HelpViewModel() { TabObject = new TabItem { Header = "HELP" }; }
         public TabItem TabObject { get; }
         public decimal Index => 4;
     }

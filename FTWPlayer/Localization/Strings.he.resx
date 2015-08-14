@@ -180,4 +180,7 @@
   <data name="VolumeToolTip" xml:space="preserve">
     <value>עוצמה</value>
   </data>
+  <data name="LibraryTabHeader" xml:space="preserve">
+    <value>ספרייה</value>
+  </data>
 </root>

@@ -19,7 +19,7 @@ using System.Diagnostics.CodeAnalysis;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
 
-namespace FTWPlayer.ViewModel
+namespace FTWPlayer.ViewModels
 {
     /// <summary>
     /// This class contains static references to all the view models in the

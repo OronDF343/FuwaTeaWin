@@ -106,6 +106,15 @@ namespace FTWPlayer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LIBRARY.
+        /// </summary>
+        internal static string LibraryTabHeader {
+            get {
+                return ResourceManager.GetString("LibraryTabHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Next.
         /// </summary>
         internal static string NextToolTip {

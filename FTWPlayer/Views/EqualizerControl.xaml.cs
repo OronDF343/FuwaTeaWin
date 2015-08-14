@@ -15,14 +15,16 @@
 //     along with FuwaTeaWin.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 
-namespace FTWPlayer.Tabs
+using FTWPlayer.ViewModels;
+
+namespace FTWPlayer.Views
 {
     /// <summary>
-    /// Interaction logic for AlbumArtDisplay.xaml
+    /// Interaction logic for EqualizerControl.xaml
     /// </summary>
-    public partial class AlbumArtDisplay
+    public partial class EqualizerControl
     {
-        public AlbumArtDisplay(PlayerTab vm)
+        public EqualizerControl(EqualizerViewModel vm)
         {
             InitializeComponent();
             DataContext = vm;

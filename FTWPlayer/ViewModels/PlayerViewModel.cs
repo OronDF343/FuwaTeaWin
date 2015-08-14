@@ -3,20 +3,21 @@ using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using FTWPlayer.Views;
 using FuwaTea.Annotations;
 using FuwaTea.Logic.Playlist.AlbumArt;
 using FuwaTea.Presentation.Playback;
 using LayerFramework;
 
-namespace FTWPlayer.Tabs
+namespace FTWPlayer.ViewModels
 {
     [UIPart("Player Tab")]
-    public class PlayerTab : ITab, INotifyPropertyChanged
+    public class PlayerViewModel : ITab, INotifyPropertyChanged
     {
-        public PlayerTab()
+        public PlayerViewModel()
         {
             PlaybackManager = LayerFactory.GetElement<IPlaybackManager>();
-            TabObject = new AlbumArtDisplay(this);
+            TabObject = new AlbumArtView(this);
             PlaybackManager.PropertyChanged += PlaybackManager_PropertyChanged;
         }
 

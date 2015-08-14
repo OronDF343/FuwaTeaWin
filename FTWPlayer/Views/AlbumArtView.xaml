@@ -1,4 +1,4 @@
-﻿<TabItem x:Class="FTWPlayer.Tabs.AlbumArtDisplay"
+﻿<TabItem x:Class="FTWPlayer.Views.AlbumArtView"
          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"

@@ -3,13 +3,14 @@ using System.Configuration;
 using System.Linq;
 using System.Windows.Controls;
 using FTWPlayer.Properties;
+using FTWPlayer.Views;
 
-namespace FTWPlayer.Tabs
+namespace FTWPlayer.ViewModels
 {
     [UIPart("Settings Tab")]
-    public class SettingsTab : ITab
+    public class SettingsViewModel : ITab
     {
-        public SettingsTab()
+        public SettingsViewModel()
         {
             TabObject = new SettingsView(this);
             SettingsPropertyValues = new ObservableCollection<SettingsPropertyValue>(Settings.Default.PropertyValues.OfType<SettingsPropertyValue>());

@@ -26,17 +26,16 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using FTWPlayer.Properties;
-using FTWPlayer.Tabs;
 using FuwaTea.Annotations;
 using FuwaTea.Common.Models;
 using FuwaTea.Logic.Playlist;
 using FuwaTea.Presentation.Playback;
+using FuwaTea.Wpf.Keyboard;
 using GalaSoft.MvvmLight.CommandWpf;
 using LayerFramework;
 using WPFLocalizeExtension.Engine;
-using FuwaTea.Wpf.Keyboard;
 
-namespace FTWPlayer.ViewModel
+namespace FTWPlayer.ViewModels
 {
     public sealed class MainViewModel : DependencyObject, INotifyPropertyChanged, IDisposable // This is a DependencyObject so it supports animations
     {

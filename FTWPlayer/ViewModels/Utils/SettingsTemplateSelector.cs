@@ -6,7 +6,7 @@ using System.Windows.Data;
 using FTWPlayer.Properties;
 using FuwaTea.Wpf.Extensions;
 
-namespace FTWPlayer.Tabs
+namespace FTWPlayer.ViewModels.Utils
 {
     public class SettingsTemplateSelector : DataTemplateSelector
     {

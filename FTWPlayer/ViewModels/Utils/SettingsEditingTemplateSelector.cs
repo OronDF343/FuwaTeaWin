@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace FTWPlayer.Tabs
+namespace FTWPlayer.ViewModels.Utils
 {
     public class SettingsEditingTemplateSelector : DataTemplateSelector
     {

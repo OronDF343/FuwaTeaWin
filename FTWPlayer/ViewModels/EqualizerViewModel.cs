@@ -1,16 +1,17 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using FTWPlayer.Views;
 using FuwaTea.Presentation.Playback;
 using GalaSoft.MvvmLight.CommandWpf;
 using LayerFramework;
 
-namespace FTWPlayer.Tabs
+namespace FTWPlayer.ViewModels
 {
     [UIPart("Equalizer Tab")]
-    public class EqualizerTab : ITab
+    public class EqualizerViewModel : ITab
     {
-        public EqualizerTab()
+        public EqualizerViewModel()
         {
             PlaybackManager = LayerFactory.GetElement<IPlaybackManager>();
             ResetEqCommand = new RelayCommand<RoutedEventArgs>(ResetEq);

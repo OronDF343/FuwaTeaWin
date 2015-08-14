@@ -15,17 +15,19 @@
 //     along with FuwaTeaWin.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 
-namespace FTWPlayer.Tabs
+using FTWPlayer.ViewModels;
+
+namespace FTWPlayer.Views
 {
     /// <summary>
-    /// Interaction logic for EqualizerControl.xaml
+    /// Interaction logic for SettingsView.xaml
     /// </summary>
-    public partial class EqualizerControl
+    public partial class SettingsView
     {
-        public EqualizerControl(EqualizerTab vm)
+        public SettingsView(SettingsViewModel st)
         {
             InitializeComponent();
-            DataContext = vm;
+            DataContext = st;
         }
     }
 }

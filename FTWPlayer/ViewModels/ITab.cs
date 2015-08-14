@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace FTWPlayer.Tabs
+namespace FTWPlayer.ViewModels
 {
     public interface ITab : IUIPart
     {
