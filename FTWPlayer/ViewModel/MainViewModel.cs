@@ -126,6 +126,7 @@ namespace FTWPlayer.ViewModel
             MiscUtils.ParseClArgs(Environment.GetCommandLineArgs().ToList());
             _kbdListen = new KeyboardListener();
             _kbdListen.KeyDown += KbdListen_KeyDown;
+            _kbdListen.KeyUp += KbdListen_KeyUp;
             _kbdListen.IsEnabled = Settings.Default.EnableKeyboardHook;
             Settings.Default.PropertyChanged += (s, e) => 
             {
@@ -149,6 +150,19 @@ namespace FTWPlayer.ViewModel
                     break;
                 case Key.MediaStop:
                     StopButtonClick(new RoutedEventArgs());
+                    break;
+                case Key.LeftShift:
+                    LeftShiftKeyDown();
+                    break;
+            }
+        }
+
+        private void KbdListen_KeyUp(object sender, RawKeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.LeftShift:
+                    LeftShiftKeyUp();
                     break;
             }
         }
@@ -252,7 +266,13 @@ namespace FTWPlayer.ViewModel
 
         private void OnKeyDown(KeyEventArgs e)
         {
-            if (e.Key != Key.LeftShift || !PlaybackManager.IsSomethingLoaded || Expanded) return;
+            if (e.Key != Key.LeftShift || Settings.Default.EnableKeyboardHook) return;
+            LeftShiftKeyDown();
+        }
+
+        private void LeftShiftKeyDown()
+        {
+            if (!PlaybackManager.IsSomethingLoaded || Expanded || !Application.Current.MainWindow.IsVisible) return;
             ShiftMode = true;
             AllowDrag = false;
         }
@@ -261,7 +281,13 @@ namespace FTWPlayer.ViewModel
 
         private void OnKeyUp(KeyEventArgs e)
         {
-            if (e.Key != Key.LeftShift || Expanded) return;
+            if (e.Key != Key.LeftShift || Settings.Default.EnableKeyboardHook) return;
+            LeftShiftKeyUp();
+        }
+
+        private void LeftShiftKeyUp()
+        {
+            if (Expanded) return;
             ShiftMode = false;
             AllowDrag = true;
         }
