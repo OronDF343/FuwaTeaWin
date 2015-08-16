@@ -1,7 +1,7 @@
-﻿using FuwaTea.Wpf.Keyboard;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using FuwaTea.Wpf.Keyboard;
 
 namespace FuwaTea.Wpf
 {

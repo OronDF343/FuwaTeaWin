@@ -19,9 +19,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using FuwaTea.Common.Models;
-using TagLib;
-using IPicture = FuwaTea.Common.Models.IPicture;
-using PictureType = FuwaTea.Common.Models.PictureType;
 
 namespace FuwaTea.Data.Playlist.AlbumArt
 {

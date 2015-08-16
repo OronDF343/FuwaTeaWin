@@ -41,9 +41,8 @@ namespace FuwaTea.Logic.Playlist
 
         public void Add(string musicFile)
         {
-            var tag = LayerFactory.GetElements<TagProvider>().First(r => r.SupportedFileTypes.Contains(Path.GetExtension(musicFile)));
-            tag.OpenFile(musicFile);
-            Add(new MusicInfoModel(musicFile, tag));
+            var tag = LayerFactory.GetElements<ITagProvider>().First(r => r.SupportedFileTypes.Contains(Path.GetExtension(musicFile)));
+            Add(new MusicInfoModel(musicFile, tag.Create(musicFile)));
         }
 
         public void AddFromPlaylist(string playlistFile)

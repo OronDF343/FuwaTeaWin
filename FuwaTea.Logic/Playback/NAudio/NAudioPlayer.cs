@@ -22,10 +22,10 @@ using System.IO;
 using System.Linq;
 using FuwaTea.Common.Models;
 using FuwaTea.Data.Playback.NAudio;
+using log4net;
 using LayerFramework;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
-using log4net;
 
 namespace FuwaTea.Logic.Playback.NAudio
 {

@@ -1,26 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using log4net;
 using TagLib;
 using File = TagLib.File;
+using IPicture = FuwaTea.Common.Models.IPicture;
+using PictureType = FuwaTea.Common.Models.PictureType;
+using TagTypes = FuwaTea.Common.Models.TagTypes;
 
 namespace FuwaTea.Data.Playlist.Tags
 {
-    [DataElement("TagLib# Tag Provider")]
-    public class TagLibProvider : TagProvider
+    public class TagLibTag : Tag
     {
-        public override void Clear()
-        {
-            _tag.Clear();
-        }
-
-        public override bool IsWriteSupported => true;
-
-        private Tag _tag;
-        private string _path;
-        public override void OpenFile(string path)
+        private readonly TagLib.Tag _tag;
+        private readonly string _path;
+        public TagLibTag(string path)
         {
             _path = path;
             using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -39,6 +33,13 @@ namespace FuwaTea.Data.Playlist.Tags
             }
         }
 
+        public override void Clear()
+        {
+            _tag.Clear();
+        }
+
+        public override bool IsWriteSupported => true;
+
         public override void SaveTags()
         {
             using (var stream = new FileStream(_path, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -55,24 +56,6 @@ namespace FuwaTea.Data.Playlist.Tags
                 stream.Close();
             }
         }
-
-        public override IEnumerable<string> SupportedFileTypes => new[]
-        {
-            ".aac",
-            ".m4a",
-            ".aiff",
-            ".ape",
-            ".asf",
-            ".aud",
-            ".flac",
-            ".ogg",
-            ".mp3",
-            ".wav",
-            ".wv",
-            ".adts",
-            ".wma",
-            ".mka"
-        };
         
         public override string Album => _tag.Album;
         public override string[] AlbumArtists => _tag.AlbumArtists;
@@ -102,15 +85,15 @@ namespace FuwaTea.Data.Playlist.Tags
         //public override string MusicIpId { get; set; }
         public override string[] Performers => _tag.Performers;
         public override string[] PerformersSort => _tag.PerformersSort;
-        public override Common.Models.IPicture[] Pictures
-            => _tag.Pictures.Select(p => new Picture(p.Data.Data, p.Description, p.MimeType, (Common.Models.PictureType)(int)p.Type))
-                   .Cast<Common.Models.IPicture>()
+        public override IPicture[] Pictures
+            => _tag.Pictures.Select(p => new Picture(p.Data.Data, p.Description, p.MimeType, (PictureType)(int)p.Type))
+                   .Cast<IPicture>()
                    .ToArray();
         //public override double ReplayGainAlbumGain { get; set; }
         //public override double ReplayGainAlbumPeak { get; set; }
         //public override double ReplayGainTrackGain { get; set; }
         //public override double ReplayGainTrackPeak { get; set; }
-        public override Common.Models.TagTypes TagTypes => (Common.Models.TagTypes)(uint)_tag.TagTypes;
+        public override TagTypes TagTypes => (TagTypes)(uint)_tag.TagTypes;
         public override string Title => _tag.Title;
         //public virtual string TitleSort { get; set; }
         public override uint Track => _tag.Track;

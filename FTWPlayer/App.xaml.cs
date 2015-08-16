@@ -29,9 +29,9 @@ using FuwaTea.Lib;
 using FuwaTea.Lib.Exceptions;
 using FuwaTea.Presentation.Playback;
 using GalaSoft.MvvmLight.Threading;
-using LayerFramework;
 using log4net;
 using log4net.Config;
+using LayerFramework;
 using Microsoft.Win32;
 
 namespace FTWPlayer

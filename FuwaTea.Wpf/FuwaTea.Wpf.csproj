@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviors\AnimationBehaviorBase.cs" />
+    <Compile Include="Behaviors\DragDropRowBehavior.cs" />
     <Compile Include="Behaviors\ExtendedCloseBehavior.cs" />
     <Compile Include="Behaviors\ControlledBehaviorBase.cs" />
     <Compile Include="Behaviors\OpenBehavior.cs" />

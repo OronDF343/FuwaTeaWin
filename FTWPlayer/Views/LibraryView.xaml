@@ -3,11 +3,35 @@
          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
          xmlns:lex="http://wpflocalizeextension.codeplex.com"
+         xmlns:fuwa="https://github.com/OronDF343/FuwaTeaWin"
          mc:Ignorable="d" 
          d:DesignHeight="300" d:DesignWidth="300"
          Header="{lex:BLoc LibraryTabHeader}">
-    <Grid Background="Transparent">
-            
+    <Grid Background="Transparent" VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock>The library isn't implemented yet. For now this is the loaded playlist:</TextBlock>
+        <ListView Grid.Row="1" ItemsSource="{Binding PlaylistManager.SelectedPlaylist}" AllowDrop="True" SelectionMode="Single">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Tag.Title}" Header="Title"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Tag.JoinedPerformers}" Header="Performers"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding FileName}" Header="File name"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Bitrate}" Header="Bitrate"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Duration}" Header="Duration"/>
+                </GridView>
+            </ListView.View>
+            <i:Interaction.Behaviors>
+                <fuwa:DragDropRowBehavior>
+                    <fuwa:DragDropRowBehavior.Popup>
+                        <Popup/>
+                    </fuwa:DragDropRowBehavior.Popup>
+                </fuwa:DragDropRowBehavior>
+            </i:Interaction.Behaviors>
+        </ListView>
     </Grid>
 </TabItem>

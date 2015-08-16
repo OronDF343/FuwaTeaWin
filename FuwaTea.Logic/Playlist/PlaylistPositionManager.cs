@@ -30,7 +30,7 @@ namespace FuwaTea.Logic.Playlist
         {
             _playlist = pm;
             _playlist.CollectionChanged +=
-                (sender, args) => { if (args.NewItems.Contains(Current)) OnPropertyChanged(nameof(Current)); OnPropertyChanged(nameof(ElementCount)); };
+                (sender, args) => { if (args.NewItems?.Contains(Current) == true) OnPropertyChanged(nameof(Current)); OnPropertyChanged(nameof(ElementCount)); };
         }
 
         private readonly IPlaylist _playlist;

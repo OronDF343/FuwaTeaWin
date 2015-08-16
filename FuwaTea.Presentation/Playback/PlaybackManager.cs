@@ -25,8 +25,8 @@ using FuwaTea.Annotations;
 using FuwaTea.Common.Models;
 using FuwaTea.Logic.Playback;
 using FuwaTea.Logic.Playlist;
-using LayerFramework;
 using log4net;
+using LayerFramework;
 
 namespace FuwaTea.Presentation.Playback
 {

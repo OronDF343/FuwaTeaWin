@@ -42,7 +42,7 @@ namespace FuwaTea.Logic.Playlist
             UniqueId = Guid.NewGuid();
         }
 
-        public MusicInfoModel(string path, TagProvider tagProvider)
+        public MusicInfoModel(string path, Tag tagProvider)
         {
             FileInfo = new FileInfo(path);
             Tag = tagProvider;
