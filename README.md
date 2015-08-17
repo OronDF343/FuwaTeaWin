@@ -10,6 +10,10 @@ A compact, modular and free open-source music player for Windows.
 
 Runs on Windows Vista, 7, 8, 8.1, 10 (build 10122 and up). Requires .NET Framework 4.5.1 or newer.
 
+**NOTE**: Avast detects new versions of this program as Win32:Evo-gen[susp].
+**THIS IS A FALSE POSITIVE** and [an analysis on VirusTotal (of version 0.0.2.47)](https://www.virustotal.com/en/file/7267e09f6e1f89760b786c535a6cd8b11d38577842bdd5e4e29c1a551e00c84f/analysis/1439822134/) shows a detection rate of 0.
+Avast sometimes detects new versions of Git and other FOSS with the same detection name, because not many people have downloaded the file yet.
+
 **Release ETA: None (don't ask for one)**
 
 Contributing
