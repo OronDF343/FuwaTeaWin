@@ -184,4 +184,7 @@
   <data name="LibraryTabHeader" xml:space="preserve">
     <value>LIBRARY</value>
   </data>
+  <data name="TagsTabHeader" xml:space="preserve">
+    <value>TAGS</value>
+  </data>
 </root>

@@ -34,13 +34,13 @@ namespace FuwaTea.Common.Models
         public virtual string[] Genres { get; set; }
         public virtual string Grouping { get; set; }
         public abstract bool IsEmpty { get; } // HasTag
-        public string JoinedAlbumArtists => string.Join(Separator, AlbumArtists);
-        public string JoinedAlbumArtistsSort => string.Join(Separator, AlbumArtistsSort);
-        public string JoinedComposers => string.Join(Separator, Composers);
-        public string JoinedComposersSort => string.Join(Separator, ComposersSort);
-        public string JoinedGenres => string.Join(Separator, Genres);
-        public string JoinedPerformers => string.Join(Separator, Performers);
-        public string JoinedPerformersSort => string.Join(Separator, PerformersSort);
+        public string JoinedAlbumArtists { get { return Join(AlbumArtists); } set { AlbumArtists = Split(value); } }
+        public string JoinedAlbumArtistsSort { get { return Join(AlbumArtistsSort); } set { AlbumArtistsSort = Split(value); } }
+        public string JoinedComposers { get { return Join(Composers); } set { Composers = Split(value); } }
+        public string JoinedComposersSort { get { return Join(ComposersSort); } set { ComposersSort = Split(value); } }
+        public string JoinedGenres { get { return Join(Genres); } set { Genres = Split(value); } }
+        public string JoinedPerformers { get { return Join(Performers); } set { Performers = Split(value); } }
+        public string JoinedPerformersSort { get { return Join(PerformersSort); } set { PerformersSort = Split(value); } }
         public virtual string Lyrics { get; set; }
         //public virtual string MusicBrainzArtistId { get; set; }
         //public virtual string MusicBrainzDiscId { get; set; }
@@ -67,6 +67,16 @@ namespace FuwaTea.Common.Models
         
         public abstract void Clear();
         //public virtual void CopyTo(TagData target, bool overwrite);
+
+        private static string Join(string[] items)
+        {
+            return string.Join(Separator, items);
+        }
+
+        private static string[] Split(string joined)
+        {
+            return joined.Split(new[] { Separator }, StringSplitOptions.RemoveEmptyEntries);
+        }
     }
 
     [Flags]

@@ -1,7 +1,6 @@
 ﻿using System;
-using FuwaTea.Common.Models;
 
-namespace FuwaTea.Data.Playlist.Tags
+namespace FuwaTea.Common.Models
 {
     public abstract class Tag : TagData
     {

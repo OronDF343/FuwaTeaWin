@@ -29,25 +29,14 @@ namespace FuwaTea.Logic.Playlist
         public string FilePath => FileInfo.FullName;
         public string FileName => FileInfo.Name;
         public string FileType => Path.GetExtension(FilePath);
-        public TimeSpan Duration { get; }
-        public int Bitrate { get; }
-        public TagData Tag { get; } // TODO: create new tag and remove taglib dependency from common
+        public TimeSpan Duration => Tag.Duration;
+        public int Bitrate => Tag.Bitrate;
+        public Tag Tag { get; } // TODO: create new tag and remove taglib dependency from common
 
-        public MusicInfoModel(string path, TagData tag, TimeSpan duration, int bitrate)
+        public MusicInfoModel(string path, Tag tag)
         {
             FileInfo = new FileInfo(path);
             Tag = tag;
-            Duration = duration;
-            Bitrate = bitrate;
-            UniqueId = Guid.NewGuid();
-        }
-
-        public MusicInfoModel(string path, Tag tagProvider)
-        {
-            FileInfo = new FileInfo(path);
-            Tag = tagProvider;
-            Duration = tagProvider.Duration;
-            Bitrate = tagProvider.Bitrate;
             UniqueId = Guid.NewGuid();
         }
     }

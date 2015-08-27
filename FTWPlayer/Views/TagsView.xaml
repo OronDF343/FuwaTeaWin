@@ -1,0 +1,51 @@
+﻿<TabItem x:Class="FTWPlayer.Views.TagsView"
+         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+         xmlns:local="clr-namespace:FTWPlayer.Views"
+         xmlns:lex="http://wpflocalizeextension.codeplex.com"
+         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+         xmlns:command="http://www.galasoft.ch/mvvmlight"
+         xmlns:converters="clr-namespace:FTWPlayer.Converters"
+         mc:Ignorable="d" 
+         d:DesignHeight="300" d:DesignWidth="300"
+         Header="{lex:BLoc TagsTabHeader}">
+    <TabItem.Resources>
+        <converters:NullCheckConverter x:Key="NullChkConv"/>
+    </TabItem.Resources>
+    <Grid Background="Transparent"
+          IsEnabled="{Binding Tag, Converter={StaticResource NullChkConv}, ConverterParameter=false}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Button Content="Discard Changes" FontWeight="Bold" HorizontalAlignment="Left">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Click">
+                    <command:EventToCommand Command="{Binding DiscardChangesCommand}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+        <Button Grid.Row="0" Content="Save Changes" FontWeight="Bold" HorizontalAlignment="Center">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Click">
+                    <command:EventToCommand Command="{Binding SaveChangesCommand}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+        <Button Grid.Row="0" Content="Delete Tags" FontWeight="Bold" HorizontalAlignment="Right">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Click">
+                    <command:EventToCommand Command="{Binding DeleteTagsCommand}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+        <UniformGrid x:Name="TagGrid" Grid.Row="1" Rows="19" Columns="2">
+            <Label Content="Title: "/>
+            <TextBox Text="{Binding Tag.Title, UpdateSourceTrigger=Explicit}"/>
+            <Label Content="Performers: "/>
+            <TextBox Text="{Binding Tag.JoinedPerformers, UpdateSourceTrigger=Explicit}"/>
+        </UniformGrid>
+    </Grid>
+</TabItem>

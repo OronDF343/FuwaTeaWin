@@ -101,6 +101,7 @@
     <Compile Include="Converters\BooleanToZIndexConverter.cs" />
     <Compile Include="Converters\DivisionConverter.cs" />
     <Compile Include="Converters\DoubleSubtractConverter.cs" />
+    <Compile Include="Converters\NullCheckConverter.cs" />
     <Compile Include="Converters\FloatToDoubleConverter.cs" />
     <Compile Include="Converters\NegativeDoubleConverter.cs" />
     <Compile Include="Converters\PositionTimeSpanStringConverter.cs" />
@@ -119,6 +120,7 @@
     </Compile>
     <Compile Include="MiscUtils.cs" />
     <Compile Include="NativeMethods.cs" />
+    <Compile Include="ViewModels\TagsViewModel.cs" />
     <Compile Include="Views\AlbumArtView.xaml.cs">
       <DependentUpon>AlbumArtView.xaml</DependentUpon>
     </Compile>
@@ -143,6 +145,9 @@
     <Compile Include="UIPartAttribute.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Compile Include="Views\TagsView.xaml.cs">
+      <DependentUpon>TagsView.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -178,6 +183,10 @@
     <Page Include="Views\SettingsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\TagsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

@@ -183,4 +183,7 @@
   <data name="LibraryTabHeader" xml:space="preserve">
     <value>ספרייה</value>
   </data>
+  <data name="TagsTabHeader" xml:space="preserve">
+    <value>תגים</value>
+  </data>
 </root>

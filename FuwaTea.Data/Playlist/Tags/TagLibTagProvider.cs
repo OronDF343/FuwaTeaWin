@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using FuwaTea.Common.Models;
 
 namespace FuwaTea.Data.Playlist.Tags
 {

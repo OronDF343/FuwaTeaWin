@@ -84,7 +84,6 @@
     <Compile Include="Playlist\Tags\Picture.cs" />
     <Compile Include="Playlist\Tags\TagLibTag.cs" />
     <Compile Include="Playlist\Tags\TagLibTagProvider.cs" />
-    <Compile Include="Playlist\Tags\Tag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

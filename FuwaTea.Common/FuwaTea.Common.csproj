@@ -46,6 +46,7 @@
     <Compile Include="Models\IPlaylistPositionManager.cs" />
     <Compile Include="Models\ISettingsPropertyModel.cs" />
     <Compile Include="Models\IMusicInfoModel.cs" />
+    <Compile Include="Models\Tag.cs" />
     <Compile Include="Models\TagData.cs" />
     <Compile Include="Models\PlaybackErrorEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -6,6 +6,7 @@ using TagLib;
 using File = TagLib.File;
 using IPicture = FuwaTea.Common.Models.IPicture;
 using PictureType = FuwaTea.Common.Models.PictureType;
+using Tag = FuwaTea.Common.Models.Tag;
 using TagTypes = FuwaTea.Common.Models.TagTypes;
 
 namespace FuwaTea.Data.Playlist.Tags

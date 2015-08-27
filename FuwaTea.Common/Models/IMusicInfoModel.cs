@@ -29,6 +29,6 @@ namespace FuwaTea.Common.Models
         string FileType { get; }
         TimeSpan Duration { get; }
         int Bitrate { get; }
-        TagData Tag { get; } // TODO: create new tag and remove taglib dependency from common
+        Tag Tag { get; }
     }
 }
