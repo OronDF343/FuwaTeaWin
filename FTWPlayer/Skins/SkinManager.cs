@@ -214,7 +214,12 @@ namespace FTWPlayer.Skins
         public IEnumerable<ResourceDictionary> GetAvailableChildSkins(IEnumerable<ResourceDictionary> chain)
         {
             chain = chain.ToList();
-            if (chain.First().GetIdentifier().SkinType == ResourceDictionaryType.Standalone)
+            if (!chain.Any())
+                return LoadedSkins.Where(r => r.GetIdentifier().SkinType == ResourceDictionaryType.Standalone
+                                              || r.GetIdentifier().SkinType == ResourceDictionaryType.Base);
+            // check validity to prevent edge cases
+            if (chain.First().GetIdentifier().SkinType == ResourceDictionaryType.Standalone
+                || !string.IsNullOrWhiteSpace(VerifySkinChain(chain)))
                 return new List<ResourceDictionary>();
             // !color
             var ch = chain.Where(r => r.GetIdentifier().SkinType != ResourceDictionaryType.Color).ToList();
