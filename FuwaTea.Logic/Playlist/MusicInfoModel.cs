@@ -31,7 +31,7 @@ namespace FuwaTea.Logic.Playlist
         public string FileType => Path.GetExtension(FilePath);
         public TimeSpan Duration => Tag.Duration;
         public int Bitrate => Tag.Bitrate;
-        public Tag Tag { get; } // TODO: create new tag and remove taglib dependency from common
+        public Tag Tag { get; }
 
         public MusicInfoModel(string path, Tag tag)
         {

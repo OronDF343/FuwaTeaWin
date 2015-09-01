@@ -15,21 +15,27 @@
 //     along with FuwaTeaWin.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Markup;
 
 namespace FuwaTea.Wpf.Behaviors
 {
+    [ContentProperty("ExcludedElements")]
     public class WindowDragBehavior : ControlledBehaviorBase<Window>
     {
-        public static readonly DependencyProperty ExcludedControlProperty =
-            DependencyProperty.Register("ExcludedControl", typeof(FrameworkElement), typeof(WindowDragBehavior), new PropertyMetadata(null));
-
-        public FrameworkElement ExcludedControl // TODO: Make this a collection somehow
+        public WindowDragBehavior()
         {
-            get { return (FrameworkElement)GetValue(ExcludedControlProperty); }
-            set { SetValue(ExcludedControlProperty, value); }
+            SetValue(ExcludedElementsProperty, new FreezableCollection<ElementReference>());
         }
+
+        public static readonly DependencyProperty ExcludedElementsProperty =
+            DependencyProperty.Register("ExcludedElements", typeof(FreezableCollection<ElementReference>),
+                                        typeof(WindowDragBehavior));
+
+        public FreezableCollection<ElementReference> ExcludedElements
+            => (FreezableCollection<ElementReference>)GetValue(ExcludedElementsProperty);
 
         protected override void OnAttached()
         {
@@ -40,7 +46,26 @@ namespace FuwaTea.Wpf.Behaviors
         private void OnMouseDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
             if (mouseButtonEventArgs.ChangedButton == MouseButton.Left && Enabled
-                && (ExcludedControl == null || !ExcludedControl.IsMouseOver)) AssociatedObject.DragMove(); // TODO: All tabs must have backgroud set so this works.
+                && !ExcludedElements.Any(e => e.Binding != null && e.Binding.IsMouseOver)) AssociatedObject.DragMove();
+            // NOTE: All tabs must have a backgroud set so this works.
+        }
+    }
+
+    public class ElementReference : Freezable
+    {
+        public static readonly DependencyProperty BindingProperty = DependencyProperty.Register("Binding",
+                                                                                                typeof(UIElement),
+                                                                                                typeof(ElementReference));
+
+        public UIElement Binding
+        {
+            get { return (UIElement)GetValue(BindingProperty); }
+            set { SetValue(BindingProperty, value); }
+        }
+
+        protected override Freezable CreateInstanceCore()
+        {
+            return new ElementReference();
         }
     }
 }

@@ -138,7 +138,11 @@ namespace FuwaTea.Lib
             {
                 settingsXml = XDocument.Load(filePath);
 
-                Debug.Assert(settingsXml.Root != null, "Null XML root!"); // TODO: Proper assert
+                if (settingsXml.Root == null)
+                {
+                    LogManager.GetLogger(typeof(PortableSettingsProvider)).Fatal("Null XML root in settings!");
+                    throw new NullReferenceException("Null XML root in settings!");
+                }
                 if (settingsXml.Root.Name.LocalName != SettingsRootName)
                 {
                     LogManager.GetLogger(typeof(PortableSettingsProvider)).Error("Invalid settings format!");

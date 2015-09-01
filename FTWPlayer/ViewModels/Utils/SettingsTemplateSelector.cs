@@ -21,6 +21,7 @@ namespace FTWPlayer.ViewModels.Utils
                 // Only the checkboxes seem to have a problem where the first checkbox is toggled by all of them.
                 // This is fixed by creating a new binding each time
                 // This is caused by the normal template allowing editing
+                // "Name" doesn't tell the CfgDynBinding that it has changed in this case
                 var chk = new FrameworkElementFactory(typeof(CheckBox));
                 chk.SetValue(FrameworkElement.HorizontalAlignmentProperty, HorizontalAlignment.Center);
                 chk.SetValue(FrameworkElement.VerticalAlignmentProperty, VerticalAlignment.Center);

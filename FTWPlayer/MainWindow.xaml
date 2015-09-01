@@ -49,8 +49,9 @@
                                     VolumeFadeOutStoryboard="{StaticResource VolumeFadeOut}"
                                     VolumeFadeOut="{fuwa:Cfg VolumeFadeOutOnExit}" />
         <fuwa:OpenBehavior Storyboard="{DynamicResource LoadedAnimation}" />
-        <fuwa:WindowDragBehavior Enabled="{Binding AllowDrag}"
-                                 ExcludedControl="{Binding ElementName=TabControl, Path=SelectedContent}" />
+        <fuwa:WindowDragBehavior Enabled="{Binding AllowDrag}">
+            <fuwa:ElementReference Binding="{Binding ElementName=TabControl, Path=SelectedContent}"/>
+        </fuwa:WindowDragBehavior>
     </i:Interaction.Behaviors>
     <Window.Resources>
         <converters:TimeSpanDifferenceToGridLengthConverter x:Key="TsGlConv" />

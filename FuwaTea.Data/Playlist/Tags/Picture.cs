@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.IO;
 using FuwaTea.Common.Models;
 
 namespace FuwaTea.Data.Playlist.Tags
@@ -15,7 +15,29 @@ namespace FuwaTea.Data.Playlist.Tags
 
         public Picture(string file, string description, PictureType type)
         {
-            throw new NotImplementedException();
+            switch (Path.GetExtension(file))
+            {
+                case ".gif":
+                    MimeType = "image/gif";
+                    break;
+                case ".jpg":
+                case ".jpeg":
+                    MimeType = "image/jpeg";
+                    break;
+                case ".tif":
+                case ".tiff":
+                    MimeType = "image/tiff";
+                    break;
+                case ".png":
+                    MimeType = "image/png";
+                    break;
+                case ".bmp":
+                    MimeType = "image/bmp";
+                    break;
+            }
+            Description = description;
+            Type = type;
+            Data = File.ReadAllBytes(file);
         }
 
         public byte[] Data { get; }
