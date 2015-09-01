@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:skins="clr-namespace:FTWPlayer.Skins">
-    <skins:ResourceDictionaryIdentifier x:Key="Identifier"
+    <skins:ResourceDictionaryIdentifier x:Key="SkinIdentifier"
                                         Id="Default"
                                         Name="Default Icons"
                                         Description="This is the default icon set for FuwaTeaWin. Use color themes to make it more colorfull!"

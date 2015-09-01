@@ -25,6 +25,7 @@ using System.Security.AccessControl;
 using System.Threading;
 using System.Windows;
 using FTWPlayer.Properties;
+using FTWPlayer.Skins;
 using FuwaTea.Lib;
 using FuwaTea.Lib.Exceptions;
 using FuwaTea.Presentation.Playback;
@@ -171,6 +172,8 @@ namespace FTWPlayer
 
             // Load layers:
             LoadLayers();
+            // Load skins:
+            LayerFactory.GetElement<ISkinManager>().LoadAllSkins(ex => LogManager.GetLogger(typeof(App)).Warn("SkinManager reported an error:", ex));
 
             // Set priority: 
             Process.GetCurrentProcess().PriorityClass = Settings.Default.ProcessPriority;

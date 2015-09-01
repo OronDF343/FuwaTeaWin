@@ -120,7 +120,9 @@
     </Compile>
     <Compile Include="MiscUtils.cs" />
     <Compile Include="NativeMethods.cs" />
+    <Compile Include="Skins\ISkinManager.cs" />
     <Compile Include="Skins\ResourceDictionaryIdentifier.cs" />
+    <Compile Include="Skins\SkinManager.cs" />
     <Compile Include="ViewModels\TagsViewModel.cs" />
     <Compile Include="Views\AlbumArtView.xaml.cs">
       <DependentUpon>AlbumArtView.xaml</DependentUpon>

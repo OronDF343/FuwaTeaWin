@@ -93,7 +93,7 @@ namespace FuwaTea.Lib
         public static string GetSpecificPath(this Assembly a, bool isUserData, string name, bool createDirIfMissing)
         {
             var p = Path.Combine(isUserData ? a.GetUserDataPath() : a.GetExeFolder(), name);
-            if (createDirIfMissing && !Directory.Exists(p)) Directory.CreateDirectory(p);
+            if (createDirIfMissing && !Directory.Exists(p)) Directory.CreateDirectory(p); // TODO: What if admin rights are needed?
             return p;
         }
     }

@@ -18,7 +18,6 @@
 using System;
 using System.IO;
 using FuwaTea.Common.Models;
-using FuwaTea.Data.Playlist.Tags;
 
 namespace FuwaTea.Logic.Playlist
 {
