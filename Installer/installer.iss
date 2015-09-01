@@ -46,8 +46,9 @@ Name: "associate"; Description: "{cm:UpdateFileAssociations}"; GroupDescription:
 Name: "reset"; Description: "{cm:ResetConfig}"; GroupDescription: "{cm:Tasks}"; Flags: unchecked
 
 [Dirs]
-Name: "{appdata}\{#Company}\{#ShortName}"; Components: main
+Name: "{userappdata}\{#Company}\{#ShortName}"; Components: main
 Name: "{app}\extensions"; Components: main
+Name: "{app}\skins"; Components: main
 
 [Files]
 Source: "{#BuildPath}\FTWPlayer.exe"; DestDir: "{app}"; Components: main; Flags: ignoreversion
@@ -81,11 +82,11 @@ Name: "{group}\{#LongName}"; Filename: "{app}\FTWPlayer.exe"; WorkingDir: "{app}
 Name: "{group}\{cm:UninstallIcon,{#LongName}}"; Filename: "{uninstallexe}"; Flags: excludefromshowinnewinstall
 
 [InstallDelete]
-Type: filesandordirs; Name: "{appdata}\{#Company}\{#ShortName}\*"; Tasks: reset
+Type: filesandordirs; Name: "{userappdata}\{#Company}\{#ShortName}\*"; Tasks: reset
 
 [UninstallDelete]
-Type: filesandordirs; Name: "{appdata}\{#Company}\{#ShortName}"; Check: CheckDelUserData
-Type: dirifempty; Name: "{appdata}\{#Company}"; Check: CheckDelUserData
+Type: filesandordirs; Name: "{userappdata}\{#Company}\{#ShortName}"; Check: CheckDelUserData
+Type: dirifempty; Name: "{userappdata}\{#Company}"; Check: CheckDelUserData
 Type: files; Name: "{app}\ftw.log*"
 
 [Languages]
