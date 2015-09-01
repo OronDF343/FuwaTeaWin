@@ -40,8 +40,6 @@ namespace FTWPlayer
         {
             InitializeComponent();
             Closing += (s, e) => ViewModelLocator.Cleanup();
-            // testing
-            Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("pack://application:,,,/Skins/GlacierSkin.xaml") });
         }
 
         #region Single Instance Application

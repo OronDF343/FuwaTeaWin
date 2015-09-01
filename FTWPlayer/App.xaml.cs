@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -24,6 +25,7 @@ using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Threading;
 using System.Windows;
+using System.Xml.Serialization;
 using FTWPlayer.Properties;
 using FTWPlayer.Skins;
 using FuwaTea.Lib;
@@ -173,7 +175,17 @@ namespace FTWPlayer
             // Load layers:
             LoadLayers();
             // Load skins:
-            LayerFactory.GetElement<ISkinManager>().LoadAllSkins(ex => LogManager.GetLogger(typeof(App)).Warn("SkinManager reported an error:", ex));
+            try
+            {
+                foreach(var rd in LayerFactory.GetElement<ISkinManager>().LoadSkinChain(Settings.Default.SkinChain.Cast<string>()))
+                    Resources.MergedDictionaries.Add(rd);
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetLogger(GetType()).Error("Failed to load skin chain! Loading default", ex);
+                foreach (var rd in LayerFactory.GetElement<ISkinManager>().LoadSkinChain(((StringCollection)new XmlSerializer(typeof(StringCollection)).Deserialize(new StringReader((string)Settings.Default.Properties["SkinChain"]?.DefaultValue))).Cast<string>()))
+                    Resources.MergedDictionaries.Add(rd);
+            }
 
             // Set priority: 
             Process.GetCurrentProcess().PriorityClass = Settings.Default.ProcessPriority;
