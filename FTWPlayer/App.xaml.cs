@@ -48,6 +48,7 @@ namespace FTWPlayer
 
         private Mutex _mutex;
         internal int Message;
+        readonly ErrorCallback _ec = ex => LogManager.GetLogger(typeof(App)).Warn("AssemblyLoader reported an error:", ex);
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -55,16 +56,14 @@ namespace FTWPlayer
             AppDomain.CurrentDomain.UnhandledException += (sender, args) => LogManager.GetLogger(GetType()).Fatal("An unhandled exception occured:", (Exception)args.ExceptionObject);
 
 #if DEBUG
-            XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(Assembly.GetExecutingAssembly().GetExeFolder(),
-                                                                        "logconfig-debug.xml")));
+            XmlConfigurator.ConfigureAndWatch(new FileInfo(Assembly.GetExecutingAssembly()
+                                                                   .GetSpecificPath(false, "logconfig-debug.xml", false)));
 #else
             XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(Assembly.GetExecutingAssembly().GetExeFolder(),
                                                                         "logconfig.xml")));
 #endif
 
             LogManager.GetLogger(GetType()).Info("Exceptions are tracked, logging is configured, begin loading!");
-
-            ErrorCallback ec = ex => LogManager.GetLogger(GetType()).Warn("AssemblyLoader reported an error:", ex);
 
             // Get ClArgs:
             var clArgs = Environment.GetCommandLineArgs().ToList();
@@ -73,7 +72,7 @@ namespace FTWPlayer
             if (clArgs.Contains("--setup-file-associations") && isinst)
             {
                 LogManager.GetLogger(GetType()).Info("Detected argument: Setup File Associations");
-                LayerFactory.LoadFolder(Assembly.GetEntryAssembly().GetExeFolder(), ec, true);
+                LoadLayers();
                 var pm = LayerFactory.GetElement<IPlaybackManager>();
                 var key = Registry.LocalMachine.CreateSubKey($@"Software\Clients\Media\{prod}\Capabilities\FileAssociations");
                 if (key == null)
@@ -133,7 +132,7 @@ namespace FTWPlayer
                     _mutex = null;
                     if (clArgs.Count > 1)
                     {
-                        File.WriteAllLines(Path.Combine(Assembly.GetExecutingAssembly().GetUserDataPath(), @"ClArgs.txt"), clArgs); // TODO: find better way of passing args
+                        File.WriteAllLines(Assembly.GetExecutingAssembly().GetSpecificPath(true, @"ClArgs.txt", false), clArgs); // TODO: find better way of passing args
                         NativeMethods.SendMessage(NativeMethods.HWND_BROADCAST, Message, IntPtr.Zero, IntPtr.Zero);
                     }
                     Shutdown();
@@ -171,7 +170,7 @@ namespace FTWPlayer
             }
 
             // Load layers:
-            LayerFactory.LoadFolder(Assembly.GetEntryAssembly().GetExeFolder(), ec, true);
+            LoadLayers();
 
             // Set priority: 
             Process.GetCurrentProcess().PriorityClass = Settings.Default.ProcessPriority;
@@ -181,6 +180,16 @@ namespace FTWPlayer
             MainWindow = new MainWindow();
             MainWindow.Show();
             base.OnStartup(e);
+        }
+
+        public void LoadLayers(bool loadExtensions = true)
+        {
+            LayerFactory.LoadFolder(Assembly.GetEntryAssembly().GetExeFolder(), _ec, true);
+            if (!loadExtensions) return;
+            var extDir = Assembly.GetEntryAssembly().GetSpecificPath(false, "extensions", true);
+            LayerFactory.LoadFolder(extDir, _ec, true);
+            foreach (var dir in Directory.EnumerateDirectories(extDir))
+                LayerFactory.LoadFolder(dir, _ec, true);
         }
 
         protected override void OnExit(ExitEventArgs e)

@@ -60,7 +60,7 @@ namespace FTWPlayer
             if (msg == ((App)Application.Current).Message)
             {
                 Show();
-                var clArgs = File.ReadAllLines(Path.Combine(Assembly.GetExecutingAssembly().GetUserDataPath(), @"ClArgs.txt")).ToList(); // TODO: find better way of passing args
+                var clArgs = File.ReadAllLines(Assembly.GetExecutingAssembly().GetSpecificPath(true, @"ClArgs.txt", false)).ToList(); // TODO: find better way of passing args
                 // TODO: better handling of clArgs
                 // TODO: finish this
                 MiscUtils.ParseClArgs(clArgs);

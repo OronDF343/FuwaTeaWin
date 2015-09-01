@@ -39,8 +39,8 @@ namespace FuwaTea.Lib
         {
             // Get info about the assembly
             var exeDir = a.GetExeFolder();
-            var com = company ?? ((AssemblyCompanyAttribute)Attribute.GetCustomAttribute(a, typeof(AssemblyCompanyAttribute), false)).Company;
-            var product = appName ?? ((AssemblyProductAttribute)Attribute.GetCustomAttribute(a, typeof(AssemblyProductAttribute), false)).Product;
+            var com = company ?? a.GetCompany();
+            var product = appName ?? a.GetProduct();
             // Check if a copy is installed
             var key = Registry.LocalMachine.OpenSubKey($@"Software\{com}\{product}");
             // If no key exists, it isn't installed
@@ -63,21 +63,19 @@ namespace FuwaTea.Lib
         {
             string userDataDir;
             // Get info about the assembly
-            var exeDir = a.GetExeFolder();
-            var com = company ?? ((AssemblyCompanyAttribute)Attribute.GetCustomAttribute(a, typeof(AssemblyCompanyAttribute), false)).Company;
-            var product = appName ?? ((AssemblyProductAttribute)Attribute.GetCustomAttribute(a, typeof(AssemblyProductAttribute), false)).Product;
+            var com = company ?? a.GetCompany();
+            var product = appName ?? a.GetProduct();
             // Check if installed
             if (IsInstalledCopy(a, company, appName))
             {
                 // Ensure the directory in %AppData% exists
-                userDataDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                userDataDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                                            com, product);
             }
             else
             {
                 // Otherwise, this is a portable copy
-                userDataDir = Path.Combine(exeDir, "userdata");
-                if (!Directory.Exists(userDataDir)) Directory.CreateDirectory(userDataDir);
+                userDataDir = a.GetSpecificPath(false, "userdata", true);
             }
             return userDataDir;
         }
@@ -90,6 +88,13 @@ namespace FuwaTea.Lib
         public static string GetProduct(this Assembly a)
         {
             return ((AssemblyProductAttribute)Attribute.GetCustomAttribute(a, typeof(AssemblyProductAttribute), false)).Product;
+        }
+
+        public static string GetSpecificPath(this Assembly a, bool isUserData, string name, bool createDirIfMissing)
+        {
+            var p = Path.Combine(isUserData ? a.GetUserDataPath() : a.GetExeFolder(), name);
+            if (createDirIfMissing && !Directory.Exists(p)) Directory.CreateDirectory(p);
+            return p;
         }
     }
 }
