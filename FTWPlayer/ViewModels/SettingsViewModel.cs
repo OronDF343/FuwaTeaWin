@@ -1,9 +1,10 @@
 ﻿using System.Collections.ObjectModel;
-using System.Configuration;
 using System.Linq;
 using System.Windows.Controls;
 using FTWPlayer.Properties;
+using FTWPlayer.ViewModels.SettingsViewModels;
 using FTWPlayer.Views;
+using LayerFramework;
 
 namespace FTWPlayer.ViewModels
 {
@@ -13,10 +14,10 @@ namespace FTWPlayer.ViewModels
         public SettingsViewModel()
         {
             TabObject = new SettingsView(this);
-            SettingsPropertyValues = new ObservableCollection<SettingsPropertyValue>(Settings.Default.PropertyValues.OfType<SettingsPropertyValue>());
+            SettingsTabs = new ObservableCollection<TabItem>(LayerFactory.GetElements<ISettingsTab>().OrderBy(t => t.Index).Select(t => t.GetTabItem(Settings.Default)));
         }
         public TabItem TabObject { get; }
         public decimal Index => 3;
-        public ObservableCollection<SettingsPropertyValue> SettingsPropertyValues { get; private set; } 
+        public ObservableCollection<TabItem> SettingsTabs { get; }
     }
 }

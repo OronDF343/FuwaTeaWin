@@ -4,7 +4,7 @@
     <skins:ResourceDictionaryIdentifier x:Key="SkinIdentifier"
                                         Id="Default"
                                         Name="Default Icons"
-                                        Description="This is the default icon set for FuwaTeaWin. Use color themes to make it more colorfull!"
+                                        Description="This is the default icon set for FuwaTeaWin. Use color themes to make it more colorful!"
                                         Version="1.0"
                                         Author="Styling by OronDF343; Icons by iconmonstr"
                                         Homepage="https://orondf343.wordpress.com/"
@@ -121,6 +121,15 @@
 	                       C385.25,255.646,294.865,271.189,294.865,328.9z"
                   FillRule="NonZero"
                   Transform="{StaticResource 512To16Transform}" />
+    <PathGeometry x:Key="SkinsIcon"
+                  Figures="M209.965,376.166c-27.661,0-56.127-12.17-74.132-37.217c2.95,0.235,5.767,0.369,8.432,0.369
+	                       c68.315,0,44.845-77.526,114.953-78.272l31.584,26.337C295.598,345.639,253.787,376.166,209.965,376.166z M377.307,216.813
+	                       c20.352-31.97,65.783-117.074,83.15-150.175c1.074-1.869,1.543-3.747,1.543-5.541C462,55.038,456.635,50,450.734,50
+	                       c-2.348,0-4.795,0.805-7.008,2.666c-28.666,24.258-101.256,86.177-128.951,112.019c-26.286,24.585-26.387,35.826-34.902,76.354
+	                       l28.834,24.031C346.93,249.353,357.928,247.215,377.307,216.813z M393.334,252.966v174.7h-309V187.333h173.342
+	                       c11.232-30.704,29.875-45.725,96.194-103H50V462h377.666V199.052C415.831,219.923,405.772,237.961,393.334,252.966z"
+                  FillRule="NonZero"
+                  Transform="{StaticResource 512To32Transform}" />
 
     <!-- REQUIRED: The Content of the buttons.
          USAGE: Anything that will appear on each button. Must be assignable to Button.Content. -->
@@ -159,10 +168,10 @@
           Data="{DynamicResource ExitIcon}" />
     <Path x:Key="AllSettingsButtonContent" Fill="{DynamicResource BackgroundBrush}" Width="32" Height="32"
           Data="{DynamicResource GearIcon}" />
+    <Path x:Key="SkinsButtonContent" Fill="{DynamicResource BackgroundBrush}" Width="32" Height="32"
+          Data="{DynamicResource SkinsIcon}" />
     <Path x:Key="MiniHelpButtonContent" Fill="{DynamicResource IconBrush}" Width="32" Height="32"
           Data="{DynamicResource SmallHelpIcon}" />
-    <Path x:Key="Example2Content" Fill="{DynamicResource BackgroundBrush}" Width="32" Height="32"
-          Data="{DynamicResource ResizeIcon}" />
 
     <!-- EXTERNAL: Dimensions -->
     <Thickness x:Key="BorderThickness">1</Thickness>
@@ -474,7 +483,12 @@
                 Cursor="Hand" x:Name="tab" Background="{DynamicResource DefaultBrush}" VerticalAlignment="Center"
                 HorizontalAlignment="Stretch">
             <Grid>
-                <ContentPresenter x:Name="contentPresenter" ContentSource="Header"
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <ContentPresenter ContentSource="Tag" />
+                <ContentPresenter Grid.Row="1" ContentSource="Header"
                                   TextBlock.Foreground="{DynamicResource BackgroundBrush}"
                                   TextBlock.FontWeight="Bold"
                                   VerticalAlignment="Top"

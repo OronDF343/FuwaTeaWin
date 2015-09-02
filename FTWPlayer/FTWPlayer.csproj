@@ -123,6 +123,9 @@
     <Compile Include="Skins\ISkinManager.cs" />
     <Compile Include="Skins\ResourceDictionaryIdentifier.cs" />
     <Compile Include="Skins\SkinManager.cs" />
+    <Compile Include="ViewModels\SettingsViewModels\ISettingsTab.cs" />
+    <Compile Include="ViewModels\SettingsViewModels\AllSettingsViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModels\SkinsViewModel.cs" />
     <Compile Include="ViewModels\TagsViewModel.cs" />
     <Compile Include="Views\AlbumArtView.xaml.cs">
       <DependentUpon>AlbumArtView.xaml</DependentUpon>
@@ -148,6 +151,12 @@
     <Compile Include="UIPartAttribute.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Compile Include="Views\SettingsViews\AllSettingsView.xaml.cs">
+      <DependentUpon>AllSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsViews\SkinsView.xaml.cs">
+      <DependentUpon>SkinsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TagsView.xaml.cs">
       <DependentUpon>TagsView.xaml</DependentUpon>
     </Compile>
@@ -186,6 +195,14 @@
     <Page Include="Views\SettingsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SettingsViews\AllSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsViews\SkinsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TagsView.xaml">
       <SubType>Designer</SubType>
@@ -251,6 +268,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
