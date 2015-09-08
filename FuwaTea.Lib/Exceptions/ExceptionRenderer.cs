@@ -3,7 +3,7 @@ using System.IO;
 using FuwaTea.Annotations;
 using log4net.ObjectRenderer;
 
-namespace FTWPlayer
+namespace FuwaTea.Lib.Exceptions
 {
     [UsedImplicitly]
     public class ExceptionRenderer : IObjectRenderer

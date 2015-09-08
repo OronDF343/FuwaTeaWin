@@ -75,14 +75,14 @@
                             <DataTrigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetProperty="Height" From="34" To="540" Duration="0:0:0.5"/>
+                                        <DoubleAnimation Storyboard.TargetProperty="Height" To="540" Duration="0:0:0.5"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </DataTrigger.EnterActions>
                             <DataTrigger.ExitActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetProperty="Height" From="540" To="34" Duration="0:0:0.5"/>
+                                        <DoubleAnimation Storyboard.TargetProperty="Height" To="34" Duration="0:0:0.5"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </DataTrigger.ExitActions>
@@ -111,7 +111,7 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*" MaxHeight="8" />
+                        <RowDefinition Height="*" />
                         <RowDefinition Height="32" />
                     </Grid.RowDefinitions>
 

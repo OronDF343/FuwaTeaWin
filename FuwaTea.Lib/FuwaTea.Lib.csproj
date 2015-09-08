@@ -51,6 +51,7 @@
     <Compile Include="Collections\OneToManyDictionary.cs" />
     <Compile Include="Collections\SortComparer.cs" />
     <Compile Include="Exceptions\ErrorCallback.cs" />
+    <Compile Include="Exceptions\ExceptionRenderer.cs" />
     <Compile Include="Exceptions\IDepthElement.cs" />
     <Compile Include="PathUtils.cs" />
     <Compile Include="PortableSettingsProvider.cs" />

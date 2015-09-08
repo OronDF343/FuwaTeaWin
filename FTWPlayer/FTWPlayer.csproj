@@ -110,7 +110,6 @@
     <Compile Include="Converters\TimeSpanFormatterConverter.cs" />
     <Compile Include="Converters\UnitsConverter.cs" />
     <Compile Include="Converters\VolumeConverter.cs" />
-    <Compile Include="ExceptionRenderer.cs" />
     <Compile Include="IUIPart.cs" />
     <Compile Include="Localization\LocalizationProvider.cs" />
     <Compile Include="Localization\Strings.Designer.cs">

@@ -26,5 +26,5 @@
     <appender-ref ref="DebugRollingFile" />
   </root>
 
-  <renderer renderingClass="FTWPlayer.ExceptionRenderer,FTWPlayer" renderedClass="System.Exception" />
+  <renderer renderingClass="FuwaTea.Lib.Exceptions.ExceptionRenderer,FuwaTea.Lib" renderedClass="System.Exception" />
 </log4net>
