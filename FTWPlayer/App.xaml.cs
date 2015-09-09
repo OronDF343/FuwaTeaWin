@@ -30,6 +30,7 @@ using FTWPlayer.Properties;
 using FTWPlayer.Skins;
 using FuwaTea.Lib;
 using FuwaTea.Lib.Exceptions;
+using FuwaTea.Logic.Playlist;
 using FuwaTea.Presentation.Playback;
 using GalaSoft.MvvmLight.Threading;
 using log4net;
@@ -77,6 +78,8 @@ namespace FTWPlayer
                 LogManager.GetLogger(GetType()).Info("Detected argument: Setup File Associations");
                 LoadLayers();
                 var pm = LayerFactory.GetElement<IPlaybackManager>();
+                var plm = LayerFactory.GetElement<IPlaylistManager>();
+                var supported = pm.SupportedFileTypes.Union(plm.ReadableFileTypes);
                 var key = Registry.LocalMachine.CreateSubKey($@"Software\Clients\Media\{prod}\Capabilities\FileAssociations");
                 if (key == null)
                 {
@@ -85,8 +88,8 @@ namespace FTWPlayer
                     return;
                 }
                 var exts = key.GetValueNames();
-                var f = exts.Where(s => !pm.SupportedFileTypes.Contains(s));
-                var t = pm.SupportedFileTypes.Where(s => !exts.Contains(s));
+                var f = exts.Where(s => !supported.Contains(s));
+                var t = supported.Where(s => !exts.Contains(s));
                 foreach (var s in f) key.DeleteValue(s);
                 foreach (var s in t) key.SetValue(s, prod + ".AudioFileGeneric", RegistryValueKind.String);
                 Shutdown();
