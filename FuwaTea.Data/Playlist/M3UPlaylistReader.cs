@@ -19,27 +19,29 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
+using FuwaTea.Common.Models;
+using FuwaTea.Lib;
 
 namespace FuwaTea.Data.Playlist
 {
     [DataElement("M3U / M3U8 playlist reader")]
     public class M3UPlaylistReader : IPlaylistReader
     {
-        public IEnumerable<string> GetPlaylistFiles(string path)
+        public IEnumerable<string> SupportedFileTypes => new[] {".m3u", ".m3u8"};
+        public void LoadPlaylistFiles(string path, IPlaylist playlist)
         {
             try
             {
-                var dir = Path.GetDirectoryName(path)?.TrimEnd('\\');
-                return new List<string>(from f in File.ReadAllLines(path)
-                                        where !string.IsNullOrWhiteSpace(f) && !f.StartsWith("#EXT")
-                                        select f[1] == ':' || f.StartsWith(@"\\") ? f : (dir + @"\" + f));
+                var dir = Path.GetDirectoryName(path);
+                playlist.Init(path, from f in File.ReadAllLines(path, path.EndsWith("8") ? Encoding.UTF8 : Encoding.GetEncoding(1252))
+                                    where !string.IsNullOrWhiteSpace(f) && !f.StartsWith("#EXT")
+                                    select PathUtils.ExpandRelativePath(dir, f));
             }
             catch (Exception e)
             {
                 throw new DataSourceException(path, "Failed to read M3U playlist!", e);
             }
         }
-
-        public IEnumerable<string> SupportedFileTypes => new[] {".m3u", ".m3u8"};
     }
 }

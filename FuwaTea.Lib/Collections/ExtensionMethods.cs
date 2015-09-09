@@ -73,5 +73,11 @@ namespace FuwaTea.Lib.Collections
                                                                                          .SelectMany(tu => tu.Item2)))
                 .ToDictionary(pair => pair.Key, pair => new HashSet<TValue>(pair.Value)));
         }
+
+        public static void AddOrSet<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, TValue value)
+        {
+            if (dict.ContainsKey(key)) dict[key] = value;
+            else dict.Add(key, value);
+        }
     }
 }

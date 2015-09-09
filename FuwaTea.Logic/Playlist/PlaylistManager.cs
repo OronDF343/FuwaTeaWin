@@ -15,8 +15,10 @@
 //     along with FuwaTeaWin.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using FuwaTea.Annotations;
@@ -29,12 +31,7 @@ namespace FuwaTea.Logic.Playlist
     [LogicElement("Playlist Manager")]
     public class PlaylistManager : IPlaylistManager
     {
-        public PlaylistManager()
-        {
-            LoadedPlaylists = new Dictionary<string, IPlaylist>();
-        }
-
-        public Dictionary<string, IPlaylist> LoadedPlaylists { get; }
+        public Dictionary<string, IPlaylist> LoadedPlaylists { get; } = new Dictionary<string, IPlaylist>();
 
         private string _selectedId;
         public string SelectedPlaylistId
@@ -54,6 +51,35 @@ namespace FuwaTea.Logic.Playlist
         public void CreatePlaylist(string name)
         {
             LoadedPlaylists.Add(name, new Playlist());
+        }
+
+        public void MergePlaylists(IPlaylist source, IPlaylist target)
+        {
+            target.AddRange(source);
+        }
+
+        public IPlaylist OpenPlaylist(string path)
+        {
+            var pl = new Playlist {FileLocation = path};
+            LayerFactory.GetElements<IPlaylistReader>().First(w => w.SupportedFileTypes.Contains(Path.GetExtension(path))).LoadPlaylistFiles(path, pl);
+            return pl;
+        }
+
+        public void Save(IPlaylist playlist)
+        {
+            if (string.IsNullOrEmpty(playlist.FileLocation)) throw new InvalidOperationException("No file open!");
+            SaveTo(playlist, playlist.FileLocation);
+        }
+
+        public void SaveTo(IPlaylist playlist, string path)
+        {
+            SaveCopy(playlist, playlist.FileLocation = path);
+            playlist.UnsavedChanges = false;
+        }
+
+        public void SaveCopy(IPlaylist playlist, string path)
+        {
+            LayerFactory.GetElements<IPlaylistWriter>().First(w => w.SupportedFileTypes.Contains(Path.GetExtension(path))).WritePlaylist(path, playlist, true); // TODO: place for relative path option etc
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

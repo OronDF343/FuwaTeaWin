@@ -35,5 +35,12 @@ namespace FuwaTea.Logic.Playlist
         IEnumerable<string> ReadableFileTypes { get; }
 
         void CreatePlaylist(string name);
+        void MergePlaylists(IPlaylist source, IPlaylist target);
+
+
+        IPlaylist OpenPlaylist(string path);
+        void Save(IPlaylist playlist);
+        void SaveTo(IPlaylist playlist, string path);
+        void SaveCopy(IPlaylist playlist, string path);
     }
 }

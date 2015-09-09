@@ -24,7 +24,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using FuwaTea.Common.Models;
-using FuwaTea.Data.Playlist;
 using FuwaTea.Data.Playlist.Tags;
 using FuwaTea.Lib.Collections;
 using LayerFramework;
@@ -39,22 +38,42 @@ namespace FuwaTea.Logic.Playlist
             _shuffleMap = new int[0];
         }
 
+        private bool _init;
+
+        public void Init(string path, IEnumerable<string> items)
+        {
+            FileLocation = path;
+            _init = true;
+            AddRange(items);
+            _init = false;
+        }
+
+        public void Init(string path, IEnumerable<IMusicInfoModel> items)
+        {
+            FileLocation = path;
+            _init = true;
+            AddRange(items);
+            _init = false;
+        }
+
         public void Add(string musicFile)
         {
             var tag = LayerFactory.GetElements<ITagProvider>().First(r => r.SupportedFileTypes.Contains(Path.GetExtension(musicFile)));
             Add(new MusicInfoModel(musicFile, tag.Create(musicFile)));
         }
 
-        public void AddFromPlaylist(string playlistFile)
-        {
-            foreach (var s in LayerFactory.GetElements<IPlaylistReader>().First(r => r.SupportedFileTypes.Contains(Path.GetExtension(playlistFile))).GetPlaylistFiles(playlistFile))
-                Add(s);
-        }
-
         public void AddRange(IEnumerable<IMusicInfoModel> items)
         {
             foreach (var item in items)
                 Add(item);
+        }
+
+        public void AddRange(IEnumerable<string> items)
+        {
+            foreach (var item in items)
+            {
+                Add(item);
+            }
         }
 
         public void Move(int[] selection, int newStartIndex)
@@ -152,31 +171,6 @@ namespace FuwaTea.Logic.Playlist
             return Array.IndexOf(_shuffleMap, index);
         }
 
-        public void Open(string path)
-        {
-            Clear();
-            FileLocation = path;
-            AddFromPlaylist(path);
-            UnsavedChanges = false;
-        }
-
-        public void Save()
-        {
-            if (string.IsNullOrEmpty(FileLocation)) throw new InvalidOperationException("No file open!");
-            SaveTo(FileLocation);
-        }
-
-        public void SaveTo(string path)
-        {
-            SaveCopy(FileLocation = path);
-            UnsavedChanges = false;
-        }
-
-        public void SaveCopy(string path)
-        {
-            LayerFactory.GetElements<IPlaylistWriter>().First(w => w.SupportedFileTypes.Contains(Path.GetExtension(path))).WritePlaylist(path, this.Select(m => m.FilePath), true); // TODO: place for relative path option etc
-        }
-
         private string _fileLocation;
 
         public string FileLocation
@@ -191,11 +185,13 @@ namespace FuwaTea.Logic.Playlist
         }
 
         private bool _unsaved;
-        public bool UnsavedChanges { get { return _unsaved; } private set { _unsaved = value; OnPropertyChanged(new PropertyChangedEventArgs("UnsavedChanges")); } }
+        public bool UnsavedChanges { get { return _unsaved; } set { _unsaved = value; OnPropertyChanged(new PropertyChangedEventArgs("UnsavedChanges")); } }
+        public string Title { get; set; }
+        public Dictionary<string, object> Metadata { get; } = new Dictionary<string, object>();
 
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            UnsavedChanges = true;
+            UnsavedChanges = !_init;
             base.OnCollectionChanged(e);
         }
     }

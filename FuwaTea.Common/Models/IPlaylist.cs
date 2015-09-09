@@ -24,9 +24,12 @@ namespace FuwaTea.Common.Models
 {
     public interface IPlaylist : IList<IMusicInfoModel>, INotifyCollectionChanged, INotifyPropertyChanged
     {
+        void Init(string path, IEnumerable<string> items);
+        void Init(string path, IEnumerable<IMusicInfoModel> items);
+
         void Add(string musicFile);
-        void AddFromPlaylist(string playlistFile);
         void AddRange(IEnumerable<IMusicInfoModel> items);
+        void AddRange(IEnumerable<string> items);
 
         void Move(int selection, int newIndex);
         void Move(int[] selection, int newStartIndex);
@@ -43,11 +46,9 @@ namespace FuwaTea.Common.Models
         int AbsoluteToShuffled(int index);
         int ShuffledToAbsolute(int index);
 
-        void Open(string path);
-        void Save();
-        void SaveTo(string path);
-        void SaveCopy(string path);
         string FileLocation { get; set; }
-        bool UnsavedChanges { get; }
+        bool UnsavedChanges { get; set; }
+        string Title { get; set; }
+        Dictionary<string, object> Metadata { get; }
     }
 }

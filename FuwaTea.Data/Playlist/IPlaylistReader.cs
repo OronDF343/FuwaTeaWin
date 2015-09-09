@@ -16,6 +16,7 @@
 #endregion
 
 using System.Collections.Generic;
+using FuwaTea.Common.Models;
 
 namespace FuwaTea.Data.Playlist
 {
@@ -25,7 +26,7 @@ namespace FuwaTea.Data.Playlist
         /// Reads file entries from a playlist file.
         /// </summary>
         /// <param name="path">The path to the playlist file.</param>
-        /// <returns>A <see cref="T:IEnumerable`1{string}"/> which will contain the entries from the playlist file.</returns>
-        IEnumerable<string> GetPlaylistFiles(string path);
+        /// <param name="playlist">The playlist to load the entries into.</param>
+        void LoadPlaylistFiles(string path, IPlaylist playlist);
     }
 }

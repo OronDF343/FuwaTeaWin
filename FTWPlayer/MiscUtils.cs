@@ -62,12 +62,11 @@ namespace FTWPlayer
                 if (plm.ReadableFileTypes.Contains(ext))
                 {
                     if (addOnly)
-                        plm.SelectedPlaylist.AddFromPlaylist(file);
+                        plm.MergePlaylists(plm.OpenPlaylist(file), plm.SelectedPlaylist);
                     else
                     {
-                        plm.CreatePlaylist(file);
-                        plm.SelectedPlaylistId = file; // TODO: think about this
-                        plm.SelectedPlaylist.Open(file); // TODO: handle exceptions
+                        plm.LoadedPlaylists.Add(file, plm.OpenPlaylist(file)); // TODO: handle exceptions
+                        plm.SelectedPlaylistId = file;
                         return true;
                     }
                 }

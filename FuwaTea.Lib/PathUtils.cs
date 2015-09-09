@@ -54,6 +54,11 @@ namespace FuwaTea.Lib
             return relativePath;
         }
 
+        public static string ExpandRelativePath(string srcPath, string targetPath)
+        {
+            return targetPath[1] == ':' || targetPath.StartsWith(@"\\") ? targetPath : Path.Combine(srcPath, targetPath);
+        }
+
         public static IEnumerable<FileInfo> EnumerateFilesEx(this DirectoryInfo path)
         {
             var queue = new Queue<DirectoryInfo>();

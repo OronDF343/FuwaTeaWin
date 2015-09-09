@@ -16,6 +16,7 @@
 #endregion
 
 using System.Collections.Generic;
+using FuwaTea.Common.Models;
 
 namespace FuwaTea.Data.Playlist
 {
@@ -25,8 +26,8 @@ namespace FuwaTea.Data.Playlist
         /// Writes a list of entries to a playlist file.
         /// </summary>
         /// <param name="path">The path to the playlist file.</param>
-        /// <param name="entries">The entries which will be written to the playlist file.</param>
+        /// <param name="playlist">The playlist which will be written to the file.</param>
         /// <param name="relativePaths"></param>
-        void WritePlaylist(string path, IEnumerable<string> entries, bool relativePaths);
+        void WritePlaylist(string path, IPlaylist playlist, bool relativePaths);
     }
 }

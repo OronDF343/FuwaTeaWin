@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using FuwaTea.Common.Models;
 using FuwaTea.Lib;
 
 namespace FuwaTea.Data.Playlist
@@ -27,19 +28,21 @@ namespace FuwaTea.Data.Playlist
     [DataElement("M3U / M3U8 playlist writer")]
     public class M3UPlaylistWriter : IPlaylistWriter
     {
-        public void WritePlaylist(string path, IEnumerable<string> entries, bool relativePaths)
+        public IEnumerable<string> SupportedFileTypes => new[] { ".m3u", ".m3u8" };
+        public void WritePlaylist(string path, IPlaylist playlist, bool relativePaths)
         {
             try
             {
-                File.WriteAllLines(path, entries.Select(s => relativePaths ? PathUtils.MakeRelativePath(path, s) : s), path.EndsWith("8") ? Encoding.UTF8 : Encoding.Default);
+                File.WriteAllLines(path, playlist.Select(s => relativePaths
+                                                                  ? PathUtils.MakeRelativePath(path, s.FilePath)
+                                                                  : s.FilePath),
+                                   path.EndsWith("8") ? Encoding.UTF8 : Encoding.GetEncoding(1252));
             }
             catch (Exception e)
             {
                 throw new DataSourceException(path, "Failed to write M3U8 playlist!", e);
             }
         }
-
-        public IEnumerable<string> SupportedFileTypes => new[] { ".m3u", ".m3u8" };
 
         // TODO: add description for each type
     }
