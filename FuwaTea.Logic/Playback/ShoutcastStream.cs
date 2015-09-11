@@ -7,20 +7,13 @@ using FuwaTea.Common.Models;
 
 namespace FuwaTea.Logic.Playback
 {
+    // Based on code by Dirk Reske: http://www.codeproject.com/Articles/19125/ShoutcastStream-Class
     public class ShoutcastStream : Stream
     {
         private readonly int _metaInt;
         private int _receivedBytes;
         private readonly Stream _netStream;
         private bool _connected;
-
-        private int _read;
-        private int _leftToRead;
-        private int _thisOffset;
-        private int _bytesRead;
-        private int _bytesLeftToMeta;
-        private int _metaLen;
-        private byte[] _metaInfo;
         
         public event EventHandler StreamTitleChanged;
 
@@ -90,54 +83,30 @@ namespace FuwaTea.Logic.Playback
         {
             try
             {
-                _read = 0;
-                _leftToRead = count;
-                _thisOffset = offset;
-                _bytesRead = 0;
-                _bytesLeftToMeta = ((_metaInt - _receivedBytes) > count) ? count : (_metaInt - _receivedBytes);
-
-                while (_bytesLeftToMeta > 0 && (_read = _netStream.Read(buffer, _thisOffset, _bytesLeftToMeta)) > 0)
-                {
-                    _leftToRead -= _read;
-                    _thisOffset += _read;
-                    _bytesRead += _read;
-                    _receivedBytes += _read;
-                    _bytesLeftToMeta -= _read;
-                }
-
-                // read metadata
                 if (_receivedBytes == _metaInt)
                 {
-                    ReadMetaData();
+                    var metaLen = _netStream.ReadByte();
+                    if (metaLen > 0)
+                    {
+                        var metaInfo = new byte[metaLen * 16];
+                        var len = 0;
+                        while ((len += _netStream.Read(metaInfo, len, metaInfo.Length - len)) < metaInfo.Length) ;
+                        ParseMetaInfo(metaInfo);
+                    }
+                    _receivedBytes = 0;
                 }
-
-                while (_leftToRead > 0 && (_read = _netStream.Read(buffer, _thisOffset, _leftToRead)) > 0)
-                {
-                    _leftToRead -= _read;
-                    _thisOffset += _read;
-                    _bytesRead += _read;
-                    _receivedBytes += _read;
-                }
-
-                return _bytesRead;
+                var bytesLeft = ((_metaInt - _receivedBytes) > count) ?
+                                  count : (_metaInt - _receivedBytes);
+                var result = _netStream.Read(buffer, offset, bytesLeft);
+                _receivedBytes += result;
+                return result;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _connected = false;
+                Console.WriteLine(e.Message);
                 return -1;
             }
-        }
-
-        private void ReadMetaData()
-        {
-            _metaLen = _netStream.ReadByte();
-            if (_metaLen > 0)
-            {
-                _metaInfo = new byte[_metaLen * 16];
-                var len = 0;
-                while ((len += _netStream.Read(_metaInfo, len, _metaInfo.Length - len)) < _metaInfo.Length) ;
-                ParseMetaInfo(_metaInfo);
-            }
-            _receivedBytes = 0;
         }
         
         public override void Close()

@@ -56,6 +56,8 @@
     <Compile Include="Playback\IAudioOutputDevice.cs" />
     <Compile Include="Playback\IAudioPlayer.cs" />
     <Compile Include="Playback\IStreamingAudioPlayer.cs" />
+    <Compile Include="Playback\NAudio\BufferedWaveStream.cs" />
+    <Compile Include="Playback\NAudio\Mp3FrameReader.cs" />
     <Compile Include="Playback\NAudio\BalanceSampleProvider.cs" />
     <Compile Include="Playback\NAudio\Equalizer.cs" />
     <Compile Include="Playback\NAudio\NAudioPlayer.cs" />

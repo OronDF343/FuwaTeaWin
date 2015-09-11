@@ -22,6 +22,7 @@ using System.IO;
 using System.Linq;
 using FuwaTea.Common.Models;
 using FuwaTea.Data.Playback.NAudio;
+using FuwaTea.Lib;
 using log4net;
 using LayerFramework;
 using NAudio.Wave;
@@ -76,7 +77,7 @@ namespace FuwaTea.Logic.Playback.NAudio
                 if (StreamMetadataChanged != null) _shoutcastStream.StreamTitleChanged += (sender, args) => StreamMetadataChanged(sender, args);
                 if (_shoutcastStream.MimeType.ToLowerInvariant() != "audio/mpeg") throw new NotSupportedException("Only MP3 stream is supported!");
                 // Init codec TODO: Create proper implementation, this is just for testing purposes
-                _waveStream = new MediaFoundationReader(path);
+                _waveStream = new BufferedWaveStream(new Mp3FrameReader(new ReadFullyStream(_shoutcastStream)));
             }
             else
             {
@@ -170,7 +171,7 @@ namespace FuwaTea.Logic.Playback.NAudio
         {
             _wavePlayer.PlaybackStopped -= WavePlayer_PlaybackStopped;
             _wavePlayer?.Stop();
-            Position = TimeSpan.Zero;
+            if (!_stream) Position = TimeSpan.Zero;
         }
 
         public TimeSpan Duration => _waveStream?.TotalTime ?? TimeSpan.Zero;

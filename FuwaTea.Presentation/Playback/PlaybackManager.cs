@@ -233,7 +233,11 @@ namespace FuwaTea.Presentation.Playback
         {
             if (IsSomethingLoaded) UnloadFile();
 
-            if (ElementCount < 1) return; // TODO: should this throw an exception?
+            if (ElementCount < 1)
+            {
+                LogManager.GetLogger(GetType()).Warn("Tried to load a file from an empty playlist!");
+                return;
+            }
 
             if (Current.FilePath.StartsWith("http://") || Current.FilePath.StartsWith("https://"))
             {
