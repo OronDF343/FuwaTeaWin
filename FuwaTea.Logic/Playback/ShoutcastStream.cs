@@ -45,8 +45,8 @@ namespace FuwaTea.Logic.Playback
         private void ParseMetaInfo(byte[] metaInfo)
         {
             var metaString = Encoding.ASCII.GetString(metaInfo);
-
-            var newStreamTitle = Regex.Match(metaString, "(StreamTitle=')(.*)(';StreamUrl)").Groups[2].Value.Trim();
+            Console.WriteLine(metaString);
+            var newStreamTitle = Regex.Match(metaString, "(StreamTitle=')(.*)(';)").Groups[2].Value.Trim();
             if (newStreamTitle.Equals(StreamTitle)) return;
             StreamTitle = newStreamTitle;
             OnStreamTitleChanged();
