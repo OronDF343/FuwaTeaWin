@@ -24,13 +24,13 @@ namespace FuwaTea.Common.Models
         public virtual string Copyright { get; set; }
         public virtual uint Disc { get; set; }
         public virtual uint DiscCount { get; set; }
-        public string FirstAlbumArtist => AlbumArtists.FirstOrDefault();
-        public string FirstAlbumArtistSort => AlbumArtistsSort.FirstOrDefault();
-        public string FirstComposer => Composers.FirstOrDefault();
-        public string FirstComposerSort => ComposersSort.FirstOrDefault();
-        public string FirstGenre => Genres.First();
-        public string FirstPerformer => Performers.First();
-        public string FirstPerformerSort => PerformersSort.First();
+        public string FirstAlbumArtist => AlbumArtists?.FirstOrDefault();
+        public string FirstAlbumArtistSort => AlbumArtistsSort?.FirstOrDefault();
+        public string FirstComposer => Composers?.FirstOrDefault();
+        public string FirstComposerSort => ComposersSort?.FirstOrDefault();
+        public string FirstGenre => Genres?.First();
+        public string FirstPerformer => Performers?.First();
+        public string FirstPerformerSort => PerformersSort?.First();
         public virtual string[] Genres { get; set; }
         public virtual string Grouping { get; set; }
         public abstract bool IsEmpty { get; } // HasTag
@@ -70,12 +70,12 @@ namespace FuwaTea.Common.Models
 
         private static string Join(string[] items)
         {
-            return string.Join(Separator, items);
+            return items == null ? null : string.Join(Separator, items);
         }
 
         private static string[] Split(string joined)
         {
-            return joined.Split(new[] { Separator }, StringSplitOptions.RemoveEmptyEntries);
+            return joined?.Split(new[] { Separator }, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 

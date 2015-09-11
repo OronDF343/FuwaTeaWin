@@ -15,7 +15,6 @@
 //     along with FuwaTeaWin.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 
-using System.Collections.Generic;
 using FuwaTea.Common.Models;
 
 namespace FuwaTea.Data.Playlist

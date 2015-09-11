@@ -58,8 +58,8 @@ namespace FuwaTea.Logic.Playlist
 
         public void Add(string musicFile)
         {
-            var tag = LayerFactory.GetElements<ITagProvider>().First(r => r.SupportedFileTypes.Contains(Path.GetExtension(musicFile)));
-            Add(new MusicInfoModel(musicFile, tag.Create(musicFile)));
+            var tag = LayerFactory.GetElements<ITagProvider>().FirstOrDefault(r => r.SupportedFileTypes.Contains(Path.GetExtension(musicFile)));
+            Add(new MusicInfoModel(musicFile, tag?.Create(musicFile)));
         }
 
         public void AddRange(IEnumerable<IMusicInfoModel> items)

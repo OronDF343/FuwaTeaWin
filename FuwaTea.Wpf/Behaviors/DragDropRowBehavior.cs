@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media;
@@ -36,10 +37,10 @@ namespace FuwaTea.Wpf.Behaviors
 
         #region Popup
         public static readonly DependencyProperty PopupProperty =
-            DependencyProperty.Register("Popup", typeof(System.Windows.Controls.Primitives.Popup), typeof(DragDropRowBehavior));
-        public System.Windows.Controls.Primitives.Popup Popup
+            DependencyProperty.Register("Popup", typeof(Popup), typeof(DragDropRowBehavior));
+        public Popup Popup
         {
-            get { return (System.Windows.Controls.Primitives.Popup)GetValue(PopupProperty); }
+            get { return (Popup)GetValue(PopupProperty); }
             set { SetValue(PopupProperty, value); }
         }
         #endregion

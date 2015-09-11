@@ -55,9 +55,11 @@
     <Compile Include="Playback\AudioOutputDevice.cs" />
     <Compile Include="Playback\IAudioOutputDevice.cs" />
     <Compile Include="Playback\IAudioPlayer.cs" />
+    <Compile Include="Playback\IStreamingAudioPlayer.cs" />
     <Compile Include="Playback\NAudio\BalanceSampleProvider.cs" />
     <Compile Include="Playback\NAudio\Equalizer.cs" />
     <Compile Include="Playback\NAudio\NAudioPlayer.cs" />
+    <Compile Include="Playback\ShoutcastStream.cs" />
     <Compile Include="Playlist\AlbumArt\AlbumArtLocator.cs" />
     <Compile Include="Playlist\AlbumArt\IAlbumArtLocator.cs" />
     <Compile Include="Playlist\IPlaylistManager.cs" />

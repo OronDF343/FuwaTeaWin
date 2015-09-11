@@ -25,16 +25,18 @@ namespace FuwaTea.Logic.Playlist
     {
         public Guid UniqueId { get; }
         public FileInfo FileInfo { get; }
-        public string FilePath => FileInfo.FullName;
-        public string FileName => FileInfo.Name;
+        public string FilePath { get; }
+        public string FileName => FileInfo?.Name;
         public string FileType => Path.GetExtension(FilePath);
         public TimeSpan Duration => Tag.Duration;
         public int Bitrate => Tag.Bitrate;
-        public Tag Tag { get; }
+        public Tag Tag { get; set; }
 
         public MusicInfoModel(string path, Tag tag)
         {
-            FileInfo = new FileInfo(path);
+            FilePath = path;
+            try { FileInfo = new FileInfo(path); }
+            catch { }
             Tag = tag;
             UniqueId = Guid.NewGuid();
         }

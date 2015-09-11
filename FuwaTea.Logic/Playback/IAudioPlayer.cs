@@ -31,7 +31,7 @@ namespace FuwaTea.Logic.Playback
         /// <param name="device">The output device</param>
         void Load(string path, IAudioOutputDevice device);
         /// <summary>
-        /// Unloads the currently loaded file. this includes stopping playback if necessary.
+        /// Unloads the currently loaded file. This includes stopping playback if necessary.
         /// </summary>
         void Unload();
         /// <summary>
@@ -48,6 +48,10 @@ namespace FuwaTea.Logic.Playback
         /// </summary>
         void Play();
         /// <summary>
+        /// Stops playback of the current file.
+        /// </summary>
+        void Stop();
+        /// <summary>
         /// Pause playback of the current file. Will be called only if currently playing.
         /// </summary>
         void Pause();
@@ -55,10 +59,6 @@ namespace FuwaTea.Logic.Playback
         /// Resume playback of the current file. Will be called only if currently paused.
         /// </summary>
         void Resume();
-        /// <summary>
-        /// Stops playback of the current file.
-        /// </summary>
-        void Stop();
 
         /// <summary>
         /// Gets the duration of the currently loaded file.

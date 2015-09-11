@@ -30,7 +30,7 @@ using NAudio.Wave.SampleProviders;
 namespace FuwaTea.Logic.Playback.NAudio
 {
     [LogicElement("NAudio playback engine")]
-    public sealed class NAudioPlayer : IAudioPlayer
+    public sealed class NAudioPlayer : IAudioPlayer, IStreamingAudioPlayer
     {
         public NAudioPlayer()
         {
@@ -53,6 +53,9 @@ namespace FuwaTea.Logic.Playback.NAudio
 
         #region Private fields
 
+        private bool _stream;
+        private ShoutcastStream _shoutcastStream;
+
         private IWavePlayer _wavePlayer;
         private Guid _lastDevice;
         private IWaveStreamProvider _currentCodec;
@@ -64,20 +67,34 @@ namespace FuwaTea.Logic.Playback.NAudio
 
         public void Load(string path, IAudioOutputDevice device)
         {
-            var cext = Path.GetExtension(path);
-            // Find codec
-            if (_currentCodec == null || !_currentCodec.SupportedFileTypes.Contains(cext))
-                _currentCodec = _codecs.First(v => v.SupportedFileTypes.Contains(cext));
+            // Check if we are loading a URL
+            if (path.StartsWith("http://") || path.StartsWith("https://"))
+            {
+                _stream = true;
+                // First load the stream
+                _shoutcastStream = new ShoutcastStream(path);
+                if (StreamMetadataChanged != null) _shoutcastStream.StreamTitleChanged += (sender, args) => StreamMetadataChanged(sender, args);
+                if (_shoutcastStream.MimeType.ToLowerInvariant() != "audio/mpeg") throw new NotSupportedException("Only MP3 stream is supported!");
+                // Init codec TODO: Create proper implementation, this is just for testing purposes
+                _waveStream = new MediaFoundationReader(path);
+            }
+            else
+            {
+                _stream = false;
+                var cext = Path.GetExtension(path);
+                // Find codec
+                if (_currentCodec == null || !_currentCodec.SupportedFileTypes.Contains(cext)) _currentCodec = _codecs.First(v => v.SupportedFileTypes.Contains(cext));
+                // Init codec
+                _waveStream = _currentCodec.CreateWaveStream(path);
+            }
             // Create player if needed
             if (_lastDevice != device.AsGuid() || _wavePlayer == null)
             {
                 _wavePlayer?.Dispose();
                 _wavePlayer = new DirectSoundOut(_lastDevice = device.AsGuid());
             }
-            // Init codec
-            _waveStream = _currentCodec.CreateWaveStream(path);
             // Check if the WaveStream supports ISampleProvider and is IeeeFloat format. If so, cast it.
-            var sp = _currentCodec.IsSampleProvider &&
+            var sp = (_currentCodec?.IsSampleProvider ?? false) &&
                      _waveStream.WaveFormat.Encoding == WaveFormatEncoding.IeeeFloat
                          ? _waveStream as ISampleProvider
                          : _waveStream.ToSampleProvider();
@@ -109,6 +126,7 @@ namespace FuwaTea.Logic.Playback.NAudio
         public void Unload()
         {
             Stop();
+            _shoutcastStream?.Dispose();
             // BUG: The waveplayer needs to be disposed because it doesn't unload the previous stream properly. TODO: Report this to NAudio.
             _wavePlayer.Dispose();
             _wavePlayer = null;
@@ -124,6 +142,7 @@ namespace FuwaTea.Logic.Playback.NAudio
             _balanceSampleProvider = null;
             _volumeSampleProvider = null;
             _equalizer = null;
+            _stream = false;
         }
 
         public bool IsSomethingLoaded => _waveStream != null;
@@ -162,8 +181,8 @@ namespace FuwaTea.Logic.Playback.NAudio
             set { if (_waveStream != null) _waveStream.CurrentTime = value; }
         }
 
-        public bool CanResume => true;
-        public bool CanSeek => _waveStream != null && _waveStream.CanSeek;
+        public bool CanResume => !_stream;
+        public bool CanSeek => !_stream && _waveStream != null && _waveStream.CanSeek;
 
         public event EventHandler PlaybackFinished;
 
@@ -211,5 +230,8 @@ namespace FuwaTea.Logic.Playback.NAudio
         }
         public ObservableCollection<EqualizerBand> EqualizerBands { get; set; }
         #endregion
+
+        public event EventHandler StreamMetadataChanged;
+        public Tag StreamMetadata => _shoutcastStream?.StreamMetadata;
     }
 }

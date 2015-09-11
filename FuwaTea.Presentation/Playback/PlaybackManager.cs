@@ -235,8 +235,15 @@ namespace FuwaTea.Presentation.Playback
 
             if (ElementCount < 1) return; // TODO: should this throw an exception?
 
-            if (_currentPlayer == null || !_currentPlayer.SupportedFileTypes.Contains(Current.FileType))
+            if (Current.FilePath.StartsWith("http://") || Current.FilePath.StartsWith("https://"))
+            {
+                if (!(_currentPlayer is IStreamingAudioPlayer))
+                    _currentPlayer = LayerFactory.GetElement<IStreamingAudioPlayer>();
+                ((IStreamingAudioPlayer)_currentPlayer).StreamMetadataChanged += OnStreamMetadataChanged;
+            }
+            else if (_currentPlayer == null || !_currentPlayer.SupportedFileTypes.Contains(Current.FileType))
                 _currentPlayer = _audioPlayers.FirstOrDefault(p => p.SupportedFileTypes.Contains(Current.FileType));
+
             if (_currentPlayer == null)
             {
                 LogManager.GetLogger(GetType()).ErrorFormat("Failed to load {0}: Unsupported file type!", Current.FilePath);
@@ -255,6 +262,9 @@ namespace FuwaTea.Presentation.Playback
                 // TODO: show messages from this function
                 return;
             }
+            var player = _currentPlayer as IStreamingAudioPlayer;
+            if (player != null)
+                Current.Tag = player.StreamMetadata;
             OnPropertyChanged(nameof(Duration));
             _currentPlayer.PlaybackFinished += CurrentPlayer_PlaybackFinished;
             OnPropertyChanged(nameof(CanResume));
@@ -268,10 +278,17 @@ namespace FuwaTea.Presentation.Playback
             SendPositionUpdate();
         }
 
+        private void OnStreamMetadataChanged(object sender, EventArgs e)
+        {
+            OnPropertyChanged(nameof(Current));
+        }
+
         private void UnloadFile()
         {
             if (_currentPlayer == null) return;
             _currentPlayer.PlaybackFinished -= CurrentPlayer_PlaybackFinished;
+            var player = _currentPlayer as IStreamingAudioPlayer;
+            if (player != null) player.StreamMetadataChanged -= OnStreamMetadataChanged;
             _currentPlayer.Unload();
             OnPropertyChanged(nameof(Duration));
             OnPropertyChanged(nameof(CanResume));

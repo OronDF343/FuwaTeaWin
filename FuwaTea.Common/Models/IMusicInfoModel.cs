@@ -29,6 +29,6 @@ namespace FuwaTea.Common.Models
         string FileType { get; }
         TimeSpan Duration { get; }
         int Bitrate { get; }
-        Tag Tag { get; }
+        Tag Tag { get; set; }
     }
 }
