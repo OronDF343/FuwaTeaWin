@@ -404,6 +404,7 @@ namespace FTWPlayer.ViewModels
 
         public void Dispose()
         {
+            // IMPORTANT!
             PlaybackManager.Dispose();
         }
     }
