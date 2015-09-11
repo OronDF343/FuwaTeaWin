@@ -129,7 +129,7 @@ namespace FuwaTea.Logic.Playback.NAudio
             Stop();
             _shoutcastStream?.Dispose();
             // BUG: The waveplayer needs to be disposed because it doesn't unload the previous stream properly. TODO: Report this to NAudio.
-            _wavePlayer.Dispose();
+            _wavePlayer?.Dispose();
             _wavePlayer = null;
             if (_waveStream != null)
             {
@@ -169,8 +169,11 @@ namespace FuwaTea.Logic.Playback.NAudio
 
         public void Stop()
         {
-            _wavePlayer.PlaybackStopped -= WavePlayer_PlaybackStopped;
-            _wavePlayer?.Stop();
+            if (_wavePlayer != null)
+            {
+                _wavePlayer.PlaybackStopped -= WavePlayer_PlaybackStopped;
+                _wavePlayer.Stop();
+            }
             if (!_stream) Position = TimeSpan.Zero;
         }
 
