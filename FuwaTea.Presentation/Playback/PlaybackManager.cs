@@ -262,9 +262,8 @@ namespace FuwaTea.Presentation.Playback
                 // TODO: show messages from this function
                 return;
             }
-            var player = _currentPlayer as IStreamingAudioPlayer;
-            if (player != null)
-                Current.Tag = player.StreamMetadata;
+            if (Current.FilePath.StartsWith("http://") || Current.FilePath.StartsWith("https://"))
+                Current.Tag = ((IStreamingAudioPlayer)_currentPlayer).StreamMetadata;
             OnPropertyChanged(nameof(Duration));
             _currentPlayer.PlaybackFinished += CurrentPlayer_PlaybackFinished;
             OnPropertyChanged(nameof(CanResume));

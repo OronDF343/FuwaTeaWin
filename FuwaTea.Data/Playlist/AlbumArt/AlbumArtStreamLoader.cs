@@ -27,7 +27,7 @@ namespace FuwaTea.Data.Playlist.AlbumArt
     {
         public Stream GetEmbeddedImage(IMusicInfoModel m)
         {
-            var img = m.Tag.Pictures.FirstOrDefault(p => p.Type == PictureType.FrontCover);
+            var img = m.Tag?.Pictures?.FirstOrDefault(p => p.Type == PictureType.FrontCover);
             return img == default(IPicture) ? null : new MemoryStream(img.Data, false);
         }
 
