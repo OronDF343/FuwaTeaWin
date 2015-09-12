@@ -32,12 +32,12 @@ namespace FTWPlayer
 {
     public static class MiscUtils
     {
-        public static bool ParseClArgs(List<string> clArgs)
+        public static bool? ParseClArgs(List<string> clArgs)
         {
             clArgs.RemoveAt(0);
-            if (clArgs.Count == 0) return false;
+            if (clArgs.Count == 0) return null;
             var file = clArgs.Find(s => !s.StartsWith("--"));
-            if (file == default(string)) return false;
+            if (file == default(string)) return null;
             var addOnly = clArgs.Find(s => s.ToLowerInvariant() == "--add") != default(string);
 
             return LoadObject(file, addOnly);

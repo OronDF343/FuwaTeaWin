@@ -122,7 +122,9 @@ namespace FTWPlayer.ViewModels
             PlaybackManager.EqualizerBands.Add(new EqualizerBand { Bandwidth = 1f, Frequency = 16000, Gain = 0 });
 
             //Begin post-UI-loading
-            MiscUtils.ParseClArgs(Environment.GetCommandLineArgs().ToList());
+            if (MiscUtils.ParseClArgs(Environment.GetCommandLineArgs().ToList()) == false)
+                MessageBox.Show(Application.Current.MainWindow, "Unsupported file!", "LoadObject",
+                                MessageBoxButton.OK, MessageBoxImage.Error);
             _kbdListen = new KeyboardListener();
             _kbdListen.KeyDown += KbdListen_KeyDown;
             _kbdListen.KeyUp += KbdListen_KeyUp;
@@ -336,7 +338,9 @@ namespace FTWPlayer.ViewModels
         {
             foreach (var s in (string[])e.Data.GetData(DataFormats.FileDrop, false))
             {
-                MiscUtils.LoadObject(s, true);
+                if (!MiscUtils.LoadObject(s, true))
+                    MessageBox.Show(Application.Current.MainWindow, "Unsupported file!", "LoadObject",
+                                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
