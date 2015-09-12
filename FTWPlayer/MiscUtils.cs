@@ -21,6 +21,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using FuwaTea.Lib;
 using FuwaTea.Lib.Exceptions;
 using FuwaTea.Logic.Playlist;
@@ -108,6 +109,7 @@ namespace FTWPlayer
         {
             var pm = LayerFactory.GetElement<IPlaybackManager>();
             var plm = LayerFactory.GetElement<IPlaylistManager>();
+            var dispatcher = Dispatcher.CurrentDispatcher;
             await Task.Run(() =>
             {
                 IEnumerable<string> stuff;
@@ -121,7 +123,7 @@ namespace FTWPlayer
                             select f.FullName;
                 foreach (var s in stuff)
                 {
-                    try { plm.SelectedPlaylist.Add(s); }
+                    try { dispatcher.InvokeAsync(() => plm.SelectedPlaylist.Add(s), DispatcherPriority.Background); }
                     catch (Exception e)
                     {
                         errorCallback(e);
