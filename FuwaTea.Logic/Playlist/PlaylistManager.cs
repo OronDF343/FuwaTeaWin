@@ -46,7 +46,8 @@ namespace FuwaTea.Logic.Playlist
         }
 
         public IPlaylist SelectedPlaylist => SelectedPlaylistId != null && LoadedPlaylists.ContainsKey(SelectedPlaylistId) ? LoadedPlaylists[SelectedPlaylistId] : null;
-        public IEnumerable<string> ReadableFileTypes => LayerFactory.GetElements<IPlaylistReader>().SelectMany(r => r.SupportedFileTypes);
+        public IEnumerable<string> ReadableFileTypes => LayerFactory.GetElements<IPlaylistReader>().SelectMany(r => r.SupportedFileTypes).Distinct();
+        public IEnumerable<string> WritableFileTypes => LayerFactory.GetElements<IPlaylistWriter>().SelectMany(r => r.SupportedFileTypes).Distinct();
 
         public void CreatePlaylist(string name)
         {

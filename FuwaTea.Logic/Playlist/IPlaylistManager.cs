@@ -33,6 +33,7 @@ namespace FuwaTea.Logic.Playlist
         /// 
         /// </summary>
         IEnumerable<string> ReadableFileTypes { get; }
+        IEnumerable<string> WritableFileTypes { get; }
 
         void CreatePlaylist(string name);
         void MergePlaylists(IPlaylist source, IPlaylist target);

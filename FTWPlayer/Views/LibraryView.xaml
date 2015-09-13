@@ -6,16 +6,39 @@
          xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
          xmlns:lex="http://wpflocalizeextension.codeplex.com"
          xmlns:fuwa="https://github.com/OronDF343/FuwaTeaWin"
+         xmlns:command="http://www.galasoft.ch/mvvmlight"
          mc:Ignorable="d" 
          d:DesignHeight="300" d:DesignWidth="300"
          Header="{lex:BLoc LibraryTabHeader}">
     <Grid Background="Transparent" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock>The library isn't implemented yet. For now this is the loaded playlist:</TextBlock>
-        <ListView Grid.Row="1" ItemsSource="{Binding PlaylistManager.SelectedPlaylist}" AllowDrop="True" SelectionMode="Single">
+        <TextBlock>The library isn't implemented yet. For now this is the loaded playlist:<LineBreak/>Drag and drop files or folders anywhere in this program to add them.</TextBlock>
+        <Button Grid.Row="1" Content="Open Playlist" FontWeight="Bold" HorizontalAlignment="Left">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Click">
+                    <command:EventToCommand Command="{Binding OpenPlaylistCommand}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+        <Button Grid.Row="1" Content="Save Playlist" FontWeight="Bold" HorizontalAlignment="Center" IsEnabled="{Binding PlaylistManager.CurrentPlaylist.UnsavedChanges}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Click">
+                    <command:EventToCommand Command="{Binding SavePlaylistCommand}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+        <Button Grid.Row="1" Content="Save As..." FontWeight="Bold" HorizontalAlignment="Right">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Click">
+                    <command:EventToCommand Command="{Binding SaveAsCommand}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+        <ListView Grid.Row="2" ItemsSource="{Binding PlaylistManager.SelectedPlaylist}" AllowDrop="True" SelectionMode="Single">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Tag.Title}" Header="Title"/>

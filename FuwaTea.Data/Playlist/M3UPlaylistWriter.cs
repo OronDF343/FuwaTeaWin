@@ -28,7 +28,7 @@ namespace FuwaTea.Data.Playlist
     [DataElement("M3U / M3U8 playlist writer")]
     public class M3UPlaylistWriter : IPlaylistWriter
     {
-        public IEnumerable<string> SupportedFileTypes => new[] { ".m3u", ".m3u8" };
+        public IEnumerable<string> SupportedFileTypes => new[] { ".m3u8", ".m3u" };
         public void WritePlaylist(string path, IPlaylist playlist, bool relativePaths)
         {
             try
