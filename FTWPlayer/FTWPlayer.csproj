@@ -101,7 +101,7 @@
     <Compile Include="Converters\BooleanToZIndexConverter.cs" />
     <Compile Include="Converters\DivisionConverter.cs" />
     <Compile Include="Converters\DoubleSubtractConverter.cs" />
-    <Compile Include="Converters\IntParseConverter.cs" />
+    <Compile Include="Converters\UIntParseConverter.cs" />
     <Compile Include="Converters\NullCheckConverter.cs" />
     <Compile Include="Converters\FloatToDoubleConverter.cs" />
     <Compile Include="Converters\NegativeDoubleConverter.cs" />
