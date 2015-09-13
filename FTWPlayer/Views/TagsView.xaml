@@ -3,7 +3,6 @@
          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-         xmlns:local="clr-namespace:FTWPlayer.Views"
          xmlns:lex="http://wpflocalizeextension.codeplex.com"
          xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
          xmlns:command="http://www.galasoft.ch/mvvmlight"
@@ -46,44 +45,44 @@
             </i:Interaction.Triggers>
         </Button>
         <ScrollViewer x:Name="TagGrid" Grid.Row="1">
-            <ItemsControl IsEnabled="{Binding Tag, Converter={StaticResource NullChkConv}, ConverterParameter=false}">
+            <StackPanel IsEnabled="{Binding Tag, Converter={StaticResource NullChkConv}, ConverterParameter=false}">
                 <Label Content="Title: "/>
-                <TextBox Text="{Binding Tag.Title, UpdateSourceTrigger=Explicit}"/>
+                <TextBox Text="{Binding Tag.Title, UpdateSourceTrigger=Explicit}" Margin="4,0"/>
                 <Label Content="Performers: "/>
-                <TextBox Text="{Binding Tag.JoinedPerformers, UpdateSourceTrigger=Explicit}"/>
+                <TextBox Text="{Binding Tag.JoinedPerformers, UpdateSourceTrigger=Explicit}" Margin="4,0"/>
                 <Label Content="Album: "/>
-                <TextBox Text="{Binding Tag.Album, UpdateSourceTrigger=Explicit}"/>
+                <TextBox Text="{Binding Tag.Album, UpdateSourceTrigger=Explicit}" Margin="4,0"/>
                 <Label Content="Album Artists: "/>
-                <TextBox Text="{Binding Tag.JoinedAlbumArtists, UpdateSourceTrigger=Explicit}"/>
+                <TextBox Text="{Binding Tag.JoinedAlbumArtists, UpdateSourceTrigger=Explicit}" Margin="4,0"/>
                 <Label Content="Genres: "/>
-                <TextBox Text="{Binding Tag.JoinedGenres, UpdateSourceTrigger=Explicit}"/>
+                <TextBox Text="{Binding Tag.JoinedGenres, UpdateSourceTrigger=Explicit}" Margin="4,0"/>
                 <Label Content="Year: "/>
-                <TextBox Text="{Binding Tag.Year, Converter={StaticResource UIntParseConv}, UpdateSourceTrigger=Explicit}"/>
+                <TextBox Text="{Binding Tag.Year, Converter={StaticResource UIntParseConv}, UpdateSourceTrigger=Explicit}" Margin="4,0"/>
                 <Label Content="Disc #: "/>
-                <TextBox Text="{Binding Tag.Disc, Converter={StaticResource UIntParseConv}, UpdateSourceTrigger=Explicit}"/>
+                <TextBox Text="{Binding Tag.Disc, Converter={StaticResource UIntParseConv}, UpdateSourceTrigger=Explicit}" Margin="4,0"/>
                 <Label Content="# of Discs: "/>
-                <TextBox Text="{Binding Tag.DiscCount, Converter={StaticResource UIntParseConv}, UpdateSourceTrigger=Explicit}"/>
+                <TextBox Text="{Binding Tag.DiscCount, Converter={StaticResource UIntParseConv}, UpdateSourceTrigger=Explicit}" Margin="4,0"/>
                 <Label Content="Track #: "/>
-                <TextBox Text="{Binding Tag.Track, Converter={StaticResource UIntParseConv}, UpdateSourceTrigger=Explicit}"/>
+                <TextBox Text="{Binding Tag.Track, Converter={StaticResource UIntParseConv}, UpdateSourceTrigger=Explicit}" Margin="4,0"/>
                 <Label Content="# of Tracks: "/>
-                <TextBox Text="{Binding Tag.TrackCount, Converter={StaticResource UIntParseConv}, UpdateSourceTrigger=Explicit}"/>
+                <TextBox Text="{Binding Tag.TrackCount, Converter={StaticResource UIntParseConv}, UpdateSourceTrigger=Explicit}" Margin="4,0"/>
                 <Label Content="Composers: "/>
-                <TextBox Text="{Binding Tag.JoinedComposers, UpdateSourceTrigger=Explicit}"/>
+                <TextBox Text="{Binding Tag.JoinedComposers, UpdateSourceTrigger=Explicit}" Margin="4,0"/>
                 <Label Content="Grouping: "/>
-                <TextBox Text="{Binding Tag.Grouping, UpdateSourceTrigger=Explicit}"/>
+                <TextBox Text="{Binding Tag.Grouping, UpdateSourceTrigger=Explicit}" Margin="4,0"/>
                 <Label Content="BPM: "/>
-                <TextBox Text="{Binding Tag.BeatsPerMinute, Converter={StaticResource UIntParseConv}, UpdateSourceTrigger=Explicit}"/>
+                <TextBox Text="{Binding Tag.BeatsPerMinute, Converter={StaticResource UIntParseConv}, UpdateSourceTrigger=Explicit}" Margin="4,0"/>
                 <Label Content="Copyright: "/>
-                <TextBox Text="{Binding Tag.Copyright, UpdateSourceTrigger=Explicit}"/>
+                <TextBox Text="{Binding Tag.Copyright, UpdateSourceTrigger=Explicit}" Margin="4,0"/>
                 <Label Content="Comment: "/>
-                <TextBox Text="{Binding Tag.Comment, UpdateSourceTrigger=Explicit}" MinLines="3" MaxLines="7" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
+                <TextBox Text="{Binding Tag.Comment, UpdateSourceTrigger=Explicit}" Margin="4,0" MinLines="3" MaxLines="7" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
                 <Label Content="Lyrics: "/>
-                <TextBox Text="{Binding Tag.Lyrics, UpdateSourceTrigger=Explicit}" MinLines="3" MaxLines="7" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
+                <TextBox Text="{Binding Tag.Lyrics, UpdateSourceTrigger=Explicit}" Margin="4,0" MinLines="3" MaxLines="7" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
                 <Label Content="Duration: "/>
                 <Label Content="{Binding Tag.Duration, Converter={StaticResource TimeSpanFormatterConv}}"/>
                 <Label Content="Bitrate: "/>
                 <Label Content="{Binding Tag.Bitrate, Converter={StaticResource UIntParseConv}}"/>
-            </ItemsControl>
+            </StackPanel>
         </ScrollViewer>
     </Grid>
 </TabItem>
