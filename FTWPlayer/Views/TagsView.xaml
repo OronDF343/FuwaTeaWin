@@ -13,39 +13,77 @@
          Header="{lex:BLoc TagsTabHeader}">
     <TabItem.Resources>
         <converters:NullCheckConverter x:Key="NullChkConv"/>
+        <converters:UIntParseConverter x:Key="UIntParseConv"/>
+        <converters:TimeSpanFormatterConverter x:Key="TimeSpanFormatterConv"/>
     </TabItem.Resources>
-    <Grid Background="Transparent"
-          IsEnabled="{Binding Tag, Converter={StaticResource NullChkConv}, ConverterParameter=false}">
+    <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Button Content="Discard Changes" FontWeight="Bold" HorizontalAlignment="Left">
+        <Button Content="Discard Changes" FontWeight="Bold" HorizontalAlignment="Left" Margin="0,0,0,5"
+                IsEnabled="{Binding Tag, Converter={StaticResource NullChkConv}, ConverterParameter=false}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Click">
                     <command:EventToCommand Command="{Binding DiscardChangesCommand}" PassEventArgsToCommand="True" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Button>
-        <Button Grid.Row="0" Content="Save Changes" FontWeight="Bold" HorizontalAlignment="Center">
+        <Button Grid.Row="0" Content="Save Changes" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5"
+                IsEnabled="{Binding Tag, Converter={StaticResource NullChkConv}, ConverterParameter=false}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Click">
                     <command:EventToCommand Command="{Binding SaveChangesCommand}" PassEventArgsToCommand="True" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Button>
-        <Button Grid.Row="0" Content="Delete Tags" FontWeight="Bold" HorizontalAlignment="Right">
+        <Button Grid.Row="0" Content="Delete Tags" FontWeight="Bold" HorizontalAlignment="Right" Margin="0,0,0,5"
+                IsEnabled="{Binding Tag, Converter={StaticResource NullChkConv}, ConverterParameter=false}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Click">
                     <command:EventToCommand Command="{Binding DeleteTagsCommand}" PassEventArgsToCommand="True" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Button>
-        <UniformGrid x:Name="TagGrid" Grid.Row="1" Rows="19" Columns="2">
-            <Label Content="Title: "/>
-            <TextBox Text="{Binding Tag.Title, UpdateSourceTrigger=Explicit}"/>
-            <Label Content="Performers: "/>
-            <TextBox Text="{Binding Tag.JoinedPerformers, UpdateSourceTrigger=Explicit}"/>
-        </UniformGrid>
+        <ScrollViewer x:Name="TagGrid" Grid.Row="1">
+            <ItemsControl IsEnabled="{Binding Tag, Converter={StaticResource NullChkConv}, ConverterParameter=false}">
+                <Label Content="Title: "/>
+                <TextBox Text="{Binding Tag.Title, UpdateSourceTrigger=Explicit}"/>
+                <Label Content="Performers: "/>
+                <TextBox Text="{Binding Tag.JoinedPerformers, UpdateSourceTrigger=Explicit}"/>
+                <Label Content="Album: "/>
+                <TextBox Text="{Binding Tag.Album, UpdateSourceTrigger=Explicit}"/>
+                <Label Content="Album Artists: "/>
+                <TextBox Text="{Binding Tag.JoinedAlbumArtists, UpdateSourceTrigger=Explicit}"/>
+                <Label Content="Genres: "/>
+                <TextBox Text="{Binding Tag.JoinedGenres, UpdateSourceTrigger=Explicit}"/>
+                <Label Content="Year: "/>
+                <TextBox Text="{Binding Tag.Year, Converter={StaticResource UIntParseConv}, UpdateSourceTrigger=Explicit}"/>
+                <Label Content="Disc #: "/>
+                <TextBox Text="{Binding Tag.Disc, Converter={StaticResource UIntParseConv}, UpdateSourceTrigger=Explicit}"/>
+                <Label Content="# of Discs: "/>
+                <TextBox Text="{Binding Tag.DiscCount, Converter={StaticResource UIntParseConv}, UpdateSourceTrigger=Explicit}"/>
+                <Label Content="Track #: "/>
+                <TextBox Text="{Binding Tag.Track, Converter={StaticResource UIntParseConv}, UpdateSourceTrigger=Explicit}"/>
+                <Label Content="# of Tracks: "/>
+                <TextBox Text="{Binding Tag.TrackCount, Converter={StaticResource UIntParseConv}, UpdateSourceTrigger=Explicit}"/>
+                <Label Content="Composers: "/>
+                <TextBox Text="{Binding Tag.JoinedComposers, UpdateSourceTrigger=Explicit}"/>
+                <Label Content="Grouping: "/>
+                <TextBox Text="{Binding Tag.Grouping, UpdateSourceTrigger=Explicit}"/>
+                <Label Content="BPM: "/>
+                <TextBox Text="{Binding Tag.BeatsPerMinute, Converter={StaticResource UIntParseConv}, UpdateSourceTrigger=Explicit}"/>
+                <Label Content="Copyright: "/>
+                <TextBox Text="{Binding Tag.Copyright, UpdateSourceTrigger=Explicit}"/>
+                <Label Content="Comment: "/>
+                <TextBox Text="{Binding Tag.Comment, UpdateSourceTrigger=Explicit}" MinLines="3" MaxLines="7" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
+                <Label Content="Lyrics: "/>
+                <TextBox Text="{Binding Tag.Lyrics, UpdateSourceTrigger=Explicit}" MinLines="3" MaxLines="7" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
+                <Label Content="Duration: "/>
+                <Label Content="{Binding Tag.Duration, Converter={StaticResource TimeSpanFormatterConv}}"/>
+                <Label Content="Bitrate: "/>
+                <Label Content="{Binding Tag.Bitrate, Converter={StaticResource UIntParseConv}}"/>
+            </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </TabItem>
