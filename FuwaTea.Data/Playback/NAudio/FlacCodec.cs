@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using LayerFramework.Attributes;
-using NAudio.Flac;
 using NAudio.Wave;
 
 namespace FuwaTea.Data.Playback.NAudio
@@ -33,7 +32,7 @@ namespace FuwaTea.Data.Playback.NAudio
         }
 
         public IEnumerable<string> SupportedFileTypes => new[] {".flac"};
-        public bool IsSampleProvider => true;
+        public bool IsSampleProvider => false;
         public bool CanResume => true;
         public bool CanSeek => true;
     }

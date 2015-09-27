@@ -95,6 +95,7 @@ namespace FuwaTea.Logic.Playback.NAudio
                 _wavePlayer = new DirectSoundOut(_lastDevice = device.AsGuid());
             }
             // Check if the WaveStream supports ISampleProvider and is IeeeFloat format. If so, cast it.
+            // Otherwise, convert it to a sample provider
             var sp = (_currentCodec?.IsSampleProvider ?? false) &&
                      _waveStream.WaveFormat.Encoding == WaveFormatEncoding.IeeeFloat
                          ? _waveStream as ISampleProvider

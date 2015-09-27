@@ -71,9 +71,10 @@ Source: "{#BuildPath}\log4net.dll"; DestDir: "{app}"; Components: main; Flags: i
 Source: "{#BuildPath}\logconfig.xml"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\TagLib.Portable.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\NAudio.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "{#BuildPath}\NAudio.Flac.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\NAudio.Vorbis.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\NVorbis.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\CSCore.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "..\LICENSES_thirdparty.txt"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\he\FTWPlayer.resources.dll"; DestDir: "{app}\he"; Components: localization\hebrew; Flags: ignoreversion
 
 [Icons]
