@@ -75,6 +75,8 @@
     <Compile Include="Playback\NAudio\IWaveStreamProvider.cs" />
     <Compile Include="Playback\NAudio\MediaFoundationCodec.cs" />
     <Compile Include="Playback\NAudio\VorbisCodec.cs" />
+    <Compile Include="Playback\NAudio\WavpackCodec.cs" />
+    <Compile Include="Playback\NAudio\WavpackReader.cs" />
     <Compile Include="Playlist\AlbumArt\AlbumArtStreamLoader.cs" />
     <Compile Include="Playlist\AlbumArt\IAlbumArtStreamLoader.cs" />
     <Compile Include="Playlist\IPlaylistReader.cs" />
@@ -102,6 +104,10 @@
     <ProjectReference Include="..\LayerFramework\LayerFramework.csproj">
       <Project>{f9d64a69-bcdf-4e7d-83a0-24e7a537842f}</Project>
       <Name>LayerFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WavPackDecoder\WavpackDecoder.csproj">
+      <Project>{1cf67e61-3dae-41a1-be0a-904a35e04aaf}</Project>
+      <Name>WavpackDecoder</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

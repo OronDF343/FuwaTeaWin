@@ -56,6 +56,7 @@ Source: "{#BuildPath}\FuwaTea.Wpf.dll"; DestDir: "{app}"; Components: main; Flag
 Source: "{#BuildPath}\FuwaTea.Presentation.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\FuwaTea.Logic.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\FuwaTea.Data.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\WavpackDecoder.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\FuwaTea.Common.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\LayerFramework.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\FuwaTea.Lib.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion

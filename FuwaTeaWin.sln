@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Wpf", "FuwaTea.Wpf\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Lib", "FuwaTea.Lib\FuwaTea.Lib.csproj", "{A9BB4650-68CC-4640-9B5A-65F4AA80C2AB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WavpackDecoder", "WavpackDecoder\WavpackDecoder.csproj", "{1CF67E61-3DAE-41A1-BE0A-904A35E04AAF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{A9BB4650-68CC-4640-9B5A-65F4AA80C2AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9BB4650-68CC-4640-9B5A-65F4AA80C2AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9BB4650-68CC-4640-9B5A-65F4AA80C2AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CF67E61-3DAE-41A1-BE0A-904A35E04AAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CF67E61-3DAE-41A1-BE0A-904A35E04AAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CF67E61-3DAE-41A1-BE0A-904A35E04AAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CF67E61-3DAE-41A1-BE0A-904A35E04AAF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
