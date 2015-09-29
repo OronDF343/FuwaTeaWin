@@ -53,6 +53,10 @@ namespace FTWPlayer
         private Mutex _mutex;
         internal int Message;
         readonly ErrorCallback _ec = ex => LogManager.GetLogger(typeof(App)).Warn("AssemblyLoader reported an error:", ex);
+        private const string SetupFileAssocArg = "--setup-file-associations";
+        private const string CleanupFileAssocArg = "--clean-up-file-associations";
+        private const string ConfigureFileAssocArg = "--configure-file-associations";
+        private const string ShouldBeAdminArg = "--admin";
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -73,7 +77,7 @@ namespace FTWPlayer
             var clArgs = Environment.GetCommandLineArgs().ToList();
             var isinst = Assembly.GetEntryAssembly().IsInstalledCopy();
             var prod = Assembly.GetEntryAssembly().GetProduct();
-            if (clArgs.Contains("--setup-file-associations") && isinst)
+            if (clArgs.Contains(SetupFileAssocArg) && isinst)
             {
                 LogManager.GetLogger(GetType()).Info("Detected argument: Setup File Associations");
                 LoadLayers();
@@ -84,6 +88,11 @@ namespace FTWPlayer
                 if (key == null)
                 {
                     LogManager.GetLogger(GetType()).Error("Failed to create/open registry subkey!");
+                    if (!clArgs.Contains(ShouldBeAdminArg))
+                    {
+                        LogManager.GetLogger(GetType()).Info("Trying to restart with admin rights");
+                        RestartAsAdmin(SetupFileAssocArg);
+                    }
                     Shutdown();
                     return;
                 }
@@ -95,16 +104,24 @@ namespace FTWPlayer
                 Shutdown();
                 return;
             }
-            if (clArgs.Contains("--clean-up-file-associations") && isinst)
+            if (clArgs.Contains(CleanupFileAssocArg) && isinst)
             {
                 LogManager.GetLogger(GetType()).Info("Detected argument: Clean Up File Associations");
                 var key = Registry.LocalMachine.CreateSubKey($@"Software\Clients\Media\{prod}\Capabilities\FileAssociations");
                 if (key != null) foreach (var s in key.GetValueNames()) key.DeleteValue(s);
-                else LogManager.GetLogger(GetType()).Error("Failed to create/open registry subkey!");
+                else
+                {
+                    LogManager.GetLogger(GetType()).Error("Failed to create/open registry subkey!");
+                    if (!clArgs.Contains(ShouldBeAdminArg))
+                    {
+                        LogManager.GetLogger(GetType()).Info("Trying to restart with admin rights");
+                        RestartAsAdmin(CleanupFileAssocArg);
+                    }
+                }
                 Shutdown();
                 return;
             }
-            if (clArgs.Contains("--configure-file-associations") && isinst)
+            if (clArgs.Contains(ConfigureFileAssocArg) && isinst)
             {
                 LogManager.GetLogger(GetType()).Info("Detected argument: Configure File Associations");
                 var assocUi = new ApplicationAssociationRegistrationUI();
@@ -198,6 +215,23 @@ namespace FTWPlayer
             MainWindow = new MainWindow();
             MainWindow.Show();
             base.OnStartup(e);
+        }
+
+        public void RestartAsAdmin(string args)
+        {
+            var info = new ProcessStartInfo(Assembly.GetEntryAssembly().Location, args + " " + ShouldBeAdminArg)
+            {
+                Verb = "runas",
+                UseShellExecute = true
+                // indicates to elevate privileges
+            };
+            var process = new Process
+            {
+                EnableRaisingEvents = true, // enable WaitForExit()
+                StartInfo = info
+            };
+            process.Start();
+            Shutdown();
         }
 
         public void LoadLayers(bool loadExtensions = true)

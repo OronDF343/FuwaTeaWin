@@ -82,6 +82,8 @@ Source: "{#BuildPath}\he\FTWPlayer.resources.dll"; DestDir: "{app}\he"; Componen
 Name: "{commondesktop}\{#LongName}"; Filename: "{app}\FTWPlayer.exe"; WorkingDir: "{app}"; Tasks: desktopicon
 Name: "{group}\{#LongName}"; Filename: "{app}\FTWPlayer.exe"; WorkingDir: "{app}"
 Name: "{group}\{cm:UninstallIcon,{#LongName}}"; Filename: "{uninstallexe}"; Flags: excludefromshowinnewinstall
+Name: "{group}\Update file association data"; Filename: "{app}\FTWPlayer.exe"; Parameters: "--setup-file-associations"; WorkingDir: "{app}"; Flags: excludefromshowinnewinstall
+Name: "{group}\Configure file associations"; Filename: "{app}\FTWPlayer.exe"; Parameters: "--configure-file-associations"; WorkingDir: "{app}"; Flags: excludefromshowinnewinstall
 
 [InstallDelete]
 Type: filesandordirs; Name: "{userappdata}\{#Company}\{#ShortName}\*"; Tasks: reset
@@ -116,11 +118,11 @@ Root: HKLM; Subkey: "Software\Clients\Media\{#ShortName}\Capabilities\FileAssoci
 Root: HKLM; Subkey: "Software\RegisteredApplications"; Flags: uninsdeletevalue; ValueName: "FuwaTeaWin"; ValueType: string; ValueData: "Software\Clients\Media\{#ShortName}\Capabilities"
 
 [Run]
-Filename: "{app}\FTWPlayer.exe"; Parameters: "--setup-file-associations"; StatusMsg: "{cm:UpdatingFileAssociations}"; Tasks: associate
+Filename: "{app}\FTWPlayer.exe"; Parameters: "--setup-file-associations --admin"; StatusMsg: "{cm:UpdatingFileAssociations}"; Tasks: associate
 Filename: "{app}\FTWPlayer.exe"; Parameters: "--configure-file-associations"; Description: "{cm:ConfigureFileAssociations}"; Flags: postinstall
 
 [UninstallRun]
-Filename: "{app}\FTWPlayer.exe"; Parameters: "--clean-up-file-associations"; RunOnceId: "CUFA"
+Filename: "{app}\FTWPlayer.exe"; Parameters: "--clean-up-file-associations --admin"; RunOnceId: "CUFA"
  
 [Code]
 var
