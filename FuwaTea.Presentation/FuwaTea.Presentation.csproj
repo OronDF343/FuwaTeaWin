@@ -49,7 +49,6 @@
     <Compile Include="Playback\IPlaybackManager.cs" />
     <Compile Include="Playback\PlaybackManager.cs" />
     <Compile Include="PresentationElementAttribute.cs" />
-    <Compile Include="PresentationLayerDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -65,9 +64,9 @@
       <Project>{78196827-f053-4e3e-bc26-1134c89f9d6a}</Project>
       <Name>FuwaTea.Logic</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LayerFramework\LayerFramework.csproj">
-      <Project>{f9d64a69-bcdf-4e7d-83a0-24e7a537842f}</Project>
-      <Name>LayerFramework</Name>
+    <ProjectReference Include="..\ModularFramework\ModularFramework.csproj">
+      <Project>{8517e03e-dc80-419d-bfad-78d80354192b}</Project>
+      <Name>ModularFramework</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

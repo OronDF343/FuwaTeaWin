@@ -26,7 +26,7 @@ using System.Linq;
 using FuwaTea.Common.Models;
 using FuwaTea.Data.Playlist.Tags;
 using FuwaTea.Lib.Collections;
-using LayerFramework;
+using ModularFramework;
 
 namespace FuwaTea.Logic.Playlist
 {
@@ -58,7 +58,7 @@ namespace FuwaTea.Logic.Playlist
 
         public void Add(string musicFile)
         {
-            var tag = LayerFactory.GetElements<ITagProvider>().FirstOrDefault(r => r.SupportedFileTypes.Contains(Path.GetExtension(musicFile)));
+            var tag = ModuleFactory.GetElements<ITagProvider>().FirstOrDefault(r => r.SupportedFileTypes.Contains(Path.GetExtension(musicFile)));
             Add(new MusicInfoModel(musicFile, tag?.Create(musicFile)));
         }
 

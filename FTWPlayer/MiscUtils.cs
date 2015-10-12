@@ -23,10 +23,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using FuwaTea.Lib;
-using FuwaTea.Lib.Exceptions;
 using FuwaTea.Logic.Playlist;
 using FuwaTea.Presentation.Playback;
-using LayerFramework;
+using ModularFramework;
 
 namespace FTWPlayer
 {
@@ -46,8 +45,8 @@ namespace FTWPlayer
         public static bool LoadObject(string file, bool addOnly)
         {
             //TODO: update. this is temporary and WIP // TODO: error callback
-            var plm = LayerFactory.GetElement<IPlaylistManager>();
-            var pm = LayerFactory.GetElement<IPlaybackManager>();
+            var plm = ModuleFactory.GetElement<IPlaylistManager>();
+            var pm = ModuleFactory.GetElement<IPlaybackManager>();
 
             if (Directory.Exists(file))
             {
@@ -107,8 +106,8 @@ namespace FTWPlayer
 
         public static async void AddFolder(DirectoryInfo dir, bool subfolders, ErrorCallback errorCallback)
         {
-            var pm = LayerFactory.GetElement<IPlaybackManager>();
-            var plm = LayerFactory.GetElement<IPlaylistManager>();
+            var pm = ModuleFactory.GetElement<IPlaybackManager>();
+            var plm = ModuleFactory.GetElement<IPlaylistManager>();
             var dispatcher = Dispatcher.CurrentDispatcher;
             await Task.Run(() =>
             {

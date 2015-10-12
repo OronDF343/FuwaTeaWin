@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.IO;
 using FuwaTea.Common.Models;
 using FuwaTea.Data.Playlist.AlbumArt;
-using LayerFramework;
+using ModularFramework;
 
 namespace FuwaTea.Logic.Playlist.AlbumArt
 {
@@ -40,7 +40,7 @@ namespace FuwaTea.Logic.Playlist.AlbumArt
         {
             //TODO: Incomplete
             Stream img = null;
-            var loader = LayerFactory.GetElement<IAlbumArtStreamLoader>();
+            var loader = ModuleFactory.GetElement<IAlbumArtStreamLoader>();
             foreach (var location in LocationPriority)
             {
                 switch (location)

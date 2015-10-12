@@ -16,8 +16,8 @@
 #endregion
 
 using System;
-using FuwaTea.Annotations;
-using LayerFramework.Attributes;
+using ModularFramework;
+using ModularFramework.Attributes;
 
 namespace FuwaTea.Presentation
 {

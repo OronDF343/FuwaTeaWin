@@ -1,8 +1,6 @@
-﻿using LayerFramework.Interfaces;
-
-namespace FTWPlayer
+﻿namespace FTWPlayer
 {
-    public interface IUIPart : IBasicElement
+    public interface IUIPart
     {
     }
 }

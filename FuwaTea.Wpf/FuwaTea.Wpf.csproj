@@ -106,6 +106,10 @@
       <Project>{a9bb4650-68cc-4640-9b5a-65f4aa80c2ab}</Project>
       <Name>FuwaTea.Lib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ModularFramework\ModularFramework.csproj">
+      <Project>{8517E03E-DC80-419D-BFAD-78D80354192B}</Project>
+      <Name>ModularFramework</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

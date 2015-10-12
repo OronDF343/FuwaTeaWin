@@ -17,7 +17,7 @@
 
 using System;
 using System.Collections.Generic;
-using LayerFramework.Attributes;
+using ModularFramework.Attributes;
 using NAudio.Wave;
 
 namespace FuwaTea.Data.Playback.NAudio

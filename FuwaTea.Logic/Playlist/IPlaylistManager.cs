@@ -17,8 +17,8 @@
 
 using System.Collections.Generic;
 using System.ComponentModel;
-using FuwaTea.Annotations;
 using FuwaTea.Common.Models;
+using ModularFramework;
 
 namespace FuwaTea.Logic.Playlist
 {

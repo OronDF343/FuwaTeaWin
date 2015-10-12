@@ -8,8 +8,8 @@ using System.Windows;
 using System.Windows.Baml2006;
 using System.Xaml;
 using FuwaTea.Lib;
-using FuwaTea.Lib.Exceptions;
 using log4net;
+using ModularFramework;
 using XamlReader = System.Windows.Markup.XamlReader;
 
 namespace FTWPlayer.Skins

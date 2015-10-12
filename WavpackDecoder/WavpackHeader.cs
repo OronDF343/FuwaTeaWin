@@ -1,4 +1,3 @@
-using System;
 /*
 ** WavpackHeader.cs
 **

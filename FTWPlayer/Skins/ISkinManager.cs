@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
-using FuwaTea.Lib.Exceptions;
+using ModularFramework;
 
 namespace FTWPlayer.Skins
 {

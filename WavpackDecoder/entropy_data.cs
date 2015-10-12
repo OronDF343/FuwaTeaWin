@@ -1,4 +1,3 @@
-using System;
 /*
 ** entropy_data.cs
 **

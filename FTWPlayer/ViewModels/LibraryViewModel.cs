@@ -6,8 +6,8 @@ using System.Windows.Input;
 using FTWPlayer.Views;
 using FuwaTea.Logic.Playlist;
 using GalaSoft.MvvmLight.CommandWpf;
-using LayerFramework;
 using Microsoft.Win32;
+using ModularFramework;
 
 namespace FTWPlayer.ViewModels
 {
@@ -17,7 +17,7 @@ namespace FTWPlayer.ViewModels
         public LibraryViewModel()
         {
             TabObject = new LibraryView(this);
-            PlaylistManager = LayerFactory.GetElement<IPlaylistManager>(); // TODO: remove logic reference
+            PlaylistManager = ModuleFactory.GetElement<IPlaylistManager>(); // TODO: remove logic reference
             OpenPlaylistCommand = new RelayCommand<RoutedEventArgs>(OpenPlaylist);
             SavePlaylistCommand = new RelayCommand<RoutedEventArgs>(SavePlaylist);
             SaveAsCommand = new RelayCommand<RoutedEventArgs>(SaveAs);

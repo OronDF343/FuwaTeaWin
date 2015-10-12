@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
-using FuwaTea.Annotations;
 using log4net.ObjectRenderer;
+using ModularFramework;
 
 namespace FuwaTea.Lib.Exceptions
 {

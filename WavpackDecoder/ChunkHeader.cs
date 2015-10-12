@@ -1,4 +1,3 @@
-using System;
 /*
 ** ChunkHeader.cs
 **

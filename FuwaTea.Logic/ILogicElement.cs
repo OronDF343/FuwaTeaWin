@@ -15,11 +15,9 @@
 //     along with FuwaTeaWin.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 
-using LayerFramework.Interfaces;
-
 namespace FuwaTea.Logic
 {
-    public interface ILogicElement : IBasicElement
+    public interface ILogicElement
     {
     }
 }

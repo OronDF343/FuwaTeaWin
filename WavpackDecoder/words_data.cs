@@ -1,4 +1,3 @@
-using System;
 /*
 ** words_data.cs
 **

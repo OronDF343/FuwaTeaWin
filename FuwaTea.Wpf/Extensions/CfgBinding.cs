@@ -3,7 +3,7 @@ using System.Configuration;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
-using FuwaTea.Annotations;
+using ModularFramework;
 
 namespace FuwaTea.Wpf.Extensions
 {

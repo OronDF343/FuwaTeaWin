@@ -9,8 +9,6 @@
 // the architecture of the resulting solution may differ somewhat.
 //
 
-using System;
-
 /// <summary>
 /// Contains conversion support elements such as classes, interfaces and static methods.
 /// </summary>

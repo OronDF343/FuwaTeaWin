@@ -29,14 +29,13 @@ using System.Xml.Serialization;
 using FTWPlayer.Properties;
 using FTWPlayer.Skins;
 using FuwaTea.Lib;
-using FuwaTea.Lib.Exceptions;
 using FuwaTea.Logic.Playlist;
 using FuwaTea.Presentation.Playback;
 using GalaSoft.MvvmLight.Threading;
 using log4net;
 using log4net.Config;
-using LayerFramework;
 using Microsoft.Win32;
+using ModularFramework;
 
 namespace FTWPlayer
 {
@@ -81,8 +80,8 @@ namespace FTWPlayer
             {
                 LogManager.GetLogger(GetType()).Info("Detected argument: Setup File Associations");
                 LoadLayers();
-                var pm = LayerFactory.GetElement<IPlaybackManager>();
-                var plm = LayerFactory.GetElement<IPlaylistManager>();
+                var pm = ModuleFactory.GetElement<IPlaybackManager>();
+                var plm = ModuleFactory.GetElement<IPlaylistManager>();
                 var supported = pm.SupportedFileTypes.Union(plm.ReadableFileTypes);
                 var key = Registry.LocalMachine.CreateSubKey($@"Software\Clients\Media\{prod}\Capabilities\FileAssociations");
                 if (key == null)
@@ -197,13 +196,13 @@ namespace FTWPlayer
             // Load skins:
             try
             {
-                foreach(var rd in LayerFactory.GetElement<ISkinManager>().LoadSkinChain(Settings.Default.SkinChain.Cast<string>()))
+                foreach(var rd in ModuleFactory.GetElement<ISkinManager>().LoadSkinChain(Settings.Default.SkinChain.Cast<string>()))
                     Resources.MergedDictionaries.Add(rd);
             }
             catch (Exception ex)
             {
                 LogManager.GetLogger(GetType()).Error("Failed to load skin chain! Loading default", ex);
-                foreach (var rd in LayerFactory.GetElement<ISkinManager>().LoadSkinChain(((StringCollection)new XmlSerializer(typeof(StringCollection)).Deserialize(new StringReader((string)Settings.Default.Properties["SkinChain"]?.DefaultValue))).Cast<string>()))
+                foreach (var rd in ModuleFactory.GetElement<ISkinManager>().LoadSkinChain(((StringCollection)new XmlSerializer(typeof(StringCollection)).Deserialize(new StringReader((string)Settings.Default.Properties["SkinChain"]?.DefaultValue))).Cast<string>()))
                     Resources.MergedDictionaries.Add(rd);
             }
 
@@ -236,12 +235,16 @@ namespace FTWPlayer
 
         public void LoadLayers(bool loadExtensions = true)
         {
-            LayerFactory.LoadFolder(Assembly.GetEntryAssembly().GetExeFolder(), _ec, true);
+            Func<string, bool> sel =
+                f =>
+                f.ToLowerInvariant().EndsWith(".dll")
+                || (!f.ToLowerInvariant().EndsWith("unins000.exe") && f.ToLowerInvariant().EndsWith(".exe"));
+            ModuleFactory.LoadFolder(Assembly.GetEntryAssembly().GetExeFolder(), sel, _ec, true);
             if (!loadExtensions) return;
             var extDir = Assembly.GetEntryAssembly().GetSpecificPath(false, "extensions", true);
-            LayerFactory.LoadFolder(extDir, _ec, true);
+            ModuleFactory.LoadFolder(extDir, sel, _ec, true);
             foreach (var dir in Directory.EnumerateDirectories(extDir))
-                LayerFactory.LoadFolder(dir, _ec, true);
+                ModuleFactory.LoadFolder(dir, sel, _ec, true);
         }
 
         protected override void OnExit(ExitEventArgs e)

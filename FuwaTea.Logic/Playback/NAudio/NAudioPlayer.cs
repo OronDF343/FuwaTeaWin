@@ -24,7 +24,7 @@ using FuwaTea.Common.Models;
 using FuwaTea.Data.Playback.NAudio;
 using FuwaTea.Lib;
 using log4net;
-using LayerFramework;
+using ModularFramework;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 
@@ -35,7 +35,7 @@ namespace FuwaTea.Logic.Playback.NAudio
     {
         public NAudioPlayer()
         {
-            _codecs = LayerFactory.GetElements<IWaveStreamProvider>().ToList();
+            _codecs = ModuleFactory.GetElements<IWaveStreamProvider>().ToList();
             //EqualizerBands = new ObservableCollection<EqualizerBand>(); DON'T DO THIS! Leave it set to null!
         }
 

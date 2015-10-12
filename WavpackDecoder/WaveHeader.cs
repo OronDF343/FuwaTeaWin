@@ -1,4 +1,3 @@
-using System;
 /*
 ** WaveHeader.cs
 **

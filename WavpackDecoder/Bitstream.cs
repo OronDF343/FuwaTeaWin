@@ -1,4 +1,3 @@
-using System;
 /*
 ** Bitstream.cs
 **

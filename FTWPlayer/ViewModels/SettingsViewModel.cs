@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using FTWPlayer.Properties;
 using FTWPlayer.ViewModels.SettingsViewModels;
 using FTWPlayer.Views;
-using LayerFramework;
+using ModularFramework;
 
 namespace FTWPlayer.ViewModels
 {
@@ -14,7 +14,7 @@ namespace FTWPlayer.ViewModels
         public SettingsViewModel()
         {
             TabObject = new SettingsView(this);
-            SettingsTabs = new ObservableCollection<TabItem>(LayerFactory.GetElements<ISettingsTab>().OrderBy(t => t.Index).Select(t => t.GetTabItem(Settings.Default)));
+            SettingsTabs = new ObservableCollection<TabItem>(ModuleFactory.GetElements<ISettingsTab>().OrderBy(t => t.Index).Select(t => t.GetTabItem(Settings.Default)));
         }
         public TabItem TabObject { get; }
         public decimal Index => 3;

@@ -4,10 +4,9 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using FTWPlayer.Views;
-using FuwaTea.Annotations;
 using FuwaTea.Logic.Playlist.AlbumArt;
 using FuwaTea.Presentation.Playback;
-using LayerFramework;
+using ModularFramework;
 
 namespace FTWPlayer.ViewModels
 {
@@ -16,7 +15,7 @@ namespace FTWPlayer.ViewModels
     {
         public PlayerViewModel()
         {
-            PlaybackManager = LayerFactory.GetElement<IPlaybackManager>();
+            PlaybackManager = ModuleFactory.GetElement<IPlaybackManager>();
             TabObject = new AlbumArtView(this);
             PlaybackManager.PropertyChanged += PlaybackManager_PropertyChanged;
         }
@@ -31,7 +30,7 @@ namespace FTWPlayer.ViewModels
                 CurrentAlbumArt = null;
                 return;
             }
-            var s = LayerFactory.GetElement<IAlbumArtLocator>().GetAlbumArt(PlaybackManager.Current);
+            var s = ModuleFactory.GetElement<IAlbumArtLocator>().GetAlbumArt(PlaybackManager.Current);
             if (s == null)
             {
                 CurrentAlbumArt = null;

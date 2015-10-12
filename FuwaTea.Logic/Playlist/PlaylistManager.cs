@@ -21,10 +21,9 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using FuwaTea.Annotations;
 using FuwaTea.Common.Models;
 using FuwaTea.Data.Playlist;
-using LayerFramework;
+using ModularFramework;
 
 namespace FuwaTea.Logic.Playlist
 {
@@ -46,8 +45,8 @@ namespace FuwaTea.Logic.Playlist
         }
 
         public IPlaylist SelectedPlaylist => SelectedPlaylistId != null && LoadedPlaylists.ContainsKey(SelectedPlaylistId) ? LoadedPlaylists[SelectedPlaylistId] : null;
-        public IEnumerable<string> ReadableFileTypes => LayerFactory.GetElements<IPlaylistReader>().SelectMany(r => r.SupportedFileTypes).Distinct();
-        public IEnumerable<string> WritableFileTypes => LayerFactory.GetElements<IPlaylistWriter>().SelectMany(r => r.SupportedFileTypes).Distinct();
+        public IEnumerable<string> ReadableFileTypes => ModuleFactory.GetElements<IPlaylistReader>().SelectMany(r => r.SupportedFileTypes).Distinct();
+        public IEnumerable<string> WritableFileTypes => ModuleFactory.GetElements<IPlaylistWriter>().SelectMany(r => r.SupportedFileTypes).Distinct();
 
         public void CreatePlaylist(string name)
         {
@@ -62,7 +61,7 @@ namespace FuwaTea.Logic.Playlist
         public IPlaylist OpenPlaylist(string path)
         {
             var pl = new Playlist {FileLocation = path};
-            LayerFactory.GetElements<IPlaylistReader>().First(w => w.SupportedFileTypes.Contains(Path.GetExtension(path))).LoadPlaylistFiles(path, pl);
+            ModuleFactory.GetElements<IPlaylistReader>().First(w => w.SupportedFileTypes.Contains(Path.GetExtension(path))).LoadPlaylistFiles(path, pl);
             return pl;
         }
 
@@ -80,7 +79,7 @@ namespace FuwaTea.Logic.Playlist
 
         public void SaveCopy(IPlaylist playlist, string path)
         {
-            LayerFactory.GetElements<IPlaylistWriter>().First(w => w.SupportedFileTypes.Contains(Path.GetExtension(path))).WritePlaylist(path, playlist, true); // TODO: place for relative path option etc
+            ModuleFactory.GetElements<IPlaylistWriter>().First(w => w.SupportedFileTypes.Contains(Path.GetExtension(path))).WritePlaylist(path, playlist, true); // TODO: place for relative path option etc
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

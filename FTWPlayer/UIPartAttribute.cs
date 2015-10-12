@@ -1,4 +1,4 @@
-﻿using LayerFramework.Attributes;
+﻿using ModularFramework.Attributes;
 
 namespace FTWPlayer
 {

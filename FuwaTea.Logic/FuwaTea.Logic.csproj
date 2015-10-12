@@ -51,7 +51,6 @@
   <ItemGroup>
     <Compile Include="LogicElementAttribute.cs" />
     <Compile Include="ILogicElement.cs" />
-    <Compile Include="LogicLayerDefinition.cs" />
     <Compile Include="Playback\AudioOutputDevice.cs" />
     <Compile Include="Playback\IAudioOutputDevice.cs" />
     <Compile Include="Playback\IAudioPlayer.cs" />
@@ -84,9 +83,9 @@
       <Project>{a9bb4650-68cc-4640-9b5a-65f4aa80c2ab}</Project>
       <Name>FuwaTea.Lib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LayerFramework\LayerFramework.csproj">
-      <Project>{f9d64a69-bcdf-4e7d-83a0-24e7a537842f}</Project>
-      <Name>LayerFramework</Name>
+    <ProjectReference Include="..\ModularFramework\ModularFramework.csproj">
+      <Project>{8517e03e-dc80-419d-bfad-78d80354192b}</Project>
+      <Name>ModularFramework</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -16,11 +16,10 @@
 #endregion
 
 using System.Collections.Generic;
-using LayerFramework.Interfaces;
 
 namespace FuwaTea.Data
 {
-    public interface IDataElement : IBasicElement
+    public interface IDataElement
     {
         /// <summary>
         /// The file types (file extensions) this element can handle. MUST INCLUDE THE DOT!

@@ -17,6 +17,8 @@
 
 using System.Reflection;
 using System.Runtime.InteropServices;
+using FuwaTea.Presentation;
+using ModularFramework.Attributes;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -29,6 +31,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright © 2015 OronDF343")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+
+// Modular
+[assembly: ModuleDefinition("Presentation", typeof(PresentationElementAttribute), typeof(IPresentationElement))]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 

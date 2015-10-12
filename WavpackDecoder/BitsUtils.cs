@@ -1,4 +1,3 @@
-using System;
 /*
 ** BitsUtils.cs
 **

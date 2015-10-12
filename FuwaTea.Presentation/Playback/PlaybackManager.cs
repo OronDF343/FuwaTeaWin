@@ -21,12 +21,11 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using FuwaTea.Annotations;
 using FuwaTea.Common.Models;
 using FuwaTea.Logic.Playback;
 using FuwaTea.Logic.Playlist;
 using log4net;
-using LayerFramework;
+using ModularFramework;
 
 namespace FuwaTea.Presentation.Playback
 {
@@ -37,7 +36,7 @@ namespace FuwaTea.Presentation.Playback
         {
             LogManager.GetLogger(GetType()).Info("Initializing Playback Manager");
             LogManager.GetLogger(GetType()).Debug("Get IPlaylistManager");
-            _playlistManager = LayerFactory.GetElement<IPlaylistManager>();
+            _playlistManager = ModuleFactory.GetElement<IPlaylistManager>();
             _playlistManager.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName != nameof(IPlaylistManager.SelectedPlaylist)) return;
@@ -50,7 +49,7 @@ namespace FuwaTea.Presentation.Playback
             };
             ChangePositionManager(true);
             LogManager.GetLogger(GetType()).Debug("Get all IAudioPlayer");
-            _audioPlayers = LayerFactory.GetElements<IAudioPlayer>(e => LogManager.GetLogger(GetType()).Error("Problem loading an IAudioPlayer: ", e)).ToList();
+            _audioPlayers = ModuleFactory.GetElements<IAudioPlayer>(e => LogManager.GetLogger(GetType()).Error("Problem loading an IAudioPlayer: ", e)).ToList();
             EqualizerBands = new ObservableCollection<EqualizerBand>();
         }
 
@@ -242,7 +241,7 @@ namespace FuwaTea.Presentation.Playback
             if (Current.FilePath.StartsWith("http://") || Current.FilePath.StartsWith("https://"))
             {
                 if (!(_currentPlayer is IStreamingAudioPlayer))
-                    _currentPlayer = LayerFactory.GetElement<IStreamingAudioPlayer>();
+                    _currentPlayer = ModuleFactory.GetElement<IStreamingAudioPlayer>();
                 ((IStreamingAudioPlayer)_currentPlayer).StreamMetadataChanged += OnStreamMetadataChanged;
             }
             else if (_currentPlayer == null || !_currentPlayer.SupportedFileTypes.Contains(Current.FileType))

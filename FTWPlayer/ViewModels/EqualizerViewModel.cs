@@ -4,7 +4,7 @@ using System.Windows.Input;
 using FTWPlayer.Views;
 using FuwaTea.Presentation.Playback;
 using GalaSoft.MvvmLight.CommandWpf;
-using LayerFramework;
+using ModularFramework;
 
 namespace FTWPlayer.ViewModels
 {
@@ -13,7 +13,7 @@ namespace FTWPlayer.ViewModels
     {
         public EqualizerViewModel()
         {
-            PlaybackManager = LayerFactory.GetElement<IPlaybackManager>();
+            PlaybackManager = ModuleFactory.GetElement<IPlaybackManager>();
             ResetEqCommand = new RelayCommand<RoutedEventArgs>(ResetEq);
             TabObject = new EqualizerControl(this);
         }

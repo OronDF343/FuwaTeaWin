@@ -26,13 +26,12 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using FTWPlayer.Properties;
-using FuwaTea.Annotations;
 using FuwaTea.Common.Models;
 using FuwaTea.Logic.Playlist;
 using FuwaTea.Presentation.Playback;
 using FuwaTea.Wpf.Keyboard;
 using GalaSoft.MvvmLight.CommandWpf;
-using LayerFramework;
+using ModularFramework;
 using WPFLocalizeExtension.Engine;
 
 namespace FTWPlayer.ViewModels
@@ -48,7 +47,7 @@ namespace FTWPlayer.ViewModels
             LocalizeDictionary.Instance.Culture = string.IsNullOrWhiteSpace(Settings.Default.SelectedLanguage) ? CultureInfo.CurrentUICulture : CultureInfo.CreateSpecificCulture(Settings.Default.SelectedLanguage);
             Settings.Default.SelectedLanguage = LocalizeDictionary.Instance.Culture.IetfLanguageTag;
 
-            PlaybackManager = LayerFactory.GetElement<IPlaybackManager>();
+            PlaybackManager = ModuleFactory.GetElement<IPlaybackManager>();
 
             _tmr = new DispatcherTimer(TimeSpan.FromMilliseconds(100), DispatcherPriority.ApplicationIdle, Tick,
                 Application.Current.Dispatcher);
@@ -99,10 +98,10 @@ namespace FTWPlayer.ViewModels
             DropCommand = new RelayCommand<DragEventArgs>(Drop);
 
             // Load tabs
-            Tabs = new ObservableCollection<TabItem>(LayerFactory.GetElements<ITab>().OrderBy(t => t.Index).Select(t => t.TabObject));
+            Tabs = new ObservableCollection<TabItem>(ModuleFactory.GetElements<ITab>().OrderBy(t => t.Index).Select(t => t.TabObject));
 
             // TODO: this is testing
-            var plm = LayerFactory.GetElement<IPlaylistManager>(); // TODO: remove logic reference
+            var plm = ModuleFactory.GetElement<IPlaylistManager>(); // TODO: remove logic reference
             if (plm.SelectedPlaylist == null)
             {
                 if (!plm.LoadedPlaylists.ContainsKey("temp")) plm.CreatePlaylist("temp");

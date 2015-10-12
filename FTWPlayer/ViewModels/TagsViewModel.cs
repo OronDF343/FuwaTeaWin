@@ -4,12 +4,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using FTWPlayer.Views;
-using FuwaTea.Annotations;
 using FuwaTea.Common.Models;
 using FuwaTea.Presentation.Playback;
 using FuwaTea.Wpf.Helpers;
 using GalaSoft.MvvmLight.CommandWpf;
-using LayerFramework;
+using ModularFramework;
 
 namespace FTWPlayer.ViewModels
 {
@@ -30,7 +29,7 @@ namespace FTWPlayer.ViewModels
             TabObject = new TagsView(this);
         }
 
-        private readonly IPlaybackManager _playbackManager = LayerFactory.GetElement<IPlaybackManager>();
+        private readonly IPlaybackManager _playbackManager = ModuleFactory.GetElement<IPlaybackManager>();
 
         public TabItem TabObject { get; }
         public decimal Index => 0.5m;

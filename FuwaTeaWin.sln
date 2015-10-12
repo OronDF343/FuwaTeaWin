@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 12.0.31101.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LayerFramework", "LayerFramework\LayerFramework.csproj", "{F9D64A69-BCDF-4E7D-83A0-24E7A537842F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Common", "FuwaTea.Common\FuwaTea.Common.csproj", "{495BF25F-5C9C-4DB2-8319-A54CC3F5E230}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FTWPlayer", "FTWPlayer\FTWPlayer.csproj", "{D14F368C-AB9B-4DF3-A8F7-CF42B66F7E40}"
@@ -21,16 +19,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Lib", "FuwaTea.Lib\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WavpackDecoder", "WavpackDecoder\WavpackDecoder.csproj", "{1CF67E61-3DAE-41A1-BE0A-904A35E04AAF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModularFramework", "ModularFramework\ModularFramework.csproj", "{8517E03E-DC80-419D-BFAD-78D80354192B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F9D64A69-BCDF-4E7D-83A0-24E7A537842F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F9D64A69-BCDF-4E7D-83A0-24E7A537842F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F9D64A69-BCDF-4E7D-83A0-24E7A537842F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F9D64A69-BCDF-4E7D-83A0-24E7A537842F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{495BF25F-5C9C-4DB2-8319-A54CC3F5E230}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{495BF25F-5C9C-4DB2-8319-A54CC3F5E230}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{495BF25F-5C9C-4DB2-8319-A54CC3F5E230}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -63,6 +59,10 @@ Global
 		{1CF67E61-3DAE-41A1-BE0A-904A35E04AAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CF67E61-3DAE-41A1-BE0A-904A35E04AAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CF67E61-3DAE-41A1-BE0A-904A35E04AAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8517E03E-DC80-419D-BFAD-78D80354192B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8517E03E-DC80-419D-BFAD-78D80354192B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8517E03E-DC80-419D-BFAD-78D80354192B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8517E03E-DC80-419D-BFAD-78D80354192B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

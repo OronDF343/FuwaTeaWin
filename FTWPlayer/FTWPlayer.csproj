@@ -147,7 +147,6 @@
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UILayerDefinition.cs" />
     <Compile Include="UIPartAttribute.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
@@ -255,9 +254,9 @@
       <Project>{09bb648a-dcaa-4a8d-9fb6-fc4a82e17820}</Project>
       <Name>FuwaTea.Wpf</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LayerFramework\LayerFramework.csproj">
-      <Project>{f9d64a69-bcdf-4e7d-83a0-24e7a537842f}</Project>
-      <Name>LayerFramework</Name>
+    <ProjectReference Include="..\ModularFramework\ModularFramework.csproj">
+      <Project>{8517e03e-dc80-419d-bfad-78d80354192b}</Project>
+      <Name>ModularFramework</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
