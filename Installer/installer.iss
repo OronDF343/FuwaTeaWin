@@ -58,7 +58,7 @@ Source: "{#BuildPath}\FuwaTea.Logic.dll"; DestDir: "{app}"; Components: main; Fl
 Source: "{#BuildPath}\FuwaTea.Data.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\WavpackDecoder.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\FuwaTea.Common.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "{#BuildPath}\LayerFramework.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\ModularFramework.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\FuwaTea.Lib.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\GalaSoft.MvvmLight.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\GalaSoft.MvvmLight.Extras.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
