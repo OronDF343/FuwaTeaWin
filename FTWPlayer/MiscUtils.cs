@@ -23,8 +23,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using FuwaTea.Lib;
-using FuwaTea.Logic.Playlist;
-using FuwaTea.Presentation.Playback;
+using FuwaTea.Playback;
+using FuwaTea.Playlist;
 using ModularFramework;
 
 namespace FTWPlayer

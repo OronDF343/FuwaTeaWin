@@ -4,8 +4,9 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using FTWPlayer.Views;
-using FuwaTea.Logic.Playlist.AlbumArt;
-using FuwaTea.Presentation.Playback;
+using FuwaTea.Metadata;
+using FuwaTea.Metadata.AlbumArt;
+using FuwaTea.Playback;
 using ModularFramework;
 
 namespace FTWPlayer.ViewModels

@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using FTWPlayer.Views;
-using FuwaTea.Logic.Playlist;
+using FuwaTea.Playlist;
 using GalaSoft.MvvmLight.CommandWpf;
 using Microsoft.Win32;
 using ModularFramework;

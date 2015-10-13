@@ -29,8 +29,8 @@ using System.Xml.Serialization;
 using FTWPlayer.Properties;
 using FTWPlayer.Skins;
 using FuwaTea.Lib;
-using FuwaTea.Logic.Playlist;
-using FuwaTea.Presentation.Playback;
+using FuwaTea.Playback;
+using FuwaTea.Playlist;
 using GalaSoft.MvvmLight.Threading;
 using log4net;
 using log4net.Config;
@@ -79,7 +79,7 @@ namespace FTWPlayer
             if (clArgs.Contains(SetupFileAssocArg) && isinst)
             {
                 LogManager.GetLogger(GetType()).Info("Detected argument: Setup File Associations");
-                LoadLayers();
+                LoadModules();
                 var pm = ModuleFactory.GetElement<IPlaybackManager>();
                 var plm = ModuleFactory.GetElement<IPlaylistManager>();
                 var supported = pm.SupportedFileTypes.Union(plm.ReadableFileTypes);
@@ -191,8 +191,8 @@ namespace FTWPlayer
                 Settings.Default.Save();
             }
 
-            // Load layers:
-            LoadLayers();
+            // Load modules:
+            LoadModules();
             // Load skins:
             try
             {
@@ -233,7 +233,7 @@ namespace FTWPlayer
             Shutdown();
         }
 
-        public void LoadLayers(bool loadExtensions = true)
+        public void LoadModules(bool loadExtensions = true)
         {
             Func<string, bool> sel =
                 f =>

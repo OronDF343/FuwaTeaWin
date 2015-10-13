@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using FTWPlayer.Views;
-using FuwaTea.Presentation.Playback;
+using FuwaTea.Playback;
 using GalaSoft.MvvmLight.CommandWpf;
 using ModularFramework;
 

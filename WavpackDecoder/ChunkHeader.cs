@@ -7,8 +7,11 @@
 **                       
 ** Distributed under the BSD Software License (see license.txt)  */
 
-class ChunkHeader
+namespace WavpackDecoder
 {
-	internal char[] ckID = new char[4];
-	internal long ckSize; // was uint32_t in C
+    class ChunkHeader
+    {
+        internal char[] ckID = new char[4];
+        internal long ckSize; // was uint32_t in C
+    }
 }

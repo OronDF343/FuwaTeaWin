@@ -8,9 +8,12 @@
 ** Distributed under the BSD Software License (see license.txt)
 ***/
 
-class WaveHeader
+namespace WavpackDecoder
 {
-	internal int FormatTag, NumChannels; // was ushort in C
-	internal long SampleRate, BytesPerSecond; // was uint32_t in C
-	internal int BlockAlign, BitsPerSample; // was ushort in C
+    class WaveHeader
+    {
+        internal int FormatTag, NumChannels; // was ushort in C
+        internal long SampleRate, BytesPerSecond; // was uint32_t in C
+        internal int BlockAlign, BitsPerSample; // was ushort in C
+    }
 }

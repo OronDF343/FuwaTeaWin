@@ -53,11 +53,11 @@ Name: "{app}\skins"; Components: main
 [Files]
 Source: "{#BuildPath}\FTWPlayer.exe"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\FuwaTea.Wpf.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "{#BuildPath}\FuwaTea.Presentation.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "{#BuildPath}\FuwaTea.Logic.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "{#BuildPath}\FuwaTea.Data.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\FuwaTea.Playback.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\FuwaTea.Playback.NAudio.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\WavpackDecoder.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
-Source: "{#BuildPath}\FuwaTea.Common.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\FuwaTea.Playlist.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
+Source: "{#BuildPath}\FuwaTea.Metadata.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\ModularFramework.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\FuwaTea.Lib.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion
 Source: "{#BuildPath}\GalaSoft.MvvmLight.dll"; DestDir: "{app}"; Components: main; Flags: ignoreversion

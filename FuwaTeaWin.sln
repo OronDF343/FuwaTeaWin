@@ -3,15 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 12.0.31101.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Common", "FuwaTea.Common\FuwaTea.Common.csproj", "{495BF25F-5C9C-4DB2-8319-A54CC3F5E230}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FTWPlayer", "FTWPlayer\FTWPlayer.csproj", "{D14F368C-AB9B-4DF3-A8F7-CF42B66F7E40}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Data", "FuwaTea.Data\FuwaTea.Data.csproj", "{7C1CE00E-4D83-42A0-B424-8F5EE58E35A7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Logic", "FuwaTea.Logic\FuwaTea.Logic.csproj", "{78196827-F053-4E3E-BC26-1134C89F9D6A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Presentation", "FuwaTea.Presentation\FuwaTea.Presentation.csproj", "{42262D83-E80D-4F04-9E66-E22F7A1E5488}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C6003F63-4717-4B45-8890-B3C02F7209D9} = {C6003F63-4717-4B45-8890-B3C02F7209D9}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Wpf", "FuwaTea.Wpf\FuwaTea.Wpf.csproj", "{09BB648A-DCAA-4A8D-9FB6-FC4A82E17820}"
 EndProject
@@ -21,32 +16,24 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WavpackDecoder", "WavpackDe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModularFramework", "ModularFramework\ModularFramework.csproj", "{8517E03E-DC80-419D-BFAD-78D80354192B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Playback", "FuwaTea.Playback\FuwaTea.Playback.csproj", "{FCC6C9C3-58CF-4C29-BC8F-8468DE31AD93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Playback.NAudio", "FuwaTea.Playback.NAudio\FuwaTea.Playback.NAudio.csproj", "{C6003F63-4717-4B45-8890-B3C02F7209D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Playlist", "FuwaTea.Playlist\FuwaTea.Playlist.csproj", "{1606973F-7CAE-4E42-BCC8-5282FC775070}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Metadata", "FuwaTea.Metadata\FuwaTea.Metadata.csproj", "{17853F95-1A56-448C-825E-5662E1FC1426}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{495BF25F-5C9C-4DB2-8319-A54CC3F5E230}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{495BF25F-5C9C-4DB2-8319-A54CC3F5E230}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{495BF25F-5C9C-4DB2-8319-A54CC3F5E230}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{495BF25F-5C9C-4DB2-8319-A54CC3F5E230}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D14F368C-AB9B-4DF3-A8F7-CF42B66F7E40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D14F368C-AB9B-4DF3-A8F7-CF42B66F7E40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D14F368C-AB9B-4DF3-A8F7-CF42B66F7E40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D14F368C-AB9B-4DF3-A8F7-CF42B66F7E40}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7C1CE00E-4D83-42A0-B424-8F5EE58E35A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7C1CE00E-4D83-42A0-B424-8F5EE58E35A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7C1CE00E-4D83-42A0-B424-8F5EE58E35A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7C1CE00E-4D83-42A0-B424-8F5EE58E35A7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{78196827-F053-4E3E-BC26-1134C89F9D6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{78196827-F053-4E3E-BC26-1134C89F9D6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{78196827-F053-4E3E-BC26-1134C89F9D6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{78196827-F053-4E3E-BC26-1134C89F9D6A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{42262D83-E80D-4F04-9E66-E22F7A1E5488}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{42262D83-E80D-4F04-9E66-E22F7A1E5488}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{42262D83-E80D-4F04-9E66-E22F7A1E5488}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{42262D83-E80D-4F04-9E66-E22F7A1E5488}.Release|Any CPU.Build.0 = Release|Any CPU
 		{09BB648A-DCAA-4A8D-9FB6-FC4A82E17820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{09BB648A-DCAA-4A8D-9FB6-FC4A82E17820}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09BB648A-DCAA-4A8D-9FB6-FC4A82E17820}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -63,6 +50,22 @@ Global
 		{8517E03E-DC80-419D-BFAD-78D80354192B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8517E03E-DC80-419D-BFAD-78D80354192B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8517E03E-DC80-419D-BFAD-78D80354192B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCC6C9C3-58CF-4C29-BC8F-8468DE31AD93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCC6C9C3-58CF-4C29-BC8F-8468DE31AD93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCC6C9C3-58CF-4C29-BC8F-8468DE31AD93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCC6C9C3-58CF-4C29-BC8F-8468DE31AD93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6003F63-4717-4B45-8890-B3C02F7209D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6003F63-4717-4B45-8890-B3C02F7209D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6003F63-4717-4B45-8890-B3C02F7209D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6003F63-4717-4B45-8890-B3C02F7209D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1606973F-7CAE-4E42-BCC8-5282FC775070}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1606973F-7CAE-4E42-BCC8-5282FC775070}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1606973F-7CAE-4E42-BCC8-5282FC775070}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1606973F-7CAE-4E42-BCC8-5282FC775070}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17853F95-1A56-448C-825E-5662E1FC1426}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17853F95-1A56-448C-825E-5662E1FC1426}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17853F95-1A56-448C-825E-5662E1FC1426}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17853F95-1A56-448C-825E-5662E1FC1426}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

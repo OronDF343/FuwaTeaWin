@@ -8,9 +8,12 @@
 ** Distributed under the BSD Software License (see license.txt)  
 ***/
 
-class RiffChunkHeader
+namespace WavpackDecoder
 {
-	internal char[] ckID = new char[4];
-	internal long ckSize; // was uint32_t in C
-	internal char[] formType = new char[4];
+    class RiffChunkHeader
+    {
+        internal char[] ckID = new char[4];
+        internal long ckSize; // was uint32_t in C
+        internal char[] formType = new char[4];
+    }
 }

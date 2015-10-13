@@ -234,21 +234,21 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FuwaTea.Common\FuwaTea.Common.csproj">
-      <Project>{495bf25f-5c9c-4db2-8319-a54cc3f5e230}</Project>
-      <Name>FuwaTea.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FuwaTea.Lib\FuwaTea.Lib.csproj">
-      <Project>{a9bb4650-68cc-4640-9b5a-65f4aa80c2ab}</Project>
+      <Project>{A9BB4650-68CC-4640-9B5A-65F4AA80C2AB}</Project>
       <Name>FuwaTea.Lib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FuwaTea.Logic\FuwaTea.Logic.csproj">
-      <Project>{78196827-f053-4e3e-bc26-1134c89f9d6a}</Project>
-      <Name>FuwaTea.Logic</Name>
+    <ProjectReference Include="..\FuwaTea.Metadata\FuwaTea.Metadata.csproj">
+      <Project>{17853f95-1a56-448c-825e-5662e1fc1426}</Project>
+      <Name>FuwaTea.Metadata</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FuwaTea.Presentation\FuwaTea.Presentation.csproj">
-      <Project>{42262d83-e80d-4f04-9e66-e22f7a1e5488}</Project>
-      <Name>FuwaTea.Presentation</Name>
+    <ProjectReference Include="..\FuwaTea.Playback\FuwaTea.Playback.csproj">
+      <Project>{fcc6c9c3-58cf-4c29-bc8f-8468de31ad93}</Project>
+      <Name>FuwaTea.Playback</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FuwaTea.Playlist\FuwaTea.Playlist.csproj">
+      <Project>{1606973f-7cae-4e42-bcc8-5282fc775070}</Project>
+      <Name>FuwaTea.Playlist</Name>
     </ProjectReference>
     <ProjectReference Include="..\FuwaTea.Wpf\FuwaTea.Wpf.csproj">
       <Project>{09bb648a-dcaa-4a8d-9fb6-fc4a82e17820}</Project>
