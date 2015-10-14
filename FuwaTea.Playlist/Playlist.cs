@@ -23,6 +23,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using FuwaTea.Lib;
 using FuwaTea.Lib.Collections;
 using FuwaTea.Metadata;
 using FuwaTea.Metadata.Tags;
@@ -58,7 +59,7 @@ namespace FuwaTea.Playlist
 
         public void Add(string musicFile)
         {
-            var tag = ModuleFactory.GetElements<ITagProvider>().FirstOrDefault(r => r.SupportedFileTypes.Contains(Path.GetExtension(musicFile)));
+            var tag = ModuleFactory.GetElements<ITagProvider>().FirstOrDefault(r => r.GetExtensions().Contains(Path.GetExtension(musicFile)));
             Add(new MusicInfoModel(musicFile, tag?.Create(musicFile)));
         }
 

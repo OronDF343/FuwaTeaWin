@@ -31,7 +31,7 @@ namespace FuwaTea.Playback.NAudio.Codecs
             return new AudioFileReader(path);
         }
 
-        public IEnumerable<string> SupportedFileTypes => new[] { ".mp3", ".wma", ".m4a", ".aac" };
+        public IEnumerable<string> SupportedFileTypes => new[] { "mp3|MP3 Audio File", "wma|Windows Media Audio File", "m4a|MPEG-4 Audio File", "aac|AAC Audio File" };
         public bool IsSampleProvider => true;
         public bool CanResume => true;
         public bool CanSeek => true;
@@ -46,7 +46,7 @@ namespace FuwaTea.Playback.NAudio.Codecs
             return new AudioFileReader(path);
         }
 
-        public IEnumerable<string> SupportedFileTypes => new[] { ".adts" };
+        public IEnumerable<string> SupportedFileTypes => new[] { "adts|ADTS Audio File" };
         public bool IsSampleProvider => true;
         public bool CanResume => true;
         public bool CanSeek => true;
@@ -61,7 +61,7 @@ namespace FuwaTea.Playback.NAudio.Codecs
             return new AudioFileReader(path);
         }
 
-        public IEnumerable<string> SupportedFileTypes => new[] { ".ac3" };
+        public IEnumerable<string> SupportedFileTypes => new[] { "ac3|AC3 Audio File" };
         public bool IsSampleProvider => true;
         public bool CanResume => true;
         public bool CanSeek => true;
@@ -76,7 +76,7 @@ namespace FuwaTea.Playback.NAudio.Codecs
             return new AudioFileReader(path);
         }
 
-        public IEnumerable<string> SupportedFileTypes => new[] { ".flac" };
+        public IEnumerable<string> SupportedFileTypes => new[] { "flac|FLAC Audio File" };
         public bool IsSampleProvider => true;
         public bool CanResume => true;
         public bool CanSeek => true;

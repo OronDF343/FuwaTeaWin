@@ -18,7 +18,6 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -31,7 +30,6 @@ using FuwaTea.Playlist;
 using FuwaTea.Wpf.Keyboard;
 using GalaSoft.MvvmLight.CommandWpf;
 using ModularFramework;
-using WPFLocalizeExtension.Engine;
 
 namespace FTWPlayer.ViewModels
 {
@@ -42,10 +40,6 @@ namespace FTWPlayer.ViewModels
         /// </summary>
         public MainViewModel()
         {
-            LocalizeDictionary.Instance.SetCurrentThreadCulture = true;
-            LocalizeDictionary.Instance.Culture = string.IsNullOrWhiteSpace(Settings.Default.SelectedLanguage) ? CultureInfo.CurrentUICulture : CultureInfo.CreateSpecificCulture(Settings.Default.SelectedLanguage);
-            Settings.Default.SelectedLanguage = LocalizeDictionary.Instance.Culture.IetfLanguageTag;
-
             PlaybackManager = ModuleFactory.GetElement<IPlaybackManager>();
 
             _tmr = new DispatcherTimer(TimeSpan.FromMilliseconds(100), DispatcherPriority.ApplicationIdle, Tick,

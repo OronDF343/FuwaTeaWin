@@ -28,7 +28,7 @@ namespace FuwaTea.Playback.NAudio.Codecs
             return new AudioFileReader(path);
         }
 
-        public IEnumerable<string> SupportedFileTypes => new[] {".wav", ".aiff"};
+        public IEnumerable<string> SupportedFileTypes => new[] { "wav|WAV Audio File", "aiff|AIFF Audio File" };
         public bool IsSampleProvider => true;
         public bool CanResume => true;
         public bool CanSeek => true;

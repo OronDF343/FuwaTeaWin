@@ -30,7 +30,6 @@ DisableDirPage=auto
 DefaultGroupName={#LongName}
 DisableProgramGroupPage=yes
 AppMutex={#ShortName}|Installed
-AppModifyPath="{app}\FTWPlayer.exe" --modify
 
 ChangesAssociations=yes
 ArchitecturesInstallIn64BitMode=x64
@@ -42,7 +41,6 @@ Name: "localization\hebrew"; Description: "{cm:Hebrew}"; Types: full custom
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:Icons}"; Components: main
-Name: "associate"; Description: "{cm:UpdateFileAssociations}"; GroupDescription: "{cm:Tasks}"
 Name: "reset"; Description: "{cm:ResetConfig}"; GroupDescription: "{cm:Tasks}"; Flags: unchecked
 
 [Dirs]
@@ -100,25 +98,13 @@ Name: "he"; MessagesFile: "compiler:Languages\Hebrew.isl,msg_he.isl"; LicenseFil
 [Registry]
 Root: HKLM; Subkey: "Software\{#Company}"; Flags: uninsdeletekeyifempty
 Root: HKLM; Subkey: "Software\{#Company}\{#ShortName}"; Flags: uninsdeletekey; ValueType: string; ValueName: "InstallLocation"; ValueData: "{app}"
-Root: HKCR; Subkey: "{#ShortName}.AudioFileGeneric"; Flags: uninsdeletekey; ValueType: string; ValueData: "{cm:FileExtGeneric}"
-Root: HKCR; Subkey: "{#ShortName}.AudioFileGeneric\DefaultIcon"; ValueType: string; ValueData: """{app}\FTWPlayer.exe"",0"
-Root: HKCR; Subkey: "{#ShortName}.AudioFileGeneric\shell"; ValueType: string; ValueData: "Play"
-Root: HKCR; Subkey: "{#ShortName}.AudioFileGeneric\shell\Play"; ValueType: string; ValueData: "{cm:PlayWith,{#LongName}}"
-Root: HKCR; Subkey: "{#ShortName}.AudioFileGeneric\shell\Play\command"; ValueType: string; ValueData: """{app}\FTWPlayer.exe"" ""%1"""
-Root: HKCR; Subkey: "{#ShortName}.AudioFileGeneric\shell\AddToPlaylist"; ValueType: string; ValueData: "{cm:AddToPlaylist,{#LongName}}"
-Root: HKCR; Subkey: "{#ShortName}.AudioFileGeneric\shell\AddToPlaylist\command"; ValueType: string; ValueData: """{app}\FTWPlayer.exe"" ""%1"" --add"
-Root: HKCR; Subkey: "Directory\shell\PlayFTW"; Flags: uninsdeletekey; ValueType: string; ValueData: "{cm:PlayWith,{#LongName}}"
-Root: HKCR; Subkey: "Directory\shell\PlayFTW\command"; ValueType: string; ValueData: """{app}\FTWPlayer.exe"" ""%1"""
-Root: HKCR; Subkey: "Directory\shell\AddToPlaylistFTW"; Flags: uninsdeletekey; ValueType: string; ValueData: "{cm:AddToPlaylist,{#LongName}}"
-Root: HKCR; Subkey: "Directory\shell\AddToPlaylistFTW\command"; ValueType: string; ValueData: """{app}\FTWPlayer.exe"" ""%1"" --add"
 Root: HKLM; Subkey: "Software\Clients\Media\{#ShortName}"; Flags: uninsdeletekey
 Root: HKLM; Subkey: "Software\Clients\Media\{#ShortName}\Capabilities"; ValueName: "ApplicationName"; ValueType: string; ValueData: "{#LongName}"
-Root: HKLM; Subkey: "Software\Clients\Media\{#ShortName}\Capabilities"; ValueName: "ApplicationDescription"; ValueType: string; ValueData: "{cm:AppDescription}"
 Root: HKLM; Subkey: "Software\Clients\Media\{#ShortName}\Capabilities\FileAssociations"
-Root: HKLM; Subkey: "Software\RegisteredApplications"; Flags: uninsdeletevalue; ValueName: "FuwaTeaWin"; ValueType: string; ValueData: "Software\Clients\Media\{#ShortName}\Capabilities"
+Root: HKLM; Subkey: "Software\RegisteredApplications"; Flags: uninsdeletevalue; ValueName: "{#ShortName}"; ValueType: string; ValueData: "Software\Clients\Media\{#ShortName}\Capabilities"
 
 [Run]
-Filename: "{app}\FTWPlayer.exe"; Parameters: "--setup-file-associations --admin"; StatusMsg: "{cm:UpdatingFileAssociations}"; Tasks: associate
+Filename: "{app}\FTWPlayer.exe"; Parameters: "--setup-file-associations --admin --set-lang {language}"; StatusMsg: "{cm:UpdatingFileAssociations}"
 Filename: "{app}\FTWPlayer.exe"; Parameters: "--configure-file-associations"; Description: "{cm:ConfigureFileAssociations}"; Flags: postinstall
 
 [UninstallRun]

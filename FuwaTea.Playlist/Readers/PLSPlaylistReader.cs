@@ -10,7 +10,7 @@ namespace FuwaTea.Playlist.Readers
     [PlaylistHandler("PLS Playlist Reader")]
     public class PLSPlaylistReader : IPlaylistReader
     {
-        public IEnumerable<string> SupportedFileTypes => new[] { ".pls" };
+        public IEnumerable<string> SupportedFileTypes => new[] { "pls|PLS Playlist" };
 
         public void LoadPlaylistFiles(string path, IPlaylist playlist)
         {

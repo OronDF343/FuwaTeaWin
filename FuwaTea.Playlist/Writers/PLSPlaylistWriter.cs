@@ -8,7 +8,7 @@ namespace FuwaTea.Playlist.Writers
     [PlaylistHandler("PLS Playlist Writer")]
     public class PLSPlaylistWriter : IPlaylistWriter
     {
-        public IEnumerable<string> SupportedFileTypes => new[] { ".pls" };
+        public IEnumerable<string> SupportedFileTypes => new[] { "pls|PLS Playlist" };
 
         public void WritePlaylist(string path, IPlaylist playlist, bool relativePaths)
         {

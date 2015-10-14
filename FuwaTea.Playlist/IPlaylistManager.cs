@@ -32,7 +32,7 @@ namespace FuwaTea.Playlist
         /// 
         /// </summary>
         IEnumerable<string> ReadableFileTypes { get; }
-        IEnumerable<string> WritableFileTypes { get; }
+        IEnumerable<string> WriteableFileTypes { get; }
 
         void CreatePlaylist(string name);
         void MergePlaylists(IPlaylist source, IPlaylist target);

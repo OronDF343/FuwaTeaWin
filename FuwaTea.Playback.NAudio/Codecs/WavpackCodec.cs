@@ -11,7 +11,7 @@ namespace FuwaTea.Playback.NAudio.Codecs
             return new WavpackReader(path);
         }
 
-        public IEnumerable<string> SupportedFileTypes => new[] { ".wv" };
+        public IEnumerable<string> SupportedFileTypes => new[] { "wv|Wavpack Audio File" };
         public bool IsSampleProvider => false;
         public bool CanResume => true;
         public bool CanSeek => true;

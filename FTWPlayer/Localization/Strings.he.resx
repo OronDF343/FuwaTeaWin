@@ -186,4 +186,19 @@
   <data name="TagsTabHeader" xml:space="preserve">
     <value>תגים</value>
   </data>
+  <data name="AllSupportedPlaylists" xml:space="preserve">
+    <value>כל סוגי הרשימות הנתמכים</value>
+  </data>
+  <data name="FileTypeFormatString" xml:space="preserve">
+    <value>{0} ({1})</value>
+  </data>
+  <data name="AddToPlaylistFormatString" xml:space="preserve">
+    <value>הוסף לרשימת ההשמעה של {0}</value>
+  </data>
+  <data name="AppDescription" xml:space="preserve">
+    <value>נגן מוזיקה קומפקטי, מודולרי וחינמי</value>
+  </data>
+  <data name="PlayWithFormatString" xml:space="preserve">
+    <value>נגן באמצעות {0}</value>
+  </data>
 </root>

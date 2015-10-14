@@ -16,12 +16,12 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using FuwaTea.Lib;
 
 namespace FuwaTea.Playback
 {
-    public interface IAudioPlayer : IPlaybackElement, IDisposable
+    public interface IAudioPlayer : IPlaybackElement, IFileHandler, IDisposable
     {
         /// <summary>
         /// Prepare to play an audio file.
@@ -37,10 +37,6 @@ namespace FuwaTea.Playback
         /// Gets a boolean value indicating whether a file is currently loaded.
         /// </summary>
         bool IsSomethingLoaded { get; }
-        /// <summary>
-        /// 
-        /// </summary>
-        IEnumerable<string> SupportedFileTypes { get; }
 
         /// <summary>
         /// Begin playback of the loaded file from the beginning of the file.

@@ -1,5 +1,4 @@
 ﻿using System;
-using FuwaTea.Metadata;
 using FuwaTea.Metadata.Tags;
 
 namespace FuwaTea.Playback

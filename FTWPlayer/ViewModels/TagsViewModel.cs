@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using FTWPlayer.Views;
-using FuwaTea.Metadata;
 using FuwaTea.Metadata.Tags;
 using FuwaTea.Playback;
 using FuwaTea.Wpf.Helpers;

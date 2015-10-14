@@ -21,6 +21,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using FuwaTea.Lib;
 using FuwaTea.Playlist.Readers;
 using FuwaTea.Playlist.Writers;
 using ModularFramework;
@@ -46,7 +47,7 @@ namespace FuwaTea.Playlist
 
         public IPlaylist SelectedPlaylist => SelectedPlaylistId != null && LoadedPlaylists.ContainsKey(SelectedPlaylistId) ? LoadedPlaylists[SelectedPlaylistId] : null;
         public IEnumerable<string> ReadableFileTypes => ModuleFactory.GetElements<IPlaylistReader>().SelectMany(r => r.SupportedFileTypes).Distinct();
-        public IEnumerable<string> WritableFileTypes => ModuleFactory.GetElements<IPlaylistWriter>().SelectMany(r => r.SupportedFileTypes).Distinct();
+        public IEnumerable<string> WriteableFileTypes => ModuleFactory.GetElements<IPlaylistWriter>().SelectMany(r => r.SupportedFileTypes).Distinct();
 
         public void CreatePlaylist(string name)
         {
@@ -61,7 +62,7 @@ namespace FuwaTea.Playlist
         public IPlaylist OpenPlaylist(string path)
         {
             var pl = new Playlist {FileLocation = path};
-            ModuleFactory.GetElements<IPlaylistReader>().First(w => w.SupportedFileTypes.Contains(Path.GetExtension(path))).LoadPlaylistFiles(path, pl);
+            ModuleFactory.GetElements<IPlaylistReader>().First(w => w.GetExtensions().Contains(Path.GetExtension(path))).LoadPlaylistFiles(path, pl);
             return pl;
         }
 
@@ -79,7 +80,7 @@ namespace FuwaTea.Playlist
 
         public void SaveCopy(IPlaylist playlist, string path)
         {
-            ModuleFactory.GetElements<IPlaylistWriter>().First(w => w.SupportedFileTypes.Contains(Path.GetExtension(path))).WritePlaylist(path, playlist, true); // TODO: place for relative path option etc
+            ModuleFactory.GetElements<IPlaylistWriter>().First(w => w.GetExtensions().Contains(Path.GetExtension(path))).WritePlaylist(path, playlist, true); // TODO: place for relative path option etc
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

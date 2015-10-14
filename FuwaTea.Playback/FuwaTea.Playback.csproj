@@ -57,6 +57,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FuwaTea.Lib\FuwaTea.Lib.csproj">
+      <Project>{A9BB4650-68CC-4640-9B5A-65F4AA80C2AB}</Project>
+      <Name>FuwaTea.Lib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FuwaTea.Metadata\FuwaTea.Metadata.csproj">
       <Project>{17853F95-1A56-448C-825E-5662E1FC1426}</Project>
       <Name>FuwaTea.Metadata</Name>

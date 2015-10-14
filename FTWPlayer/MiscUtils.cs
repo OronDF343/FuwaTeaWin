@@ -59,7 +59,7 @@ namespace FTWPlayer
             else
             {
                 var ext = Path.GetExtension(file);
-                if (plm.ReadableFileTypes.Contains(ext))
+                if (StringUtils.GetExtensions(plm.ReadableFileTypes).Contains(ext))
                 {
                     if (addOnly)
                         plm.MergePlaylists(plm.OpenPlaylist(file), plm.SelectedPlaylist);
@@ -70,7 +70,7 @@ namespace FTWPlayer
                         return true;
                     }
                 }
-                else if (pm.SupportedFileTypes.Contains(ext))
+                else if (pm.GetExtensions().Contains(ext))
                 {
                     plm.SelectedPlaylist.Add(file);
                     if (!addOnly) pm.JumpToAbsolute(pm.ElementCount - 1);
@@ -114,11 +114,11 @@ namespace FTWPlayer
                 IEnumerable<string> stuff;
                 if (subfolders)
                     stuff = from f in dir.EnumerateFilesEx()
-                            where pm.SupportedFileTypes.Contains(f.Extension)
+                            where pm.GetExtensions().Contains(f.Extension)
                             select f.FullName;
                 else
                     stuff = from f in dir.GetFiles()
-                            where pm.SupportedFileTypes.Contains(f.Extension)
+                            where pm.GetExtensions().Contains(f.Extension)
                             select f.FullName;
                 foreach (var s in stuff)
                 {

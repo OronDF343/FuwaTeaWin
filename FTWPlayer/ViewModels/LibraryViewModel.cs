@@ -3,7 +3,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using FTWPlayer.Localization;
 using FTWPlayer.Views;
+using FuwaTea.Lib;
 using FuwaTea.Playlist;
 using GalaSoft.MvvmLight.CommandWpf;
 using Microsoft.Win32;
@@ -17,7 +19,7 @@ namespace FTWPlayer.ViewModels
         public LibraryViewModel()
         {
             TabObject = new LibraryView(this);
-            PlaylistManager = ModuleFactory.GetElement<IPlaylistManager>(); // TODO: remove logic reference
+            PlaylistManager = ModuleFactory.GetElement<IPlaylistManager>();
             OpenPlaylistCommand = new RelayCommand<RoutedEventArgs>(OpenPlaylist);
             SavePlaylistCommand = new RelayCommand<RoutedEventArgs>(SavePlaylist);
             SaveAsCommand = new RelayCommand<RoutedEventArgs>(SaveAs);
@@ -26,10 +28,12 @@ namespace FTWPlayer.ViewModels
         public decimal Index => 2;
         public IPlaylistManager PlaylistManager { get; }
 
-        private string OpenFileFilter => "Supported File Types|*" + string.Join(";*", PlaylistManager.ReadableFileTypes);
-        // TODO: group them correctly
-        private string SaveFileFilter => string.Join("|", from w in PlaylistManager.WritableFileTypes
-                                                          select $"{w.Substring(1).ToUpperInvariant()} file|*{w}");
+        private string OpenFileFilter => LocalizationProvider.GetLocalizedValue<string>("AllSupportedPlaylists")
+                                         + "|*" + string.Join(";*", StringUtils.GetExtensions(PlaylistManager.ReadableFileTypes));
+        // TODO: group them?
+        private string SaveFileFilter => string.Join("|", from w in StringUtils.GetExtensionsInfo(PlaylistManager.WriteableFileTypes)
+                                                          let x = "*." + w.Key
+                                                          select $"{string.Format(LocalizationProvider.GetLocalizedValue<string>("FileTypeFormatString"), w.Value, x)}|{x}");
 
         public ICommand OpenPlaylistCommand { get; set; }
 

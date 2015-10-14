@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -26,6 +27,7 @@ using System.Security.AccessControl;
 using System.Threading;
 using System.Windows;
 using System.Xml.Serialization;
+using FTWPlayer.Localization;
 using FTWPlayer.Properties;
 using FTWPlayer.Skins;
 using FuwaTea.Lib;
@@ -36,6 +38,7 @@ using log4net;
 using log4net.Config;
 using Microsoft.Win32;
 using ModularFramework;
+using WPFLocalizeExtension.Engine;
 
 namespace FTWPlayer
 {
@@ -56,6 +59,7 @@ namespace FTWPlayer
         private const string CleanupFileAssocArg = "--clean-up-file-associations";
         private const string ConfigureFileAssocArg = "--configure-file-associations";
         private const string ShouldBeAdminArg = "--admin";
+        private const string SetLangArg = "--set-lang";
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -71,52 +75,129 @@ namespace FTWPlayer
 #endif
 
             LogManager.GetLogger(GetType()).Info("Exceptions are tracked, logging is configured, begin loading!");
+            
+            // Upgrade settings:
+            var ver = Settings.Default.LastVersion;
+            var cver = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            if (!string.Equals(ver, cver, StringComparison.OrdinalIgnoreCase))
+            {
+                LogManager.GetLogger(GetType()).Info("The settings are from an older version, upgrading now");
+                Settings.Default.Upgrade();
+                Settings.Default.LastVersion = cver;
+                Settings.Default.Save();
+            }
 
             // Get ClArgs:
             var clArgs = Environment.GetCommandLineArgs().ToList();
+            var li = clArgs.IndexOf(SetLangArg) + 1;
+            if (li > 0 && clArgs.Count > li)
+            {
+                Settings.Default.SelectedLanguage = clArgs[li];
+            }
+
+            // Set localization
+            LocalizeDictionary.Instance.SetCurrentThreadCulture = true;
+            LocalizeDictionary.Instance.Culture = string.IsNullOrWhiteSpace(Settings.Default.SelectedLanguage) ? CultureInfo.CurrentUICulture : CultureInfo.CreateSpecificCulture(Settings.Default.SelectedLanguage);
+            Settings.Default.SelectedLanguage = LocalizeDictionary.Instance.Culture.IetfLanguageTag;
+
             var isinst = Assembly.GetEntryAssembly().IsInstalledCopy();
             var prod = Assembly.GetEntryAssembly().GetProduct();
+            var title = Assembly.GetEntryAssembly().GetAttribute<AssemblyTitleAttribute>().Title;
             if (clArgs.Contains(SetupFileAssocArg) && isinst)
             {
                 LogManager.GetLogger(GetType()).Info("Detected argument: Setup File Associations");
                 LoadModules();
+                var l = Assembly.GetExecutingAssembly().Location;
                 var pm = ModuleFactory.GetElement<IPlaybackManager>();
                 var plm = ModuleFactory.GetElement<IPlaylistManager>();
-                var supported = pm.SupportedFileTypes.Union(plm.ReadableFileTypes);
-                var key = Registry.LocalMachine.CreateSubKey($@"Software\Clients\Media\{prod}\Capabilities\FileAssociations");
-                if (key == null)
+                var supported = pm.GetExtensionsInfo().Union(StringUtils.GetExtensionsInfo(plm.ReadableFileTypes)).ToDictionary(p => p.Key, p => p.Value);
+                #region Registry edits
+
+                try
                 {
-                    LogManager.GetLogger(GetType()).Error("Failed to create/open registry subkey!");
-                    if (!clArgs.Contains(ShouldBeAdminArg))
+                    var cls = Registry.LocalMachine.CreateSubKey(@"Software\Classes");
+                    // Set directory actions:
+                    var shell = cls.CreateSubKey(@"Directory\shell");
+                    // Play option
+                    var play = shell.CreateSubKey($"{prod}.Play");
+                    play.SetValue("", string.Format(LocalizationProvider.GetLocalizedValue<string>("PlayWithFormatString"), title));
+                    var command1 = play.CreateSubKey("command");
+                    command1.SetValue("", $"\"{l}\" \"%1\"");
+                    // Add option
+                    var add = shell.CreateSubKey($"{prod}.AddToPlaylist");
+                    add.SetValue("", string.Format(LocalizationProvider.GetLocalizedValue<string>("AddToPlaylistFormatString"), title));
+                    var command2 = add.CreateSubKey("command");
+                    command2.SetValue("", $"\"{l}\" \"%1\" --add");
+                    // Get classes:
+                    var classes = cls.GetSubKeyNames();
+                    var installedClasses = classes.Where(c => c.StartsWith(prod + ".")).ToList();
+                    var redundantClasses = installedClasses.Where(c => !supported.ContainsKey(c.Substring(c.IndexOf('.') + 1)));
+                    var missingClasses = supported.Where(x => !installedClasses.Contains(prod + "." + x.Key));
+                    // Delete redundant classes:
+                    foreach (var c in redundantClasses) cls.DeleteSubKeyTree(c);
+                    // Add missing classes:
+                    foreach (var x in missingClasses)
                     {
-                        LogManager.GetLogger(GetType()).Info("Trying to restart with admin rights");
-                        RestartAsAdmin(SetupFileAssocArg);
+                        var k = cls.CreateSubKey(prod + "." + x.Key);
+                        // if (k == null) { RegistryError(); return; }
+                        k.SetValue("", x.Value);
+                        var di = k.CreateSubKey("DefaultIcon");
+                        di.SetValue("", $"\"{l}\",0");
+                        shell = k.CreateSubKey("shell");
+                        shell.SetValue("", "Play");
+                        // Play option
+                        play = shell.CreateSubKey("Play");
+                        play.SetValue("", string.Format(LocalizationProvider.GetLocalizedValue<string>("PlayWithFormatString"), title));
+                        command1 = play.CreateSubKey("command");
+                        command1.SetValue("", $"\"{l}\" \"%1\"");
+                        // Add option
+                        add = shell.CreateSubKey("AddToPlaylist");
+                        add.SetValue("", string.Format(LocalizationProvider.GetLocalizedValue<string>("AddToPlaylistFormatString"), title));
+                        command2 = add.CreateSubKey("command");
+                        command2.SetValue("", $"\"{l}\" \"%1\" --add");
                     }
-                    Shutdown();
-                    return;
+                    // Set app description:
+                    var cap = Registry.LocalMachine.CreateSubKey($@"Software\Clients\Media\{prod}\Capabilities");
+                    cap.SetValue("ApplicationDescription", LocalizationProvider.GetLocalizedValue<string>("AppDescription"));
+                    // Get associations:
+                    var assoc = cap.CreateSubKey("FileAssociations");
+                    var exts = assoc.GetValueNames();
+                    var redundantAssociations = exts.Where(s => !supported.ContainsKey(s.Substring(1)));
+                    var missingAssociations = supported.Keys.Where(s => !exts.Contains("." + s));
+                    // Delete redundant values in associations
+                    foreach (var s in redundantAssociations) assoc.DeleteValue(s);
+                    // Add missing associations
+                    foreach (var s in missingAssociations) assoc.SetValue("." + s, prod + "." + s, RegistryValueKind.String);
                 }
-                var exts = key.GetValueNames();
-                var f = exts.Where(s => !supported.Contains(s));
-                var t = supported.Where(s => !exts.Contains(s));
-                foreach (var s in f) key.DeleteValue(s);
-                foreach (var s in t) key.SetValue(s, prod + ".AudioFileGeneric", RegistryValueKind.String);
+                catch (Exception)
+                {
+                    RegistryError(SetupFileAssocArg);
+                }
+                #endregion
                 Shutdown();
                 return;
             }
             if (clArgs.Contains(CleanupFileAssocArg) && isinst)
             {
                 LogManager.GetLogger(GetType()).Info("Detected argument: Clean Up File Associations");
-                var key = Registry.LocalMachine.CreateSubKey($@"Software\Clients\Media\{prod}\Capabilities\FileAssociations");
-                if (key != null) foreach (var s in key.GetValueNames()) key.DeleteValue(s);
-                else
+                #region Registry edits
+
+                try
                 {
-                    LogManager.GetLogger(GetType()).Error("Failed to create/open registry subkey!");
-                    if (!clArgs.Contains(ShouldBeAdminArg))
-                    {
-                        LogManager.GetLogger(GetType()).Info("Trying to restart with admin rights");
-                        RestartAsAdmin(CleanupFileAssocArg);
-                    }
+                    var cls = Registry.LocalMachine.CreateSubKey(@"Software\Classes");
+                    var shell = cls.CreateSubKey(@"Directory\shell");
+                    shell.DeleteSubKeyTree($"{prod}.Play");
+                    shell.DeleteSubKeyTree($"{prod}.AddToPlaylist");
+                    foreach (var s in cls.GetSubKeyNames().Where(c => c.StartsWith(prod + "."))) cls.DeleteSubKeyTree(s);
+                    // Not needed since uninstaller takes care of this
+                    //var key = Registry.LocalMachine.CreateSubKey($@"Software\Clients\Media\{prod}\Capabilities\FileAssociations");
+                    //foreach (var s in key.GetValueNames()) key.DeleteValue(s);
                 }
+                catch (Exception)
+                {
+                    RegistryError(CleanupFileAssocArg);
+                }
+                #endregion
                 Shutdown();
                 return;
             }
@@ -180,17 +261,6 @@ namespace FTWPlayer
                 }
             }
 
-            // Upgrade settings:
-            var ver = Settings.Default.LastVersion;
-            var cver = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            if (!string.Equals(ver, cver, StringComparison.OrdinalIgnoreCase))
-            {
-                LogManager.GetLogger(GetType()).Info("The settings are from an older version, upgrading now");
-                Settings.Default.Upgrade();
-                Settings.Default.LastVersion = cver;
-                Settings.Default.Save();
-            }
-
             // Load modules:
             LoadModules();
             // Load skins:
@@ -231,6 +301,16 @@ namespace FTWPlayer
             };
             process.Start();
             Shutdown();
+        }
+
+        private void RegistryError(string args)
+        {
+            LogManager.GetLogger(GetType()).Error("Failed to create/open registry subkey!");
+            if (!Environment.GetCommandLineArgs().Contains(ShouldBeAdminArg))
+            {
+                LogManager.GetLogger(GetType()).Info("Trying to restart with admin rights");
+                RestartAsAdmin(args);
+            }
         }
 
         public void LoadModules(bool loadExtensions = true)

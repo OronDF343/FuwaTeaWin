@@ -16,16 +16,15 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using FuwaTea.Lib;
 using FuwaTea.Playlist;
 
 namespace FuwaTea.Playback
 {
-    public interface IPlaybackManager : IPlaylistPositionManager, IPlaybackElement, IDisposable
+    public interface IPlaybackManager : IPlaylistPositionManager, IPlaybackElement, IFileHandler, IDisposable
     {
         bool IsSomethingLoaded { get; }
-        IEnumerable<string> SupportedFileTypes { get; }
 
         void PlayPauseResume();
         void Stop();

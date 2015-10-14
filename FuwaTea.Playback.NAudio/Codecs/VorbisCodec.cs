@@ -29,7 +29,7 @@ namespace FuwaTea.Playback.NAudio.Codecs
             return new VorbisWaveReader(path);
         }
 
-        public IEnumerable<string> SupportedFileTypes => new[] {".ogg"};
+        public IEnumerable<string> SupportedFileTypes => new[] {"ogg|OGG Vorbis Audio File"};
         public bool IsSampleProvider => false;
         // TODO: temporary workaround, change when NVorbis is updated
         public bool CanResume => true;

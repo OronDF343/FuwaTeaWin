@@ -28,7 +28,7 @@ namespace FuwaTea.Playlist.Readers
     [PlaylistHandler("M3U / M3U8 playlist reader")]
     public class M3UPlaylistReader : IPlaylistReader
     {
-        public IEnumerable<string> SupportedFileTypes => new[] {".m3u", ".m3u8"};
+        public IEnumerable<string> SupportedFileTypes => new[] {"m3u|M3U Playlist", "m3u8|M3U Playlist (UTF-8)"};
         public void LoadPlaylistFiles(string path, IPlaylist playlist)
         {
             try

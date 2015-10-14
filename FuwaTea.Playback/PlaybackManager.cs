@@ -21,6 +21,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using FuwaTea.Lib;
 using FuwaTea.Metadata;
 using FuwaTea.Playlist;
 using log4net;
@@ -243,8 +244,8 @@ namespace FuwaTea.Playback
                     _currentPlayer = ModuleFactory.GetElement<IStreamingAudioPlayer>();
                 ((IStreamingAudioPlayer)_currentPlayer).StreamMetadataChanged += OnStreamMetadataChanged;
             }
-            else if (_currentPlayer == null || !_currentPlayer.SupportedFileTypes.Contains(Current.FileType))
-                _currentPlayer = _audioPlayers.FirstOrDefault(p => p.SupportedFileTypes.Contains(Current.FileType));
+            else if (_currentPlayer == null || !_currentPlayer.GetExtensions().Contains(Current.FileType))
+                _currentPlayer = _audioPlayers.FirstOrDefault(p => p.GetExtensions().Contains(Current.FileType));
 
             if (_currentPlayer == null)
             {

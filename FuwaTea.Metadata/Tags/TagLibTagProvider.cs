@@ -7,20 +7,20 @@ namespace FuwaTea.Metadata.Tags
     {
         public IEnumerable<string> SupportedFileTypes => new[]
         {
-            ".aac",
-            ".m4a",
-            ".aiff",
-            ".ape",
-            ".asf",
-            ".aud",
-            ".flac",
-            ".ogg",
-            ".mp3",
-            ".wav",
-            ".wv",
-            ".adts",
-            ".wma",
-            ".mka"
+            "aac",
+            "m4a",
+            "aiff",
+            "ape",
+            "asf",
+            "aud",
+            "flac",
+            "ogg",
+            "mp3",
+            "wav",
+            "wv",
+            "adts",
+            "wma",
+            "mka"
         };
 
         public Tag Create(string path)

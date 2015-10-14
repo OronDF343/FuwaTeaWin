@@ -31,7 +31,7 @@ namespace FuwaTea.Playback.NAudio.Codecs
             return new FlacReader(path);
         }
 
-        public IEnumerable<string> SupportedFileTypes => new[] {".flac"};
+        public IEnumerable<string> SupportedFileTypes => new[] {"flac|FLAC Audio File"};
         public bool IsSampleProvider => false;
         public bool CanResume => true;
         public bool CanSeek => true;

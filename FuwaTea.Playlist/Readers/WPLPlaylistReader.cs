@@ -14,7 +14,7 @@ namespace FuwaTea.Playlist.Readers
     [PlaylistHandler("WPL Playlist Reader")]
     public class WPLPlaylistReader : IPlaylistReader
     {
-        public IEnumerable<string> SupportedFileTypes => new[] {".wpl"};
+        public IEnumerable<string> SupportedFileTypes => new[] {"wpl|Windows Media Playlist"};
 
         public void LoadPlaylistFiles(string path, IPlaylist playlist)
         {

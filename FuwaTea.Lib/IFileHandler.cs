@@ -22,7 +22,8 @@ namespace FuwaTea.Lib
     public interface IFileHandler
     {
         /// <summary>
-        /// The file types (file extensions) this element can handle. MUST INCLUDE THE DOT!
+        /// The file types (file extensions) this element can handle. (WITHOUT DOT!)
+        /// Format: extension|description
         /// </summary>
         IEnumerable<string> SupportedFileTypes { get; }
     }

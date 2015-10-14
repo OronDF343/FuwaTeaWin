@@ -21,7 +21,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using FuwaTea.Lib;
-using FuwaTea.Metadata;
 using FuwaTea.Metadata.Tags;
 using FuwaTea.Playback.NAudio.Codecs;
 using FuwaTea.Playback.NAudio.Utils;
@@ -86,7 +85,7 @@ namespace FuwaTea.Playback.NAudio
                 _stream = false;
                 var cext = Path.GetExtension(path);
                 // Find codec
-                if (_currentCodec == null || !_currentCodec.SupportedFileTypes.Contains(cext)) _currentCodec = _codecs.First(v => v.SupportedFileTypes.Contains(cext));
+                if (_currentCodec == null || !_currentCodec.GetExtensions().Contains(cext)) _currentCodec = _codecs.First(v => v.GetExtensions().Contains(cext));
                 // Init codec
                 _waveStream = _currentCodec.CreateWaveStream(path);
             }

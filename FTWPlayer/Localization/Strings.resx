@@ -187,4 +187,22 @@
   <data name="TagsTabHeader" xml:space="preserve">
     <value>TAGS</value>
   </data>
+  <data name="AllSupportedPlaylists" xml:space="preserve">
+    <value>All supported playlist types</value>
+  </data>
+  <data name="FileTypeFormatString" xml:space="preserve">
+    <value>{0} ({1})</value>
+    <comment>{0} is description, {1} is *.ext</comment>
+  </data>
+  <data name="AddToPlaylistFormatString" xml:space="preserve">
+    <value>Add to {0}'s playlist</value>
+    <comment>{0} is "FTW Player"</comment>
+  </data>
+  <data name="AppDescription" xml:space="preserve">
+    <value>A compact, modular and open-source music player</value>
+  </data>
+  <data name="PlayWithFormatString" xml:space="preserve">
+    <value>Play with {0}</value>
+    <comment>{0} is "FTW Player"</comment>
+  </data>
 </root>
