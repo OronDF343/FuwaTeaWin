@@ -31,12 +31,12 @@ using FTWPlayer.Localization;
 using FTWPlayer.Properties;
 using FTWPlayer.Skins;
 using FuwaTea.Lib;
+using FuwaTea.Lib.FileAssociations;
 using FuwaTea.Playback;
 using FuwaTea.Playlist;
 using GalaSoft.MvvmLight.Threading;
 using log4net;
 using log4net.Config;
-using Microsoft.Win32;
 using ModularFramework;
 using WPFLocalizeExtension.Engine;
 
@@ -111,93 +111,33 @@ namespace FTWPlayer
                 var pm = ModuleFactory.GetElement<IPlaybackManager>();
                 var plm = ModuleFactory.GetElement<IPlaylistManager>();
                 var supported = pm.GetExtensionsInfo().Union(StringUtils.GetExtensionsInfo(plm.ReadableFileTypes)).ToDictionary(p => p.Key, p => p.Value);
-                #region Registry edits
-
                 try
                 {
-                    var cls = Registry.LocalMachine.CreateSubKey(@"Software\Classes");
-                    // Set directory actions:
-                    var shell = cls.CreateSubKey(@"Directory\shell");
-                    // Play option
-                    var play = shell.CreateSubKey($"{prod}.Play");
-                    play.SetValue("", string.Format(LocalizationProvider.GetLocalizedValue<string>("PlayWithFormatString"), title));
-                    var command1 = play.CreateSubKey("command");
-                    command1.SetValue("", $"\"{l}\" \"%1\"");
-                    // Add option
-                    var add = shell.CreateSubKey($"{prod}.AddToPlaylist");
-                    add.SetValue("", string.Format(LocalizationProvider.GetLocalizedValue<string>("AddToPlaylistFormatString"), title));
-                    var command2 = add.CreateSubKey("command");
-                    command2.SetValue("", $"\"{l}\" \"%1\" --add");
-                    // Get classes:
-                    var classes = cls.GetSubKeyNames();
-                    var installedClasses = classes.Where(c => c.StartsWith(prod + ".")).ToList();
-                    var redundantClasses = installedClasses.Where(c => !supported.ContainsKey(c.Substring(c.IndexOf('.') + 1)));
-                    var missingClasses = supported.Where(x => !installedClasses.Contains(prod + "." + x.Key));
-                    // Delete redundant classes:
-                    foreach (var c in redundantClasses) cls.DeleteSubKeyTree(c);
-                    // Add missing classes:
-                    foreach (var x in missingClasses)
-                    {
-                        var k = cls.CreateSubKey(prod + "." + x.Key);
-                        // if (k == null) { RegistryError(); return; }
-                        k.SetValue("", x.Value);
-                        var di = k.CreateSubKey("DefaultIcon");
-                        di.SetValue("", $"\"{l}\",0");
-                        shell = k.CreateSubKey("shell");
-                        shell.SetValue("", "Play");
-                        // Play option
-                        play = shell.CreateSubKey("Play");
-                        play.SetValue("", string.Format(LocalizationProvider.GetLocalizedValue<string>("PlayWithFormatString"), title));
-                        command1 = play.CreateSubKey("command");
-                        command1.SetValue("", $"\"{l}\" \"%1\"");
-                        // Add option
-                        add = shell.CreateSubKey("AddToPlaylist");
-                        add.SetValue("", string.Format(LocalizationProvider.GetLocalizedValue<string>("AddToPlaylistFormatString"), title));
-                        command2 = add.CreateSubKey("command");
-                        command2.SetValue("", $"\"{l}\" \"%1\" --add");
-                    }
-                    // Set app description:
-                    var cap = Registry.LocalMachine.CreateSubKey($@"Software\Clients\Media\{prod}\Capabilities");
-                    cap.SetValue("ApplicationDescription", LocalizationProvider.GetLocalizedValue<string>("AppDescription"));
-                    // Get associations:
-                    var assoc = cap.CreateSubKey("FileAssociations");
-                    var exts = assoc.GetValueNames();
-                    var redundantAssociations = exts.Where(s => !supported.ContainsKey(s.Substring(1)));
-                    var missingAssociations = supported.Keys.Where(s => !exts.Contains("." + s));
-                    // Delete redundant values in associations
-                    foreach (var s in redundantAssociations) assoc.DeleteValue(s);
-                    // Add missing associations
-                    foreach (var s in missingAssociations) assoc.SetValue("." + s, prod + "." + s, RegistryValueKind.String);
+                    RegistryUtils.UpdateFuwaAssociations(supported, l, prod,
+                                                         string.Format(LocalizationProvider.GetLocalizedValue<string>("PlayWithFormatString"), title),
+                                                         string.Format(LocalizationProvider.GetLocalizedValue<string>("AddToPlaylistFormatString"), title),
+                                                         LocalizationProvider.GetLocalizedValue<string>("AppDescription"));
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    LogManager.GetLogger(GetType()).Error("Registry error", ex);
                     RegistryError(SetupFileAssocArg);
                 }
-                #endregion
                 Shutdown();
                 return;
             }
             if (clArgs.Contains(CleanupFileAssocArg) && isinst)
             {
                 LogManager.GetLogger(GetType()).Info("Detected argument: Clean Up File Associations");
-                #region Registry edits
-
                 try
                 {
-                    var cls = Registry.LocalMachine.CreateSubKey(@"Software\Classes");
-                    var shell = cls.CreateSubKey(@"Directory\shell");
-                    shell.DeleteSubKeyTree($"{prod}.Play");
-                    shell.DeleteSubKeyTree($"{prod}.AddToPlaylist");
-                    foreach (var s in cls.GetSubKeyNames().Where(c => c.StartsWith(prod + "."))) cls.DeleteSubKeyTree(s);
-                    // Not needed since uninstaller takes care of this
-                    //var key = Registry.LocalMachine.CreateSubKey($@"Software\Clients\Media\{prod}\Capabilities\FileAssociations");
-                    //foreach (var s in key.GetValueNames()) key.DeleteValue(s);
+                    RegistryUtils.RemoveFuwaClasses(prod);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    LogManager.GetLogger(GetType()).Error("Registry error", ex);
                     RegistryError(CleanupFileAssocArg);
                 }
-                #endregion
                 Shutdown();
                 return;
             }
@@ -272,7 +212,7 @@ namespace FTWPlayer
             catch (Exception ex)
             {
                 LogManager.GetLogger(GetType()).Error("Failed to load skin chain! Loading default", ex);
-                foreach (var rd in ModuleFactory.GetElement<ISkinManager>().LoadSkinChain(((StringCollection)new XmlSerializer(typeof(StringCollection)).Deserialize(new StringReader((string)Settings.Default.Properties["SkinChain"]?.DefaultValue))).Cast<string>()))
+                foreach (var rd in ModuleFactory.GetElement<ISkinManager>().LoadSkinChain(((StringCollection)new XmlSerializer(typeof(StringCollection)).Deserialize(new StringReader((string)Settings.Default.Properties["SkinChain"]?.DefaultValue ?? ""))).Cast<string>()))
                     Resources.MergedDictionaries.Add(rd);
             }
 

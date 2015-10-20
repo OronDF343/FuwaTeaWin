@@ -45,12 +45,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppDirUtils.cs" />
-    <Compile Include="ApplicationAssociationRegistrationUI.cs" />
+    <Compile Include="FileAssociations\AppCapabilities.cs" />
+    <Compile Include="FileAssociations\ApplicationAssociationRegistrationUI.cs" />
     <Compile Include="Collections\ExtensionMethods.cs" />
     <Compile Include="Collections\OneToManyDictionary.cs" />
     <Compile Include="Collections\SortComparer.cs" />
     <Compile Include="Exceptions\DataSourceException.cs" />
     <Compile Include="Exceptions\ExceptionRenderer.cs" />
+    <Compile Include="FileAssociations\AppRegistryClasses.cs" />
+    <Compile Include="FileAssociations\RegistryClass.cs" />
+    <Compile Include="FileAssociations\RegistryUtils.cs" />
     <Compile Include="IFileHandler.cs" />
     <Compile Include="PathUtils.cs" />
     <Compile Include="PortableSettingsProvider.cs" />

@@ -18,7 +18,7 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace FuwaTea.Lib
+namespace FuwaTea.Lib.FileAssociations
 {
     [ClassInterface(ClassInterfaceType.None)]
     [ComImport]
