@@ -39,7 +39,7 @@ namespace FTWPlayer
         public MainWindow()
         {
             InitializeComponent();
-            Closing += (s, e) => ViewModelLocator.Cleanup();
+            Closed += (s, e) => ViewModelLocator.Cleanup();
         }
 
         #region Single Instance Application

@@ -97,6 +97,7 @@ namespace FuwaTea.Playback
         protected virtual void Dispose(bool disposing)
         {
             if (!disposing) return;
+            LogManager.GetLogger(GetType()).Info("Shutting down the Playback Manager!");
             Stop();
             UnloadFile();
             foreach (var player in _audioPlayers)

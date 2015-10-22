@@ -18,6 +18,7 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media.Animation;
+using log4net;
 
 namespace FuwaTea.Wpf.Behaviors
 {
@@ -49,15 +50,24 @@ namespace FuwaTea.Wpf.Behaviors
 
         private void OnWindowClosing(object sender, CancelEventArgs e)
         {
+            LogManager.GetLogger(GetType()).Debug("Detected window closing");
             if (Storyboard == null || !Enabled) return;
+            LogManager.GetLogger(GetType()).Debug("Animation is enabled");
             e.Cancel = true;
             AssociatedObject.Closing -= OnWindowClosing;
 
             // VolumeFadeOut logic
             if (VolumeFadeOut)
+            {
+                LogManager.GetLogger(GetType()).Debug("Volume fade out is enabled");
                 Storyboard.Children.Add(VolumeFadeOutStoryboard);
+            }
 
-            Storyboard.Completed += (o, a) => AssociatedObject.Close();
+            Storyboard.Completed += (o, a) =>
+            {
+                LogManager.GetLogger(GetType()).Debug("Animation finished - Closing window");
+                AssociatedObject.Close();
+            };
             Storyboard.Begin(AssociatedObject);
         }
     }

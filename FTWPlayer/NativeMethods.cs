@@ -40,7 +40,8 @@ namespace FTWPlayer
         {
             var w32Mouse = new Win32Point();
             GetCursorPos(ref w32Mouse);
-            return relativeTo.PointFromScreen(new Point(w32Mouse.X, w32Mouse.Y));
+            try { return relativeTo.PointFromScreen(new Point(w32Mouse.X, w32Mouse.Y)); }
+            catch { return new Point(); }
         }
         internal static Point CorrectGetPosition()
         {

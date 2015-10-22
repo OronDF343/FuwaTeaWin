@@ -47,7 +47,7 @@
     <i:Interaction.Behaviors>
         <fuwa:ExtendedCloseBehavior Storyboard="{DynamicResource ClosingAnimation}"
                                     VolumeFadeOutStoryboard="{StaticResource VolumeFadeOut}"
-                                    VolumeFadeOut="{fuwa:Cfg VolumeFadeOutOnExit}" />
+                                    VolumeFadeOut="{fuwa:CfgBinding VolumeFadeOutOnExit, Repository={x:Static prop:Settings.Default}}" />
         <fuwa:OpenBehavior Storyboard="{DynamicResource LoadedAnimation}" />
         <fuwa:WindowDragBehavior Enabled="{Binding AllowDrag}">
             <fuwa:ElementReference Binding="{Binding ElementName=TabControl, Path=SelectedContent}"/>

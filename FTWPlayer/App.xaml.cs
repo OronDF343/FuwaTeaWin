@@ -31,7 +31,6 @@ using FTWPlayer.Localization;
 using FTWPlayer.Properties;
 using FTWPlayer.Skins;
 using FuwaTea.Lib;
-using FuwaTea.Lib.Collections;
 using FuwaTea.Lib.FileAssociations;
 using FuwaTea.Playback;
 using FuwaTea.Playlist;
@@ -39,7 +38,6 @@ using GalaSoft.MvvmLight.Threading;
 using log4net;
 using log4net.Config;
 using ModularFramework;
-using ModularFramework.Attributes;
 using ModularFramework.Extensions;
 using WPFLocalizeExtension.Engine;
 

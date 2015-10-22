@@ -29,6 +29,7 @@ using FuwaTea.Playback;
 using FuwaTea.Playlist;
 using FuwaTea.Wpf.Keyboard;
 using GalaSoft.MvvmLight.CommandWpf;
+using log4net;
 using ModularFramework;
 
 namespace FTWPlayer.ViewModels
