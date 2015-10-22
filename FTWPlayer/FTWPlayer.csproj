@@ -101,15 +101,19 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\BooleanToZIndexConverter.cs" />
-    <Compile Include="Converters\DivisionConverter.cs" />
-    <Compile Include="Converters\DoubleSubtractConverter.cs" />
+    <Compile Include="Converters\DivisionMultiConverter.cs" />
+    <Compile Include="Converters\DoubleAddMultiConverter.cs" />
+    <Compile Include="Converters\DoubleMaxMultiConverter.cs" />
+    <Compile Include="Converters\DoubleMinMultiConverter.cs" />
+    <Compile Include="Converters\DoubleSubtractMultiConverter.cs" />
+    <Compile Include="Converters\ScaleMultiConverter.cs" />
     <Compile Include="Converters\UIntParseConverter.cs" />
     <Compile Include="Converters\NullCheckConverter.cs" />
     <Compile Include="Converters\FloatToDoubleConverter.cs" />
-    <Compile Include="Converters\NegativeDoubleConverter.cs" />
-    <Compile Include="Converters\PositionTimeSpanStringConverter.cs" />
-    <Compile Include="Converters\StringFormatterConverter.cs" />
-    <Compile Include="Converters\TimeSpanDifferenceToGridLengthConverter.cs" />
+    <Compile Include="Converters\DoubleNegateConverter.cs" />
+    <Compile Include="Converters\PositionTimeSpanStringMultiConverter.cs" />
+    <Compile Include="Converters\StringFormatterMultiConverter.cs" />
+    <Compile Include="Converters\TimeSpanDifferenceToGridLengthMultiConverter.cs" />
     <Compile Include="Converters\TimeSpanFormatterConverter.cs" />
     <Compile Include="Converters\UnitsConverter.cs" />
     <Compile Include="Converters\VolumeConverter.cs" />
@@ -161,6 +165,7 @@
     <Compile Include="Views\TagsView.xaml.cs">
       <DependentUpon>TagsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WindowSizeParameters.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

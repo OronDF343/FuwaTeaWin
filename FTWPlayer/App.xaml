@@ -4,6 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:FTWPlayer.ViewModels"
+             xmlns:converters="clr-namespace:FTWPlayer.Converters"
              mc:Ignorable="d">
 
     <Application.Resources>
@@ -20,6 +21,9 @@
                 </BooleanAnimationUsingKeyFrames>
                 <DecimalAnimation To="0.0" Duration="0:0:0.7" Storyboard.TargetProperty="DataContext.Volume" />
             </Storyboard>
+            <converters:DoubleAddMultiConverter x:Key="AddConv" />
+            <converters:DoubleMaxMultiConverter x:Key="MaxConv" />
+            <converters:DoubleMinMultiConverter x:Key="MinConv" />
         </ResourceDictionary>
     </Application.Resources>
 

@@ -17,19 +17,25 @@
 
 using System;
 using System.Globalization;
-using System.Linq;
+using System.Windows.Controls;
 using System.Windows.Data;
 
 namespace FTWPlayer.Converters
 {
-    public class StringFormatterConverter : IMultiValueConverter
+    public class PositionTimeSpanStringMultiConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            var format = values[0] as string;
-            if (format == null) return "";
-            return string.Format(format, values.Skip(1).ToArray());
+            if (!(values[0] is Grid) || !(values[1] is TimeSpan)) return null;
+            var pbar = (Grid)values[0];
+            var dur = (TimeSpan)values[1];
+            var p = NativeMethods.CorrectGetPosition(pbar);
+            return TimeSpan.FromMilliseconds(dur.TotalMilliseconds / pbar.ActualWidth * p.X).ToString(@"h\:mm\:ss");
         }
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) { throw new NotImplementedException(); }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

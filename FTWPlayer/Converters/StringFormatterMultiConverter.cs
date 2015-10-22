@@ -17,20 +17,19 @@
 
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Data;
 
 namespace FTWPlayer.Converters
 {
-    public class NegativeDoubleConverter : IValueConverter
+    public class StringFormatterMultiConverter : IMultiValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            return -(double)value;
+            var format = values[0] as string;
+            if (format == null) return "";
+            return string.Format(format, values.Skip(1).ToArray());
         }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return -(double)value;
-        }
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) { throw new NotImplementedException(); }
     }
 }

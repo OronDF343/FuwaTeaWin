@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:skins="clr-namespace:FTWPlayer.Skins">
+                    xmlns:skins="clr-namespace:FTWPlayer.Skins"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
     <skins:ResourceDictionaryIdentifier x:Key="SkinIdentifier"
                                         Id="Default"
                                         Name="Default Icons"
@@ -18,7 +19,25 @@
          PRIVATE means the resources are required by another one in this file, but CANNOT (or REALLY SHOULDN'T) be modified by another file.
          The resources should be listed in the REVERSE of this order, or from the least significant resource to the most significant resource, since a resource can only reference one above it.
          USAGE specifies what functionality this resource provides. (what it does)-->
+    
+    <!-- REQUIRED: Compact window height WITHOUT borders (not user-configurable) -->
+    <system:Double x:Key="CompactHeight">32</system:Double>
 
+    <!-- REQUIRED: Bottom bar + trackbar height WITHOUT borders (not user-configurable) -->
+    <system:Double x:Key="BottomHeight">40</system:Double>
+
+    <!-- REQUIRED: Minimum window width INCLUDING borders -->
+    <system:Double x:Key="MinWidth">540</system:Double>
+
+    <!-- REQUIRED: Maximum window width INCLUDING borders -->
+    <x:Static x:Key="MaxWidth" MemberType="system:Double" Member="PositiveInfinity"/>
+
+    <!-- REQUIRED: Minimum expanded window height INCLUDING borders -->
+    <system:Double x:Key="MinHeight">360</system:Double>
+
+    <!-- REQUIRED: Maximum expanded window height INCLUDING borders -->
+    <x:Static x:Key="MaxHeight" MemberType="system:Double" Member="PositiveInfinity"/>
+    
     <!-- PRIVATE: Scaling stuff
          USAGE: Scales the 512x512 icons down to the desired sizes. -->
     <ScaleTransform x:Key="512To32Transform" ScaleX="0.0625" ScaleY="0.0625" />
@@ -557,7 +576,7 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-
+    
     <Style x:Key="WindowBorderStyle" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}" />

@@ -14,8 +14,8 @@
     <TabItem.Resources>
         <converters1:FloatToDoubleConverter x:Key="F2DConv" />
         <converters1:UnitsConverter x:Key="UConv" />
-        <converters1:DivisionConverter x:Key="DivConv" />
-        <converters1:NegativeDoubleConverter x:Key="NegConv" />
+        <converters1:DivisionMultiConverter x:Key="DivConv" />
+        <converters1:DoubleNegateConverter x:Key="NegConv" />
     </TabItem.Resources>
     <Grid FlowDirection="LeftToRight" Background="Transparent"> <!-- Background is set so IsMouseOver works -->
         <Grid.RowDefinitions>

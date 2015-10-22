@@ -3,10 +3,12 @@ using System.Configuration;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Markup;
 using ModularFramework;
 
 namespace FuwaTea.Wpf.Extensions
 {
+    [ContentProperty(nameof(Key))]
     public class CfgBinding : Binding, INotifyPropertyChanged
     {
         public CfgBinding()
@@ -65,7 +67,7 @@ namespace FuwaTea.Wpf.Extensions
 
         private void UpdateNewValue()
         {
-            Value = _repo == null ? null : Repository[Key];
+            Value = _repo == null || _key == null ? null : Repository[Key];
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

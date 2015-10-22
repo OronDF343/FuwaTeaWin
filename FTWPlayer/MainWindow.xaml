@@ -11,10 +11,15 @@
         xmlns:fuwa="https://github.com/OronDF343/FuwaTeaWin"
         xmlns:ignore="http://www.ignore.com"
         xmlns:hc="http://www.hardcodet.net/taskbar"
+        xmlns:ftwPlayer="clr-namespace:FTWPlayer"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d ignore"
-        Height="540"
-        Width="540"
+        x:Name="WindowElement"
         Title="FTW Player"
+        MinHeight="{DynamicResource MinHeight}"
+        MaxHeight="{DynamicResource MaxHeight}"
+        MinWidth="{DynamicResource MinWidth}"
+        MaxWidth="{DynamicResource MaxWidth}"
         SourceInitialized="MainWindow_OnSourceInitialized"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         WindowStyle="None" AllowsTransparency="True" ResizeMode="NoResize" Background="Transparent"
@@ -25,11 +30,26 @@
         lex:LocalizeDictionary.DesignCulture="he"
         lex:ResxLocalizationProvider.DefaultAssembly="FTWPlayer"
         lex:ResxLocalizationProvider.DefaultDictionary="Strings"
-        fuwa:ConfigSource.Repository="{x:Static prop:Settings.Default}">
+        fuwa:ConfigSource.Repository="{x:Static prop:Settings.Default}"
+        ftwPlayer:WindowSizeParameters.CompactHeight="{DynamicResource CompactHeight}"
+        ftwPlayer:WindowSizeParameters.BottomHeight="{DynamicResource BottomHeight}">
     <!-- FFR: These property values enable hardware acceleration (because they make this a layered window):
          WindowStyle = None
          AllowsTransparency = True
          Background = Transparent -->
+    <Window.Height>
+        <fuwa:CfgBinding Repository="{x:Static prop:Settings.Default}">DesiredMaxHeight</fuwa:CfgBinding>
+    </Window.Height>
+    <Window.Width>
+        <fuwa:CfgBinding Repository="{x:Static prop:Settings.Default}">DesiredWidth</fuwa:CfgBinding>
+    </Window.Width>
+    <ftwPlayer:WindowSizeParameters.TotalCompactHeight>
+        <MultiBinding Converter="{StaticResource AddConv}">
+            <Binding ElementName="MainBorder" Path="BorderThickness.Top"/>
+            <Binding ElementName="MainBorder" Path="BorderThickness.Bottom"/>
+            <Binding ElementName="WindowElement" Path="(ftwPlayer:WindowSizeParameters.CompactHeight)"/>
+        </MultiBinding>
+    </ftwPlayer:WindowSizeParameters.TotalCompactHeight>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="KeyDown">
             <command:EventToCommand Command="{Binding KeyDownCommand}" PassEventArgsToCommand="True" />
@@ -54,35 +74,47 @@
         </fuwa:WindowDragBehavior>
     </i:Interaction.Behaviors>
     <Window.Resources>
-        <converters:TimeSpanDifferenceToGridLengthConverter x:Key="TsGlConv" />
+        <converters:TimeSpanDifferenceToGridLengthMultiConverter x:Key="TsGlConv" />
         <converters:BooleanToZIndexConverter x:Key="BZiConv" />
-        <converters:PositionTimeSpanStringConverter x:Key="PosTsStrConv" />
+        <converters:PositionTimeSpanStringMultiConverter x:Key="PosTsStrConv" />
         <BooleanToVisibilityConverter x:Key="BoolVisConv" />
-        <converters:DoubleSubtractConverter x:Key="SubConv" />
+        <converters:DoubleSubtractMultiConverter x:Key="SubConv" />
         <converters:TimeSpanFormatterConverter x:Key="TsFmtConv" />
-        <converters:StringFormatterConverter x:Key="StrFmtConv" />
+        <converters:StringFormatterMultiConverter x:Key="StrFmtConv" />
         <converters:VolumeConverter x:Key="VolConv" />
+        <converters:ScaleMultiConverter x:Key="ScaleConv" />
     </Window.Resources>
 
     <!-- Fake Background & Border -->
     <Canvas>
-        <Border x:Name="MainBorder" fuwa:DynamicStyle.BaseStyle="{DynamicResource WindowBorderStyle}" Width="540" Canvas.Bottom="0">
+        <Border x:Name="MainBorder" fuwa:DynamicStyle.BaseStyle="{DynamicResource WindowBorderStyle}" Width="{fuwa:Cfg DesiredWidth}" Canvas.Bottom="0">
+            <Border.Height>
+                <MultiBinding Converter="{StaticResource ScaleConv}">
+                    <Binding ElementName="WindowElement" Path="(ftwPlayer:WindowSizeParameters.TotalCompactHeight)"/>
+                    <Binding ElementName="WindowElement" Path="Height"/>
+                    <Binding ElementName="MainBorder" Path="Tag"/>
+                </MultiBinding>
+            </Border.Height>
             <fuwa:DynamicStyle.DerivedStyle>
                 <Style TargetType="Border">
-                    <Setter Property="Height" Value="34"/>
+                    <Setter Property="Tag">
+                        <Setter.Value>
+                            <system:Double>0.0</system:Double>
+                        </Setter.Value>
+                    </Setter>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Expanded}" Value="True">
                             <DataTrigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetProperty="Height" To="540" Duration="0:0:0.5"/>
+                                        <DoubleAnimation Storyboard.TargetProperty="Tag" To="1.0" Duration="0:0:0.5"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </DataTrigger.EnterActions>
                             <DataTrigger.ExitActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetProperty="Height" To="34" Duration="0:0:0.5"/>
+                                        <DoubleAnimation Storyboard.TargetProperty="Tag" To="0.0" Duration="0:0:0.5"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </DataTrigger.ExitActions>
@@ -93,7 +125,7 @@
             <Grid x:Name="MainGrid" ClipToBounds="True">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
-                    <RowDefinition MinHeight="32" MaxHeight="40" />
+                    <RowDefinition MinHeight="{DynamicResource CompactHeight}" MaxHeight="{DynamicResource BottomHeight}" />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
@@ -112,7 +144,7 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
-                        <RowDefinition Height="32" />
+                        <RowDefinition MinHeight="{DynamicResource CompactHeight}" MaxHeight="{DynamicResource CompactHeight}"/>
                     </Grid.RowDefinitions>
 
                     <!-- Ugly implementation, but it does the job. -->
@@ -354,11 +386,10 @@
                         <Grid.Style>
                             <Style TargetType="Grid">
                                 <Setter Property="Row" Value="1" />
-                                <Setter Property="Height" Value="32" />
+                                <Setter Property="Height" Value="{DynamicResource CompactHeight}" />
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Expanded}" Value="True">
                                         <Setter Property="Grid.Row" Value="0" />
-                                        <Setter Property="Height" Value="8" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -421,8 +452,17 @@
                     </Grid>
                 </Grid>
                 <!-- Expanded part (TODO: Calculate MinHeight) -->
-                <TabControl x:Name="TabControl" ItemsSource="{Binding Tabs}" Grid.Row="0" MinHeight="498"
-                            fuwa:FlowDirectionUpdater.AutoUpdateMode="Enabled"/>
+                <TabControl x:Name="TabControl" ItemsSource="{Binding Tabs}" Grid.Row="0"
+                            fuwa:FlowDirectionUpdater.AutoUpdateMode="Enabled">
+                    <TabControl.MinHeight>
+                        <MultiBinding Converter="{StaticResource SubConv}">
+                            <Binding ElementName="WindowElement" Path="Height"/>
+                            <Binding ElementName="WindowElement" Path="(ftwPlayer:WindowSizeParameters.BottomHeight)"/>
+                            <Binding ElementName="MainBorder" Path="BorderThickness.Bottom"/>
+                            <Binding ElementName="MainBorder" Path="BorderThickness.Top"/>
+                        </MultiBinding>
+                    </TabControl.MinHeight>
+                </TabControl>
             </Grid>
         </Border>
         <hc:TaskbarIcon ToolTip="FTW Player" TrayMouseDoubleClick="MaximizeButton_OnClick">
