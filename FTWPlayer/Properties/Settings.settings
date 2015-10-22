@@ -49,7 +49,10 @@
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
     <Setting Name="ExtensionWhitelist" Provider="FuwaTea.Lib.PortableSettingsProvider" Roaming="true" Type="ModularFramework.Extensions.ExtensionAttributeCollection" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+
+&lt;ExtensionAttributeCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;Extensions /&gt;&lt;/ExtensionAttributeCollection&gt;</Value>
     </Setting>
   </Settings>
 </SettingsFile>
