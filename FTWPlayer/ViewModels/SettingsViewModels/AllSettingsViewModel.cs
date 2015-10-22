@@ -11,7 +11,7 @@ namespace FTWPlayer.ViewModels.SettingsViewModels
     {
         public TabItem GetTabItem(ApplicationSettingsBase settings)
         {
-            SettingsPropertyValues = new ObservableCollection<SettingsPropertyValue>(settings.PropertyValues.OfType<SettingsPropertyValue>());
+            SettingsPropertyValues = new ObservableCollection<SettingsPropertyValue>(settings.PropertyValues.OfType<SettingsPropertyValue>().OrderBy(spv => spv.Name));
             return new AllSettingsView(this);
 
         }

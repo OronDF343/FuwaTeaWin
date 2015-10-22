@@ -23,7 +23,6 @@
         SourceInitialized="MainWindow_OnSourceInitialized"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         WindowStyle="None" AllowsTransparency="True" ResizeMode="NoResize" Background="Transparent"
-        fuwa:WindowPositioner.AutoPosition="BottomRight"
         AllowDrop="True" FlowDirection="LeftToRight"
         ShowInTaskbar="{fuwa:Cfg ShowInTaskbar}"
         Topmost="{fuwa:Cfg Topmost}"

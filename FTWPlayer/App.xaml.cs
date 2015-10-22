@@ -34,6 +34,7 @@ using FuwaTea.Lib;
 using FuwaTea.Lib.FileAssociations;
 using FuwaTea.Playback;
 using FuwaTea.Playlist;
+using FuwaTea.Wpf.Helpers;
 using GalaSoft.MvvmLight.Threading;
 using log4net;
 using log4net.Config;
@@ -224,6 +225,7 @@ namespace FTWPlayer
             // Manually show main window (pervents loading it on shutdown)
             MainWindow = new MainWindow();
             MainWindow.Show();
+            WindowPositioner.SetAutoPosition(MainWindow, Settings.Default.AutoWindowPosition);
             base.OnStartup(e);
         }
 
