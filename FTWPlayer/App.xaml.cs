@@ -31,6 +31,7 @@ using FTWPlayer.Localization;
 using FTWPlayer.Properties;
 using FTWPlayer.Skins;
 using FuwaTea.Lib;
+using FuwaTea.Lib.Collections;
 using FuwaTea.Lib.FileAssociations;
 using FuwaTea.Playback;
 using FuwaTea.Playlist;
@@ -38,6 +39,8 @@ using GalaSoft.MvvmLight.Threading;
 using log4net;
 using log4net.Config;
 using ModularFramework;
+using ModularFramework.Attributes;
+using ModularFramework.Extensions;
 using WPFLocalizeExtension.Engine;
 
 namespace FTWPlayer
@@ -262,9 +265,20 @@ namespace FTWPlayer
             ModuleFactory.LoadFolder(Assembly.GetEntryAssembly().GetExeFolder(), sel, _ec, true);
             if (!loadExtensions) return;
             var extDir = Assembly.GetEntryAssembly().GetSpecificPath(false, "extensions", true);
-            ModuleFactory.LoadFolder(extDir, sel, _ec, true);
+            var extWhitelist = Settings.Default.ExtensionWhitelist ?? new ExtensionAttributeCollection();
+            ExtensionUtils.ExtensionLoadCallback =
+                exa =>
+                {
+                    if (extWhitelist.Items.Contains(exa)) return true;
+                    var res = MessageBox.Show($"Are you sure you want to load the following extension?\n\n{exa.Name} version {exa.Version}\nby {exa.Author}\n{exa.Homepage}\n\nOnly load extensions that you trust!",
+                                              "FTW Extension Loader", MessageBoxButton.YesNo, MessageBoxImage.Exclamation) == MessageBoxResult.Yes;
+                    if (res) extWhitelist.Items.Add(exa);
+                    return res;
+                };
+            ExtensionUtils.LoadExtensions(extDir, sel, _ec);
             foreach (var dir in Directory.EnumerateDirectories(extDir))
-                ModuleFactory.LoadFolder(dir, sel, _ec, true);
+                ExtensionUtils.LoadExtensions(dir, sel, _ec);
+            Settings.Default.ExtensionWhitelist = extWhitelist;
         }
 
         protected override void OnExit(ExitEventArgs e)

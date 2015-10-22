@@ -48,5 +48,8 @@
   &lt;string&gt;pack://application:,,,/Skins/GlacierSkin.xaml&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
+    <Setting Name="ExtensionWhitelist" Provider="FuwaTea.Lib.PortableSettingsProvider" Roaming="true" Type="ModularFramework.Extensions.ExtensionAttributeCollection" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -8,22 +8,14 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
-using System.CodeDom.Compiler;
-using System.Collections.Specialized;
-using System.Configuration;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using FuwaTea.Lib;
-
 namespace FTWPlayer.Properties {
     
     
-    [CompilerGenerated()]
-    [GeneratedCode("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
-    internal sealed partial class Settings : ApplicationSettingsBase {
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
-        private static Settings defaultInstance = ((Settings)(Synchronized(new Settings())));
+        private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
         
         public static Settings Default {
             get {
@@ -31,39 +23,39 @@ namespace FTWPlayer.Properties {
             }
         }
         
-        [UserScopedSetting()]
-        [SettingsProvider(typeof(PortableSettingsProvider))]
-        [DebuggerNonUserCode()]
-        [DefaultSettingValue("AboveNormal")]
-        [SettingsManageability(SettingsManageability.Roaming)]
-        public ProcessPriorityClass ProcessPriority {
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("AboveNormal")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public global::System.Diagnostics.ProcessPriorityClass ProcessPriority {
             get {
-                return ((ProcessPriorityClass)(this["ProcessPriority"]));
+                return ((global::System.Diagnostics.ProcessPriorityClass)(this["ProcessPriority"]));
             }
             set {
                 this["ProcessPriority"] = value;
             }
         }
         
-        [UserScopedSetting()]
-        [SettingsProvider(typeof(PortableSettingsProvider))]
-        [DebuggerNonUserCode()]
-        [DefaultSettingValue("00:00:20")]
-        [SettingsManageability(SettingsManageability.Roaming)]
-        public TimeSpan InstanceCreationTimeout {
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:00:20")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public global::System.TimeSpan InstanceCreationTimeout {
             get {
-                return ((TimeSpan)(this["InstanceCreationTimeout"]));
+                return ((global::System.TimeSpan)(this["InstanceCreationTimeout"]));
             }
             set {
                 this["InstanceCreationTimeout"] = value;
             }
         }
         
-        [UserScopedSetting()]
-        [SettingsProvider(typeof(PortableSettingsProvider))]
-        [DebuggerNonUserCode()]
-        [DefaultSettingValue("True")]
-        [SettingsManageability(SettingsManageability.Roaming)]
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public bool RememberVolume {
             get {
                 return ((bool)(this["RememberVolume"]));
@@ -73,11 +65,11 @@ namespace FTWPlayer.Properties {
             }
         }
         
-        [UserScopedSetting()]
-        [SettingsProvider(typeof(PortableSettingsProvider))]
-        [DebuggerNonUserCode()]
-        [DefaultSettingValue("1.0")]
-        [SettingsManageability(SettingsManageability.Roaming)]
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.0")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public decimal LastVolume {
             get {
                 return ((decimal)(this["LastVolume"]));
@@ -87,11 +79,11 @@ namespace FTWPlayer.Properties {
             }
         }
         
-        [UserScopedSetting()]
-        [SettingsProvider(typeof(PortableSettingsProvider))]
-        [DebuggerNonUserCode()]
-        [DefaultSettingValue("True")]
-        [SettingsManageability(SettingsManageability.Roaming)]
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public bool VolumeFadeOutOnExit {
             get {
                 return ((bool)(this["VolumeFadeOutOnExit"]));
@@ -101,11 +93,11 @@ namespace FTWPlayer.Properties {
             }
         }
         
-        [UserScopedSetting()]
-        [SettingsProvider(typeof(PortableSettingsProvider))]
-        [DebuggerNonUserCode()]
-        [DefaultSettingValue("10")]
-        [SettingsManageability(SettingsManageability.Roaming)]
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public double MaxEqualizerGain {
             get {
                 return ((double)(this["MaxEqualizerGain"]));
@@ -115,11 +107,11 @@ namespace FTWPlayer.Properties {
             }
         }
         
-        [UserScopedSetting()]
-        [SettingsProvider(typeof(PortableSettingsProvider))]
-        [DebuggerNonUserCode()]
-        [DefaultSettingValue("True")]
-        [SettingsManageability(SettingsManageability.Roaming)]
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public bool ShowToolTips {
             get {
                 return ((bool)(this["ShowToolTips"]));
@@ -129,11 +121,11 @@ namespace FTWPlayer.Properties {
             }
         }
         
-        [UserScopedSetting()]
-        [SettingsProvider(typeof(PortableSettingsProvider))]
-        [DebuggerNonUserCode()]
-        [DefaultSettingValue("False")]
-        [SettingsManageability(SettingsManageability.Roaming)]
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public bool OverrideDefaultLanguage {
             get {
                 return ((bool)(this["OverrideDefaultLanguage"]));
@@ -143,11 +135,11 @@ namespace FTWPlayer.Properties {
             }
         }
         
-        [UserScopedSetting()]
-        [SettingsProvider(typeof(PortableSettingsProvider))]
-        [DebuggerNonUserCode()]
-        [DefaultSettingValue("")]
-        [SettingsManageability(SettingsManageability.Roaming)]
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public string SelectedLanguage {
             get {
                 return ((string)(this["SelectedLanguage"]));
@@ -157,11 +149,11 @@ namespace FTWPlayer.Properties {
             }
         }
         
-        [UserScopedSetting()]
-        [SettingsProvider(typeof(PortableSettingsProvider))]
-        [DebuggerNonUserCode()]
-        [DefaultSettingValue("False")]
-        [SettingsManageability(SettingsManageability.Roaming)]
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public bool ShowInTaskbar {
             get {
                 return ((bool)(this["ShowInTaskbar"]));
@@ -171,11 +163,11 @@ namespace FTWPlayer.Properties {
             }
         }
         
-        [UserScopedSetting()]
-        [SettingsProvider(typeof(PortableSettingsProvider))]
-        [DebuggerNonUserCode()]
-        [DefaultSettingValue("True")]
-        [SettingsManageability(SettingsManageability.Roaming)]
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public bool Topmost {
             get {
                 return ((bool)(this["Topmost"]));
@@ -185,11 +177,11 @@ namespace FTWPlayer.Properties {
             }
         }
         
-        [UserScopedSetting()]
-        [SettingsProvider(typeof(PortableSettingsProvider))]
-        [DebuggerNonUserCode()]
-        [DefaultSettingValue("")]
-        [SettingsManageability(SettingsManageability.Roaming)]
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public string LastVersion {
             get {
                 return ((string)(this["LastVersion"]));
@@ -199,11 +191,11 @@ namespace FTWPlayer.Properties {
             }
         }
         
-        [UserScopedSetting()]
-        [SettingsProvider(typeof(PortableSettingsProvider))]
-        [DebuggerNonUserCode()]
-        [DefaultSettingValue("True")]
-        [SettingsManageability(SettingsManageability.Roaming)]
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public bool EnableKeyboardHook {
             get {
                 return ((bool)(this["EnableKeyboardHook"]));
@@ -213,21 +205,34 @@ namespace FTWPlayer.Properties {
             }
         }
         
-        [UserScopedSetting()]
-        [SettingsProvider(typeof(PortableSettingsProvider))]
-        [DebuggerNonUserCode()]
-        [DefaultSettingValue(@"<?xml version=""1.0"" encoding=""utf-16""?>
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
 <ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
   <string>Default</string>
   <string>pack://application:,,,/Skins/GlacierSkin.xaml</string>
 </ArrayOfString>")]
-        [SettingsManageability(SettingsManageability.Roaming)]
-        public StringCollection SkinChain {
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public global::System.Collections.Specialized.StringCollection SkinChain {
             get {
-                return ((StringCollection)(this["SkinChain"]));
+                return ((global::System.Collections.Specialized.StringCollection)(this["SkinChain"]));
             }
             set {
                 this["SkinChain"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public global::ModularFramework.Extensions.ExtensionAttributeCollection ExtensionWhitelist {
+            get {
+                return ((global::ModularFramework.Extensions.ExtensionAttributeCollection)(this["ExtensionWhitelist"]));
+            }
+            set {
+                this["ExtensionWhitelist"] = value;
             }
         }
     }
