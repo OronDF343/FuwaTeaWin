@@ -66,7 +66,7 @@ namespace FTWPlayer
             return IntPtr.Zero;
         }
         #endregion
-
+        
         private void MaximizeButton_OnClick(object sender, RoutedEventArgs e)
         {
             Show();

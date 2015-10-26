@@ -15,6 +15,7 @@
 //     along with FuwaTeaWin.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 
+using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -39,15 +40,28 @@ namespace FuwaTea.Wpf.Behaviors
 
         protected override void OnAttached()
         {
-            AssociatedObject.MouseDown += OnMouseDown;
+            AssociatedObject.PreviewMouseLeftButtonDown += OnPreviewMouseLeftButtonDown;
+            AssociatedObject.PreviewMouseMove += OnPreviewMouseMove;
             base.OnAttached();
         }
 
-        private void OnMouseDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        private Point _startPoint;
+
+        private void OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (mouseButtonEventArgs.ChangedButton == MouseButton.Left && Enabled
-                && !ExcludedElements.Any(e => e.Binding != null && e.Binding.IsMouseOver)) AssociatedObject.DragMove();
-            // NOTE: All tabs must have a backgroud set so this works.
+            _startPoint = e.GetPosition(AssociatedObject);
+        }
+
+        private void OnPreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            var newPoint = e.GetPosition(AssociatedObject);
+            if (e.LeftButton == MouseButtonState.Pressed && Enabled
+                && !ExcludedElements.Any(el => el.Binding != null && el.Binding.IsMouseOver)
+                && (Math.Abs(newPoint.X - _startPoint.X) > SystemParameters.MinimumHorizontalDragDistance
+                    || Math.Abs(newPoint.Y - _startPoint.Y) > SystemParameters.MinimumVerticalDragDistance))
+            {
+                AssociatedObject.DragMove();
+            }
         }
     }
 

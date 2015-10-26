@@ -22,7 +22,7 @@
         MaxWidth="{DynamicResource MaxWidth}"
         SourceInitialized="MainWindow_OnSourceInitialized"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
-        WindowStyle="None" AllowsTransparency="True" ResizeMode="NoResize" Background="Transparent"
+        WindowStyle="None" AllowsTransparency="True" ResizeMode="CanResize" Background="Transparent"
         AllowDrop="True" FlowDirection="LeftToRight"
         ShowInTaskbar="{fuwa:Cfg ShowInTaskbar}"
         Topmost="{fuwa:Cfg Topmost}"
@@ -36,6 +36,9 @@
          WindowStyle = None
          AllowsTransparency = True
          Background = Transparent -->
+    <WindowChrome.WindowChrome>
+        <WindowChrome CornerRadius="0" ResizeBorderThickness="4" GlassFrameThickness="0" UseAeroCaptionButtons="False"></WindowChrome>
+    </WindowChrome.WindowChrome>
     <Window.Height>
         <fuwa:CfgBinding Repository="{x:Static prop:Settings.Default}">DesiredMaxHeight</fuwa:CfgBinding>
     </Window.Height>
@@ -86,7 +89,7 @@
 
     <!-- Fake Background & Border -->
     <Canvas>
-        <Border x:Name="MainBorder" fuwa:DynamicStyle.BaseStyle="{DynamicResource WindowBorderStyle}" Width="{fuwa:Cfg DesiredWidth}" Canvas.Bottom="0">
+        <Border x:Name="MainBorder" fuwa:DynamicStyle.BaseStyle="{DynamicResource WindowBorderStyle}" Width="{Binding ElementName=WindowElement, Path=Width}" Canvas.Bottom="0">
             <Border.Height>
                 <MultiBinding Converter="{StaticResource ScaleConv}">
                     <Binding ElementName="WindowElement" Path="(ftwPlayer:WindowSizeParameters.TotalCompactHeight)"/>
