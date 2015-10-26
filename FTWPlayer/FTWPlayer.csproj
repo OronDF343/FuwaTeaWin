@@ -100,6 +100,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\BooleanResizeSpecialConverter.cs" />
     <Compile Include="Converters\BooleanToZIndexConverter.cs" />
     <Compile Include="Converters\DivisionMultiConverter.cs" />
     <Compile Include="Converters\DoubleAddMultiConverter.cs" />

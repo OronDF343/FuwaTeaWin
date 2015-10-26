@@ -24,6 +24,7 @@
             <converters:DoubleAddMultiConverter x:Key="AddConv" />
             <converters:DoubleMaxMultiConverter x:Key="MaxConv" />
             <converters:DoubleMinMultiConverter x:Key="MinConv" />
+            <converters:BooleanResizeSpecialConverter x:Key="ResizeConv" />
         </ResourceDictionary>
     </Application.Resources>
 
