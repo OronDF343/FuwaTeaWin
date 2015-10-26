@@ -37,7 +37,7 @@
          AllowsTransparency = True
          Background = Transparent -->
     <WindowChrome.WindowChrome>
-        <WindowChrome CornerRadius="0" ResizeBorderThickness="{Binding Expanded, Converter={StaticResource ResizeConv}}" GlassFrameThickness="0" UseAeroCaptionButtons="False"/>
+        <WindowChrome CornerRadius="0" ResizeBorderThickness="{Binding Expanded, Converter={StaticResource ResizeConv}}" GlassFrameThickness="0" UseAeroCaptionButtons="False" CaptionHeight="0"/>
     </WindowChrome.WindowChrome>
     <Window.Height>
         <fuwa:CfgBinding Repository="{x:Static prop:Settings.Default}">DesiredMaxHeight</fuwa:CfgBinding>

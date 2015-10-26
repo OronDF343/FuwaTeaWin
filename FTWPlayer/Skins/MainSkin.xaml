@@ -27,13 +27,13 @@
     <system:Double x:Key="BottomHeight">40</system:Double>
 
     <!-- REQUIRED: Minimum window width INCLUDING borders -->
-    <system:Double x:Key="MinWidth">540</system:Double>
+    <system:Double x:Key="MinWidth">432</system:Double>
 
     <!-- REQUIRED: Maximum window width INCLUDING borders -->
     <x:Static x:Key="MaxWidth" MemberType="system:Double" Member="PositiveInfinity"/>
 
     <!-- REQUIRED: Minimum expanded window height INCLUDING borders -->
-    <system:Double x:Key="MinHeight">360</system:Double>
+    <system:Double x:Key="MinHeight">288</system:Double>
 
     <!-- REQUIRED: Maximum expanded window height INCLUDING borders -->
     <x:Static x:Key="MaxHeight" MemberType="system:Double" Member="PositiveInfinity"/>
