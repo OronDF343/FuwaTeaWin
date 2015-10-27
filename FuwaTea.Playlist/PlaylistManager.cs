@@ -62,7 +62,7 @@ namespace FuwaTea.Playlist
         public IPlaylist OpenPlaylist(string path)
         {
             var pl = new Playlist {FileLocation = path};
-            ModuleFactory.GetElements<IPlaylistReader>().First(w => w.GetExtensions().Contains(Path.GetExtension(path))).LoadPlaylistFiles(path, pl);
+            ModuleFactory.GetElements<IPlaylistReader>().First(w => w.GetExtensions().Contains(Path.GetExtension(path)?.ToLowerInvariant())).LoadPlaylistFiles(path, pl);
             return pl;
         }
 
@@ -80,7 +80,7 @@ namespace FuwaTea.Playlist
 
         public void SaveCopy(IPlaylist playlist, string path)
         {
-            ModuleFactory.GetElements<IPlaylistWriter>().First(w => w.GetExtensions().Contains(Path.GetExtension(path))).WritePlaylist(path, playlist, true); // TODO: place for relative path option etc
+            ModuleFactory.GetElements<IPlaylistWriter>().First(w => w.GetExtensions().Contains(Path.GetExtension(path)?.ToLowerInvariant())).WritePlaylist(path, playlist, true); // TODO: place for relative path option etc
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

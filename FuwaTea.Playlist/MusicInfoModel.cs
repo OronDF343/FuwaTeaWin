@@ -28,7 +28,7 @@ namespace FuwaTea.Playlist
         public FileInfo FileInfo { get; }
         public string FilePath { get; }
         public string FileName => FileInfo?.Name;
-        public string FileType => Path.GetExtension(FilePath);
+        public string FileType => Path.GetExtension(FilePath)?.ToLowerInvariant();
         public TimeSpan Duration => Tag.Duration;
         public int Bitrate => Tag.Bitrate;
         public Tag Tag { get; set; }

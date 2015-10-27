@@ -83,7 +83,7 @@ namespace FuwaTea.Playback.NAudio
             else
             {
                 _stream = false;
-                var cext = Path.GetExtension(path);
+                var cext = Path.GetExtension(path).ToLowerInvariant();
                 // Find codec
                 if (_currentCodec == null || !_currentCodec.GetExtensions().Contains(cext)) _currentCodec = _codecs.First(v => v.GetExtensions().Contains(cext));
                 // Init codec

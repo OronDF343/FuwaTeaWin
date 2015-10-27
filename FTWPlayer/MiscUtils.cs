@@ -58,7 +58,7 @@ namespace FTWPlayer
             }
             else
             {
-                var ext = Path.GetExtension(file);
+                var ext = Path.GetExtension(file)?.ToLowerInvariant();
                 if (StringUtils.GetExtensions(plm.ReadableFileTypes).Contains(ext))
                 {
                     if (addOnly)
