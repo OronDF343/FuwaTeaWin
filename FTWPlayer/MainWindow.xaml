@@ -86,6 +86,7 @@
         <converters:StringFormatterMultiConverter x:Key="StrFmtConv" />
         <converters:VolumeConverter x:Key="VolConv" />
         <converters:ScaleMultiConverter x:Key="ScaleConv" />
+        <converters:TagFormatterMultiConverter x:Key="TagFmtConv"/>
     </Window.Resources>
 
     <!-- Fake Background & Border -->
@@ -161,12 +162,9 @@
                                                           TargetWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Canvas}, Path=ActualWidth}"
                                                           Spacing="16">
                             <fuwa:ScrollingTextBlockComponent.ScrollingText>
-                                <MultiBinding Converter="{StaticResource StrFmtConv}">
+                                <MultiBinding Converter="{StaticResource TagFmtConv}">
+                                    <Binding Path="PlaybackManager.Current" />
                                     <Binding Path="ScrollingTextFormatString" />
-                                    <lex:BLoc Key="WelcomeText" />
-                                    <!-- TODO: finish this -->
-                                    <Binding Path="PlaybackManager.Current.Tag.JoinedPerformers" />
-                                    <Binding Path="PlaybackManager.Current.Tag.Title" />
                                 </MultiBinding>
                             </fuwa:ScrollingTextBlockComponent.ScrollingText>
                         </fuwa:ScrollingTextBlockComponent>
@@ -454,7 +452,7 @@
                         <Rectangle Grid.Column="1" Fill="{DynamicResource DefaultBrush}" HorizontalAlignment="Stretch" />
                     </Grid>
                 </Grid>
-                <!-- Expanded part (TODO: Calculate MinHeight) -->
+                <!-- Expanded part -->
                 <TabControl x:Name="TabControl" ItemsSource="{Binding Tabs}" Grid.Row="0"
                             fuwa:FlowDirectionUpdater.AutoUpdateMode="Enabled">
                     <TabControl.MinHeight>

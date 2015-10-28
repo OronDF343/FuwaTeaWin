@@ -9,7 +9,7 @@ namespace FuwaTea.Metadata.Tags
     {
         //protected Tag();
 
-        public static string Separator { get; set; } = ", ";
+        public string Separator { get; set; } = ", ";
 
         public virtual string Album { get; set; }
         public virtual string[] AlbumArtists { get; set; }
@@ -68,12 +68,12 @@ namespace FuwaTea.Metadata.Tags
         public abstract void Clear();
         //public virtual void CopyTo(TagData target, bool overwrite);
 
-        private static string Join(string[] items)
+        private string Join(string[] items)
         {
             return items == null ? null : string.Join(Separator, items);
         }
 
-        private static string[] Split(string joined)
+        private string[] Split(string joined)
         {
             return joined?.Split(new[] { Separator }, StringSplitOptions.RemoveEmptyEntries);
         }

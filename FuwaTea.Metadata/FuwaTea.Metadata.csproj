@@ -53,6 +53,7 @@
     <Compile Include="AlbumArt\AlbumArtStreamLoader.cs" />
     <Compile Include="AlbumArt\IAlbumArtLocator.cs" />
     <Compile Include="AlbumArt\IAlbumArtStreamLoader.cs" />
+    <Compile Include="FormatUtils.cs" />
     <Compile Include="IMetadataLoader.cs" />
     <Compile Include="IMusicInfoModel.cs" />
     <Compile Include="Tags\ITagProvider.cs" />

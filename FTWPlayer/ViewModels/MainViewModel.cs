@@ -24,6 +24,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using FTWPlayer.Localization;
 using FTWPlayer.Properties;
 using FuwaTea.Playback;
 using FuwaTea.Playlist;
@@ -356,7 +357,9 @@ namespace FTWPlayer.ViewModels
         public double MouseX => CurrentMousePosition.X;
         public double MouseY => CurrentMousePosition.Y;
 
-        public string ScrollingTextFormatString => PlaybackManager.Current != null ? "{1} - {2}" : "{0}";
+        public string ScrollingTextFormatString => PlaybackManager.Current != null
+                                                       ? Settings.Default.ScrollingTextFormat
+                                                       : LocalizationProvider.GetLocalizedValue<string>("WelcomeText");
 
         public string PositionTextFormatString => PlaybackManager.EnableShuffle ? "{0} ({1}) / {2} > {3} / {4}" : "{0} / {2} > {3} / {4}";
         public int OneBasedCurrentIndex { get { return PlaybackManager.ElementCount > 0 ? PlaybackManager.CurrentIndex + 1 : 0; } set { PlaybackManager.JumpTo(value - 1); } }

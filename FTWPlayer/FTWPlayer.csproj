@@ -108,6 +108,7 @@
     <Compile Include="Converters\DoubleMinMultiConverter.cs" />
     <Compile Include="Converters\DoubleSubtractMultiConverter.cs" />
     <Compile Include="Converters\ScaleMultiConverter.cs" />
+    <Compile Include="Converters\TagFormatterMultiConverter.cs" />
     <Compile Include="Converters\UIntParseConverter.cs" />
     <Compile Include="Converters\NullCheckConverter.cs" />
     <Compile Include="Converters\FloatToDoubleConverter.cs" />
