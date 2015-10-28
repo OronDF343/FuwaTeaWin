@@ -73,6 +73,7 @@
         <fuwa:OpenBehavior Storyboard="{DynamicResource LoadedAnimation}" />
         <fuwa:WindowDragBehavior Enabled="{Binding AllowDrag}">
             <fuwa:ElementReference Binding="{Binding ElementName=TabControl, Path=SelectedContent}"/>
+            <fuwa:ElementReference Binding="{Binding ElementName=VolumeSlider}"/>
         </fuwa:WindowDragBehavior>
     </i:Interaction.Behaviors>
     <Window.Resources>
