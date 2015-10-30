@@ -162,7 +162,7 @@
                                                           TargetWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Canvas}, Path=ActualWidth}"
                                                           Spacing="16">
                             <fuwa:ScrollingTextBlockComponent.ScrollingText>
-                                <MultiBinding Converter="{StaticResource TagFmtConv}">
+                                <MultiBinding Converter="{StaticResource TagFmtConv}" ConverterParameter="{lex:Loc WelcomeText}">
                                     <Binding Path="PlaybackManager.Current" />
                                     <Binding Path="ScrollingTextFormatString" />
                                 </MultiBinding>

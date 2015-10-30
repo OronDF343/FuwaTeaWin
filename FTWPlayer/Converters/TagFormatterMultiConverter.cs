@@ -9,7 +9,7 @@ namespace FTWPlayer.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (!(values[1] is string)) return "[Null]";
+            if (!(values[1] is string)) return parameter ?? "[Null]";
             if (!(values[0] is IMusicInfoModel)) return values[1];
             var info = (IMusicInfoModel)values[0];
             var fmt = (string)values[1];
