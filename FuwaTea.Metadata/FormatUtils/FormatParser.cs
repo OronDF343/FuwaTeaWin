@@ -20,17 +20,17 @@ namespace FuwaTea.Metadata.FormatUtils
             if (_cache.ContainsKey(format)) return _cache[format];
 
             //	stage 1: find&split
-            //	(?<![^\\]\\)\{			find an unescaped {
+            //	(?<=(?<!\\)(\\\\)*)\{			find an unescaped {
             //	(?:						followed by this expression:
             //		(?(Segment)				if a 'Segment was found before:
-            //			(?<![^\\]\\)\>			an unescaped >
+            //			(?<=(?<!\\)(\\\\)*)\>			an unescaped >
             //		)						[end]
             //		(?'Segment'.*?)			a 'Segment' (anything, lazy)
             //	)+?						[end] one or more times (lazy)
-            //	(?<![^\\]\\)\}			followed by an unescaped }
+            //	(?<=(?<!\\)(\\\\)*)\}			followed by an unescaped }
             var i = 0;
             var ccl = new List<IEnumerable<string>>();
-            var f = Regex.Replace(format, @"(?<![^\\]\\)\{(?:(?(Segment)(?<![^\\]\\)\>)(?'Segment'.*?))+?(?<![^\\]\\)\}",
+            var f = Regex.Replace(format, @"(?<=(?<!\\)(\\\\)*)\{(?:(?(Segment)(?<=(?<!\\)(\\\\)*)\>)(?'Segment'.*?))+?(?<=(?<!\\)(\\\\)*)\}",
                                   match =>
                                   {
                                       ccl.Add(from Capture c in match.Groups["Segment"].Captures
@@ -51,15 +51,15 @@ namespace FuwaTea.Metadata.FormatUtils
                     //		(?:\p{Lu}[\p{Ll}]+\.?)+		any number of capitalized words not spaced, dots allowed
                     //	)							[end]
                     //	(?(LastFormatRef)|			if 'LastFormatRef' NOT found
-                    //		\:							:
+                    //		\:		                    :
                     //		(?'Format'.*?)				the 'Format' (lazy)
                     //	)?							[end] zero or one times
                     //	(?:							expression:
-                    //		(?<![^\\]\\)\:				unescaped :
+                    //		(?<=(?<!\\)(\\\\)*)\:		unescaped :
                     //		(?'PrivateFormat'.*)		the 'PrivateFormat'
                     //	)?							[end] zero or one time
                     //	\z							end of string reached
-                    var m = Regex.Match(seg, @"\A(?'LastFormatRef'\:)?(?'PropertyName'(?:\p{Lu}[\p{Ll}]+\.?)+)(?(LastFormatRef)|\:(?'Format'.*?))?(?:(?<![^\\]\\)\:(?'PrivateFormat'.*))?\z");
+                    var m = Regex.Match(seg, @"\A(?'LastFormatRef'\:)?(?'PropertyName'(?:\p{Lu}[\p{Ll}]+\.?)+)(?(LastFormatRef)|\:(?'Format'.*?))?(?:(?<=(?<!\\)(\\\\)*)\:(?'PrivateFormat'.*))?\z");
                     FormatSegment curr;
                     if (m.Success)
                         curr = new FormatSegment
