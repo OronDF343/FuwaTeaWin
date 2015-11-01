@@ -88,7 +88,7 @@ namespace FuwaTea.Metadata.FormatUtils
                     prop = pdef.GetValue(prop);
                 }
                 if (!string.IsNullOrEmpty(PrivateFormat))
-                    prop = string.Format(PrivateFormat, prop);
+                    prop = string.Format($"{{0:{PrivateFormat}}}", prop);
                 if (!string.IsNullOrEmpty(Format))
                     prop = string.Format(Format, prop);
                 var r = prop?.ToString();
