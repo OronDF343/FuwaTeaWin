@@ -118,7 +118,7 @@ namespace FuwaTea.Wpf.Controls
 
         private static bool IsRtlString(string s)
         {
-            if (s.Length < 1) return false;
+            if (string.IsNullOrEmpty(s)) return false;
             var c = char.ConvertToUtf32(s, 0);
             if (c >= 0x5BE && c <= 0x10B7F)
             {

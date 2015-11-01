@@ -284,7 +284,8 @@ namespace FTWPlayer.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("$PJ($AJ) - $TI($FN)")]
+        [global::System.Configuration.DefaultSettingValueAttribute("{Tag.JoinedPerformers>Tag.JoinedAlbumArtists>\"Unknown Performer\"} - {Tag.Title>Fi" +
+            "leName>\"Unknown Title\"}")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
         public string ScrollingTextFormat {
             get {

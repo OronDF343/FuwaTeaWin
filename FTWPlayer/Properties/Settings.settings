@@ -64,7 +64,7 @@
 &lt;/ExtensionAttributeCollection&gt;</Value>
     </Setting>
     <Setting Name="ScrollingTextFormat" Provider="FuwaTea.Lib.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
-      <Value Profile="(Default)">$PJ($AJ) - $TI($FN)</Value>
+      <Value Profile="(Default)">{Tag.JoinedPerformers&gt;Tag.JoinedAlbumArtists&gt;"Unknown Performer"} - {Tag.Title&gt;FileName&gt;"Unknown Title"}</Value>
     </Setting>
   </Settings>
 </SettingsFile>

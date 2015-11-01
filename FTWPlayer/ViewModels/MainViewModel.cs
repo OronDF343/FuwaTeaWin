@@ -126,6 +126,8 @@ namespace FTWPlayer.ViewModels
             {
                 if (e.PropertyName == nameof(Settings.Default.EnableKeyboardHook))
                     _kbdListen.IsEnabled = Settings.Default.EnableKeyboardHook;
+                if (e.PropertyName == nameof(Settings.Default.ScrollingTextFormat))
+                    RaisePropertyChanged(nameof(ScrollingTextFormatString));
             };
         }
 
