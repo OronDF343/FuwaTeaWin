@@ -56,6 +56,15 @@
     <Compile Include="FileAssociations\RegistryClass.cs" />
     <Compile Include="FileAssociations\RegistryUtils.cs" />
     <Compile Include="IFileHandler.cs" />
+    <Compile Include="ILibComponent.cs" />
+    <Compile Include="LibComponentAttribute.cs" />
+    <Compile Include="NotifyIconHax\INotificationCB.cs" />
+    <Compile Include="NotifyIconHax\InteropUtils.cs" />
+    <Compile Include="NotifyIconHax\ITrayManager.cs" />
+    <Compile Include="NotifyIconHax\NotifyIconHaxUtils.cs" />
+    <Compile Include="NotifyIconHax\TrayManager7.cs" />
+    <Compile Include="NotifyIconHax\TrayManager8.cs" />
+    <Compile Include="NotifyIconHax\TrayManager81.cs" />
     <Compile Include="PathUtils.cs" />
     <Compile Include="PortableSettingsProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

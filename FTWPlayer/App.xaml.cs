@@ -56,7 +56,7 @@ namespace FTWPlayer
 
         private Mutex _mutex;
         internal int Message;
-        readonly ErrorCallback _ec = ex => LogManager.GetLogger(typeof(App)).Warn("AssemblyLoader reported an error:", ex);
+        private readonly ErrorCallback _ec = ex => LogManager.GetLogger(typeof(App)).Warn("AssemblyLoader reported an error:", ex);
         private const string SetupFileAssocArg = "--setup-file-associations";
         private const string CleanupFileAssocArg = "--clean-up-file-associations";
         private const string ConfigureFileAssocArg = "--configure-file-associations";

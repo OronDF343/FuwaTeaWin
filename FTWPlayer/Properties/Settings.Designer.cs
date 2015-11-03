@@ -295,5 +295,19 @@ namespace FTWPlayer.Properties {
                 this["ScrollingTextFormat"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public uint TrayIconPreference {
+            get {
+                return ((uint)(this["TrayIconPreference"]));
+            }
+            set {
+                this["TrayIconPreference"] = value;
+            }
+        }
     }
 }

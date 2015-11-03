@@ -19,6 +19,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,6 +27,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using FTWPlayer.Localization;
 using FTWPlayer.Properties;
+using FuwaTea.Lib.NotifyIconHax;
 using FuwaTea.Playback;
 using FuwaTea.Playlist;
 using FuwaTea.Wpf.Keyboard;
@@ -128,7 +130,13 @@ namespace FTWPlayer.ViewModels
                     _kbdListen.IsEnabled = Settings.Default.EnableKeyboardHook;
                 if (e.PropertyName == nameof(Settings.Default.ScrollingTextFormat))
                     RaisePropertyChanged(nameof(ScrollingTextFormatString));
+                if (e.PropertyName == nameof(Settings.Default.TrayIconPreference))
+                    NotifyIconHaxUtils.SetPreference(Assembly.GetEntryAssembly().Location, Settings.Default.TrayIconPreference);
             };
+            // Run once: Set NotifyIcon to always visible
+            // This setting purposely doesn't update to reflect the system setting
+            if (Settings.Default.TrayIconPreference > 2)
+                Settings.Default.TrayIconPreference = 2;
         }
 
         private void KbdListen_KeyDown(object sender, RawKeyEventArgs e)
@@ -381,7 +389,7 @@ namespace FTWPlayer.ViewModels
 
         public decimal Volume
         {
-            get { return ((decimal)(GetValue(VolumeProperty))); }
+            get { return (decimal)GetValue(VolumeProperty); }
             set { SetValue(VolumeProperty, value); }
         }
 
@@ -389,7 +397,7 @@ namespace FTWPlayer.ViewModels
 
         public bool UpdateRememberVolume
         {
-            get { return ((bool)(GetValue(UpdateRememberVolumeProperty))); }
+            get { return (bool)GetValue(UpdateRememberVolumeProperty); }
             set { SetValue(UpdateRememberVolumeProperty, value); }
         }
         #endregion
@@ -405,6 +413,7 @@ namespace FTWPlayer.ViewModels
 
         public void Dispose()
         {
+            NotifyIconHaxUtils.Dispose();
             // IMPORTANT!
             PlaybackManager.Dispose();
         }

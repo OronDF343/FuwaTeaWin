@@ -66,5 +66,8 @@
     <Setting Name="ScrollingTextFormat" Provider="FuwaTea.Lib.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)">{Tag.JoinedPerformers&gt;Tag.JoinedAlbumArtists&gt;"Unknown Performer"} - {Tag.Title&gt;FileName&gt;"Unknown Title"}</Value>
     </Setting>
+    <Setting Name="TrayIconPreference" Provider="FuwaTea.Lib.PortableSettingsProvider" Roaming="true" Type="System.UInt32" Scope="User">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
