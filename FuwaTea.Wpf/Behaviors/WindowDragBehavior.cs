@@ -42,14 +42,18 @@ namespace FuwaTea.Wpf.Behaviors
         {
             AssociatedObject.PreviewMouseLeftButtonDown += OnPreviewMouseLeftButtonDown;
             AssociatedObject.PreviewMouseMove += OnPreviewMouseMove;
+            AssociatedObject.PreviewMouseLeftButtonUp += OnPreviewMouseLeftButtonUp;
             base.OnAttached();
         }
 
         private Point _startPoint;
+        private ResizeMode _previous;
 
         private void OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _startPoint = e.GetPosition(AssociatedObject);
+            _previous = AssociatedObject.ResizeMode;
+            AssociatedObject.ResizeMode = ResizeMode.NoResize;
         }
 
         private void OnPreviewMouseMove(object sender, MouseEventArgs e)
@@ -62,6 +66,11 @@ namespace FuwaTea.Wpf.Behaviors
             {
                 AssociatedObject.DragMove();
             }
+        }
+
+        private void OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            AssociatedObject.ResizeMode = _previous;
         }
     }
 
