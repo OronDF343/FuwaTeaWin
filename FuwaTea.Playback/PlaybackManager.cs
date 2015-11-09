@@ -258,7 +258,7 @@ namespace FuwaTea.Playback
                 _currentPlayer.EqualizerBands = EqualizerBands;
             try
             {
-                _currentPlayer.Load(Current.FilePath, new AudioOutputDevice()); // TODO: IAudioDevice implementation
+                _currentPlayer.Load(Current.FilePath);
             } 
             catch (Exception ex)
             {

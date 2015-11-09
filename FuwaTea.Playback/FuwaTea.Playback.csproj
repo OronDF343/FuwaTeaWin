@@ -45,9 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AudioOutputDevice.cs" />
     <Compile Include="EqualizerBand.cs" />
-    <Compile Include="IAudioOutputDevice.cs" />
     <Compile Include="IAudioPlayer.cs" />
     <Compile Include="IPlaybackElement.cs" />
     <Compile Include="IPlaybackManager.cs" />
