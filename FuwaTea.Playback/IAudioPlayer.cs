@@ -27,8 +27,7 @@ namespace FuwaTea.Playback
         /// Prepare to play an audio file.
         /// </summary>
         /// <param name="path">The path to the audio file</param>
-        /// <param name="device">The output device</param>
-        void Load(string path, IAudioOutputDevice device);
+        void Load(string path);
         /// <summary>
         /// Unloads the currently loaded file. This includes stopping playback if necessary.
         /// </summary>

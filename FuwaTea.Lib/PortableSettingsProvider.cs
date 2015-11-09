@@ -127,7 +127,7 @@ namespace FuwaTea.Lib
                                     : SettingsRoot.GetOrAddElement(LocalSettingsRootName)
                                                   .GetOrAddElement(Environment.MachineName);
 
-            parentElement.GetOrAddElement(setting.Name).Value = setting.SerializedValue.ToString();
+            parentElement.GetOrAddElement(setting.Name).Value = setting.SerializedValue?.ToString() ?? "";
         }
 
         static XDocument LoadOrCreateSettings(string filePath)

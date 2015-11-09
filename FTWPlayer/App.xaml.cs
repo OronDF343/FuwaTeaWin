@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Specialized;
+using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -77,7 +78,7 @@ namespace FTWPlayer
 #endif
 
             LogManager.GetLogger(GetType()).Info("Exceptions are tracked, logging is configured, begin loading!");
-            
+
             // Upgrade settings:
             var ver = Settings.Default.LastVersion;
             var cver = Assembly.GetExecutingAssembly().GetName().Version.ToString();
@@ -205,6 +206,35 @@ namespace FTWPlayer
 
             // Load modules:
             LoadModules();
+
+            // Dynamic config init:
+            var provider = Settings.Default.Properties["LastVersion"]?.Provider;
+            var dict = new SettingsAttributeDictionary
+            {
+                {
+                    typeof(SettingsManageabilityAttribute),
+                    new SettingsManageabilityAttribute(SettingsManageability.Roaming)
+                },
+                {
+                    typeof(UserScopedSettingAttribute),
+                    new UserScopedSettingAttribute()
+                }
+            };
+            var infos = ModuleFactory.GetAllConfigurableProperties(ex => LogManager.GetLogger(GetType()).Error("Error getting configurable property:", ex)).ToList();
+            foreach (var info in infos)
+            {
+                Settings.Default.Properties.Add(new SettingsProperty(info.Name, info.PropertyInfo.PropertyType, provider, false, info.DefaultValue, SettingsSerializeAs.String, dict, true, true));
+                info.Value = Settings.Default[info.Name];
+            }
+            LogManager.GetLogger(GetType()).Debug("Dynamic properties: " + infos.Count);
+            // Handle changes
+            Settings.Default.PropertyChanged += (sender, args) =>
+            {
+                var p = infos.FirstOrDefault(i => i.Name == args.PropertyName);
+                if (p == null) return;
+                p.Value = Settings.Default[p.Name];
+            };
+
             // Load skins:
             try
             {

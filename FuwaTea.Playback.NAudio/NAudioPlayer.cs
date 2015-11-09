@@ -26,18 +26,21 @@ using FuwaTea.Playback.NAudio.Codecs;
 using FuwaTea.Playback.NAudio.Utils;
 using log4net;
 using ModularFramework;
+using ModularFramework.Configuration;
+using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 
 namespace FuwaTea.Playback.NAudio
 {
+    [ConfigurableElement]
     [PlaybackElement("NAudio playback engine")]
     public sealed class NAudioPlayer : IAudioPlayer, IStreamingAudioPlayer
     {
         public NAudioPlayer()
         {
             _codecs = ModuleFactory.GetElements<IWaveStreamProvider>().ToList();
-            //EqualizerBands = new ObservableCollection<EqualizerBand>(); DON'T DO THIS! Leave it set to null!
+            //EqualizerBands = new ObservableCollection<EqualizerBand>(); :warning: DON'T DO THIS! Leave it set to null!
         }
 
         private readonly List<IWaveStreamProvider> _codecs;
@@ -59,7 +62,6 @@ namespace FuwaTea.Playback.NAudio
         private ShoutcastStream _shoutcastStream;
 
         private IWavePlayer _wavePlayer;
-        private Guid _lastDevice;
         private IWaveStreamProvider _currentCodec;
         private WaveStream _waveStream;
         private BalanceSampleProvider _balanceSampleProvider;
@@ -67,7 +69,34 @@ namespace FuwaTea.Playback.NAudio
         private Equalizer _equalizer;
         #endregion
 
-        public void Load(string path, IAudioOutputDevice device)
+        public enum OutputApis
+        {
+            Default,
+            DirectSound,
+            WaveOut,
+            Wasapi,
+            Asio
+        }
+
+        [ConfigurableProperty(nameof(OutputApi), DefaultValue = OutputApis.Default)]
+        public OutputApis OutputApi { get; set; } = OutputApis.Default;
+
+        [ConfigurableProperty(nameof(DirectSoundDevice))]
+        public Guid DirectSoundDevice { get; set; }
+
+        [ConfigurableProperty(nameof(WasapiDevice))]
+        public string WasapiDevice { get; set; }
+
+        [ConfigurableProperty(nameof(AsioDevice))]
+        public string AsioDevice { get; set; }
+
+        [ConfigurableProperty(nameof(WasapiExclusive))]
+        public bool WasapiExclusive { get; set; }
+        
+        [ConfigurableProperty(nameof(DesiredLatency), DefaultValue = -1)]
+        public int DesiredLatency { get; set; }
+
+        public void Load(string path)
         {
             // Check if we are loading a URL
             if (path.StartsWith("http://") || path.StartsWith("https://"))
@@ -89,11 +118,31 @@ namespace FuwaTea.Playback.NAudio
                 // Init codec
                 _waveStream = _currentCodec.CreateWaveStream(path);
             }
-            // Create player if needed
-            if (_lastDevice != device.AsGuid() || _wavePlayer == null)
+            // Create player (see Unload() for why we need this every time)
+            _wavePlayer?.Dispose();
+            switch (OutputApi)
             {
-                _wavePlayer?.Dispose();
-                _wavePlayer = new DirectSoundOut(_lastDevice = device.AsGuid());
+                case OutputApis.Default:
+                case OutputApis.DirectSound:
+                    _wavePlayer = new DirectSoundOut(DirectSoundDevice, DesiredLatency > 0 ? DesiredLatency : 40);
+                    break;
+                case OutputApis.Wasapi:
+                    var denum = new MMDeviceEnumerator();
+                    var dev = string.IsNullOrWhiteSpace(WasapiDevice)
+                                  ? denum.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia)
+                                  : denum.GetDevice(WasapiDevice);
+                    _wavePlayer = new WasapiOut(dev,
+                                                WasapiExclusive
+                                                    ? AudioClientShareMode.Exclusive
+                                                    : AudioClientShareMode.Shared, true,
+                                                DesiredLatency > 0 ? DesiredLatency : 200);
+                    break;
+                case OutputApis.WaveOut:
+                    _wavePlayer = new WaveOut();
+                    break;
+                case OutputApis.Asio:
+                    _wavePlayer = string.IsNullOrEmpty(AsioDevice) ? new AsioOut() : new AsioOut(AsioDevice);
+                    break;
             }
             // Check if the WaveStream supports ISampleProvider and is IeeeFloat format. If so, cast it.
             // Otherwise, convert it to a sample provider
