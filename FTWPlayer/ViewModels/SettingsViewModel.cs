@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using FTWPlayer.Properties;
 using FTWPlayer.ViewModels.SettingsViewModels;
@@ -14,7 +15,7 @@ namespace FTWPlayer.ViewModels
         public SettingsViewModel()
         {
             TabObject = new SettingsView(this);
-            SettingsTabs = new ObservableCollection<TabItem>(ModuleFactory.GetElements<ISettingsTab>().OrderBy(t => t.Index).Select(t => t.GetTabItem(Settings.Default)));
+            SettingsTabs = new ObservableCollection<TabItem>(ModuleFactory.GetElements<ISettingsTab>().OrderBy(t => t.Index).Select(t => t.GetTabItem(Settings.Default, ((App)Application.Current).DynSettings)));
         }
         public TabItem TabObject { get; }
         public decimal Index => 3;

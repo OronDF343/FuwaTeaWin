@@ -133,6 +133,7 @@
     <Compile Include="Skins\SkinManager.cs" />
     <Compile Include="ViewModels\SettingsViewModels\ISettingsTab.cs" />
     <Compile Include="ViewModels\SettingsViewModels\AllSettingsViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModels\PlaybackSettingsViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModels\SkinsViewModel.cs" />
     <Compile Include="ViewModels\TagsViewModel.cs" />
     <Compile Include="Views\AlbumArtView.xaml.cs">
@@ -160,6 +161,9 @@
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\SettingsViews\AllSettingsView.xaml.cs">
       <DependentUpon>AllSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsViews\PlaybackSettingsView.xaml.cs">
+      <DependentUpon>PlaybackSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsViews\SkinsView.xaml.cs">
       <DependentUpon>SkinsView.xaml</DependentUpon>
@@ -205,6 +209,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\SettingsViews\AllSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsViews\PlaybackSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

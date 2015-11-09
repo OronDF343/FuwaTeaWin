@@ -16,6 +16,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Diagnostics;
@@ -40,6 +41,7 @@ using GalaSoft.MvvmLight.Threading;
 using log4net;
 using log4net.Config;
 using ModularFramework;
+using ModularFramework.Configuration;
 using ModularFramework.Extensions;
 using WPFLocalizeExtension.Engine;
 
@@ -63,6 +65,8 @@ namespace FTWPlayer
         private const string ConfigureFileAssocArg = "--configure-file-associations";
         private const string ShouldBeAdminArg = "--admin";
         private const string SetLangArg = "--set-lang";
+
+        internal List<IConfigurablePropertyInfo> DynSettings { get; private set; }
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -220,17 +224,17 @@ namespace FTWPlayer
                     new UserScopedSettingAttribute()
                 }
             };
-            var infos = ModuleFactory.GetAllConfigurableProperties(ex => LogManager.GetLogger(GetType()).Error("Error getting configurable property:", ex)).ToList();
-            foreach (var info in infos)
+            DynSettings = ModuleFactory.GetAllConfigurableProperties(ex => LogManager.GetLogger(GetType()).Error("Error getting configurable property:", ex)).ToList();
+            foreach (var info in DynSettings)
             {
                 Settings.Default.Properties.Add(new SettingsProperty(info.Name, info.PropertyInfo.PropertyType, provider, false, info.DefaultValue, SettingsSerializeAs.String, dict, true, true));
                 info.Value = Settings.Default[info.Name];
             }
-            LogManager.GetLogger(GetType()).Debug("Dynamic properties: " + infos.Count);
+            LogManager.GetLogger(GetType()).Debug("Dynamic properties: " + DynSettings.Count);
             // Handle changes
             Settings.Default.PropertyChanged += (sender, args) =>
             {
-                var p = infos.FirstOrDefault(i => i.Name == args.PropertyName);
+                var p = DynSettings.FirstOrDefault(i => i.Name == args.PropertyName);
                 if (p == null) return;
                 p.Value = Settings.Default[p.Name];
             };

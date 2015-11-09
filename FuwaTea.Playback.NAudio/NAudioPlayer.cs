@@ -71,24 +71,34 @@ namespace FuwaTea.Playback.NAudio
 
         public enum OutputApis
         {
-            Default,
             DirectSound,
             WaveOut,
             Wasapi,
             Asio
         }
 
-        [ConfigurableProperty(nameof(OutputApi), DefaultValue = OutputApis.Default)]
-        public OutputApis OutputApi { get; set; } = OutputApis.Default;
+        [ConfigurableProperty(nameof(OutputApi), DefaultValue = OutputApis.DirectSound)]
+        public OutputApis OutputApi { get; set; }
 
         [ConfigurableProperty(nameof(DirectSoundDevice))]
         public Guid DirectSoundDevice { get; set; }
 
+        [PropertyOptionsEnumerator(nameof(DirectSoundDevice))]
+        public Dictionary<Guid, string> DirectSoundDevices => DirectSoundOut.Devices.ToDictionary(d => d.Guid, d => d.Description);
+
         [ConfigurableProperty(nameof(WasapiDevice))]
         public string WasapiDevice { get; set; }
 
+        [PropertyOptionsEnumerator(nameof(WasapiDevice))]
+        public Dictionary<string, string> WasapiDevices
+            => new MMDeviceEnumerator().EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active)
+                                       .ToDictionary(mmd => mmd.ID, mmd => mmd.FriendlyName);
+
         [ConfigurableProperty(nameof(AsioDevice))]
         public string AsioDevice { get; set; }
+
+        [PropertyOptionsEnumerator(nameof(AsioDevice))]
+        public string[] AsioDevices => AsioOut.GetDriverNames();
 
         [ConfigurableProperty(nameof(WasapiExclusive))]
         public bool WasapiExclusive { get; set; }
@@ -122,7 +132,6 @@ namespace FuwaTea.Playback.NAudio
             _wavePlayer?.Dispose();
             switch (OutputApi)
             {
-                case OutputApis.Default:
                 case OutputApis.DirectSound:
                     _wavePlayer = new DirectSoundOut(DirectSoundDevice, DesiredLatency > 0 ? DesiredLatency : 40);
                     break;
