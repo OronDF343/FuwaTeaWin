@@ -22,8 +22,7 @@ namespace FTWPlayer.ViewModels
 
         private void PlaybackManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            // TODO: Still leaks memory, also memory is not freed when changing to null. At least changing to a smaller image helps *somewhat*.
-            // For now, users who care about the app using over 100MB of memory should avoid loading very large images or switching between songs too often.
+            // Users who care about the app using over 100MB of memory should avoid loading very large images or switching between songs too often.
             if (e.PropertyName != nameof(PlaybackManager.Current)) return;
             if (PlaybackManager.Current == null)
             {
@@ -40,9 +39,11 @@ namespace FTWPlayer.ViewModels
             {
                 var bi = new BitmapImage();
                 bi.BeginInit();
+                bi.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
                 bi.CacheOption = BitmapCacheOption.OnLoad;
                 bi.StreamSource = s;
                 bi.EndInit();
+                bi.Freeze();
                 CurrentAlbumArt = bi;
                 s.Close();
             }
