@@ -70,6 +70,15 @@ namespace FTWPlayer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All Settings.
+        /// </summary>
+        internal static string AllSettings {
+            get {
+                return ResourceManager.GetString("AllSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All supported playlist types.
         /// </summary>
         internal static string AllSupportedPlaylists {
@@ -102,6 +111,15 @@ namespace FTWPlayer.Localization {
         internal static string EqualizerTabHeader {
             get {
                 return ResourceManager.GetString("EqualizerTabHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exclusive Mode.
+        /// </summary>
+        internal static string ExclusiveMode {
+            get {
+                return ResourceManager.GetString("ExclusiveMode", resourceCulture);
             }
         }
         
@@ -160,11 +178,38 @@ namespace FTWPlayer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Output API:.
+        /// </summary>
+        internal static string OutputAPI {
+            get {
+                return ResourceManager.GetString("OutputAPI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Output device:.
+        /// </summary>
+        internal static string OutputDevice {
+            get {
+                return ResourceManager.GetString("OutputDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pause.
         /// </summary>
         internal static string PauseToolTip {
             get {
                 return ResourceManager.GetString("PauseToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Playback.
+        /// </summary>
+        internal static string PlaybackSettings {
+            get {
+                return ResourceManager.GetString("PlaybackSettings", resourceCulture);
             }
         }
         
@@ -273,6 +318,15 @@ namespace FTWPlayer.Localization {
         internal static string ShuffleOnToolTip {
             get {
                 return ResourceManager.GetString("ShuffleOnToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skins.
+        /// </summary>
+        internal static string Skins {
+            get {
+                return ResourceManager.GetString("Skins", resourceCulture);
             }
         }
         

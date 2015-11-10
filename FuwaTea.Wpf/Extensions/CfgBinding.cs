@@ -13,7 +13,7 @@ namespace FuwaTea.Wpf.Extensions
     {
         public CfgBinding()
         {
-            Path = new PropertyPath("Value");
+            Path = new PropertyPath(nameof(Value));
             Source = this;
         }
 

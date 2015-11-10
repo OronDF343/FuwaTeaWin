@@ -99,13 +99,21 @@ namespace FTWPlayer
             var li = clArgs.IndexOf(SetLangArg) + 1;
             if (li > 0 && clArgs.Count > li)
             {
+                Settings.Default.OverrideDefaultLanguage = true;
                 Settings.Default.SelectedLanguage = clArgs[li];
             }
 
-            // Set localization
+            // Set localization:
             LocalizeDictionary.Instance.SetCurrentThreadCulture = true;
-            LocalizeDictionary.Instance.Culture = string.IsNullOrWhiteSpace(Settings.Default.SelectedLanguage) ? CultureInfo.CurrentUICulture : CultureInfo.CreateSpecificCulture(Settings.Default.SelectedLanguage);
-            Settings.Default.SelectedLanguage = LocalizeDictionary.Instance.Culture.IetfLanguageTag;
+            if (Settings.Default.OverrideDefaultLanguage) UpdateLanguage();
+            // Update if changed:
+            Settings.Default.PropertyChanged += (sender, args) =>
+            {
+                if (!Settings.Default.OverrideDefaultLanguage
+                     || args.PropertyName != nameof(Settings.Default.SelectedLanguage)
+                     && args.PropertyName != nameof(Settings.Default.OverrideDefaultLanguage)) return;
+                //UpdateLanguage(); BUG: This causes an exception "Binding cannot be changed after it has been used" in WPFLocalizeExtension
+            };
 
             var isinst = Assembly.GetEntryAssembly().IsInstalledCopy();
             var prod = Assembly.GetEntryAssembly().GetProduct();
@@ -278,6 +286,14 @@ namespace FTWPlayer
             };
             process.Start();
             Shutdown();
+        }
+
+        private void UpdateLanguage()
+        {
+            LocalizeDictionary.Instance.Culture = string.IsNullOrWhiteSpace(Settings.Default.SelectedLanguage)
+                                                      ? CultureInfo.CurrentUICulture
+                                                      : CultureInfo.CreateSpecificCulture(Settings.Default.SelectedLanguage);
+            Settings.Default.PropertyValues[nameof(Settings.Default.SelectedLanguage)].PropertyValue = LocalizeDictionary.Instance.Culture.IetfLanguageTag;
         }
 
         private void RegistryError(string args)

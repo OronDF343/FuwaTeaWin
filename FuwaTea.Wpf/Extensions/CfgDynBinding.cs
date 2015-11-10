@@ -13,7 +13,7 @@ namespace FuwaTea.Wpf.Extensions
         public CfgDynBinding(BindingBase b)
         {
             Bindings.Add(b);
-            Bindings.Add(new Binding("Value") { Source = this });
+            Bindings.Add(new Binding(nameof(Value)) { Source = this });
             Converter = new IndexerConverterProxy(this);
         }
 

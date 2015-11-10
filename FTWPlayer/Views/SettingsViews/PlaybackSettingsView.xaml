@@ -5,60 +5,66 @@
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
          xmlns:fuwa="https://github.com/OronDF343/FuwaTeaWin"
          xmlns:properties="clr-namespace:FTWPlayer.Properties"
+         xmlns:lex="http://wpflocalizeextension.codeplex.com"
          mc:Ignorable="d" 
          Style="{DynamicResource SettingsTabItemStyle}"
          d:DesignHeight="300" d:DesignWidth="300"
-         Header="Playback"
-         Tag="{DynamicResource AllSettingsButtonContent}">
-    <StackPanel>
-        <ComboBox SelectedValuePath="Key" DisplayMemberPath="Value" ItemsSource="{Binding OutputApis}" SelectedValue="{Binding Settings[OutputApi]}"/>
-        <ComboBox SelectedValuePath="Key" DisplayMemberPath="Value" ItemsSource="{Binding DirectSoundDevices}" SelectedValue="{Binding Settings[DirectSoundDevice]}">
-            <ComboBox.Style>
-                <Style TargetType="ComboBox">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{fuwa:CfgBinding OutputApi, Repository={x:Static properties:Settings.Default}}" Value="DirectSound">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </ComboBox.Style>
-        </ComboBox>
-        <ComboBox SelectedValuePath="Key" DisplayMemberPath="Value" ItemsSource="{Binding WasapiDevices}" SelectedValue="{Binding Settings[WasapiDevice]}">
-            <ComboBox.Style>
-                <Style TargetType="ComboBox">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{fuwa:CfgBinding OutputApi, Repository={x:Static properties:Settings.Default}}" Value="Wasapi">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </ComboBox.Style>
-        </ComboBox>
-        <CheckBox IsChecked="{Binding Settings[WasapiExclusive]}" Content="Exclusive Mode">
-            <CheckBox.Style>
-                <Style TargetType="CheckBox">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{fuwa:CfgBinding OutputApi, Repository={x:Static properties:Settings.Default}}" Value="Wasapi">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </CheckBox.Style>
-        </CheckBox>
-        <ComboBox ItemsSource="{Binding AsioDevices}" SelectedItem="{Binding Settings[AsioDevice]}">
-            <ComboBox.Style>
-                <Style TargetType="ComboBox">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{fuwa:CfgBinding OutputApi, Repository={x:Static properties:Settings.Default}}" Value="Asio">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </ComboBox.Style>
-        </ComboBox>
-    </StackPanel>
+         Header="{lex:BLoc PlaybackSettings}"
+         Tag="{DynamicResource PlaybackSettingsButtonContent}">
+    <TabItem.Resources>
+        <Style TargetType="FrameworkElement" x:Key="DirectSoundOnly">
+            <Setter Property="Visibility" Value="Hidden"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{fuwa:CfgBinding OutputApi, Repository={x:Static properties:Settings.Default}}" Value="DirectSound">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="FrameworkElement" x:Key="WasapiOnly">
+            <Setter Property="Visibility" Value="Hidden"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{fuwa:CfgBinding OutputApi, Repository={x:Static properties:Settings.Default}}" Value="Wasapi">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="FrameworkElement" x:Key="AsioOnly">
+            <Setter Property="Visibility" Value="Hidden"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{fuwa:CfgBinding OutputApi, Repository={x:Static properties:Settings.Default}}" Value="Asio">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="FrameworkElement" x:Key="NotWaveOut" BasedOn="{StaticResource WasapiOnly}">
+            <Style.Triggers>
+                <DataTrigger Binding="{fuwa:CfgBinding OutputApi, Repository={x:Static properties:Settings.Default}}" Value="DirectSound">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+                <DataTrigger Binding="{fuwa:CfgBinding OutputApi, Repository={x:Static properties:Settings.Default}}" Value="Asio">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </TabItem.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Margin="0,0,2,0" Content="{lex:BLoc OutputAPI}"/>
+        <ComboBox Grid.Row="0" Grid.Column="1" Margin="2" SelectedValuePath="Key" DisplayMemberPath="Value" ItemsSource="{Binding OutputApis}" SelectedValue="{Binding Settings[OutputApi]}"/>
+        <Label Grid.Row="1" Grid.Column="0" Margin="0,0,2,0" Content="{lex:BLoc OutputDevice}" Style="{StaticResource NotWaveOut}"/>
+        <ComboBox Grid.Row="1" Grid.Column="1" Margin="2" SelectedValuePath="Key" DisplayMemberPath="Value" ItemsSource="{Binding DirectSoundDevices}" SelectedValue="{Binding Settings[DirectSoundDevice]}" Style="{StaticResource DirectSoundOnly}"/>
+        <ComboBox Grid.Row="1" Grid.Column="1" Margin="2" SelectedValuePath="Key" DisplayMemberPath="Value" ItemsSource="{Binding WasapiDevices}" SelectedValue="{Binding Settings[WasapiDevice]}" Style="{StaticResource WasapiOnly}"/>
+        <CheckBox Grid.Row="2" Grid.Column="1" Margin="2" Content="{lex:BLoc ExclusiveMode}" IsChecked="{Binding Settings[WasapiExclusive]}" Style="{StaticResource WasapiOnly}"/>
+        <ComboBox Grid.Row="1" Grid.Column="1" Margin="2" ItemsSource="{Binding AsioDevices}" SelectedItem="{Binding Settings[AsioDevice]}" Style="{StaticResource AsioOnly}"/>
+    </Grid>
 </TabItem>

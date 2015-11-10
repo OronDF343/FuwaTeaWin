@@ -201,4 +201,22 @@
   <data name="PlayWithFormatString" xml:space="preserve">
     <value>נגן באמצעות {0}</value>
   </data>
+  <data name="AllSettings" xml:space="preserve">
+    <value>כל ההגדרות</value>
+  </data>
+  <data name="ExclusiveMode" xml:space="preserve">
+    <value>מצב בלעדי</value>
+  </data>
+  <data name="OutputAPI" xml:space="preserve">
+    <value>API השמעה:</value>
+  </data>
+  <data name="OutputDevice" xml:space="preserve">
+    <value>התקן השמעה:</value>
+  </data>
+  <data name="PlaybackSettings" xml:space="preserve">
+    <value>השמעה</value>
+  </data>
+  <data name="Skins" xml:space="preserve">
+    <value>ערכות נושא</value>
+  </data>
 </root>

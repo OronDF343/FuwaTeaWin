@@ -6,10 +6,11 @@
          xmlns:fuwa="https://github.com/OronDF343/FuwaTeaWin"
          xmlns:properties="clr-namespace:FTWPlayer.Properties"
          xmlns:utils="clr-namespace:FTWPlayer.ViewModels.Utils"
+         xmlns:lex="http://wpflocalizeextension.codeplex.com"
          mc:Ignorable="d"
          Style="{DynamicResource SettingsTabItemStyle}"
          d:DesignHeight="300" d:DesignWidth="300"
-         Header="All Settings"
+         Header="{lex:BLoc AllSettings}"
          Tag="{DynamicResource AllSettingsButtonContent}">
     <DataGrid ItemsSource="{Binding SettingsPropertyValues}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
         <DataGrid.Resources>
@@ -26,7 +27,7 @@
                 <CheckBox IsChecked="{fuwa:CfgDynBinding {Binding Name, Mode=OneTime}, Repository={x:Static properties:Settings.Default}}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </DataTemplate>
             <DataTemplate x:Key="DefaultTemplate">
-                <Label Content="{fuwa:CfgDynBinding {Binding Name, Mode=OneTime}, Repository={x:Static properties:Settings.Default}}" VerticalAlignment="Center" Padding="5"/>
+                <ContentControl Content="{fuwa:CfgDynBinding {Binding Name, Mode=OneTime}, Repository={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="5"/>
             </DataTemplate>
             <utils:SettingsTemplateSelector x:Key="SettingsTemplateSelector"/>
             <utils:SettingsEditingTemplateSelector x:Key="SettingsEditingTemplateSelector"/>
@@ -39,7 +40,7 @@
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTemplateColumn Header="Value" CellTemplateSelector="{StaticResource SettingsTemplateSelector}" CellEditingTemplateSelector="{StaticResource SettingsEditingTemplateSelector}"/>
+            <DataGridTemplateColumn Header="Value" Width="*" CellTemplateSelector="{StaticResource SettingsTemplateSelector}" CellEditingTemplateSelector="{StaticResource SettingsEditingTemplateSelector}"/>
         </DataGrid.Columns>
     </DataGrid>
 </TabItem>

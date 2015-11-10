@@ -149,6 +149,12 @@
 	                       c11.232-30.704,29.875-45.725,96.194-103H50V462h377.666V199.052C415.831,219.923,405.772,237.961,393.334,252.966z"
                   FillRule="NonZero"
                   Transform="{StaticResource 512To32Transform}" />
+    <PathGeometry x:Key="PlaybackSettingsIcon"
+                  Figures="M169,317.694H50v-64h119V317.694z M129.5,233.694V118.5h-40v115.194H129.5z M89.5,347.694V393.5
+	                       h40v-45.806H89.5z M316,257.25H197v-64h119V257.25z M276.5,163.25V118.5h-40v44.75H276.5z M236.5,287.25V393.5h40V287.25H236.5z
+	                       M462,317.89H343v-64h119V317.89z M422.5,233.89V118.5h-40v115.39H422.5z M382.5,347.89v45.61h40v-45.61H382.5z"
+                  FillRule="Nonzero"
+                  Transform="{StaticResource 512To32Transform}"/>
 
     <!-- REQUIRED: The Content of the buttons.
          USAGE: Anything that will appear on each button. Must be assignable to Button.Content. -->
@@ -189,6 +195,8 @@
           Data="{DynamicResource GearIcon}" />
     <Path x:Key="SkinsButtonContent" Fill="{DynamicResource BackgroundBrush}" Width="32" Height="32"
           Data="{DynamicResource SkinsIcon}" />
+    <Path x:Key="PlaybackSettingsButtonContent" Fill="{DynamicResource BackgroundBrush}" Width="32" Height="32"
+          Data="{DynamicResource PlaybackSettingsIcon}" />
     <Path x:Key="MiniHelpButtonContent" Fill="{DynamicResource IconBrush}" Width="32" Height="32"
           Data="{DynamicResource SmallHelpIcon}" />
 

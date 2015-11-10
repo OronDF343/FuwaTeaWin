@@ -205,4 +205,22 @@
     <value>Play with {0}</value>
     <comment>{0} is "FTW Player"</comment>
   </data>
+  <data name="AllSettings" xml:space="preserve">
+    <value>All Settings</value>
+  </data>
+  <data name="ExclusiveMode" xml:space="preserve">
+    <value>Exclusive Mode</value>
+  </data>
+  <data name="OutputAPI" xml:space="preserve">
+    <value>Output API:</value>
+  </data>
+  <data name="OutputDevice" xml:space="preserve">
+    <value>Output device:</value>
+  </data>
+  <data name="PlaybackSettings" xml:space="preserve">
+    <value>Playback</value>
+  </data>
+  <data name="Skins" xml:space="preserve">
+    <value>Skins</value>
+  </data>
 </root>
