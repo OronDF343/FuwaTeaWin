@@ -77,7 +77,7 @@ namespace FuwaTea.Playback.NAudio
             Asio
         }
 
-        [ConfigurableProperty(nameof(OutputApi), DefaultValue = OutputApis.DirectSound)]
+        [ConfigurableProperty(nameof(OutputApi), DefaultValue = OutputApis.Wasapi)]
         public OutputApis OutputApi { get; set; }
 
         [ConfigurableProperty(nameof(DirectSoundDevice))]
