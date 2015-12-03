@@ -75,6 +75,7 @@
             <fuwa:ElementReference Binding="{Binding ElementName=TabControl, Path=SelectedContent}"/>
             <fuwa:ElementReference Binding="{Binding ElementName=VolumeSlider}"/>
         </fuwa:WindowDragBehavior>
+        <fuwa:SkinLoadingBehavior>Layer0;MainWindowStyle</fuwa:SkinLoadingBehavior>
     </i:Interaction.Behaviors>
     <Window.Resources>
         <converters:TimeSpanDifferenceToGridLengthMultiConverter x:Key="TsGlConv" />
@@ -276,7 +277,7 @@
                             Minimum="0" Maximum="100" Interval="1" LargeChange="10" SmallChange="5"
                             IsSnapToTickEnabled="True" TickFrequency="1"
                             Width="0" VerticalAlignment="Center"
-                            fuwa:DynamicStyle.BaseStyle="{DynamicResource VolumeSliderStyle}">
+                            fuwa:DynamicStyle.BaseStyle="{DynamicResource {x:Type Slider}}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseLeave">
                                 <i:InvokeCommandAction Command="{Binding VolumeMouseLeaveCommand}"
@@ -448,7 +449,7 @@
                                 </ColumnDefinition.Width>
                             </ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <Rectangle Grid.Column="0" Fill="{DynamicResource ProgressBrush}" HorizontalAlignment="Stretch" />
+                        <Rectangle Grid.Column="0" Fill="{DynamicResource OverlayBrush}" HorizontalAlignment="Stretch" />
                         <Rectangle Grid.Column="1" Fill="{DynamicResource DefaultBrush}" HorizontalAlignment="Stretch" />
                     </Grid>
                 </Grid>
@@ -463,6 +464,9 @@
                             <Binding ElementName="MainBorder" Path="BorderThickness.Top"/>
                         </MultiBinding>
                     </TabControl.MinHeight>
+                    <i:Interaction.Behaviors>
+                        <fuwa:SkinLoadingBehavior>Layer1;MainTabControlStyle</fuwa:SkinLoadingBehavior>
+                    </i:Interaction.Behaviors>
                 </TabControl>
             </Grid>
         </Border>

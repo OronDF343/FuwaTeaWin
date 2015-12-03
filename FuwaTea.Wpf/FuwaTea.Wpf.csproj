@@ -78,6 +78,7 @@
     <Compile Include="Behaviors\ExtendedCloseBehavior.cs" />
     <Compile Include="Behaviors\ControlledBehaviorBase.cs" />
     <Compile Include="Behaviors\OpenBehavior.cs" />
+    <Compile Include="Behaviors\SkinLoadingBehavior.cs" />
     <Compile Include="Behaviors\WindowDragBehavior.cs" />
     <Compile Include="Controls\ScrollingTextBlockComponent.xaml.cs">
       <DependentUpon>ScrollingTextBlockComponent.xaml</DependentUpon>

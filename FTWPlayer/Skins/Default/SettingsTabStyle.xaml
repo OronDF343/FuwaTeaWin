@@ -1,0 +1,100 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="CommonStyle.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    <PathGeometry x:Key="GearIcon"
+                  Figures="M462,283.742v-55.485l-49.249-17.514c-3.4-11.792-8.095-23.032-13.919-33.563l22.448-47.227
+	                       l-39.234-39.234l-47.226,22.449c-10.53-5.824-21.772-10.52-33.564-13.919L283.741,50h-55.484l-17.515,49.25
+	                       c-11.792,3.398-23.032,8.094-33.563,13.918l-47.227-22.449l-39.234,39.234l22.45,47.227c-5.824,10.531-10.521,21.771-13.919,33.563
+	                       L50,228.257v55.485l49.249,17.514c3.398,11.792,8.095,23.032,13.919,33.563l-22.45,47.227l39.234,39.234l47.227-22.449
+	                       c10.531,5.824,21.771,10.52,33.563,13.92L228.257,462h55.484l17.515-49.249c11.792-3.398,23.034-8.095,33.564-13.919l47.226,22.448
+	                       l39.234-39.234l-22.448-47.226c5.824-10.53,10.521-21.772,13.919-33.564L462,283.742z M256,331.546
+	                       c-41.724,0-75.548-33.823-75.548-75.546s33.824-75.547,75.548-75.547c41.723,0,75.546,33.824,75.546,75.547
+	                       S297.723,331.546,256,331.546z"
+                  FillRule="Nonzero"
+                  Transform="{StaticResource 512To32Transform}"/>
+    <PathGeometry x:Key="SkinsIcon"
+                  Figures="M209.965,376.166c-27.661,0-56.127-12.17-74.132-37.217c2.95,0.235,5.767,0.369,8.432,0.369
+	                       c68.315,0,44.845-77.526,114.953-78.272l31.584,26.337C295.598,345.639,253.787,376.166,209.965,376.166z M377.307,216.813
+	                       c20.352-31.97,65.783-117.074,83.15-150.175c1.074-1.869,1.543-3.747,1.543-5.541C462,55.038,456.635,50,450.734,50
+	                       c-2.348,0-4.795,0.805-7.008,2.666c-28.666,24.258-101.256,86.177-128.951,112.019c-26.286,24.585-26.387,35.826-34.902,76.354
+	                       l28.834,24.031C346.93,249.353,357.928,247.215,377.307,216.813z M393.334,252.966v174.7h-309V187.333h173.342
+	                       c11.232-30.704,29.875-45.725,96.194-103H50V462h377.666V199.052C415.831,219.923,405.772,237.961,393.334,252.966z"
+                  FillRule="NonZero"
+                  Transform="{StaticResource 512To32Transform}" />
+    <PathGeometry x:Key="PlaybackSettingsIcon"
+                  Figures="M169,317.694H50v-64h119V317.694z M129.5,233.694V118.5h-40v115.194H129.5z M89.5,347.694V393.5
+	                       h40v-45.806H89.5z M316,257.25H197v-64h119V257.25z M276.5,163.25V118.5h-40v44.75H276.5z M236.5,287.25V393.5h40V287.25H236.5z
+	                       M462,317.89H343v-64h119V317.89z M422.5,233.89V118.5h-40v115.39H422.5z M382.5,347.89v45.61h40v-45.61H382.5z"
+                  FillRule="Nonzero"
+                  Transform="{StaticResource 512To32Transform}"/>
+
+    <Path x:Key="AllSettingsButtonContent" Fill="{DynamicResource ActiveBrush}" Width="32" Height="32"
+          Data="{DynamicResource GearIcon}" />
+    <Path x:Key="SkinsButtonContent" Fill="{DynamicResource ActiveBrush}" Width="32" Height="32"
+          Data="{DynamicResource SkinsIcon}" />
+    <Path x:Key="PlaybackSettingsButtonContent" Fill="{DynamicResource ActiveBrush}" Width="32" Height="32"
+          Data="{DynamicResource PlaybackSettingsIcon}" />
+
+    <!-- Settings TabItems -->
+    <ControlTemplate x:Key="SettingsTabItemTemplate" TargetType="{x:Type TabItem}">
+        <Border BorderThickness="1" BorderBrush="{DynamicResource BorderBrush}" Margin="4" Padding="8"
+                Cursor="Hand" x:Name="tab" Background="{DynamicResource DefaultBrush}" VerticalAlignment="Center"
+                HorizontalAlignment="Stretch">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <ContentPresenter ContentSource="Tag" />
+                <ContentPresenter Grid.Row="1" ContentSource="Header"
+                                  TextBlock.Foreground="{DynamicResource TextBrush}"
+                                  TextBlock.FontWeight="Bold"
+                                  VerticalAlignment="Top"
+                                  HorizontalAlignment="Center" />
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="tab" Property="Background" Value="{DynamicResource HighlightBrush}" />
+            </Trigger>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter TargetName="tab" Property="Background" Value="{DynamicResource SelectedBrush}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <Style TargetType="{x:Type TabItem}">
+        <Setter Property="Template" Value="{StaticResource SettingsTabItemTemplate}" />
+    </Style>
+
+    <!-- Settings TabControl -->
+    <Style TargetType="{x:Type TabControl}">
+        <Setter Property="Background" Value="{DynamicResource DefaultBrush}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="TabStripPlacement" Value="Left" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TabControl}">
+                    <Grid ClipToBounds="true" SnapsToDevicePixels="true" KeyboardNavigation.TabNavigation="Local">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TabPanel x:Name="HeaderPanel" IsItemsHost="true" Margin="0" Grid.Column="0"
+                                  KeyboardNavigation.TabIndex="1" Panel.ZIndex="1" />
+                        <Border x:Name="ContentPanel" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1" Background="{DynamicResource SelectedBrush}"
+                                KeyboardNavigation.DirectionalNavigation="Contained" Grid.Column="1"
+                                KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local" Margin="4"
+                                Padding="8">
+                            <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent"
+                                              Margin="{TemplateBinding Padding}"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

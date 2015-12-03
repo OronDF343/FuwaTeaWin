@@ -7,9 +7,13 @@
          xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
          xmlns:command="http://www.galasoft.ch/mvvmlight"
          xmlns:converters="clr-namespace:FTWPlayer.Converters"
+         xmlns:fuwa="https://github.com/OronDF343/FuwaTeaWin"
          mc:Ignorable="d" 
          d:DesignHeight="300" d:DesignWidth="300"
          Header="{lex:BLoc TagsTabHeader}">
+    <i:Interaction.Behaviors>
+        <fuwa:SkinLoadingBehavior>Layer2</fuwa:SkinLoadingBehavior>
+    </i:Interaction.Behaviors>
     <TabItem.Resources>
         <converters:NullCheckConverter x:Key="NullChkConv"/>
         <converters:UIntParseConverter x:Key="UIntParseConv"/>

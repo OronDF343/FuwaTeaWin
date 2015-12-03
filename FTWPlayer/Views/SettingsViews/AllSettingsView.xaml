@@ -8,8 +8,8 @@
          xmlns:utils="clr-namespace:FTWPlayer.ViewModels.Utils"
          xmlns:lex="http://wpflocalizeextension.codeplex.com"
          mc:Ignorable="d"
-         Style="{DynamicResource SettingsTabItemStyle}"
          d:DesignHeight="300" d:DesignWidth="300"
+         Style="{DynamicResource {x:Type TabItem}}"
          Header="{lex:BLoc AllSettings}"
          Tag="{DynamicResource AllSettingsButtonContent}">
     <DataGrid ItemsSource="{Binding SettingsPropertyValues}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">

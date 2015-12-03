@@ -219,4 +219,7 @@
   <data name="Skins" xml:space="preserve">
     <value>ערכות נושא</value>
   </data>
+  <data name="HelpTabHeader" xml:space="preserve">
+    <value>עזרה</value>
+  </data>
 </root>

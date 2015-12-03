@@ -1,0 +1,17 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Layer0.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    <!-- Border -->
+    <!-- Background -->
+    <Color x:Key="BackgroundColor1">#FF606060</Color>
+    <SolidColorBrush x:Key="BackgroundBrush" Color="{DynamicResource BackgroundColor1}"/>
+    <!-- Progress -->
+    <!-- Text -->
+    <!-- Icons -->
+    <!-- InactiveIcons -->
+    <!-- Mouse over, etc. -->
+    <!-- Press, etc. -->
+    <!-- Transparent -->
+</ResourceDictionary>

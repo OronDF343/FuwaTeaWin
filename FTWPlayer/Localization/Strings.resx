@@ -223,4 +223,7 @@
   <data name="Skins" xml:space="preserve">
     <value>Skins</value>
   </data>
+  <data name="HelpTabHeader" xml:space="preserve">
+    <value>HELP</value>
+  </data>
 </root>

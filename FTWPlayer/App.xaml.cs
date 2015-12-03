@@ -17,7 +17,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
@@ -28,7 +27,6 @@ using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Threading;
 using System.Windows;
-using System.Xml.Serialization;
 using FTWPlayer.Localization;
 using FTWPlayer.Properties;
 using FTWPlayer.Skins;
@@ -36,6 +34,7 @@ using FuwaTea.Lib;
 using FuwaTea.Lib.FileAssociations;
 using FuwaTea.Playback;
 using FuwaTea.Playlist;
+using FuwaTea.Wpf.Behaviors;
 using FuwaTea.Wpf.Helpers;
 using GalaSoft.MvvmLight.Threading;
 using log4net;
@@ -248,16 +247,21 @@ namespace FTWPlayer
             };
 
             // Load skins:
-            try
+            var sm = ModuleFactory.GetElement<ISkinManager>();
+            if (string.IsNullOrWhiteSpace(Settings.Default.Skin)) SkinLoadingBehavior.UpdateSkin(sm.LoadFallbackSkin().SkinParts);
+            else
             {
-                foreach(var rd in ModuleFactory.GetElement<ISkinManager>().LoadSkinChain(Settings.Default.SkinChain.Cast<string>()))
-                    Resources.MergedDictionaries.Add(rd);
-            }
-            catch (Exception ex)
-            {
-                LogManager.GetLogger(GetType()).Error("Failed to load skin chain! Loading default", ex);
-                foreach (var rd in ModuleFactory.GetElement<ISkinManager>().LoadSkinChain(((StringCollection)new XmlSerializer(typeof(StringCollection)).Deserialize(new StringReader((string)Settings.Default.Properties["SkinChain"]?.DefaultValue ?? ""))).Cast<string>()))
-                    Resources.MergedDictionaries.Add(rd);
+                try
+                {
+                    var skin = sm.LoadSkin(Settings.Default.Skin);
+                    SkinLoadingBehavior.UpdateSkin(skin.SkinParts);
+                    LogManager.GetLogger(GetType()).Info($"Successfully loaded skin: Name=\"{skin.GetIdentifier()?.Name ?? "null"}\" Path=\"{skin.Path}\"");
+                }
+                catch (Exception ex)
+                {
+                    LogManager.GetLogger(GetType()).Error("Failed to load skin! Attempting to load fallback skin", ex);
+                    SkinLoadingBehavior.UpdateSkin(sm.LoadFallbackSkin().SkinParts);
+                }
             }
 
             // Set priority: 

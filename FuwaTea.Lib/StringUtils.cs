@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace FuwaTea.Lib
@@ -28,6 +29,11 @@ namespace FuwaTea.Lib
         public static Dictionary<string, string> GetExtensionsInfo(this IFileHandler fh)
         {
             return GetExtensionsInfo(fh.SupportedFileTypes);
+        }
+
+        public static byte[] UnHexify(string hex)
+        {
+            return Enumerable.Range(0, hex.Length / 2).Select(x => Convert.ToByte(hex.Substring(x * 2, 2), 16)).ToArray();
         }
     }
 }

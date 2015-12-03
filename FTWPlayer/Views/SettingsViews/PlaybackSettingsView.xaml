@@ -7,8 +7,8 @@
          xmlns:properties="clr-namespace:FTWPlayer.Properties"
          xmlns:lex="http://wpflocalizeextension.codeplex.com"
          mc:Ignorable="d" 
-         Style="{DynamicResource SettingsTabItemStyle}"
          d:DesignHeight="300" d:DesignWidth="300"
+         Style="{DynamicResource {x:Type TabItem}}"
          Header="{lex:BLoc PlaybackSettings}"
          Tag="{DynamicResource PlaybackSettingsButtonContent}">
     <TabItem.Resources>

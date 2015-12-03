@@ -4,9 +4,14 @@
          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
          xmlns:lex="http://wpflocalizeextension.codeplex.com"
+         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+         xmlns:fuwa="https://github.com/OronDF343/FuwaTeaWin"
          mc:Ignorable="d"
          d:DesignHeight="300" d:DesignWidth="300"
          x:Name="Settings"
          Header="{lex:BLoc SettingsTabHeader}">
-    <TabControl Style="{DynamicResource SettingsTabControlStyle}" ItemsSource="{Binding SettingsTabs}"/>
+    <i:Interaction.Behaviors>
+        <fuwa:SkinLoadingBehavior>Layer2;SettingsTabStyle</fuwa:SkinLoadingBehavior>
+    </i:Interaction.Behaviors>
+    <TabControl ItemsSource="{Binding SettingsTabs}"/>
 </TabItem>

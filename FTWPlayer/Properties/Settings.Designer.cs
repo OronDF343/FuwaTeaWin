@@ -208,18 +208,14 @@ namespace FTWPlayer.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
-<ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <string>Default</string>
-  <string>pack://application:,,,/Skins/GlacierSkin.xaml</string>
-</ArrayOfString>")]
+        [global::System.Configuration.DefaultSettingValueAttribute("pack://application:,,,/Skins/Glacier")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public global::System.Collections.Specialized.StringCollection SkinChain {
+        public string Skin {
             get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["SkinChain"]));
+                return ((string)(this["Skin"]));
             }
             set {
-                this["SkinChain"] = value;
+                this["Skin"] = value;
             }
         }
         

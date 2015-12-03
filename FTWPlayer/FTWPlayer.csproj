@@ -131,6 +131,7 @@
     <Compile Include="Skins\ISkinManager.cs" />
     <Compile Include="Skins\ResourceDictionaryIdentifier.cs" />
     <Compile Include="Skins\SkinManager.cs" />
+    <Compile Include="Skins\SkinPackage.cs" />
     <Compile Include="ViewModels\SettingsViewModels\ISettingsTab.cs" />
     <Compile Include="ViewModels\SettingsViewModels\AllSettingsViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModels\PlaybackSettingsViewModel.cs" />
@@ -184,13 +185,53 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Skins\GlacierSkin.xaml">
+    <Page Include="Skins\Default\CommonStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skins\Default\EqualizerStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skins\Default\Layer0.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skins\Default\Layer1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skins\Default\Layer2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skins\Default\MainTabControlStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skins\Default\MainWindowStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skins\Default\SettingsTabStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skins\Glacier\CommonStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Skins\MainSkin.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Skins\Glacier\Layer0.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skins\Glacier\Layer1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skins\Glacier\Layer2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AlbumArtView.xaml">
       <Generator>MSBuild:Compile</Generator>

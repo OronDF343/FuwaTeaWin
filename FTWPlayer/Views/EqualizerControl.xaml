@@ -8,9 +8,13 @@
          xmlns:prop="clr-namespace:FTWPlayer.Properties"
          xmlns:converters1="clr-namespace:FTWPlayer.Converters"
          xmlns:lex="http://wpflocalizeextension.codeplex.com"
+         xmlns:fuwa="https://github.com/OronDF343/FuwaTeaWin"
          mc:Ignorable="d"
          d:DesignHeight="300" d:DesignWidth="300"
          Header="{lex:BLoc EqualizerTabHeader}">
+    <i:Interaction.Behaviors>
+        <fuwa:SkinLoadingBehavior>Layer2;EqualizerStyle</fuwa:SkinLoadingBehavior>
+    </i:Interaction.Behaviors>
     <TabItem.Resources>
         <converters1:FloatToDoubleConverter x:Key="F2DConv" />
         <converters1:UnitsConverter x:Key="UConv" />
@@ -54,13 +58,13 @@
                         </Grid.RowDefinitions>
                         <Label Content="{Binding Gain, Converter={StaticResource UConv}, ConverterParameter=dB}"
                                HorizontalAlignment="Center" />
-                        <Slider Grid.Row="1" Style="{DynamicResource EqualizerSliderStyle}"
+                        <Slider Grid.Row="1"
                                 Value="{Binding Gain, Converter={StaticResource F2DConv}}" Orientation="Vertical"
                                 HorizontalAlignment="Center"
                                 Minimum="{Binding Source={x:Static prop:Settings.Default}, Path=MaxEqualizerGain, Converter={StaticResource NegConv}}"
                                 Maximum="{Binding Source={x:Static prop:Settings.Default}, Path=MaxEqualizerGain}"
                                 Interval="1" LargeChange="1" SmallChange="0.1" IsSnapToTickEnabled="True"
-                                TickFrequency="0.1" />
+                                TickFrequency="0.1"/>
                         <Label Grid.Row="2"
                                Content="{Binding Frequency, Converter={StaticResource UConv}, ConverterParameter=Hz}"
                                HorizontalAlignment="Center" />

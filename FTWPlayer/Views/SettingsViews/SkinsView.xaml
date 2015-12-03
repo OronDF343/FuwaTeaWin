@@ -5,8 +5,8 @@
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
          xmlns:lex="http://wpflocalizeextension.codeplex.com"
          mc:Ignorable="d"
-         Style="{DynamicResource SettingsTabItemStyle}"
          d:DesignHeight="300" d:DesignWidth="300"
+         Style="{DynamicResource {x:Type TabItem}}"
          Header="{lex:BLoc Skins}"
          Tag="{DynamicResource SkinsButtonContent}">
     <TabControl Background="Transparent">

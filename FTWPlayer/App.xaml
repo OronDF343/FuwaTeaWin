@@ -6,13 +6,8 @@
              xmlns:viewModels="clr-namespace:FTWPlayer.ViewModels"
              xmlns:converters="clr-namespace:FTWPlayer.Converters"
              mc:Ignorable="d">
-
     <Application.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Skins/MainSkin.xaml" />
-                <!--<ResourceDictionary Source="Skins/GlacierSkin.xaml"/>-->
-            </ResourceDictionary.MergedDictionaries>
             <!--Global View Model Locator-->
             <viewModels:ViewModelLocator x:Key="Locator" />
             <Storyboard x:Key="VolumeFadeOut">

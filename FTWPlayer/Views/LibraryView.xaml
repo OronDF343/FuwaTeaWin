@@ -10,6 +10,9 @@
          mc:Ignorable="d" 
          d:DesignHeight="300" d:DesignWidth="300"
          Header="{lex:BLoc LibraryTabHeader}">
+    <i:Interaction.Behaviors>
+        <fuwa:SkinLoadingBehavior>Layer2</fuwa:SkinLoadingBehavior>
+    </i:Interaction.Behaviors>
     <Grid Background="Transparent" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

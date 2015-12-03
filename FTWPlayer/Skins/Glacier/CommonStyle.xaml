@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:skins="clr-namespace:FTWPlayer.Skins"><!-- External skins must also specify the assembly -->
+    <skins:ResourceDictionaryIdentifier x:Key="SkinIdentifier"
+                                        Id="OronDF343:Glacier"
+                                        Name="Ice -Glacier-"
+                                        Description="Adds more color to the default skin!"
+                                        Version="1.0"
+                                        Author="OronDF343"
+                                        Homepage="https://orondf343.wordpress.com/"/>
+</ResourceDictionary>

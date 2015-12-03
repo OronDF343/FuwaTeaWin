@@ -151,6 +151,15 @@ namespace FTWPlayer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HELP.
+        /// </summary>
+        internal static string HelpTabHeader {
+            get {
+                return ResourceManager.GetString("HelpTabHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hide Window.
         /// </summary>
         internal static string HideToolTip {

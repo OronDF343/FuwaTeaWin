@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Resources;
 using System.Windows;
 using System.Windows.Baml2006;
+using System.Windows.Markup;
 using System.Xaml;
 using FuwaTea.Lib;
 using log4net;
@@ -17,227 +20,191 @@ namespace FTWPlayer.Skins
     [UIPart("Skin Manager")]
     public class SkinManager : ISkinManager
     {
-        // TODO: Explain all this class even more. Possibly overcomplicated
-        public ObservableCollection<ResourceDictionary> LoadedSkins { get; } =
-            new ObservableCollection<ResourceDictionary> {DefaultSkin};
+        public ObservableCollection<SkinPackage> LoadedSkins { get; } = new ObservableCollection<SkinPackage>();
 
-        public Dictionary<string, string> IdsToFileNames { get; } = new Dictionary<string, string>
+        private const string DefaultSkin = "pack://application:,,,/Skins/Default";
+
+        public SkinPackage GetLoadedSkin(string source)
         {
-            {"Default", "Default"}
-        };
-
-        private static readonly ResourceDictionary DefaultSkin
-            = new ResourceDictionary {Source = new Uri("pack://application:,,,/Skins/MainSkin.xaml")};
+            return LoadedSkins.FirstOrDefault(s => s.Path == source);
+        }
 
         public void LoadAllSkins(ErrorCallback ec)
-        { 
+        {
+            // Built-in (explicit):
+            LoadSkinFromPackUri(DefaultSkin);
+            LoadSkinFromPackUri("pack://application:,,,/Skins/Glacier");
             // Installed dll skins:
             var skDir = Assembly.GetEntryAssembly().GetSpecificPath(false, "skins", true);
             var dllSkins =
                 Directory.EnumerateFiles(skDir, "*.dll")
                          .Concat(Directory.EnumerateDirectories(skDir)
                                           .SelectMany(d => Directory.EnumerateFiles(d, "*.dll")));
-            foreach (var skin in dllSkins.Where(d => !IdsToFileNames.ContainsValue(d)))
-                try { LoadSkinsFromBaml(skin); }
+            foreach (var skin in dllSkins)
+                try { LoadSkinFromBaml(skin); }
                 catch (Exception e) { ec(new Exception("Error loading BAML from file: " + skin, e)); }
             // Installed xaml skins:
-            var xamlSkins =
-                Directory.EnumerateFiles(skDir, "*.xaml")
-                         .Concat(Directory.EnumerateDirectories(skDir)
-                                          .SelectMany(d => Directory.EnumerateFiles(d, "*.xaml")));
+            var xamlSkins = Directory.EnumerateDirectories(skDir);
             // User xaml skins:
             var uSkDir = Assembly.GetEntryAssembly().GetSpecificPath(true, "skins", true);
-            var userXamlSkins =
-                Directory.EnumerateFiles(uSkDir, "*.xaml")
-                         .Concat(Directory.EnumerateDirectories(uSkDir)
-                                          .SelectMany(d => Directory.EnumerateFiles(d, "*.xaml")));
+            var userXamlSkins = Directory.EnumerateDirectories(uSkDir);
             xamlSkins = xamlSkins.Concat(userXamlSkins);
-            foreach (var skin in xamlSkins.Where(s => !IdsToFileNames.ContainsValue(s)))
-                try { if (!IdsToFileNames.ContainsValue(ShortenPath(skin))) LoadSkinFromXamlFile(skin); }
-                catch (Exception e) { ec(new Exception("Error loading XAML from file: " + skin, e)); }
+            foreach (var dir in xamlSkins)
+                try { LoadSkinFromXamlFiles(dir); }
+                catch (Exception e) { ec(new Exception("Error loading XAML from directory: " + dir, e)); }
         }
 
-        public IEnumerable<ResourceDictionary> LoadSkinChain(IEnumerable<string> files)
+        public SkinPackage LoadSkin(string source, HashSet<string> children = null)
         {
-            return files.Select(file =>
-                                IdsToFileNames.ContainsValue(file)
-                                    ? GetSkin(IdsToFileNames.Keys.First(k => IdsToFileNames[k] == file))
-                                    : file.StartsWith("pack://", StringComparison.OrdinalIgnoreCase)
-                                        ? LoadSkinFromXamlUri(file)
-                                        : file.Contains('|')
-                                           ? LoadSkinFromBaml(ExpandPath(file))
-                                           : LoadSkinFromXamlFile(ExpandPath(file)));
-        }
-
-        public ResourceDictionary LoadSkinFromXamlFile(string path)
-        {
-            using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            if (string.IsNullOrWhiteSpace(source))
+                throw new ArgumentNullException(nameof(source), "Attempted to load skin from null source!");
+            if (children?.Contains(source.ToLowerInvariant()) ?? false)
+                throw new InvalidOperationException($"Detected skin cyclic dependency! Path=\"{source}\" is referenced more than once!");
+            var f = GetLoadedSkin(source)
+                    ?? (source.StartsWith(PackUriStart, StringComparison.OrdinalIgnoreCase)
+                                                                              ? LoadSkinFromPackUri(source)
+                                                                              : source.EndsWith(".dll", StringComparison.OrdinalIgnoreCase)
+                                                                                    ? LoadSkinFromBaml(ExpandPath(source))
+                                                                                    : LoadSkinFromXamlFiles(ExpandPath(source)));
+            if (source == DefaultSkin) return f;
+            SkinPackage parent;
+            if (!f.HasIdentifier() || string.IsNullOrWhiteSpace(f.GetIdentifier()?.Parent)) parent = LoadFallbackSkin();
+            else
             {
-                var obj = XamlReader.Load(fs);
-                if (!(obj is ResourceDictionary))
-                {
-                    LogManager.GetLogger(GetType()).Warn("XAML file is not a skin: " + path);
-                    return null;
-                }
-                var dict = (ResourceDictionary)obj;
-                if (!dict.Contains("SkinIdentifier"))
-                {
-                    LogManager.GetLogger(GetType()).Warn("XAML file is missing Skin Identifier: " + path);
-                    return null;
-                }
-                IdsToFileNames.Add(dict.GetIdentifier().Id, ShortenPath(path));
-                LoadedSkins.Add(dict);
-                return dict;
+                var ch = children ?? new HashSet<string>();
+                ch.Add(source);
+                parent = LoadSkin(f.GetIdentifier()?.Parent, ch);
             }
+            foreach (var part in parent.SkinParts.Where(part => !f.SkinParts.ContainsKey(part.Key)))
+                f.SkinParts.Add(part.Key, part.Value);
+            return f;
         }
 
-        public ResourceDictionary LoadSkinFromXamlUri(string path)
+        public SkinPackage LoadFallbackSkin()
         {
-            return new ResourceDictionary {Source = new Uri(path)};
+            return LoadSkin(DefaultSkin);
         }
 
-        public void LoadSkinsFromBaml(string dll)
+        public SkinPackage LoadSkinFromXamlFiles(string dir)
         {
-            var a = Assembly.LoadFrom(dll);
-            var ms = a.GetManifestResourceNames().Where(m => m.EndsWith(".xaml", StringComparison.OrdinalIgnoreCase)).ToList();
+            var shortDir = ShortenPath(dir);
+            var f = GetLoadedSkin(shortDir);
+            if (f != null) return f;
+
             var found = false;
-            foreach (var r in ms.Select(m => a.GetManifestResourceStream(m)))
+            var allDicts = new Dictionary<string, ResourceDictionary>();
+            foreach (var path in Directory.EnumerateFiles(dir, "*.xaml"))
             {
-                var reader = new Baml2006Reader(r);
-                var writer = new XamlObjectWriter(reader.SchemaContext);
-                while (reader.Read()) { writer.WriteNode(reader); }
-                var obj = writer.Result;
-                if (!(obj is ResourceDictionary)) continue;
-                var dict = (ResourceDictionary)obj;
-                if (!dict.Contains("SkinIdentifier")) continue;
-                found = true;
-                if (IdsToFileNames.ContainsKey(dict.GetIdentifier().Id)) continue;
-                IdsToFileNames.Add(dict.GetIdentifier().Id, ShortenPath(dll + "|" + r));
-                LoadedSkins.Add(dict);
-            }
-            if (!found) LogManager.GetLogger(GetType()).Warn("DLL file contains no skins: " + dll);
-        }
-
-        public ResourceDictionary LoadSkinFromBaml(string dllResource)
-        {
-            var split = dllResource.Split('|');
-            split[0] += ".dll";
-            var a = Assembly.LoadFrom(split[0]);
-            var r = a.GetManifestResourceStream(split[1]);
-            if (r == null) throw new KeyNotFoundException($"{dllResource} not found!");
-            var reader = new Baml2006Reader(r);
-            var writer = new XamlObjectWriter(reader.SchemaContext);
-            while (reader.Read()) { writer.WriteNode(reader); }
-            var obj = writer.Result;
-            if (!(obj is ResourceDictionary)) throw new InvalidDataException($"{dllResource} inavlid resource type!");
-            var dict = (ResourceDictionary)obj;
-            if (!dict.Contains("SkinIdentifier")) throw new KeyNotFoundException($"{dllResource} missing Skin Identifier!");
-            IdsToFileNames.Add(dict.GetIdentifier().Id, ShortenPath(dllResource));
-            LoadedSkins.Add(dict);
-            return dict;
-        }
-
-        public ResourceDictionary GetSkin(string id)
-        {
-            return LoadedSkins.First(d => d.GetIdentifier().Id == id);
-        }
-
-        public List<ResourceDictionary> CreateSimpleSkinChain(string id)
-        {
-            var chain = new List<ResourceDictionary>();
-            while (id != null)
-            {
-                var s = GetSkin(id);
-                chain.Insert(0, s);
-                id = s.GetIdentifier().Id;
-            }
-            var t = VerifySkinChain(chain);
-            if (!string.IsNullOrWhiteSpace(t))
-                throw new InvalidOperationException("Invalid skin dependency, report to skin author(s): " + t);
-            return chain;
-        }
-
-        public string VerifySkinChain(IEnumerable<ResourceDictionary> chain)
-        {
-            // Base, Addon, Color skins can each depend on an Addon or Base skin.
-            // Base can only appear right after the skin it depends on.
-            // Multiple Colors or Addons are allowed.
-            // See ResourceDictionaryIdentifier.cs for more info.
-            if (LogManager.GetLogger(GetType()).IsDebugEnabled)
-                LogManager.GetLogger(GetType()).Debug("Verifying skin chain:\n\t" + string.Join("\n\t", chain));
-            var lastType = ResourceDictionaryType.Standalone;
-            string lastBase = null, lastNonColor = null, lastId = null, ret = null;
-            foreach (var i in chain.Select(rd => rd.GetIdentifier()))
-            {
-                // This check applies to the first skin
-                if (lastId == null
-                    && (i.SkinType == ResourceDictionaryType.Color || i.SkinType == ResourceDictionaryType.Addon))
-                    ret = "Missing dependency - only Base or Standalone can be first in the chain.";
-                // Make sure standalone is standalone
-                if (lastId != null && lastType == ResourceDictionaryType.Standalone)
-                    ret = lastId + " is Standalone, can't load other skins after a standalone skin.";
-                // Check the order makes sense, with the exception that Base can follow Addon
-                if (i.SkinType < lastType
-                    && (i.SkinType != ResourceDictionaryType.Base || lastType != ResourceDictionaryType.Addon))
-                    ret = "Bad skin order - " + lastId + " was "
-                           + Enum.GetName(typeof(ResourceDictionaryType), lastType)
-                           + ", " + i.Id + " is "
-                           + Enum.GetName(typeof(ResourceDictionaryType), i.SkinType) + ".";
-                // Check that the dependency is correct (for Addon and Color)
-                if ((i.Parent != lastBase || i.Parent != lastNonColor)
-                    && (i.SkinType == ResourceDictionaryType.Color || i.SkinType == ResourceDictionaryType.Addon))
-                    ret = "Incorrect dependency - " + i.Id + " depends on " + i.Parent + ", not " + lastBase
-                          + (lastBase != lastNonColor ? " or " + lastNonColor : "") + ".";
-                // Check that the dependency is correct (for Base)
-                if (i.Parent != lastId && i.SkinType == ResourceDictionaryType.Base)
-                    ret = "Incorrect dependency - " + i.Id + " depends on " + i.Parent + ", not " + lastId + ".";
-
-                if (ret != null)
+                using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    LogManager.GetLogger(GetType()).Warn(ret);
-                    return ret;
+                    var obj = XamlReader.Load(fs, new ParserContext { BaseUri = new Uri(path) });
+                    if (!(obj is ResourceDictionary))
+                    {
+                        LogManager.GetLogger(GetType()).Warn("XAML file is not a skin: " + path);
+                        continue;
+                    }
+                    if (path != null) allDicts.Add(Path.GetFileNameWithoutExtension(path).ToLowerInvariant(), (ResourceDictionary)obj);
+                    found = true;
                 }
-                lastType = i.SkinType;
-                lastId = i.Id;
-                if (lastType == ResourceDictionaryType.Base) lastBase = lastId;
-                if (lastType != ResourceDictionaryType.Color) lastNonColor = lastId;
             }
-            LogManager.GetLogger(GetType()).Debug("Skin chain was OK.");
-            return null;
+            if (!found)
+            {
+                LogManager.GetLogger(GetType()).Error("Directory contains no valid skin files: " + dir);
+                return null;
+            }
+            if (!allDicts.HasIdentifier()) LogManager.GetLogger(GetType()).Warn("XAML files are missing Skin Identifier: " + dir);
+            var pkg = new SkinPackage(shortDir, allDicts);
+            LoadedSkins.Add(pkg);
+            return pkg;
         }
 
-        public IEnumerable<ResourceDictionary> GetAvailableChildSkins(string id)
+        private const string PackUriStart = "pack://application:,,,/";
+        public SkinPackage LoadSkinFromPackUri(string uri)
         {
-            return LoadedSkins.Where(rd => rd.GetIdentifier().Parent == id);
+            if (!uri.StartsWith(PackUriStart)) throw new FormatException("Missing valid application pack URI prefix!");
+            var f = GetLoadedSkin(uri);
+            if (f != null) return f;
+
+            var shortUri = uri.Substring(PackUriStart.Length);
+            Assembly a;
+            if (uri.Contains(";"))
+            {
+                try
+                {
+                    var ai = uri.Substring(0, uri.IndexOf("/", StringComparison.Ordinal)).Split(';');
+                    if (ai.Length < 2 || !ai[ai.Length - 1].Equals("component", StringComparison.OrdinalIgnoreCase))
+                        throw new FormatException("Missing \"component\" in referenced assembly definition!");
+                    var an = new AssemblyName { Name = ai[0] };
+                    var hasVersion = ai[1].Contains(".");
+                    if (hasVersion) an.Version = Version.Parse(ai[1]);
+                    if (hasVersion && ai.Length > 3) an.SetPublicKey(StringUtils.UnHexify(ai[2]));
+                    else if (!hasVersion && ai.Length > 2) an.SetPublicKey(StringUtils.UnHexify(ai[1]));
+                    a = Assembly.Load(an);
+                }
+                catch (Exception e)
+                {
+                    throw new FormatException("Failed to get referenced assembly from pack URI!", e);
+                }
+            }
+            else a = Assembly.GetCallingAssembly();
+            var allDicts = GetResourcesFromAssembly(a, s => s.StartsWith(shortUri, StringComparison.OrdinalIgnoreCase));
+
+            if (!allDicts.HasIdentifier()) LogManager.GetLogger(GetType()).Warn("Assembly \"" + a.GetName().Name + "\" is missing Skin Identifier in path: " + shortUri);
+            var pkg = new SkinPackage(uri, allDicts);
+            LoadedSkins.Add(pkg);
+            return pkg;
         }
 
-        public IEnumerable<ResourceDictionary> GetAvailableChildSkins(IEnumerable<ResourceDictionary> chain)
+        public SkinPackage LoadSkinFromBaml(string dll)
         {
-            chain = chain.ToList();
-            if (!chain.Any())
-                return LoadedSkins.Where(r => r.GetIdentifier().SkinType == ResourceDictionaryType.Standalone
-                                              || r.GetIdentifier().SkinType == ResourceDictionaryType.Base);
-            // check validity to prevent edge cases
-            if (chain.First().GetIdentifier().SkinType == ResourceDictionaryType.Standalone
-                || !string.IsNullOrWhiteSpace(VerifySkinChain(chain)))
-                return new List<ResourceDictionary>();
-            // !color
-            var ch = chain.Where(r => r.GetIdentifier().SkinType != ResourceDictionaryType.Color).ToList();
-            // last!color
-            var la = ch.Last().GetIdentifier();
-            // last
-            var li = chain.Last().GetIdentifier();
-            // get children of last!color
-            var l = GetAvailableChildSkins(la.Id);
-            // Addon and Color allow multiple dependency, so if last!color is not base,
-            // find last base and add children which don't have to directly follow (!base):
-            if (la.SkinType != ResourceDictionaryType.Base)
-                l = l.Union(GetAvailableChildSkins(ch.Last(r => r.GetIdentifier().SkinType == ResourceDictionaryType.Base).GetIdentifier().Id)
-                                .Where(r => r.GetIdentifier().SkinType != ResourceDictionaryType.Base));
-            // If last is color, only color can follow
-            if (li.SkinType == ResourceDictionaryType.Color)
-                l = l.Where(r => r.GetIdentifier().SkinType == ResourceDictionaryType.Color);
-            return l;
+            var shortDll = ShortenPath(dll);
+            var f = GetLoadedSkin(shortDll);
+            if (f != null) return f;
+            
+            var allDicts = GetResourcesFromAssembly(Assembly.LoadFrom(dll), s => true);
+
+            if (!allDicts.HasIdentifier()) LogManager.GetLogger(GetType()).Warn("DLL file is missing Skin Identifier: " + dll);
+            var pkg = new SkinPackage(shortDll, allDicts);
+            LoadedSkins.Add(pkg);
+            return pkg;
+        }
+
+        private Dictionary<string, ResourceDictionary> GetResourcesFromAssembly(Assembly a, Func<string, bool> pathFilter)
+        {
+            var found = false;
+            var allDicts = new Dictionary<string, ResourceDictionary>();
+            var stream = a.GetManifestResourceStream(a.GetName().Name + ".g.resources");
+            if (stream == null)
+            {
+                LogManager.GetLogger(GetType()).Error("Assembly contains no resources: " + a.GetName().Name);
+                return null;
+            }
+            using (var rr = new ResourceReader(stream))
+            {
+                foreach (var m in rr.Cast<DictionaryEntry>()
+                                    .Where(e => ((string)e.Key).EndsWith(".baml", StringComparison.OrdinalIgnoreCase))
+                                    .Where(e => pathFilter((string)e.Key)))
+                {
+                    using (var r = (Stream)m.Value)
+                    {
+                        if (r == null) continue;
+                        var reader = new Baml2006Reader(r, new XamlReaderSettings { LocalAssembly = a, BaseUri = new Uri(PackUriStart + (string)m.Key) });
+                        var writer = new XamlObjectWriter(reader.SchemaContext);
+                        while (reader.Read()) { writer.WriteNode(reader); }
+                        var obj = writer.Result;
+                        if (!(obj is ResourceDictionary)) continue;
+                        var k = ((string)m.Key).Substring(((string)m.Key).LastIndexOf('/') + 1);
+                        allDicts.Add(k.Substring(0, k.Length - 5).ToLowerInvariant(), (ResourceDictionary)obj);
+                        found = true;
+                    }
+                }
+            }
+            if (!found)
+            {
+                LogManager.GetLogger(GetType()).Error("Assembly contains no valid skin files: " + a.GetName().Name);
+                return null;
+            }
+            return allDicts;
         }
 
         public string ExpandPath(string path)
@@ -255,9 +222,22 @@ namespace FTWPlayer.Skins
 
     public static class ExtensionMethods
     {
-        public static ResourceDictionaryIdentifier GetIdentifier(this ResourceDictionary rd)
+        [CanBeNull]
+        public static ResourceDictionaryIdentifier GetIdentifier(this SkinPackage rd)
         {
-            return ((ResourceDictionaryIdentifier)rd["SkinIdentifier"]);
+            return rd.HasIdentifier() ? rd.SkinParts["commonstyle"]["SkinIdentifier"] as ResourceDictionaryIdentifier : null;
+        }
+
+        public static bool HasIdentifier(this SkinPackage rd)
+        {
+            if (rd == null) return false;
+            return rd.SkinParts.HasIdentifier();
+        }
+
+        public static bool HasIdentifier(this Dictionary<string, ResourceDictionary> rd)
+        {
+            if (rd == null) return false;
+            return rd.ContainsKey("commonstyle") && rd["commonstyle"].Contains("SkinIdentifier");
         }
     }
 }
