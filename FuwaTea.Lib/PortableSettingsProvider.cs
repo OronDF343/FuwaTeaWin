@@ -68,7 +68,7 @@ namespace FuwaTea.Lib
         {
             get
             {
-                return (Assembly.GetEntryAssembly().GetName().Name);
+                return Assembly.GetEntryAssembly().GetName().Name;
             }
             set { }
         }

@@ -29,7 +29,7 @@ namespace WavpackDecoder
                     // wrap call here
                     bs = bs_read(bs);
                 }
-                bs.sr = (bs.buf[bs.buf_index] & 0xff);
+                bs.sr = bs.buf[bs.buf_index] & 0xff;
             }
 		
             if ((bs.sr & 1) > 0)
@@ -51,7 +51,7 @@ namespace WavpackDecoder
             int uns_buf;
             int retval;
 		
-            while ((nbits) > bs.bc)
+            while (nbits > bs.bc)
             {
                 bs.ptr++;
                 bs.buf_index++;
@@ -69,16 +69,16 @@ namespace WavpackDecoder
 		
             if (bs.bc > 32)
             {
-                bs.bc -= (nbits);
-                bs.sr = (bs.ptr) >> (8 - bs.bc);
+                bs.bc -= nbits;
+                bs.sr = bs.ptr >> (8 - bs.bc);
             }
             else
             {
-                bs.bc -= (nbits);
-                bs.sr >>= (nbits);
+                bs.bc -= nbits;
+                bs.sr >>= nbits;
             }
 		
-            return (retval);
+            return retval;
         }
 	
         internal static Bitstream bs_open_read(byte[] stream, short buffer_start, short buffer_end, System.IO.BinaryReader file, int file_bytes, int passed)
@@ -102,7 +102,7 @@ namespace WavpackDecoder
             {
                 /* Strange to set an index to -1, but the very first call to getbit will iterate this */
                 bs.buf_index = - 1;
-                bs.ptr = (short) (- 1);
+                bs.ptr = (short) - 1;
             }
 		
             return bs;
@@ -137,7 +137,7 @@ namespace WavpackDecoder
 			
                 if (bytes_read > 0)
                 {
-                    bs.end = (short) (bytes_read);
+                    bs.end = (short) bytes_read;
                     bs.file_bytes -= bytes_read;
                 }
                 else

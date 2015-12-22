@@ -95,8 +95,8 @@ namespace FuwaTea.Playback.NAudio.Utils
                     }
                     _receivedBytes = 0;
                 }
-                var bytesLeft = ((_metaInt - _receivedBytes) > count) ?
-                                  count : (_metaInt - _receivedBytes);
+                var bytesLeft = _metaInt - _receivedBytes > count ?
+                                  count : _metaInt - _receivedBytes;
                 var result = _netStream.Read(buffer, offset, bytesLeft);
                 _receivedBytes += result;
                 return result;

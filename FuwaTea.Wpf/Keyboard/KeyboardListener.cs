@@ -92,8 +92,7 @@ namespace FuwaTea.Wpf.Keyboard
                 {
                     // Captures the character(s) pressed only on WM_KEYDOWN
                     var chars = InterceptKeys.VkCodeToString((uint)Marshal.ReadInt32(lParam),
-                        (wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_KEYDOWN /*||
-                         wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_SYSKEYDOWN*/));
+                        wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_KEYDOWN);
 
                     _hookedKeyboardCallbackAsync.BeginInvoke((InterceptKeys.KeyEvent)wParam.ToUInt32(), Marshal.ReadInt32(lParam), chars, null, null);
                 }

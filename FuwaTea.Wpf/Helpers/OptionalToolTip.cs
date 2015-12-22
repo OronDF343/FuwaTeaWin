@@ -41,7 +41,7 @@ namespace FuwaTea.Wpf.Helpers
 
         private static void ToolTipEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var elem = ((FrameworkElement)d);
+            var elem = (FrameworkElement)d;
             if ((bool)e.NewValue)
             {
                 if (elem.ToolTip != null) ((ToolTip)elem.ToolTip).Visibility = Visibility.Visible;
@@ -99,7 +99,7 @@ namespace FuwaTea.Wpf.Helpers
 
         private static void ToolTipFlowDirectionUpdateModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var elem = ((FrameworkElement)d);
+            var elem = (FrameworkElement)d;
             if (elem.ToolTip != null) FlowDirectionUpdater.SetAutoUpdateMode((DependencyObject)elem.ToolTip, (AutoUpdateMode)e.NewValue);
         }
 

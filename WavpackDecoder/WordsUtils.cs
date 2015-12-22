@@ -22,7 +22,7 @@ namespace WavpackDecoder
         // these control the time constant "slow_level" which is used for hybrid mode
         // that controls bitrate as a function of residual level (HYBRID_BITRATE).
         internal static int SLS = 8;
-        internal static int SLO = ((1 << (SLS - 1)));
+        internal static int SLO = 1 << (SLS - 1);
 	
 	
         // these control the time constant of the 3 median level breakpoints
@@ -319,7 +319,7 @@ namespace WavpackDecoder
 					
                         if (w.zeros_acc > 0)
                         {
-                            c[entidx].slow_level -= ((c[entidx].slow_level + SLO) >> SLS);
+                            c[entidx].slow_level -= (c[entidx].slow_level + SLO) >> SLS;
                             buffer[buffer_counter] = 0;
                             buffer_counter++;
                             continue;
@@ -362,7 +362,7 @@ namespace WavpackDecoder
 					
                         if (w.zeros_acc > 0)
                         {						
-                            c[entidx].slow_level -= ((c[entidx].slow_level + SLO) >> SLS);
+                            c[entidx].slow_level -= (c[entidx].slow_level + SLO) >> SLS;
                             w.c[0].median[0] = 0;
                             w.c[0].median[1] = 0;
                             w.c[0].median[2] = 0;
@@ -397,12 +397,12 @@ namespace WavpackDecoder
 					
                         bs.sr = bs.sr | (uns_buf << bs.bc); // values in buffer must be unsigned
 					
-                        next8 = (bs.sr & 0xff);
+                        next8 = bs.sr & 0xff;
 					
                         bs.bc += 8;
                     }
                     else
-                        next8 = (bs.sr & 0xff);
+                        next8 = bs.sr & 0xff;
 				
                     if (next8 == 0xff)
                     {
@@ -413,13 +413,13 @@ namespace WavpackDecoder
                         ones_count = 8;
                         bs = BitsUtils.getbit(bs);
 					
-                        while (ones_count < (LIMIT_ONES + 1) && bs.bitval > 0)
+                        while (ones_count < LIMIT_ONES + 1 && bs.bitval > 0)
                         {
                             ones_count++;
                             bs = BitsUtils.getbit(bs);
                         }
 					
-                        if (ones_count == (LIMIT_ONES + 1))
+                        if (ones_count == LIMIT_ONES + 1)
                         {
                             break;
                         }
@@ -486,14 +486,14 @@ namespace WavpackDecoder
                 if (ones_count == 0)
                 {
                     low = 0;
-                    high = (((c[entidx].median[0]) >> 4) + 1) - 1;
+                    high = (c[entidx].median[0] >> 4) + 1 - 1;
 
                     // for c# I replace the division by DIV0 with >> 7
-                    c[entidx].median[0] -= (((c[entidx].median[0] + (DIV0 - 2)) >> 7) * 2);
+                    c[entidx].median[0] -= ((c[entidx].median[0] + (DIV0 - 2)) >> 7) * 2;
                 }
                 else
                 {
-                    low = (((c[entidx].median[0]) >> 4) + 1);
+                    low = (c[entidx].median[0] >> 4) + 1;
 
                     // for c# I replace the division by DIV0 with >> 7
                     c[entidx].median[0] += ((c[entidx].median[0] + DIV0) >> 7) * 5;
@@ -501,26 +501,26 @@ namespace WavpackDecoder
                     if (ones_count == 1)
                     {
 					
-                        high = low + (((c[entidx].median[1]) >> 4) + 1) - 1;
+                        high = low + (c[entidx].median[1] >> 4) + 1 - 1;
                         // for c# I replace the division by DIV1 with >> 6
                         c[entidx].median[1] -= ((c[entidx].median[1] + (DIV1 - 2)) >> 6) * 2;
                     }
                     else
                     {
-                        low += (((c[entidx].median[1]) >> 4) + 1);
+                        low += (c[entidx].median[1] >> 4) + 1;
                         // for c# I replace the division by DIV1 with >> 6
                         c[entidx].median[1] += ((c[entidx].median[1] + DIV1) >> 6) * 5;
 					
                         if (ones_count == 2)
                         {
-                            high = low + (((c[entidx].median[2]) >> 4) + 1) - 1;
+                            high = low + (c[entidx].median[2] >> 4) + 1 - 1;
                             // for c# I replace the division by DIV2 with >> 5
                             c[entidx].median[2] -= ((c[entidx].median[2] + (DIV2 - 2)) >> 5) * 2;
                         }
                         else
                         {
-                            low += (ones_count - 2) * (((c[entidx].median[2]) >> 4) + 1);
-                            high = low + (((c[entidx].median[2]) >> 4) + 1) - 1;
+                            low += (ones_count - 2) * ((c[entidx].median[2] >> 4) + 1);
+                            high = low + (c[entidx].median[2] >> 4) + 1 - 1;
                             // for c# I replace the division by DIV2 with >> 5
                             c[entidx].median[2] += ((c[entidx].median[2] + DIV2) >> 5) * 5;
                         }
@@ -576,31 +576,31 @@ namespace WavpackDecoder
             }
             else
             {
-                return (csamples / 2);
+                return csamples / 2;
             }
         }
 	
         internal static int count_bits(int av)
         {
-            if (av < (1 << 8))
+            if (av < 1 << 8)
             {
                 return nbits_table[av];
             }
             else
             {
-                if (av < (1 << 16))
+                if (av < 1 << 16)
                 {
-                    return nbits_table[(av>>8)] + 8;
+                    return nbits_table[av>>8] + 8;
                 }
                 else
                 {
-                    if (av < (1 << 24))
+                    if (av < 1 << 24)
                     {
-                        return nbits_table[(av>>16)] + 16;
+                        return nbits_table[av>>16] + 16;
                     }
                     else
                     {
-                        return nbits_table[(av>>24)] + 24;
+                        return nbits_table[av>>24] + 24;
                     }
                 }
             }
@@ -620,7 +620,7 @@ namespace WavpackDecoder
 		
             if (bitcount == 0)
             {
-                return (0);
+                return 0;
             }
 		
             code = BitsUtils.getbits(bitcount - 1, bs);
@@ -639,7 +639,7 @@ namespace WavpackDecoder
                     ++code;
             }
 		
-            return (code);
+            return code;
         }
 	
 	
@@ -662,16 +662,16 @@ namespace WavpackDecoder
         {
             int dbits;
 		
-            if ((avalue += (avalue >> 9)) < (1 << 8))
+            if ((avalue += avalue >> 9) < 1 << 8)
             {
                 dbits = nbits_table[(int) avalue];
                 return (dbits << 8) + log2_table[(int) (avalue << (9 - dbits)) & 0xff];
             }
             else
             {
-                if (avalue < (1L << 16))
+                if (avalue < 1L << 16)
                     dbits = nbits_table[(int) (avalue >> 8)] + 8;
-                else if (avalue < (1L << 24))
+                else if (avalue < 1L << 24)
                     dbits = nbits_table[(int) (avalue >> 16)] + 16;
                 else
                     dbits = nbits_table[(int) (avalue >> 24)] + 24;
@@ -713,9 +713,9 @@ namespace WavpackDecoder
             value_Renamed = exp2_table[log & 0xff] | 0x100;
 		
             if ((log >>= 8) <= 9)
-                return ((int) (value_Renamed >> (9 - log)));
+                return (int) (value_Renamed >> (9 - log));
             else
-                return ((int) (value_Renamed << (log - 9)));
+                return (int) (value_Renamed << (log - 9));
         }
 	
 	
@@ -728,7 +728,7 @@ namespace WavpackDecoder
             int result;
 		
             if ((result = (int) weight << 3) > 0)
-                result += ((result + 64) >> 7);
+                result += (result + 64) >> 7;
 		
             return result;
         }

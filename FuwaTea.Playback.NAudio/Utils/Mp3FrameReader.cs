@@ -18,7 +18,7 @@ namespace FuwaTea.Playback.NAudio.Utils
         private IMp3FrameDecompressor _decompressor;
         private byte[] _remainingBytes;
 
-        public override sealed int Read(byte[] buffer, int offset, int count)
+        public sealed override int Read(byte[] buffer, int offset, int count)
         {
             var readBytes = 0;
             do

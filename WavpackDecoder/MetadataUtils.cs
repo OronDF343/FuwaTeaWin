@@ -52,7 +52,7 @@ namespace WavpackDecoder
                     return Defines.FALSE;
                 }
 			
-                wpmd.byte_length += ((int) tchar << 9);
+                wpmd.byte_length += (int) tchar << 9;
 			
                 try
                 {
@@ -64,7 +64,7 @@ namespace WavpackDecoder
                     return Defines.FALSE;
                 }
 			
-                wpmd.byte_length += ((int) tchar << 17);
+                wpmd.byte_length += (int) tchar << 17;
                 wpmd.bytecount += 2;
             }
 		

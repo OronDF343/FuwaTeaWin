@@ -74,11 +74,11 @@ namespace WavpackDecoder
                         temp = src[counter2];
                         dst[counter] = (byte) temp;
                         counter++;
-                        dst[counter] = (byte) (SupportClass.URShift(temp, 8));
+                        dst[counter] = (byte) SupportClass.URShift(temp, 8);
                         counter++;
-                        dst[counter] = (byte) (SupportClass.URShift(temp, 16));
+                        dst[counter] = (byte) SupportClass.URShift(temp, 16);
                         counter++;
-                        dst[counter] = (byte) (SupportClass.URShift(temp, 24));
+                        dst[counter] = (byte) SupportClass.URShift(temp, 24);
                         counter++;
                         counter2++;
                         samcnt--;

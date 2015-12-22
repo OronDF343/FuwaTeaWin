@@ -58,7 +58,7 @@ namespace WavpackDecoder
                 {
                     wpc.error_message = "not compatible with this version of WavPack file!";
                     wpc.error = true;
-                    return (wpc);
+                    return wpc;
                 }
 			
                 if (wps.wphdr.block_samples > 0 && wps.wphdr.total_samples != - 1)
@@ -70,7 +70,7 @@ namespace WavpackDecoder
 			
                 wpc.stream = wps;
 			
-                if ((UnpackUtils.unpack_init(wpc)) == Defines.FALSE)
+                if (UnpackUtils.unpack_init(wpc) == Defines.FALSE)
                 {
                     wpc.error = true;
                     return wpc;
@@ -83,7 +83,7 @@ namespace WavpackDecoder
             wpc.config.bytes_per_sample = (int) ((wps.wphdr.flags & Defines.BYTES_STORED) + 1);
             wpc.config.float_norm_exp = wps.float_norm_exp;
 		
-            wpc.config.bits_per_sample = (int) ((wpc.config.bytes_per_sample * 8) - ((wps.wphdr.flags & Defines.SHIFT_MASK) >> Defines.SHIFT_LSB));
+            wpc.config.bits_per_sample = (int) (wpc.config.bytes_per_sample * 8 - ((wps.wphdr.flags & Defines.SHIFT_MASK) >> Defines.SHIFT_LSB));
 		
             if ((wpc.config.flags & Defines.FLOAT_DATA) > 0)
             {
@@ -200,7 +200,7 @@ namespace WavpackDecoder
 				
                     if (wps.wphdr.block_samples == 0 || wps.sample_index == wps.wphdr.block_index)
                     {
-                        if ((UnpackUtils.unpack_init(wpc)) == Defines.FALSE)
+                        if (UnpackUtils.unpack_init(wpc) == Defines.FALSE)
                             break;
                     }
                 }
@@ -263,7 +263,7 @@ namespace WavpackDecoder
                     break;
             }
 		
-            return (samples_unpacked);
+            return samples_unpacked;
         }
 
 
@@ -277,11 +277,11 @@ namespace WavpackDecoder
 		
             if (null != wpc)
             {
-                return (wpc.total_samples);
+                return wpc.total_samples;
             }
             else
             {
-                return (long) (- 1);
+                return (long) - 1;
             }
         }
 	
@@ -293,7 +293,7 @@ namespace WavpackDecoder
             if (null != wpc)
                 return wpc.stream.sample_index;
 		
-            return (long) (- 1);
+            return (long) - 1;
         }
 
 
@@ -593,7 +593,7 @@ namespace WavpackDecoder
                     wphdr.ckSize += (long) (buffer[4] & 0xFF);
 				
                     wphdr.version = (short) (buffer[9] << 8);
-                    wphdr.version = (short) (wphdr.version + (short) (buffer[8]));
+                    wphdr.version = (short) (wphdr.version + (short) buffer[8]);
 				
                     wphdr.track_no = buffer[10];
                     wphdr.index_no = buffer[11];
@@ -606,7 +606,7 @@ namespace WavpackDecoder
                     wphdr.block_index = (long) ((buffer[19] & 0xFF) << 24);
                     wphdr.block_index += (long) ((buffer[18] & 0xFF) << 16);
                     wphdr.block_index += (long) ((buffer[17] & 0xFF) << 8);
-                    wphdr.block_index += ((long) (buffer[16]) & 0xFF);
+                    wphdr.block_index += (long) buffer[16] & 0xFF;
 				
                     wphdr.block_samples = (long) ((buffer[23] & 0xFF) << 24);
                     wphdr.block_samples += (long) ((buffer[22] & 0xFF) << 16);

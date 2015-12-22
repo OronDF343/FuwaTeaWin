@@ -35,9 +35,9 @@ namespace WavpackDecoder
             wps.crc = 0xffffffff;
             wps.wvbits.sr = 0;
 		
-            while ((MetadataUtils.read_metadata_buff(wpc, wpmd)) == Defines.TRUE)
+            while (MetadataUtils.read_metadata_buff(wpc, wpmd) == Defines.TRUE)
             {
-                if ((MetadataUtils.process_metadata(wpc, wpmd)) == Defines.FALSE)
+                if (MetadataUtils.process_metadata(wpc, wpmd) == Defines.FALSE)
                 {
                     wpc.error = true;
                     wpc.error_message = "invalid metadata!";
@@ -82,7 +82,7 @@ namespace WavpackDecoder
             else if (wpmd.byte_length > 0)
             {
                 int len = wpmd.byte_length & 1;
-                wps.wvbits = BitsUtils.bs_open_read(wpc.read_buffer, (short) (- 1), (short) wpc.read_buffer.Length, wpc.infile, (wpmd.byte_length + len), 1);
+                wps.wvbits = BitsUtils.bs_open_read(wpc.read_buffer, (short) - 1, (short) wpc.read_buffer.Length, wpc.infile, wpmd.byte_length + len, 1);
             }
 		
             return Defines.TRUE;
@@ -487,7 +487,7 @@ namespace WavpackDecoder
 			
                 for (int q = 0; q < sample_count; q++)
                 {
-                    bf_abs = (buffer[buffer_counter] < 0?- buffer[buffer_counter]:buffer[buffer_counter]);
+                    bf_abs = buffer[buffer_counter] < 0?- buffer[buffer_counter]:buffer[buffer_counter];
 				
                     if (bf_abs > mute_limit)
                     {
@@ -542,10 +542,10 @@ namespace WavpackDecoder
 				
                     for (buffer_counter = 0; buffer_counter < sample_count * 2; buffer_counter += 2)
                     {
-                        buffer[buffer_counter] += (buffer[buffer_counter + 1] -= (buffer[buffer_counter] >> 1));
+                        buffer[buffer_counter] += buffer[buffer_counter + 1] -= buffer[buffer_counter] >> 1;
 					
-                        bf_abs = (buffer[buffer_counter] < 0?- buffer[buffer_counter]:buffer[buffer_counter]);
-                        bf1_abs = (buffer[buffer_counter + 1] < 0?- buffer[buffer_counter + 1]:buffer[buffer_counter + 1]);
+                        bf_abs = buffer[buffer_counter] < 0?- buffer[buffer_counter]:buffer[buffer_counter];
+                        bf1_abs = buffer[buffer_counter + 1] < 0?- buffer[buffer_counter + 1]:buffer[buffer_counter + 1];
 					
                         if (bf_abs > mute_limit || bf1_abs > mute_limit)
                         {
@@ -562,8 +562,8 @@ namespace WavpackDecoder
 				
                     for (buffer_counter = 0; buffer_counter < sample_count * 2; buffer_counter += 2)
                     {
-                        bf_abs = (buffer[buffer_counter] < 0?- buffer[buffer_counter]:buffer[buffer_counter]);
-                        bf1_abs = (buffer[buffer_counter + 1] < 0?- buffer[buffer_counter + 1]:buffer[buffer_counter + 1]);
+                        bf_abs = buffer[buffer_counter] < 0?- buffer[buffer_counter]:buffer[buffer_counter];
+                        bf1_abs = buffer[buffer_counter + 1] < 0?- buffer[buffer_counter + 1]:buffer[buffer_counter + 1];
 					
                         if (bf_abs > mute_limit || bf1_abs > mute_limit)
                         {
@@ -1302,7 +1302,7 @@ namespace WavpackDecoder
 			
 			
                 default: 
-                    tptr = buf_idx - (dpp.term * 2);
+                    tptr = buf_idx - dpp.term * 2;
 				
                     for (buffer_index = buf_idx; buffer_index < end_index; buffer_index += 2)
                     {
@@ -1484,7 +1484,7 @@ namespace WavpackDecoder
                     count = sample_count * 2;
                 }
 			
-                if ((flags & Defines.HYBRID_FLAG) == 0 && sent_bits == 0 && (zeros + ones + dups) != 0)
+                if ((flags & Defines.HYBRID_FLAG) == 0 && sent_bits == 0 && zeros + ones + dups != 0)
                     while (count > 0)
                     {
                         if (zeros != 0)
