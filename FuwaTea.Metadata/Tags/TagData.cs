@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using ModularFramework;
 
 namespace FuwaTea.Metadata.Tags
 {
@@ -68,12 +69,14 @@ namespace FuwaTea.Metadata.Tags
         public abstract void Clear();
         //public virtual void CopyTo(TagData target, bool overwrite);
 
-        private string Join(string[] items)
+        [CanBeNull]
+        private string Join([CanBeNull] string[] items)
         {
             return items == null ? null : string.Join(Separator, items);
         }
 
-        private string[] Split(string joined)
+        [CanBeNull]
+        private string[] Split([CanBeNull] string joined)
         {
             return joined?.Split(new[] { Separator }, StringSplitOptions.RemoveEmptyEntries);
         }

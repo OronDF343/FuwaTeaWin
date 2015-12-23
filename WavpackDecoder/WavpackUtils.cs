@@ -101,28 +101,14 @@ namespace WavpackDecoder
 		
             if (wpc.config.num_channels == 0)
             {
-                if ((wps.wphdr.flags & Defines.MONO_FLAG) > 0)
-                {
-                    wpc.config.num_channels = 1;
-                }
-                else
-                {
-                    wpc.config.num_channels = 2;
-                }
-			
+                wpc.config.num_channels = (wps.wphdr.flags & Defines.MONO_FLAG) > 0 ? 1 : 2;
+
                 wpc.config.channel_mask = 0x5 - wpc.config.num_channels;
             }
-		
+
             if ((wps.wphdr.flags & Defines.FINAL_BLOCK) == 0)
             {
-                if ((wps.wphdr.flags & Defines.MONO_FLAG) != 0)
-                {
-                    wpc.reduced_channels = 1;
-                }
-                else
-                {
-                    wpc.reduced_channels = 2;
-                }
+                wpc.reduced_channels = (wps.wphdr.flags & Defines.MONO_FLAG) != 0 ? 1 : 2;
             }
 		
             return wpc;
@@ -186,7 +172,7 @@ namespace WavpackDecoder
 		
             int[] temp_buffer = new int[Defines.SAMPLE_BUFFER_SIZE];
             int buf_idx = 0;
-            int bytes_returned = 0;
+            int bytes_returned;
 		
             while (samples > 0)
             {
@@ -281,7 +267,7 @@ namespace WavpackDecoder
             }
             else
             {
-                return (long) - 1;
+                return - 1;
             }
         }
 	
@@ -293,7 +279,7 @@ namespace WavpackDecoder
             if (null != wpc)
                 return wpc.stream.sample_index;
 		
-            return (long) - 1;
+            return - 1;
         }
 
 
@@ -308,7 +294,7 @@ namespace WavpackDecoder
             }
             else
             {
-                return (long) 0;
+                return 0;
             }
         }
 
@@ -340,7 +326,7 @@ namespace WavpackDecoder
             }
             else
             {
-                return (long) 44100;
+                return 44100;
             }
         }
 
@@ -426,7 +412,7 @@ namespace WavpackDecoder
 
         public static void setTime(WavpackContext wpc, long milliseconds)
         {
-            long targetSample = (long)(milliseconds / 1000 * wpc.config.sample_rate);
+            long targetSample = milliseconds / 1000 * wpc.config.sample_rate;
             try
             {
                 seek(wpc, wpc.infile, wpc.infile.BaseStream.Position, targetSample);
@@ -546,8 +532,8 @@ namespace WavpackDecoder
 		
             long bytes_skipped = 0;
             int bleft = 0; // bytes left in buffer
-            int counter = 0;
-            int i = 0;
+            int counter;
+            int i;
 		
             while (true)
             {
@@ -566,7 +552,7 @@ namespace WavpackDecoder
                         return wphdr;
                     }
                 }
-                catch (System.Exception e)
+                catch (Exception e)
                 {
                     wphdr.status = 1;
                     return wphdr;
@@ -587,41 +573,41 @@ namespace WavpackDecoder
                     wphdr.ckID[2] = 'p';
                     wphdr.ckID[3] = 'k';
 				
-                    wphdr.ckSize = (long) ((buffer[7] & 0xFF) << 24);
-                    wphdr.ckSize += (long) ((buffer[6] & 0xFF) << 16);
-                    wphdr.ckSize += (long) ((buffer[5] & 0xFF) << 8);
-                    wphdr.ckSize += (long) (buffer[4] & 0xFF);
+                    wphdr.ckSize = (buffer[7] & 0xFF) << 24;
+                    wphdr.ckSize += (buffer[6] & 0xFF) << 16;
+                    wphdr.ckSize += (buffer[5] & 0xFF) << 8;
+                    wphdr.ckSize += buffer[4] & 0xFF;
 				
                     wphdr.version = (short) (buffer[9] << 8);
-                    wphdr.version = (short) (wphdr.version + (short) buffer[8]);
+                    wphdr.version = (short) (wphdr.version + buffer[8]);
 				
                     wphdr.track_no = buffer[10];
                     wphdr.index_no = buffer[11];
 				
-                    wphdr.total_samples = (long) ((buffer[15] & 0xFF) << 24);
-                    wphdr.total_samples += (long) ((buffer[14] & 0xFF) << 16);
-                    wphdr.total_samples += (long) ((buffer[13] & 0xFF) << 8);
-                    wphdr.total_samples += (long) (buffer[12] & 0xFF);
+                    wphdr.total_samples = (buffer[15] & 0xFF) << 24;
+                    wphdr.total_samples += (buffer[14] & 0xFF) << 16;
+                    wphdr.total_samples += (buffer[13] & 0xFF) << 8;
+                    wphdr.total_samples += buffer[12] & 0xFF;
 				
-                    wphdr.block_index = (long) ((buffer[19] & 0xFF) << 24);
-                    wphdr.block_index += (long) ((buffer[18] & 0xFF) << 16);
-                    wphdr.block_index += (long) ((buffer[17] & 0xFF) << 8);
+                    wphdr.block_index = (buffer[19] & 0xFF) << 24;
+                    wphdr.block_index += (buffer[18] & 0xFF) << 16;
+                    wphdr.block_index += (buffer[17] & 0xFF) << 8;
                     wphdr.block_index += (long) buffer[16] & 0xFF;
 				
-                    wphdr.block_samples = (long) ((buffer[23] & 0xFF) << 24);
-                    wphdr.block_samples += (long) ((buffer[22] & 0xFF) << 16);
-                    wphdr.block_samples += (long) ((buffer[21] & 0xFF) << 8);
-                    wphdr.block_samples += (long) (buffer[20] & 0xFF);
+                    wphdr.block_samples = (buffer[23] & 0xFF) << 24;
+                    wphdr.block_samples += (buffer[22] & 0xFF) << 16;
+                    wphdr.block_samples += (buffer[21] & 0xFF) << 8;
+                    wphdr.block_samples += buffer[20] & 0xFF;
 				
-                    wphdr.flags = (long) ((buffer[27] & 0xFF) << 24);
-                    wphdr.flags += (long) ((buffer[26] & 0xFF) << 16);
-                    wphdr.flags += (long) ((buffer[25] & 0xFF) << 8);
-                    wphdr.flags += (long) (buffer[24] & 0xFF);
+                    wphdr.flags = (buffer[27] & 0xFF) << 24;
+                    wphdr.flags += (buffer[26] & 0xFF) << 16;
+                    wphdr.flags += (buffer[25] & 0xFF) << 8;
+                    wphdr.flags += buffer[24] & 0xFF;
 				
-                    wphdr.crc = (long) ((buffer[31] & 0xFF) << 24);
-                    wphdr.crc += (long) ((buffer[30] & 0xFF) << 16);
-                    wphdr.crc += (long) ((buffer[29] & 0xFF) << 8);
-                    wphdr.crc += (long) (buffer[28] & 0xFF);
+                    wphdr.crc = (buffer[31] & 0xFF) << 24;
+                    wphdr.crc += (buffer[30] & 0xFF) << 16;
+                    wphdr.crc += (buffer[29] & 0xFF) << 8;
+                    wphdr.crc += buffer[28] & 0xFF;
 				
                     wphdr.status = 0;
 				

@@ -93,7 +93,7 @@ namespace FuwaTea.Wpf.Keyboard
                     // Captures the character(s) pressed only on WM_KEYDOWN
                     var chars = InterceptKeys.VkCodeToString((uint)Marshal.ReadInt32(lParam),
                         wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_KEYDOWN);
-
+                    
                     _hookedKeyboardCallbackAsync.BeginInvoke((InterceptKeys.KeyEvent)wParam.ToUInt32(), Marshal.ReadInt32(lParam), chars, null, null);
                 }
             return NativeMethods.CallNextHookEx(_hookId, nCode, wParam, lParam);
@@ -237,6 +237,7 @@ namespace FuwaTea.Wpf.Keyboard
     {
         public delegate IntPtr LowLevelKeyboardProc(int nCode, UIntPtr wParam, IntPtr lParam);
 
+        // ReSharper disable InconsistentNaming
         public const int WH_KEYBOARD_LL = 13;
 
         /// <summary>
@@ -264,6 +265,7 @@ namespace FuwaTea.Wpf.Keyboard
             /// </summary>
             WM_SYSKEYDOWN = 260
         }
+        // ReSharper restore InconsistentNaming
 
         public static IntPtr SetHook(LowLevelKeyboardProc proc)
         {

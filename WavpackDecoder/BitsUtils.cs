@@ -60,7 +60,7 @@ namespace WavpackDecoder
                 {
                     bs = bs_read(bs);
                 }
-                uns_buf = (int) (bs.buf[bs.buf_index] & 0xff);
+                uns_buf = bs.buf[bs.buf_index] & 0xff;
                 bs.sr = bs.sr | (uns_buf << bs.bc); // values in buffer must be unsigned
                 bs.bc += 8;
             }
@@ -84,14 +84,16 @@ namespace WavpackDecoder
         internal static Bitstream bs_open_read(byte[] stream, short buffer_start, short buffer_end, System.IO.BinaryReader file, int file_bytes, int passed)
         {
             //   CLEAR (*bs);
-            Bitstream bs = new Bitstream();
-		
-            bs.buf = stream;
-            bs.buf_index = buffer_start;
-            bs.end = buffer_end;
-            bs.sr = 0;
-            bs.bc = 0;
-		
+            Bitstream bs = new Bitstream
+            {
+                buf = stream,
+                buf_index = buffer_start,
+                end = buffer_end,
+                sr = 0,
+                bc = 0
+            };
+
+
             if (passed != 0)
             {
                 bs.ptr = (short) (bs.end - 1);
@@ -102,7 +104,7 @@ namespace WavpackDecoder
             {
                 /* Strange to set an index to -1, but the very first call to getbit will iterate this */
                 bs.buf_index = - 1;
-                bs.ptr = (short) - 1;
+                bs.ptr = - 1;
             }
 		
             return bs;

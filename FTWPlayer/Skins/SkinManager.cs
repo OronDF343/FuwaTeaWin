@@ -23,12 +23,16 @@ namespace FTWPlayer.Skins
         public ObservableCollection<SkinPackage> LoadedSkins { get; } = new ObservableCollection<SkinPackage>();
 
         private const string DefaultSkin = "pack://application:,,,/Skins/Default";
-
+        
         public SkinPackage GetLoadedSkin(string source)
         {
             return LoadedSkins.FirstOrDefault(s => s.Path == source);
         }
 
+        /// <exception cref="DirectoryNotFoundException">Skins directory is invalid, such as referring to an unmapped drive. </exception>
+        /// <exception cref="IOException">Skins directory is a file name.</exception>
+        /// <exception cref="System.Security.SecurityException">The caller does not have the required permission. </exception>
+        /// <exception cref="UnauthorizedAccessException">The caller does not have the required permission. </exception>
         public void LoadAllSkins(ErrorCallback ec)
         {
             // Built-in (explicit):
@@ -54,6 +58,8 @@ namespace FTWPlayer.Skins
                 catch (Exception e) { ec(new Exception("Error loading XAML from directory: " + dir, e)); }
         }
 
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null" />.</exception>
+        /// <exception cref="InvalidOperationException">There is a cyclic dependency between skins.</exception>
         public SkinPackage LoadSkin(string source, HashSet<string> children = null)
         {
             if (string.IsNullOrWhiteSpace(source))
@@ -66,15 +72,17 @@ namespace FTWPlayer.Skins
                                                                               : source.EndsWith(".dll", StringComparison.OrdinalIgnoreCase)
                                                                                     ? LoadSkinFromBaml(ExpandPath(source))
                                                                                     : LoadSkinFromXamlFiles(ExpandPath(source)));
-            if (source == DefaultSkin) return f;
+            if (source == DefaultSkin || f == null) return f;
             SkinPackage parent;
             if (!f.HasIdentifier() || string.IsNullOrWhiteSpace(f.GetIdentifier()?.Parent)) parent = LoadFallbackSkin();
             else
             {
                 var ch = children ?? new HashSet<string>();
                 ch.Add(source);
+                // ReSharper disable once AssignNullToNotNullAttribute
                 parent = LoadSkin(f.GetIdentifier()?.Parent, ch);
             }
+            if (parent == null) return f;
             foreach (var part in parent.SkinParts.Where(part => !f.SkinParts.ContainsKey(part.Key)))
                 f.SkinParts.Add(part.Key, part.Value);
             return f;
@@ -85,6 +93,7 @@ namespace FTWPlayer.Skins
             return LoadSkin(DefaultSkin);
         }
 
+        [CanBeNull]
         public SkinPackage LoadSkinFromXamlFiles(string dir)
         {
             var shortDir = ShortenPath(dir);
@@ -119,6 +128,8 @@ namespace FTWPlayer.Skins
         }
 
         private const string PackUriStart = "pack://application:,,,/";
+
+        /// <exception cref="FormatException">Missing valid application pack URI prefix!</exception>
         public SkinPackage LoadSkinFromPackUri(string uri)
         {
             if (!uri.StartsWith(PackUriStart)) throw new FormatException("Missing valid application pack URI prefix!");
@@ -169,6 +180,7 @@ namespace FTWPlayer.Skins
             return pkg;
         }
 
+        [CanBeNull]
         private Dictionary<string, ResourceDictionary> GetResourcesFromAssembly(Assembly a, Func<string, bool> pathFilter)
         {
             var found = false;
@@ -230,13 +242,11 @@ namespace FTWPlayer.Skins
 
         public static bool HasIdentifier(this SkinPackage rd)
         {
-            if (rd == null) return false;
             return rd.SkinParts.HasIdentifier();
         }
 
         public static bool HasIdentifier(this Dictionary<string, ResourceDictionary> rd)
         {
-            if (rd == null) return false;
             return rd.ContainsKey("commonstyle") && rd["commonstyle"].Contains("SkinIdentifier");
         }
     }

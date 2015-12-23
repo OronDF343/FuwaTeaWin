@@ -28,8 +28,8 @@ namespace FTWPlayer
         [StructLayout(LayoutKind.Sequential)]
         internal struct Win32Point
         {
-            public Int32 X;
-            public Int32 Y;
+            public int X;
+            public int Y;
         };
 
         [DllImport("user32.dll")]
@@ -51,6 +51,7 @@ namespace FTWPlayer
         }
 
         // Window stuff:
+        // ReSharper disable once InconsistentNaming
         internal static IntPtr HWND_BROADCAST = new IntPtr(0xffff);
 
         [DllImport("user32.dll")]

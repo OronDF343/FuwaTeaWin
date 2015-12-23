@@ -25,8 +25,8 @@ namespace WavpackDecoder
 		
             try
             {
-                wpmd.id = (short) wpc.infile.ReadByte();
-                tchar = (short) wpc.infile.ReadByte();
+                wpmd.id = wpc.infile.ReadByte();
+                tchar = wpc.infile.ReadByte();
             }
             catch (System.Exception e)
             {
@@ -40,11 +40,11 @@ namespace WavpackDecoder
 		
             if ((wpmd.id & Defines.ID_LARGE) != 0)
             {
-                wpmd.id &= (short)~ Defines.ID_LARGE;
+                wpmd.id &= ~ Defines.ID_LARGE;
 			
                 try
                 {
-                    tchar = (short) wpc.infile.ReadByte();
+                    tchar = wpc.infile.ReadByte();
                 }
                 catch (System.Exception e)
                 {
@@ -52,11 +52,11 @@ namespace WavpackDecoder
                     return Defines.FALSE;
                 }
 			
-                wpmd.byte_length += (int) tchar << 9;
+                wpmd.byte_length += tchar << 9;
 			
                 try
                 {
-                    tchar = (short) wpc.infile.ReadByte();
+                    tchar = wpc.infile.ReadByte();
                 }
                 catch (System.Exception e)
                 {
@@ -64,13 +64,13 @@ namespace WavpackDecoder
                     return Defines.FALSE;
                 }
 			
-                wpmd.byte_length += (int) tchar << 17;
+                wpmd.byte_length += tchar << 17;
                 wpmd.bytecount += 2;
             }
 		
             if ((wpmd.id & Defines.ID_ODD_SIZE) != 0)
             {
-                wpmd.id &= (short)~ Defines.ID_ODD_SIZE;
+                wpmd.id &= ~ Defines.ID_ODD_SIZE;
                 wpmd.byte_length--;
             }
 		

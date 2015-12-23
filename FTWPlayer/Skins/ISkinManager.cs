@@ -7,10 +7,12 @@ namespace FTWPlayer.Skins
     public interface ISkinManager : IUIPart
     {
         ObservableCollection<SkinPackage> LoadedSkins { get; }
+        [CanBeNull]
         SkinPackage GetLoadedSkin(string source);
         void LoadAllSkins(ErrorCallback ec);
 
         // Only this function takes shortened paths! It also adds missing ResourceDictionaries from the default skin
+        [CanBeNull]
         SkinPackage LoadSkin(string source, HashSet<string> children = null);
         SkinPackage LoadFallbackSkin();
         

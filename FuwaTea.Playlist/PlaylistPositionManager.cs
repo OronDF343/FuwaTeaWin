@@ -24,7 +24,7 @@ namespace FuwaTea.Playlist
     public class PlaylistPositionManager : IPlaylistPositionManager // TODO: thread safe?
     {
         public PlaylistPositionManager() // TODO: shouldn't exist
-            : this(new FuwaTea.Playlist.Playlist()) { }
+            : this(new Playlist()) { }
 
         public PlaylistPositionManager(IPlaylist pm)
         {

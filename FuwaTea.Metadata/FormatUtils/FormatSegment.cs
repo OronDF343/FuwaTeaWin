@@ -1,5 +1,6 @@
 ﻿using System;
 using log4net;
+using ModularFramework;
 
 namespace FuwaTea.Metadata.FormatUtils
 {
@@ -61,6 +62,7 @@ namespace FuwaTea.Metadata.FormatUtils
             }
         }
 
+        [CanBeNull]
         public string GetValue(object source)
         {
             try

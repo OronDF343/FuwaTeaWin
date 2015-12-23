@@ -25,7 +25,7 @@ using System.Windows.Media.Animation;
 namespace FuwaTea.Wpf.Controls
 {
     /// <summary>
-    /// Put this in a <see cref="Canvas"/> with ClipToBounds="True"
+    /// Put this in a <see cref="System.Windows.Controls.Canvas"/> with ClipToBounds="True"
     /// </summary>
     public partial class ScrollingTextBlockComponent
     {

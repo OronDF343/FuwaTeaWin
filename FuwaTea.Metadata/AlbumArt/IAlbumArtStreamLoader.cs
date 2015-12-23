@@ -17,13 +17,17 @@
 
 using System.Collections.Generic;
 using System.IO;
+using ModularFramework;
 
 namespace FuwaTea.Metadata.AlbumArt
 {
     public interface IAlbumArtStreamLoader : IMetadataLoader
     {
+        [CanBeNull]
         Stream GetEmbeddedImage(IMusicInfoModel m);
+        [CanBeNull]
         Stream GetImageInFolder(string folder, HashSet<string> filetypeWhitelist, List<string> filenameWhitelist = null);
+        [CanBeNull]
         Stream GetCustomImage(string pathToImage);
     }
 }

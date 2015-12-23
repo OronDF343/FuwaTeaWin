@@ -18,7 +18,7 @@ namespace WavpackDecoder
         }
         private void  InitBlock()
         {
-            c = new entropy_data[]{temp_ed1, temp_ed2};
+            c = new[]{temp_ed1, temp_ed2};
         }
         internal long[] bitrate_delta = new long[2]; // was uint32_t  in C
         internal long[] bitrate_acc = new long[2]; // was uint32_t  in C

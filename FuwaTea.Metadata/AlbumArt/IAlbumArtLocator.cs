@@ -29,6 +29,7 @@ namespace FuwaTea.Metadata.AlbumArt
         [NotNull]
         HashSet<string> ImageTypeDictionary { get; set; }
 
+        [CanBeNull]
         Stream GetAlbumArt(IMusicInfoModel m);
 
         //TODO: SetCustomImage, GetCustomImage via Cache

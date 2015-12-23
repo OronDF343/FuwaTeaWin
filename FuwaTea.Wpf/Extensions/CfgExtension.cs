@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Windows;
 using FuwaTea.Wpf.Helpers;
+using ModularFramework;
 using XAMLMarkupExtensions.Base;
 
 namespace FuwaTea.Wpf.Extensions
@@ -37,6 +38,7 @@ namespace FuwaTea.Wpf.Extensions
             if (args.PropertyName == Key) UpdateNewValue();
         }
 
+        [CanBeNull]
         public override object FormatOutput(TargetInfo endPoint, TargetInfo info)
         {
             if (_repo == null) return UpdateRepo(endPoint.TargetObject) ? Repository[Key] : null;

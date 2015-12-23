@@ -191,8 +191,6 @@ namespace FTWPlayer
             Settings.Default.Save();
         }
 
-
-
         private void ConfigureLocalization()
         {
             // Parse ClArgs:
@@ -289,11 +287,9 @@ namespace FTWPlayer
         private void RegistryError(string args)
         {
             LogManager.GetLogger(GetType()).Error("Failed to create/open registry subkey!");
-            if (!Environment.GetCommandLineArgs().Contains(ShouldBeAdminArg))
-            {
-                LogManager.GetLogger(GetType()).Info("Trying to restart with admin rights");
-                RestartAsAdmin(args);
-            }
+            if (_clArgs.Contains(ShouldBeAdminArg)) return;
+            LogManager.GetLogger(GetType()).Info("Trying to restart with admin rights");
+            RestartAsAdmin(args);
         }
 
         private bool InitMutex()

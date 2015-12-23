@@ -59,7 +59,7 @@ namespace FuwaTea.Playlist
 
         public void Add(string musicFile)
         {
-            var tag = ModuleFactory.GetElements<ITagProvider>().FirstOrDefault(r => r.GetExtensions().Contains(Path.GetExtension(musicFile)?.ToLowerInvariant()));
+            var tag = ModuleFactory.GetElements<ITagProvider>().FirstOrDefault(r => r.GetExtensions().Contains(Path.GetExtension(musicFile).ToLowerInvariant()));
             Add(new MusicInfoModel(musicFile, tag?.Create(musicFile)));
         }
 

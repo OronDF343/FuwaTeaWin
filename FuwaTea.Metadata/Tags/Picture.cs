@@ -14,7 +14,7 @@ namespace FuwaTea.Metadata.Tags
 
         public Picture(string file, string description, PictureType type)
         {
-            switch (Path.GetExtension(file)?.ToLowerInvariant())
+            switch (Path.GetExtension(file).ToLowerInvariant())
             {
                 case ".gif":
                     MimeType = "image/gif";

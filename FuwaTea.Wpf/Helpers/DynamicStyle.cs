@@ -18,12 +18,14 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using ModularFramework;
 
 namespace FuwaTea.Wpf.Helpers
 {
     // Credit: NtscCobalt on StackOverflow: http://stackoverflow.com/questions/8604086/setting-a-local-implicit-style-different-from-theme-style-alternative-to-based/9506270#9506270
     public class DynamicStyle
     {
+        [CanBeNull]
         public static Style GetBaseStyle(DependencyObject obj)
         {
             return (Style)obj.GetValue(BaseStyleProperty);
@@ -38,6 +40,7 @@ namespace FuwaTea.Wpf.Helpers
         public static readonly DependencyProperty BaseStyleProperty =
             DependencyProperty.RegisterAttached("BaseStyle", typeof(Style), typeof(DynamicStyle), new UIPropertyMetadata(StylesChanged));
 
+        [CanBeNull]
         public static Style GetDerivedStyle(DependencyObject obj)
         {
             return (Style)obj.GetValue(DerivedStyleProperty);

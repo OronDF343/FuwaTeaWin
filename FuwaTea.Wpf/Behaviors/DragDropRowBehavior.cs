@@ -5,6 +5,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media;
+using ModularFramework;
 
 namespace FuwaTea.Wpf.Behaviors
 {
@@ -175,7 +176,8 @@ namespace FuwaTea.Wpf.Behaviors
         /// <param name="child">The item to be processed.</param>
         /// <returns>The submitted item's parent, if available. Otherwise
         /// null.</returns>
-        public static DependencyObject GetParentObject(DependencyObject child)
+        [CanBeNull]
+        public static DependencyObject GetParentObject([CanBeNull] DependencyObject child)
         {
             if (child == null) return null;
             var contentElement = child as ContentElement;
@@ -201,6 +203,7 @@ namespace FuwaTea.Wpf.Behaviors
         /// <param name="reference">The main element which is used to perform
         /// hit testing.</param>
         /// <param name="point">The position to be evaluated on the origin.</param>
+        [CanBeNull]
         public static T TryFindFromPoint<T>(UIElement reference, Point point)
           where T : DependencyObject
         {

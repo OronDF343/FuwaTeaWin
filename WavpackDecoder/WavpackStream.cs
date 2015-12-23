@@ -18,7 +18,7 @@ namespace WavpackDecoder
         }
         private void  InitBlock()
         {
-            decorr_passes = new decorr_pass[]{dp1, dp2, dp3, dp4, dp5, dp6, dp7, dp8, dp9, dp10, dp11, dp12, dp13, dp14, dp15, dp16};
+            decorr_passes = new[]{dp1, dp2, dp3, dp4, dp5, dp6, dp7, dp8, dp9, dp10, dp11, dp12, dp13, dp14, dp15, dp16};
         }
         internal WavpackHeader wphdr = new WavpackHeader();
         internal Bitstream wvbits = new Bitstream();

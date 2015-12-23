@@ -19,12 +19,15 @@ using System;
 using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Data;
+using ModularFramework;
 
 namespace FTWPlayer.Converters
 {
     public class PositionTimeSpanStringMultiConverter : IMultiValueConverter
     {
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        [CanBeNull]
+        public object Convert([NotNull] object[] values, [NotNull] Type targetType, [CanBeNull] object parameter,
+                              [NotNull] CultureInfo culture)
         {
             if (!(values[0] is Grid) || !(values[1] is TimeSpan)) return null;
             var pbar = (Grid)values[0];
@@ -33,7 +36,8 @@ namespace FTWPlayer.Converters
             return TimeSpan.FromMilliseconds(dur.TotalMilliseconds / pbar.ActualWidth * p.X).ToString(@"h\:mm\:ss");
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        public object[] ConvertBack([CanBeNull] object value, [NotNull] Type[] targetTypes, [CanBeNull] object parameter,
+                                    [NotNull] CultureInfo culture)
         {
             throw new NotImplementedException();
         }

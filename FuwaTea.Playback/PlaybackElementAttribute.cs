@@ -22,7 +22,7 @@ using ModularFramework.Attributes;
 namespace FuwaTea.Playback
 {
     [MeansImplicitUse]
-    [BaseTypeRequired(typeof(IAudioPlayer))]
+    [BaseTypeRequired(typeof(IPlaybackElement))]
     [AttributeUsage(AttributeTargets.Class)]
     public class PlaybackElementAttribute : ElementAttribute
     {

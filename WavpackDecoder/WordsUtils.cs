@@ -82,12 +82,12 @@ namespace WavpackDecoder
         {
             byte[] byteptr = wpmd.data;
             int[] b_array = new int[12];
-            int i = 0;
+            int i;
             words_data w = new words_data();
 		
             for (i = 0; i < 6; i++)
             {
-                b_array[i] = (int) (byteptr[i] & 0xff);
+                b_array[i] = byteptr[i] & 0xff;
             }
 		
             w.holding_one = 0;
@@ -109,7 +109,7 @@ namespace WavpackDecoder
             {
                 for (i = 6; i < 12; i++)
                 {
-                    b_array[i] = (int) (byteptr[i] & 0xff);
+                    b_array[i] = byteptr[i] & 0xff;
                 }
                 w.c[1].median[0] = exp2s(b_array[6] + (b_array[7] << 8));
                 w.c[1].median[1] = exp2s(b_array[8] + (b_array[9] << 8));
@@ -132,53 +132,53 @@ namespace WavpackDecoder
             byte[] byteptr = wpmd.data;
             int bytecnt = wpmd.byte_length;
             int buffer_counter = 0;
-            int uns_buf = 0;
-            int uns_buf_plusone = 0;
+            int uns_buf;
+            int uns_buf_plusone;
 		
             if ((wps.wphdr.flags & Defines.HYBRID_BITRATE) != 0)
             {
-                uns_buf = (int) (byteptr[buffer_counter] & 0xff);
-                uns_buf_plusone = (int) (byteptr[buffer_counter + 1] & 0xff);
+                uns_buf = byteptr[buffer_counter] & 0xff;
+                uns_buf_plusone = byteptr[buffer_counter + 1] & 0xff;
 			
                 wps.w.c[0].slow_level = exp2s(uns_buf + (uns_buf_plusone << 8));
                 buffer_counter = buffer_counter + 2;
 			
                 if ((wps.wphdr.flags & (Defines.MONO_FLAG | Defines.FALSE_STEREO)) == 0)
                 {
-                    uns_buf = (int) (byteptr[buffer_counter] & 0xff);
-                    uns_buf_plusone = (int) (byteptr[buffer_counter + 1] & 0xff);
+                    uns_buf = byteptr[buffer_counter] & 0xff;
+                    uns_buf_plusone = byteptr[buffer_counter + 1] & 0xff;
                     wps.w.c[1].slow_level = exp2s(uns_buf + (uns_buf_plusone << 8));
                     buffer_counter = buffer_counter + 2;
                 }
             }
 		
-            uns_buf = (int) (byteptr[buffer_counter] & 0xff);
-            uns_buf_plusone = (int) (byteptr[buffer_counter + 1] & 0xff);
+            uns_buf = byteptr[buffer_counter] & 0xff;
+            uns_buf_plusone = byteptr[buffer_counter + 1] & 0xff;
 		
-            wps.w.bitrate_acc[0] = (int) (uns_buf + (uns_buf_plusone << 8)) << 16;
+            wps.w.bitrate_acc[0] = uns_buf + (uns_buf_plusone << 8) << 16;
             buffer_counter = buffer_counter + 2;
 		
             if ((wps.wphdr.flags & (Defines.MONO_FLAG | Defines.FALSE_STEREO)) == 0)
             {
-                uns_buf = (int) (byteptr[buffer_counter] & 0xff);
-                uns_buf_plusone = (int) (byteptr[buffer_counter + 1] & 0xff);
+                uns_buf = byteptr[buffer_counter] & 0xff;
+                uns_buf_plusone = byteptr[buffer_counter + 1] & 0xff;
 			
-                wps.w.bitrate_acc[1] = (int) (uns_buf + (uns_buf_plusone << 8)) << 16;
+                wps.w.bitrate_acc[1] = uns_buf + (uns_buf_plusone << 8) << 16;
                 buffer_counter = buffer_counter + 2;
             }
 		
             if (buffer_counter < bytecnt)
             {
-                uns_buf = (int) (byteptr[buffer_counter] & 0xff);
-                uns_buf_plusone = (int) (byteptr[buffer_counter + 1] & 0xff);
+                uns_buf = byteptr[buffer_counter] & 0xff;
+                uns_buf_plusone = byteptr[buffer_counter + 1] & 0xff;
 			
                 wps.w.bitrate_delta[0] = exp2s((short) (uns_buf + (uns_buf_plusone << 8)));
                 buffer_counter = buffer_counter + 2;
 			
                 if ((wps.wphdr.flags & (Defines.MONO_FLAG | Defines.FALSE_STEREO)) == 0)
                 {
-                    uns_buf = (int) (byteptr[buffer_counter] & 0xff);
-                    uns_buf_plusone = (int) (byteptr[buffer_counter + 1] & 0xff);
+                    uns_buf = byteptr[buffer_counter] & 0xff;
+                    uns_buf_plusone = byteptr[buffer_counter + 1] & 0xff;
                     wps.w.bitrate_delta[1] = exp2s((short) (uns_buf + (uns_buf_plusone << 8)));
                     buffer_counter = buffer_counter + 2;
                 }
@@ -207,11 +207,8 @@ namespace WavpackDecoder
                 if ((flags & Defines.HYBRID_BITRATE) != 0)
                 {
                     int slow_log_0 = (int) ((w.c[0].slow_level + SLO) >> SLS);
-				
-                    if (slow_log_0 - bitrate_0 > - 0x100)
-                        w.c[0].error_limit = exp2s(slow_log_0 - bitrate_0 + 0x100);
-                    else
-                        w.c[0].error_limit = 0;
+
+                    w.c[0].error_limit = slow_log_0 - bitrate_0 > - 0x100 ? exp2s(slow_log_0 - bitrate_0 + 0x100) : 0;
                 }
                 else
                     w.c[0].error_limit = exp2s(bitrate_0);
@@ -246,15 +243,9 @@ namespace WavpackDecoder
                         }
                     }
 				
-                    if (slow_log_0 - bitrate_0 > - 0x100)
-                        w.c[0].error_limit = exp2s(slow_log_0 - bitrate_0 + 0x100);
-                    else
-                        w.c[0].error_limit = 0;
+                    w.c[0].error_limit = slow_log_0 - bitrate_0 > - 0x100 ? exp2s(slow_log_0 - bitrate_0 + 0x100) : 0;
 				
-                    if (slow_log_1 - bitrate_1 > - 0x100)
-                        w.c[1].error_limit = exp2s(slow_log_1 - bitrate_1 + 0x100);
-                    else
-                        w.c[1].error_limit = 0;
+                    w.c[1].error_limit = slow_log_1 - bitrate_1 > - 0x100 ? exp2s(slow_log_1 - bitrate_1 + 0x100) : 0;
                 }
                 else
                 {
@@ -301,10 +292,7 @@ namespace WavpackDecoder
                 if ((flags & (Defines.MONO_FLAG | Defines.FALSE_STEREO)) == 0)
                     // if not mono
                 {
-                    if (entidx == 1)
-                        entidx = 0;
-                    else
-                        entidx = 1;
+                    entidx = entidx == 1 ? 0 : 1;
                 }
 			
                 if ((w.c[0].median[0] & ~ 1) == 0 && w.holding_zero == 0 && w.holding_one == 0 && (w.c[1].median[0] & ~ 1) == 0)
@@ -393,7 +381,7 @@ namespace WavpackDecoder
                         if (bs.ptr == bs.end)
                             bs = BitsUtils.bs_read(bs);
 					
-                        uns_buf = (int) (bs.buf[bs.buf_index] & 0xff);
+                        uns_buf = bs.buf[bs.buf_index] & 0xff;
 					
                         bs.sr = bs.sr | (uns_buf << bs.bc); // values in buffer must be unsigned
 					
@@ -462,8 +450,8 @@ namespace WavpackDecoder
                     }
                     else
                     {
-                        bs.bc = (int) (bs.bc - ((ones_count = ones_count_table[next8]) + 1));
-                        bs.sr = bs.sr >> (int) (ones_count + 1); // needs to be unsigned
+                        bs.bc = bs.bc - ((ones_count = ones_count_table[next8]) + 1);
+                        bs.sr = bs.sr >> ones_count + 1; // needs to be unsigned
                     }
 				
                     if (w.holding_one > 0)
@@ -555,11 +543,11 @@ namespace WavpackDecoder
 			
                 if (bs.bitval > 0)
                 {
-                    buffer[buffer_counter] = (int) ~ mid;
+                    buffer[buffer_counter] = ~ mid;
                 }
                 else
                 {
-                    buffer[buffer_counter] = (int) mid;
+                    buffer[buffer_counter] = mid;
                 }
 			
                 buffer_counter++;
@@ -727,7 +715,7 @@ namespace WavpackDecoder
         {
             int result;
 		
-            if ((result = (int) weight << 3) > 0)
+            if ((result = weight << 3) > 0)
                 result += (result + 64) >> 7;
 		
             return result;

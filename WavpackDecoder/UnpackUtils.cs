@@ -78,11 +78,11 @@ namespace WavpackDecoder
             WavpackStream wps = wpc.stream;
 		
             if (wpmd.hasdata == Defines.TRUE)
-                wps.wvbits = BitsUtils.bs_open_read(wpmd.data, (short) 0, (short) wpmd.byte_length, wpc.infile, 0, 0);
+                wps.wvbits = BitsUtils.bs_open_read(wpmd.data, 0, (short) wpmd.byte_length, wpc.infile, 0, 0);
             else if (wpmd.byte_length > 0)
             {
                 int len = wpmd.byte_length & 1;
-                wps.wvbits = BitsUtils.bs_open_read(wpc.read_buffer, (short) - 1, (short) wpc.read_buffer.Length, wpc.infile, wpmd.byte_length + len, 1);
+                wps.wvbits = BitsUtils.bs_open_read(wpc.read_buffer, - 1, (short) wpc.read_buffer.Length, wpc.infile, wpmd.byte_length + len, 1);
             }
 		
             return Defines.TRUE;
@@ -103,18 +103,18 @@ namespace WavpackDecoder
             WavpackStream tmpwps = new WavpackStream();
 		
             int counter = 0;
-            int dcounter = 0;
+            int dcounter;
 		
             if (termcnt > Defines.MAX_NTERMS)
                 return Defines.FALSE;
 		
             tmpwps.num_terms = termcnt;
 		
-            dcounter = termcnt - 1;
+            //dcounter = termcnt - 1;
 		
             for (dcounter = termcnt - 1; dcounter >= 0; dcounter--)
             {
-                tmpwps.decorr_passes[dcounter].term = (short) ((int) (byteptr[counter] & 0x1f) - 5);
+                tmpwps.decorr_passes[dcounter].term = (short) ((byteptr[counter] & 0x1f) - 5);
                 tmpwps.decorr_passes[dcounter].delta = (short) ((byteptr[counter] >> 5) & 0x7);
 			
                 counter++;
@@ -143,7 +143,7 @@ namespace WavpackDecoder
             decorr_pass dpp = new decorr_pass();
             int counter = 0;
             int dpp_idx;
-            int myiterator = 0;
+            int myiterator;
 		
             if ((wps.wphdr.flags & (Defines.MONO_FLAG | Defines.FALSE_STEREO)) == 0)
                 termcnt /= 2;
@@ -196,9 +196,9 @@ namespace WavpackDecoder
             decorr_pass dpp = new decorr_pass();
             int tcount;
             int counter = 0;
-            int dpp_index = 0;
+            int dpp_index;
             int uns_buf0, uns_buf1, uns_buf2, uns_buf3;
-            int sample_counter = 0;
+            int sample_counter;
 		
             dpp_index = 0;
 		
@@ -231,10 +231,10 @@ namespace WavpackDecoder
             {
                 if (dpp.term > Defines.MAX_TERM)
                 {
-                    uns_buf0 = (int) (byteptr[counter] & 0xff);
-                    uns_buf1 = (int) (byteptr[counter + 1] & 0xff);
-                    uns_buf2 = (int) (byteptr[counter + 2] & 0xff);
-                    uns_buf3 = (int) (byteptr[counter + 3] & 0xff);
+                    uns_buf0 = byteptr[counter] & 0xff;
+                    uns_buf1 = byteptr[counter + 1] & 0xff;
+                    uns_buf2 = byteptr[counter + 2] & 0xff;
+                    uns_buf3 = byteptr[counter + 3] & 0xff;
 				
                     dpp.samples_A[0] = WordsUtils.exp2s((short) (uns_buf0 + (uns_buf1 << 8)));
                     dpp.samples_A[1] = WordsUtils.exp2s((short) (uns_buf2 + (uns_buf3 << 8)));
@@ -243,10 +243,10 @@ namespace WavpackDecoder
                     if ((wps.wphdr.flags & (Defines.MONO_FLAG | Defines.FALSE_STEREO)) == 0)
                     {
 					
-                        uns_buf0 = (int) (byteptr[counter] & 0xff);
-                        uns_buf1 = (int) (byteptr[counter + 1] & 0xff);
-                        uns_buf2 = (int) (byteptr[counter + 2] & 0xff);
-                        uns_buf3 = (int) (byteptr[counter + 3] & 0xff);
+                        uns_buf0 = byteptr[counter] & 0xff;
+                        uns_buf1 = byteptr[counter + 1] & 0xff;
+                        uns_buf2 = byteptr[counter + 2] & 0xff;
+                        uns_buf3 = byteptr[counter + 3] & 0xff;
 					
                         dpp.samples_B[0] = WordsUtils.exp2s((short) (uns_buf0 + (uns_buf1 << 8)));
                         dpp.samples_B[1] = WordsUtils.exp2s((short) (uns_buf2 + (uns_buf3 << 8)));
@@ -256,10 +256,10 @@ namespace WavpackDecoder
                 else if (dpp.term < 0)
                 {
 				
-                    uns_buf0 = (int) (byteptr[counter] & 0xff);
-                    uns_buf1 = (int) (byteptr[counter + 1] & 0xff);
-                    uns_buf2 = (int) (byteptr[counter + 2] & 0xff);
-                    uns_buf3 = (int) (byteptr[counter + 3] & 0xff);
+                    uns_buf0 = byteptr[counter] & 0xff;
+                    uns_buf1 = byteptr[counter + 1] & 0xff;
+                    uns_buf2 = byteptr[counter + 2] & 0xff;
+                    uns_buf3 = byteptr[counter + 3] & 0xff;
 				
                     dpp.samples_A[0] = WordsUtils.exp2s((short) (uns_buf0 + (uns_buf1 << 8)));
                     dpp.samples_B[0] = WordsUtils.exp2s((short) (uns_buf2 + (uns_buf3 << 8)));
@@ -272,16 +272,16 @@ namespace WavpackDecoder
 				
                     while (cnt > 0)
                     {
-                        uns_buf0 = (int) (byteptr[counter] & 0xff);
-                        uns_buf1 = (int) (byteptr[counter + 1] & 0xff);
+                        uns_buf0 = byteptr[counter] & 0xff;
+                        uns_buf1 = byteptr[counter + 1] & 0xff;
 					
                         dpp.samples_A[m] = WordsUtils.exp2s((short) (uns_buf0 + (uns_buf1 << 8)));
                         counter += 2;
 					
                         if ((wps.wphdr.flags & (Defines.MONO_FLAG | Defines.FALSE_STEREO)) == 0)
                         {
-                            uns_buf0 = (int) (byteptr[counter] & 0xff);
-                            uns_buf1 = (int) (byteptr[counter + 1] & 0xff);
+                            uns_buf0 = byteptr[counter] & 0xff;
+                            uns_buf1 = byteptr[counter + 1] & 0xff;
                             dpp.samples_B[m] = WordsUtils.exp2s((short) (uns_buf0 + (uns_buf1 << 8)));
                             counter += 2;
                         }
@@ -348,7 +348,7 @@ namespace WavpackDecoder
 		
             while (bytecnt >= 0)
             {
-                mask |= (long) ((byteptr[counter] & 0xFF) << shift);
+                mask |= (byteptr[counter] & 0xFF) << shift;
                 counter++;
                 shift += 8;
                 bytecnt--;
@@ -370,11 +370,11 @@ namespace WavpackDecoder
             if (bytecnt >= 3)
             {
                 wpc.config.flags &= 0xff;
-                wpc.config.flags |= (long) ((byteptr[counter] & 0xFF) << 8);
+                wpc.config.flags |= (byteptr[counter] & 0xFF) << 8;
                 counter++;
-                wpc.config.flags |= (long) ((byteptr[counter] & 0xFF) << 16);
+                wpc.config.flags |= (byteptr[counter] & 0xFF) << 16;
                 counter++;
-                wpc.config.flags |= (long) ((byteptr[counter] & 0xFF) << 24);
+                wpc.config.flags |= (byteptr[counter] & 0xFF) << 24;
             }
 		
             return Defines.TRUE;
@@ -390,11 +390,11 @@ namespace WavpackDecoder
 		
             if (bytecnt == 3)
             {
-                wpc.config.sample_rate = (long) (byteptr[counter] & 0xFF);
+                wpc.config.sample_rate = byteptr[counter] & 0xFF;
                 counter++;
-                wpc.config.sample_rate |= (long) ((byteptr[counter] & 0xFF) << 8);
+                wpc.config.sample_rate |= (byteptr[counter] & 0xFF) << 8;
                 counter++;
-                wpc.config.sample_rate |= (long) ((byteptr[counter] & 0xFF) << 16);
+                wpc.config.sample_rate |= (byteptr[counter] & 0xFF) << 16;
             }
 		
             return Defines.TRUE;
@@ -430,7 +430,7 @@ namespace WavpackDecoder
             int buffer_counter = 0;
             int[] temp_buffer = new int[Defines.SAMPLE_BUFFER_SIZE];
 		
-            int samples_processed = 0;
+            int samples_processed;
 		
             if (wps.sample_index + sample_count > wps.wphdr.block_index + wps.wphdr.block_samples)
                 sample_count = wps.wphdr.block_index + wps.wphdr.block_samples - wps.sample_index;
@@ -578,7 +578,7 @@ namespace WavpackDecoder
 		
             if (i != sample_count)
             {
-                long sc = 0;
+                long sc;
 			
                 if ((flags & Defines.MONO_FLAG) > 0)
                 {
@@ -636,7 +636,7 @@ namespace WavpackDecoder
             int weight_B = dpp.weight_B;
             int sam_A, sam_B;
             int m, k;
-            int bptr_counter = 0;
+            int bptr_counter;
 
             switch (dpp.term)
             {
@@ -801,8 +801,8 @@ namespace WavpackDecoder
 			
 			
                 case - 2: 
-                    sam_B = 0;
-                    sam_A = 0;
+                    //sam_B = 0;
+                    //sam_A = 0;
 				
                     for (bptr_counter = buf_idx; bptr_counter < buf_idx + sample_count * 2; bptr_counter += 2)
                     {
@@ -876,7 +876,7 @@ namespace WavpackDecoder
 			
 			
                 case - 3: 
-                    sam_A = 0;
+                    //sam_A = 0;
 				
                     for (bptr_counter = buf_idx; bptr_counter < buf_idx + sample_count * 2; bptr_counter += 2)
                     {
@@ -952,7 +952,7 @@ namespace WavpackDecoder
 			
                 default: 
 				
-                    sam_A = 0;
+                    //sam_A = 0;
 				
                     for (m = 0, k = dpp.term & (Defines.MAX_TERM - 1), bptr_counter = buf_idx; bptr_counter < buf_idx + sample_count * 2; bptr_counter += 2)
                     {
@@ -1026,7 +1026,7 @@ namespace WavpackDecoder
             int tptr;
             int sam_A, sam_B;
             int k, i;
-            int buffer_index = buf_idx;
+            int buffer_index;
             long end_index = buf_idx + sample_count * 2;
 
             switch (dpp.term)
@@ -1156,8 +1156,8 @@ namespace WavpackDecoder
 			
 			
                 case - 2: 
-                    sam_A = 0;
-                    sam_B = 0;
+                    //sam_A = 0;
+                    //sam_B = 0;
 				
                     for (buffer_index = buf_idx; buffer_index < end_index; buffer_index += 2)
                     {
@@ -1343,7 +1343,7 @@ namespace WavpackDecoder
             int delta = dpp.delta, weight_A = dpp.weight_A;
             int sam_A;
             int m, k;
-            int bptr_counter = 0;
+            int bptr_counter;
 		
             switch (dpp.term)
             {
@@ -1452,7 +1452,7 @@ namespace WavpackDecoder
 		
             if ((flags & Defines.FLOAT_DATA) > 0)
             {
-                long sc = 0;
+                long sc;
 			
                 if ((flags & Defines.MONO_FLAG) > 0)
                 {
@@ -1526,12 +1526,10 @@ namespace WavpackDecoder
                         min_shifted = (min_value = - 8388608 >> shift) << shift;
                         max_shifted = (max_value = 8388607 >> shift) << shift;
                         break;
-				
-				
-                    case 3: 
+
                     default: 
                         min_shifted = (min_value = (int) SupportClass.Identity(0x80000000) >> shift) << shift;
-                        max_shifted = (max_value = (int) 0x7FFFFFFF >> shift) << shift;
+                        max_shifted = (max_value = 0x7FFFFFFF >> shift) << shift;
                         break;
                 }
 			

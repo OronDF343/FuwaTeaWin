@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Win32;
+using ModularFramework;
 
 namespace FuwaTea.Lib.FileAssociations
 {
@@ -22,6 +23,7 @@ namespace FuwaTea.Lib.FileAssociations
                 c.WriteValues();
         }
 
+        [CanBeNull]
         public RegistryClass GetKey(string suffix)
         {
             return _registryClasses.FirstOrDefault(rc => rc.ClassName == AppId + "." + suffix);

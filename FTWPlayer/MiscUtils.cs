@@ -19,18 +19,28 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using FuwaTea.Lib;
 using FuwaTea.Playback;
 using FuwaTea.Playlist;
+using log4net;
 using ModularFramework;
 
 namespace FTWPlayer
 {
+    /// <summary>
+    /// Utils for loading media
+    /// </summary>
     public static class MiscUtils
     {
+        /// <summary>
+        /// Load media specified in command-line arguments
+        /// </summary>
+        /// <param name="clArgs">The command-line arguments</param>
+        /// <returns>True if media was successfully loaded, false if not successfully loaded, null if no media was specified</returns>
         public static bool? ParseClArgs(List<string> clArgs)
         {
             clArgs.RemoveAt(0);
@@ -42,6 +52,12 @@ namespace FTWPlayer
             return LoadObject(file, addOnly);
         }
 
+        /// <summary>
+        /// Load media
+        /// </summary>
+        /// <param name="file">The path to the media</param>
+        /// <param name="addOnly">Specifies if the media should only be added and not played</param>
+        /// <returns>True if media was successfully loaded, false if not successfully loaded</returns>
         public static bool LoadObject(string file, bool addOnly)
         {
             //TODO: update. this is temporary and WIP // TODO: error callback
@@ -50,7 +66,14 @@ namespace FTWPlayer
 
             if (Directory.Exists(file))
             {
-                AddFolderQuery(new DirectoryInfo(file));
+                try { if (!AddFolderQuery(new DirectoryInfo(file))) return false; }
+                catch (SecurityException se)
+                {
+                    LogManager.GetLogger(typeof(MiscUtils)).Error("Missing permissions to folder: " + file, se);
+                    MessageBox.Show(Application.Current.MainWindow, "Missing permissions to folder: " + file,
+                                    "LoadObject", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                }
             }
             else if (!File.Exists(file))
             {
@@ -58,11 +81,13 @@ namespace FTWPlayer
             }
             else
             {
-                var ext = Path.GetExtension(file)?.ToLowerInvariant();
+                var ext = Path.GetExtension(file).ToLowerInvariant();
                 if (StringUtils.GetExtensions(plm.ReadableFileTypes).Contains(ext))
                 {
                     if (addOnly)
+                    {
                         plm.MergePlaylists(plm.OpenPlaylist(file), plm.SelectedPlaylist);
+                    }
                     else
                     {
                         plm.LoadedPlaylists.Add(file, plm.OpenPlaylist(file)); // TODO: handle exceptions
@@ -72,7 +97,7 @@ namespace FTWPlayer
                 }
                 else if (pm.GetExtensions().Contains(ext))
                 {
-                    plm.SelectedPlaylist.Add(file);
+                    plm.SelectedPlaylist?.Add(file);
                     if (!addOnly) pm.JumpToAbsolute(pm.ElementCount - 1);
                 }
                 else
@@ -94,16 +119,44 @@ namespace FTWPlayer
             //    Playlist.Add(MusicInfo.Create(FileSystemInfoEx.FromString(s) as FileInfoEx, FileSystemUtils.DefaultLoadErrorCallback));
         }
 
-        public static void AddFolderQuery(DirectoryInfo di)
+        /// <summary>
+        /// Add a folder and show a query asking the user if subfolders should be loaded
+        /// </summary>
+        /// <param name="di">The directory to load</param>
+        /// <returns>True if the operation succeded</returns>
+        public static bool AddFolderQuery(DirectoryInfo di)
         {
             var dr = MessageBoxResult.No;
-            if (di.EnumerateDirectories().Any())
+            IEnumerable<DirectoryInfo> dirs;
+            try { dirs = di.EnumerateDirectories(); }
+            catch (DirectoryNotFoundException dnfe)
+            {
+                LogManager.GetLogger(typeof(MiscUtils)).Error("Invalid folder!", dnfe);
+                MessageBox.Show(Application.Current.MainWindow, "Invalid folder!",
+                                "LoadObject", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            catch (SecurityException se)
+            {
+                LogManager.GetLogger(typeof(MiscUtils)).Error("Missing permissions to folder!", se);
+                MessageBox.Show(Application.Current.MainWindow, "Missing permissions to folder!",
+                                "LoadObject", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            if (dirs.Any())
                 dr = MessageBox.Show(Application.Current.MainWindow, "Add files from subfolders as well?", "Add Folder", MessageBoxButton.YesNoCancel, MessageBoxImage.Question, MessageBoxResult.No);
             var r = dr == MessageBoxResult.Yes;
             if (r || dr == MessageBoxResult.No)
                 AddFolder(di, r, ex => MessageBox.Show(Application.Current.MainWindow, "Error loading a file: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error)); // TODO: move error callback
+            return true;
         }
 
+        /// <summary>
+        /// Add files from a folder
+        /// </summary>
+        /// <param name="dir">The folder to load</param>
+        /// <param name="subfolders">Specifies whether subfolders should be loaded as well</param>
+        /// <param name="errorCallback">An error callback</param>
         public static async void AddFolder(DirectoryInfo dir, bool subfolders, ErrorCallback errorCallback)
         {
             var pm = ModuleFactory.GetElement<IPlaybackManager>();
@@ -122,13 +175,13 @@ namespace FTWPlayer
                             select f.FullName;
                 foreach (var s in stuff)
                 {
-                    try { dispatcher.InvokeAsync(() => plm.SelectedPlaylist.Add(s), DispatcherPriority.Background); }
+                    try { dispatcher.InvokeAsync(() => plm.SelectedPlaylist?.Add(s), DispatcherPriority.Background); }
                     catch (Exception e)
                     {
                         errorCallback(e);
                     }
                 }
-            });
+            }).ConfigureAwait(false);
         }
     }
 }
