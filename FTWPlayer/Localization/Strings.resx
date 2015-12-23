@@ -226,4 +226,11 @@
   <data name="HelpTabHeader" xml:space="preserve">
     <value>HELP</value>
   </data>
+  <data name="AppCrash" xml:space="preserve">
+    <value>{0} has crashed!</value>
+  </data>
+  <data name="UnhandledExceptionMessage" xml:space="preserve">
+    <value>An unhandled exception has occured! See ftw.log for more information.
+Please report this to the author with a copy of ftw.log.</value>
+  </data>
 </root>

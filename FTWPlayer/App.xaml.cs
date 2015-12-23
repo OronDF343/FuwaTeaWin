@@ -63,7 +63,8 @@ namespace FTWPlayer
         private List<string> _clArgs;
         private string _prod, _title;
         private bool _isinst;
-        private readonly ErrorCallback _ec = ex => LogManager.GetLogger(typeof(App)).Warn("AssemblyLoader reported an error:", ex);
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(App));
+        private readonly ErrorCallback _ec = ex => Logger.Warn("AssemblyLoader reported an error:", ex);
         private const string SetupFileAssocArg = "--setup-file-associations";
         private const string CleanupFileAssocArg = "--clean-up-file-associations";
         private const string ConfigureFileAssocArg = "--configure-file-associations";
@@ -79,7 +80,20 @@ namespace FTWPlayer
         protected override void OnStartup([NotNull] StartupEventArgs e)
         {
             // TODO: create ErrorDialog
-            AppDomain.CurrentDomain.UnhandledException += (sender, args) => LogManager.GetLogger(GetType()).Fatal("An unhandled exception occured:", (Exception)args.ExceptionObject);
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+            {
+                Logger.Fatal("An unhandled exception occured:", (Exception)args.ExceptionObject);
+                try
+                {
+                    MessageBox.Show(MainWindow,
+                                    LocalizationProvider.GetLocalizedValue<string>("UnhandledExceptionMessage"),
+                                    string.Format(LocalizationProvider.GetLocalizedValue<string>("AppCrash"), _prod), MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error("Failed to show the unhandled exception dialog to the user!", ex);
+                }
+            };
             
             // Get ClArgs:
             _clArgs = Environment.GetCommandLineArgs().ToList();
@@ -87,15 +101,18 @@ namespace FTWPlayer
             try
             {
 #if DEBUG
-                XmlConfigurator.ConfigureAndWatch(new FileInfo(Assembly.GetExecutingAssembly().GetSpecificPath(false, "logconfig-debug.xml", false)));
+                XmlConfigurator.ConfigureAndWatch(new FileInfo(Assembly.GetExecutingAssembly()
+                                                                       .GetSpecificPath(false, "logconfig-debug.xml",
+                                                                                        false)));
 #else
-                XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(Assembly.GetExecutingAssembly().GetExeFolder(),
-                                                                            "logconfig.xml")));
+                XmlConfigurator.ConfigureAndWatch(new FileInfo(Assembly.GetExecutingAssembly()
+                                                                       .GetSpecificPath(false, "logconfig.xml",
+                                                                                        false)));
 #endif
             }
-            catch (SystemException se) { LogManager.GetLogger(GetType()).Fatal("Failed to open log config file!", se); }
+            catch (SystemException se) { Logger.Fatal("Failed to open log config file!", se); }
 
-            LogManager.GetLogger(GetType()).Info("Exceptions are tracked, logging is configured, begin loading!");
+            Logger.Info("Exceptions are tracked, logging is configured, begin loading!");
 
             // Upgrade settings:
             using (LogicalThreadContext.Stacks["NDC"].Push(nameof(UpgradeSettings)))
@@ -115,7 +132,7 @@ namespace FTWPlayer
                     return;
                 }
 
-            LogManager.GetLogger(GetType()).Info("Normal startup will begin");
+            Logger.Info("Normal startup will begin");
             using (LogicalThreadContext.Stacks["NDC"].Push(nameof(InitMutex)))
                 if (!InitMutex())
                 {
@@ -139,10 +156,10 @@ namespace FTWPlayer
             try { Process.GetCurrentProcess().PriorityClass = Settings.Default.ProcessPriority; }
             catch (Win32Exception w32)
             {
-                LogManager.GetLogger(GetType()).Error("Failed to set the process priority!", w32);
+                Logger.Error("Failed to set the process priority!", w32);
             }
             
-            LogManager.GetLogger(GetType()).Info("Ready to open the main window!");
+            Logger.Info("Ready to open the main window!");
             // Manually show main window (pervents loading it on shutdown)
             MainWindow = new MainWindow();
             MainWindow.Show();
@@ -170,7 +187,7 @@ namespace FTWPlayer
             try { process.Start(); }
             catch (Win32Exception w32)
             {
-                LogManager.GetLogger(GetType()).Fatal("Failed to start the new process!", w32);
+                Logger.Fatal("Failed to start the new process!", w32);
                 // We should still exit anyway here
             }
             Shutdown();
@@ -181,11 +198,11 @@ namespace FTWPlayer
             var ver = Settings.Default.LastVersion;
             var cver = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             if (string.Equals(ver, cver, StringComparison.OrdinalIgnoreCase)) return;
-            LogManager.GetLogger(GetType()).Info("The settings are from an older version, upgrading now");
+            Logger.Info("The settings are from an older version, upgrading now");
             try { Settings.Default.Upgrade(); }
             catch (ConfigurationErrorsException cee)
             {
-                LogManager.GetLogger(GetType()).Error("Configuration errors when upgrading settings!", cee);
+                Logger.Error("Configuration errors when upgrading settings!", cee);
             }
             Settings.Default.LastVersion = cver;
             Settings.Default.Save();
@@ -227,7 +244,7 @@ namespace FTWPlayer
         {
             if (_clArgs.Contains(SetupFileAssocArg) && _isinst)
             {
-                LogManager.GetLogger(GetType()).Info("Detected argument: Setup File Associations");
+                Logger.Info("Detected argument: Setup File Associations");
                 LoadModules();
                 var l = Assembly.GetExecutingAssembly().Location;
                 var pm = ModuleFactory.GetElement<IPlaybackManager>();
@@ -242,21 +259,21 @@ namespace FTWPlayer
                 }
                 catch (Exception ex)
                 {
-                    LogManager.GetLogger(GetType()).Error("Registry error", ex);
+                    Logger.Error("Registry error", ex);
                     RegistryError(SetupFileAssocArg);
                 }
                 return false;
             }
             if (_clArgs.Contains(CleanupFileAssocArg) && _isinst)
             {
-                LogManager.GetLogger(GetType()).Info("Detected argument: Clean Up File Associations");
+                Logger.Info("Detected argument: Clean Up File Associations");
                 try
                 {
                     RegistryUtils.RemoveFuwaClasses(_prod);
                 }
                 catch (Exception ex)
                 {
-                    LogManager.GetLogger(GetType()).Error("Registry error", ex);
+                    Logger.Error("Registry error", ex);
                     RegistryError(CleanupFileAssocArg);
                 }
                 Shutdown();
@@ -264,7 +281,7 @@ namespace FTWPlayer
             }
             if (_clArgs.Contains(ConfigureFileAssocArg) && _isinst)
             {
-                LogManager.GetLogger(GetType()).Info("Detected argument: Configure File Associations");
+                Logger.Info("Detected argument: Configure File Associations");
                 var assocUi = new ApplicationAssociationRegistrationUI();
                 try
                 {
@@ -286,9 +303,9 @@ namespace FTWPlayer
 
         private void RegistryError(string args)
         {
-            LogManager.GetLogger(GetType()).Error("Failed to create/open registry subkey!");
+            Logger.Error("Failed to create/open registry subkey!");
             if (_clArgs.Contains(ShouldBeAdminArg)) return;
-            LogManager.GetLogger(GetType()).Info("Trying to restart with admin rights");
+            Logger.Info("Trying to restart with admin rights");
             RestartAsAdmin(args);
         }
 
@@ -300,20 +317,20 @@ namespace FTWPlayer
                 _mutex = new Mutex(true, mutexName, out mutexCreated);
             }
             catch (UnauthorizedAccessException uae) {
-                LogManager.GetLogger(GetType()).Error("Failed to gain access to the Mutex!", uae);
+                Logger.Error("Failed to gain access to the Mutex!", uae);
             }
             catch (IOException ie) {
-                LogManager.GetLogger(GetType()).Error("Win32 error while opening the Mutex!", ie);
+                Logger.Error("Win32 error while opening the Mutex!", ie);
             }
             catch (WaitHandleCannotBeOpenedException whcboe) {
-                LogManager.GetLogger(GetType()).Error("Failed to create the Mutex!", whcboe);
+                Logger.Error("Failed to create the Mutex!", whcboe);
             }
             Message = (int)NativeMethods.RegisterWindowMessage(mutexName);
 
             if (mutexCreated) return true;
             if (!_clArgs.Contains("--wait")) // TODO: better handling of _clArgs
             {
-                LogManager.GetLogger(GetType()).Info("Another instance is already open - send our arguments to it if needed");
+                Logger.Info("Another instance is already open - send our arguments to it if needed");
                 _mutex = null;
                 if (_clArgs.Count < 2) return false;
                 SendClArgs();
@@ -323,7 +340,7 @@ namespace FTWPlayer
             {
                 if (!_mutex.WaitOne(Settings.Default.InstanceCreationTimeout))
                 {
-                    LogManager.GetLogger(GetType())
+                    Logger
                               .Fatal("Failed to create an instance: The operation has timed out.");
                     MessageBox.Show("Failed to create an instance: The operation has timed out.",
                                     "Single Instance Application", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -332,12 +349,12 @@ namespace FTWPlayer
             }
             catch (AbandonedMutexException ame)
             {
-                LogManager.GetLogger(GetType()).Error("Mutex was abandoned!", ame);
+                Logger.Error("Mutex was abandoned!", ame);
             }
             if (Mutex.TryOpenExisting(mutexName, MutexRights.FullControl, out _mutex)) return true;
             _mutex = new Mutex(true, mutexName, out mutexCreated);
             if (mutexCreated) return true;
-            LogManager.GetLogger(GetType())
+            Logger
                       .Fatal("Failed to create an instance: Cannot open or create the Mutex!");
             MessageBox.Show("Failed to create an instance: Cannot open or create the Mutex!",
                             "Single Instance Application", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -354,19 +371,19 @@ namespace FTWPlayer
             }
             catch (DirectoryNotFoundException dnfe)
             {
-                LogManager.GetLogger(GetType()).Error("Invalid path for saving ClArgs file", dnfe);
+                Logger.Error("Invalid path for saving ClArgs file", dnfe);
             }
             catch (IOException ie)
             {
-                LogManager.GetLogger(GetType()).Error("I/O error while saving ClArgs file", ie);
+                Logger.Error("I/O error while saving ClArgs file", ie);
             }
             catch (SecurityException se)
             {
-                LogManager.GetLogger(GetType()).Error("Missing permissions to save ClArgs file", se);
+                Logger.Error("Missing permissions to save ClArgs file", se);
             }
             catch (UnauthorizedAccessException uae)
             {
-                LogManager.GetLogger(GetType()).Error("Access denied for saving ClArgs file", uae);
+                Logger.Error("Access denied for saving ClArgs file", uae);
             }
             NativeMethods.SendMessage(NativeMethods.HWND_BROADCAST, Message, IntPtr.Zero, IntPtr.Zero);
         }
@@ -384,7 +401,7 @@ namespace FTWPlayer
             var ef = Assembly.GetEntryAssembly().GetExeFolder();
             if (ef == null)
             {
-                LogManager.GetLogger(GetType()).Fatal("Failed to load modular components - I don't know where I am!");
+                Logger.Fatal("Failed to load modular components - I don't know where I am!");
                 return; // TODO: return false and check
             }
             ModuleFactory.LoadFolder(ef, sel, _ec, true);
@@ -393,12 +410,12 @@ namespace FTWPlayer
             try { extDir = Assembly.GetEntryAssembly().GetSpecificPath(false, "extensions", true); }
             catch (IOException ie)
             {
-                LogManager.GetLogger(GetType()).Error("I/O exception getting extensions directory!", ie);
+                Logger.Error("I/O exception getting extensions directory!", ie);
                 return;
             }
             catch (UnauthorizedAccessException uae)
             {
-                LogManager.GetLogger(GetType()).Error("Access denied to extensions directory!", uae);
+                Logger.Error("Access denied to extensions directory!", uae);
                 return;
             }
             var extWhitelist = Settings.Default.ExtensionWhitelist ?? new ExtensionAttributeCollection();
@@ -416,17 +433,17 @@ namespace FTWPlayer
             try { dirs = Directory.EnumerateDirectories(extDir); }
             catch (UnauthorizedAccessException uae)
             {
-                LogManager.GetLogger(GetType()).Error("Access denied to the extensions directory!", uae);
+                Logger.Error("Access denied to the extensions directory!", uae);
                 return;
             }
             catch (SecurityException se)
             {
-                LogManager.GetLogger(GetType()).Error("Missing permissions to the extensions directory!", se);
+                Logger.Error("Missing permissions to the extensions directory!", se);
                 return;
             }
             catch (IOException ie)
             {
-                LogManager.GetLogger(GetType()).Error("The extensions directory is a file?!", ie);
+                Logger.Error("The extensions directory is a file?!", ie);
                 return;
             }
             foreach (var dir in dirs)
@@ -448,7 +465,7 @@ namespace FTWPlayer
                     new UserScopedSettingAttribute()
                 }
             };
-            DynSettings = ModuleFactory.GetAllConfigurableProperties(ex => LogManager.GetLogger(GetType()).Error("Error getting configurable property:", ex)).ToList();
+            DynSettings = ModuleFactory.GetAllConfigurableProperties(ex => Logger.Error("Error getting configurable property:", ex)).ToList();
             foreach (var info in DynSettings)
             {
                 try
@@ -460,22 +477,22 @@ namespace FTWPlayer
                 }
                 catch (ConfigurationErrorsException cee)
                 {
-                    LogManager.GetLogger(GetType()).Error("The settings failed to instantiate!", cee);
+                    Logger.Error("The settings failed to instantiate!", cee);
                 }
                 catch (SettingsPropertyNotFoundException spnfe)
                 {
-                    LogManager.GetLogger(GetType()).Fatal("Unexpected settings error, Name=" + info.Name, spnfe);
+                    Logger.Fatal("Unexpected settings error, Name=" + info.Name, spnfe);
                 }
                 catch (SettingsPropertyWrongTypeException spwte)
                 {
-                    LogManager.GetLogger(GetType()).Error("Invalid default value for setting, Name=" + info.Name + " DefaultValue=" + info.DefaultValue, spwte);
+                    Logger.Error("Invalid default value for setting, Name=" + info.Name + " DefaultValue=" + info.DefaultValue, spwte);
                 }
                 catch (SettingsPropertyIsReadOnlyException spiroe)
                 {
-                    LogManager.GetLogger(GetType()).Fatal("Unexpected settings error, Name=" + info.Name, spiroe);
+                    Logger.Fatal("Unexpected settings error, Name=" + info.Name, spiroe);
                 }
             }
-            LogManager.GetLogger(GetType()).Debug("Dynamic properties: " + DynSettings.Count);
+            Logger.Debug("Dynamic properties: " + DynSettings.Count);
             // Handle changes
             Settings.Default.PropertyChanged += (sender, args) =>
             {
@@ -495,11 +512,11 @@ namespace FTWPlayer
                 {
                     var skin = sm.LoadSkin(Settings.Default.Skin);
                     SkinLoadingBehavior.UpdateSkin(skin.SkinParts);
-                    LogManager.GetLogger(GetType()).Info($"Successfully loaded skin: Name=\"{skin.GetIdentifier()?.Name ?? "null"}\" Path=\"{skin.Path}\"");
+                    Logger.Info($"Successfully loaded skin: Name=\"{skin.GetIdentifier()?.Name ?? "null"}\" Path=\"{skin.Path}\"");
                 }
                 catch (Exception ex)
                 {
-                    LogManager.GetLogger(GetType()).Error("Failed to load skin! Attempting to load fallback skin", ex);
+                    Logger.Error("Failed to load skin! Attempting to load fallback skin", ex);
                     SkinLoadingBehavior.UpdateSkin(sm.LoadFallbackSkin().SkinParts);
                 }
             }

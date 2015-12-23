@@ -88,6 +88,15 @@ namespace FTWPlayer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} has crashed!.
+        /// </summary>
+        internal static string AppCrash {
+            get {
+                return ResourceManager.GetString("AppCrash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A compact, modular and open-source music player.
         /// </summary>
         internal static string AppDescription {
@@ -354,6 +363,16 @@ namespace FTWPlayer.Localization {
         internal static string TagsTabHeader {
             get {
                 return ResourceManager.GetString("TagsTabHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An unhandled exception has occured! See ftw.log for more information.
+        ///Please report this to the author with a copy of ftw.log..
+        /// </summary>
+        internal static string UnhandledExceptionMessage {
+            get {
+                return ResourceManager.GetString("UnhandledExceptionMessage", resourceCulture);
             }
         }
         

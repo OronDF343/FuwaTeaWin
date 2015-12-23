@@ -222,4 +222,11 @@
   <data name="HelpTabHeader" xml:space="preserve">
     <value>עזרה</value>
   </data>
+  <data name="AppCrash" xml:space="preserve">
+    <value>{0} קרס!</value>
+  </data>
+  <data name="UnhandledExceptionMessage" xml:space="preserve">
+    <value>נזרקה חריגה שלא טופלה! למידע נוסף עיינו בקובץ ftw.log.
+אנא דווחו על שגיאה זו למפתח התוכנה וצרפו את הקובץ ftw.log.</value>
+  </data>
 </root>
