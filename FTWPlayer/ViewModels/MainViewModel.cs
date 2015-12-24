@@ -309,6 +309,7 @@ namespace FTWPlayer.ViewModels
 
         private void Seek(Grid bar)
         {
+            if (!ShiftMode) return;
             var p = NativeMethods.CorrectGetPosition(bar);
             PlaybackManager.Position = TimeSpan.FromMilliseconds(PlaybackManager.Duration.TotalMilliseconds / bar.ActualWidth * p.X);
         }
