@@ -130,6 +130,7 @@
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Skins\ISkinManager.cs" />
     <Compile Include="Skins\ResourceDictionaryIdentifier.cs" />
+    <Compile Include="Skins\SkinLoadException.cs" />
     <Compile Include="Skins\SkinManager.cs" />
     <Compile Include="Skins\SkinPackage.cs" />
     <Compile Include="ViewModels\SettingsViewModels\ISettingsTab.cs" />

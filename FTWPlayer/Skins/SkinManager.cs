@@ -33,6 +33,7 @@ namespace FTWPlayer.Skins
         /// <exception cref="IOException">Skins directory is a file name.</exception>
         /// <exception cref="System.Security.SecurityException">The caller does not have the required permission. </exception>
         /// <exception cref="UnauthorizedAccessException">The caller does not have the required permission. </exception>
+        /// <exception cref="SkinLoadException">An error occured while loading a skin</exception>
         public void LoadAllSkins(ErrorCallback ec)
         {
             // Built-in (explicit):
@@ -58,8 +59,15 @@ namespace FTWPlayer.Skins
                 catch (Exception e) { ec(new Exception("Error loading XAML from directory: " + dir, e)); }
         }
 
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null" />.</exception>
-        /// <exception cref="InvalidOperationException">There is a cyclic dependency between skins.</exception>
+        /// <summary>
+        /// Loads a skin
+        /// </summary>
+        /// <remarks>Only this function takes shortened paths! It also adds missing ResourceDictionaries from the default skin</remarks>
+        /// <param name="source">The location of the skin as a shortened path</param>
+        /// <param name="children">(used internally in the recursion) all the children of the current skin</param>
+        /// <exception cref="System.ArgumentNullException"><paramref name="source"/> is <see langword="null" />.</exception>
+        /// <exception cref="System.InvalidOperationException">There is a cyclic dependency between skins</exception>
+        /// <exception cref="SkinLoadException">An error occured while loading the skin</exception>
         public SkinPackage LoadSkin(string source, HashSet<string> children = null)
         {
             if (string.IsNullOrWhiteSpace(source))
@@ -72,7 +80,7 @@ namespace FTWPlayer.Skins
                                                                               : source.EndsWith(".dll", StringComparison.OrdinalIgnoreCase)
                                                                                     ? LoadSkinFromBaml(ExpandPath(source))
                                                                                     : LoadSkinFromXamlFiles(ExpandPath(source)));
-            if (source == DefaultSkin || f == null) return f;
+            if (source == DefaultSkin) return f;
             SkinPackage parent;
             if (!f.HasIdentifier() || string.IsNullOrWhiteSpace(f.GetIdentifier()?.Parent)) parent = LoadFallbackSkin();
             else
@@ -82,18 +90,18 @@ namespace FTWPlayer.Skins
                 // ReSharper disable once AssignNullToNotNullAttribute
                 parent = LoadSkin(f.GetIdentifier()?.Parent, ch);
             }
-            if (parent == null) return f;
             foreach (var part in parent.SkinParts.Where(part => !f.SkinParts.ContainsKey(part.Key)))
                 f.SkinParts.Add(part.Key, part.Value);
             return f;
         }
 
+        /// <exception cref="SkinLoadException">An error occured while loading the skin</exception>
         public SkinPackage LoadFallbackSkin()
         {
             return LoadSkin(DefaultSkin);
         }
 
-        [CanBeNull]
+        /// <exception cref="SkinLoadException">An error occured while loading the skin.</exception>
         public SkinPackage LoadSkinFromXamlFiles(string dir)
         {
             var shortDir = ShortenPath(dir);
@@ -102,24 +110,30 @@ namespace FTWPlayer.Skins
 
             var found = false;
             var allDicts = new Dictionary<string, ResourceDictionary>();
-            foreach (var path in Directory.EnumerateFiles(dir, "*.xaml"))
+            try
             {
-                using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+                foreach (var path in Directory.EnumerateFiles(dir, "*.xaml"))
                 {
-                    var obj = XamlReader.Load(fs, new ParserContext { BaseUri = new Uri(path) });
-                    if (!(obj is ResourceDictionary))
+                    using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
-                        LogManager.GetLogger(GetType()).Warn("XAML file is not a skin: " + path);
-                        continue;
+                        var obj = XamlReader.Load(fs, new ParserContext { BaseUri = new Uri(path) });
+                        if (!(obj is ResourceDictionary))
+                        {
+                            LogManager.GetLogger(GetType()).Warn("XAML file is not a skin: " + path);
+                            continue;
+                        }
+                        if (path != null) allDicts.Add(Path.GetFileNameWithoutExtension(path).ToLowerInvariant(), (ResourceDictionary)obj);
+                        found = true;
                     }
-                    if (path != null) allDicts.Add(Path.GetFileNameWithoutExtension(path).ToLowerInvariant(), (ResourceDictionary)obj);
-                    found = true;
                 }
+            }
+            catch (Exception e)
+            {
+                throw new SkinLoadException("An error occured opening the speified directory or one of the files in it", e);
             }
             if (!found)
             {
-                LogManager.GetLogger(GetType()).Error("Directory contains no valid skin files: " + dir);
-                return null;
+                throw new SkinLoadException("The speified directory contains no valid XAML skin files: " + dir);
             }
             if (!allDicts.HasIdentifier()) LogManager.GetLogger(GetType()).Warn("XAML files are missing Skin Identifier: " + dir);
             var pkg = new SkinPackage(shortDir, allDicts);
@@ -129,10 +143,10 @@ namespace FTWPlayer.Skins
 
         private const string PackUriStart = "pack://application:,,,/";
 
-        /// <exception cref="FormatException">Missing valid application pack URI prefix!</exception>
+        /// <exception cref="SkinLoadException">URI format is incorrect -or- the referenced assembly could not be loaded</exception>
         public SkinPackage LoadSkinFromPackUri(string uri)
         {
-            if (!uri.StartsWith(PackUriStart)) throw new FormatException("Missing valid application pack URI prefix!");
+            if (!uri.StartsWith(PackUriStart)) throw new SkinLoadException("Missing a valid application pack URI prefix!");
             var f = GetLoadedSkin(uri);
             if (f != null) return f;
 
@@ -154,7 +168,7 @@ namespace FTWPlayer.Skins
                 }
                 catch (Exception e)
                 {
-                    throw new FormatException("Failed to get referenced assembly from pack URI!", e);
+                    throw new SkinLoadException("An error occured while loading the referenced assembly from the pack URI!", e);
                 }
             }
             else a = Assembly.GetCallingAssembly();
@@ -166,21 +180,26 @@ namespace FTWPlayer.Skins
             return pkg;
         }
 
+        /// <exception cref="SkinLoadException">An error occured while loading the resources from the <paramref name="dll"/> file</exception>
         public SkinPackage LoadSkinFromBaml(string dll)
         {
             var shortDll = ShortenPath(dll);
             var f = GetLoadedSkin(shortDll);
             if (f != null) return f;
-            
-            var allDicts = GetResourcesFromAssembly(Assembly.LoadFrom(dll), s => true);
+            Dictionary<string, ResourceDictionary> allDicts;
+
+            try { allDicts = GetResourcesFromAssembly(Assembly.LoadFrom(dll), s => true); }
+            catch (Exception e)
+            {
+                throw new SkinLoadException("An error occured while loading the resources from the DLL file", e);
+            }
 
             if (!allDicts.HasIdentifier()) LogManager.GetLogger(GetType()).Warn("DLL file is missing Skin Identifier: " + dll);
             var pkg = new SkinPackage(shortDll, allDicts);
             LoadedSkins.Add(pkg);
             return pkg;
         }
-
-        [CanBeNull]
+        
         private Dictionary<string, ResourceDictionary> GetResourcesFromAssembly(Assembly a, Func<string, bool> pathFilter)
         {
             var found = false;
@@ -188,8 +207,7 @@ namespace FTWPlayer.Skins
             var stream = a.GetManifestResourceStream(a.GetName().Name + ".g.resources");
             if (stream == null)
             {
-                LogManager.GetLogger(GetType()).Error("Assembly contains no resources: " + a.GetName().Name);
-                return null;
+                throw new InvalidOperationException("Assembly contains no visible resources: " + a.GetName().Name);
             }
             using (var rr = new ResourceReader(stream))
             {
@@ -211,20 +229,16 @@ namespace FTWPlayer.Skins
                     }
                 }
             }
-            if (!found)
-            {
-                LogManager.GetLogger(GetType()).Error("Assembly contains no valid skin files: " + a.GetName().Name);
-                return null;
-            }
+            if (!found) throw new SkinLoadException("Assembly contains no valid skin files: " + a.GetName().Name);
             return allDicts;
         }
-
+        
         public string ExpandPath(string path)
         {
             return path.Replace("%app%", Assembly.GetEntryAssembly().GetSpecificPath(false, "skins", false))
                        .Replace("%user%", Assembly.GetEntryAssembly().GetSpecificPath(true, "skins", false));
         }
-
+        
         public string ShortenPath(string path)
         {
             return path.Replace(Assembly.GetEntryAssembly().GetSpecificPath(false, "skins", false), "%app%")

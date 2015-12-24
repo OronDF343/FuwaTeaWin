@@ -508,17 +508,20 @@ namespace FTWPlayer
             if (string.IsNullOrWhiteSpace(Settings.Default.Skin)) SkinLoadingBehavior.UpdateSkin(sm.LoadFallbackSkin().SkinParts);
             else
             {
-                try
+                SkinPackage skin;
+                try { skin = sm.LoadSkin(Settings.Default.Skin); }
+                catch (InvalidOperationException ioe)
                 {
-                    var skin = sm.LoadSkin(Settings.Default.Skin);
-                    SkinLoadingBehavior.UpdateSkin(skin.SkinParts);
-                    Logger.Info($"Successfully loaded skin: Name=\"{skin.GetIdentifier()?.Name ?? "null"}\" Path=\"{skin.Path}\"");
+                    Logger.Error("Detected cyclic dependency between skins! Loading fallback skin instead", ioe);
+                    skin = sm.LoadFallbackSkin();
                 }
-                catch (Exception ex)
+                catch (SkinLoadException sle)
                 {
-                    Logger.Error("Failed to load skin! Attempting to load fallback skin", ex);
-                    SkinLoadingBehavior.UpdateSkin(sm.LoadFallbackSkin().SkinParts);
+                    Logger.Error("Failed to load the skin! Loading fallback skin instead", sle);
+                    skin = sm.LoadFallbackSkin();
                 }
+                SkinLoadingBehavior.UpdateSkin(skin.SkinParts);
+                Logger.Info($"Successfully loaded skin: Name=\"{skin.GetIdentifier()?.Name ?? "null"}\" Path=\"{skin.Path}\"");
             }
         }
 
