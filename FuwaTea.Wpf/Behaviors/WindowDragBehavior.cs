@@ -48,9 +48,12 @@ namespace FuwaTea.Wpf.Behaviors
 
         private Point _startPoint;
         private ResizeMode _previous;
+        private bool _dragConfirmed;
 
         private void OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (ExcludedElements.Any(el => el.Binding != null && el.Binding.IsMouseOver)) return;
+            _dragConfirmed = true;
             _startPoint = e.GetPosition(AssociatedObject);
             _previous = AssociatedObject.ResizeMode;
             AssociatedObject.ResizeMode = ResizeMode.NoResize;
@@ -58,9 +61,10 @@ namespace FuwaTea.Wpf.Behaviors
 
         private void OnPreviewMouseMove(object sender, MouseEventArgs e)
         {
+            if (!_dragConfirmed) return;
             var newPoint = e.GetPosition(AssociatedObject);
-            if (e.LeftButton == MouseButtonState.Pressed && Enabled
-                && !ExcludedElements.Any(el => el.Binding != null && el.Binding.IsMouseOver)
+            if (e.LeftButton == MouseButtonState.Pressed
+                && Enabled
                 && (Math.Abs(newPoint.X - _startPoint.X) > SystemParameters.MinimumHorizontalDragDistance
                     || Math.Abs(newPoint.Y - _startPoint.Y) > SystemParameters.MinimumVerticalDragDistance))
             {
@@ -70,7 +74,9 @@ namespace FuwaTea.Wpf.Behaviors
 
         private void OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            if (!_dragConfirmed) return;
             AssociatedObject.ResizeMode = _previous;
+            _dragConfirmed = false;
         }
     }
 
