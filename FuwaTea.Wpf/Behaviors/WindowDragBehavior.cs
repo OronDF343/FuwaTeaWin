@@ -26,12 +26,14 @@ namespace FuwaTea.Wpf.Behaviors
     [ContentProperty(nameof(ExcludedElements))]
     public class WindowDragBehavior : ControlledBehaviorBase<Window>
     {
-        private static readonly DependencyPropertyKey ExcludedElementsPropertyKey =
-            DependencyProperty.RegisterReadOnly("ExcludedElements", typeof(FreezableCollection<ElementReference>),
-                                        typeof(WindowDragBehavior), new PropertyMetadata(new FreezableCollection<ElementReference>()));
+        public WindowDragBehavior()
+        {
+            SetValue(ExcludedElementsProperty, new FreezableCollection<ElementReference>());
+        }
 
         public static readonly DependencyProperty ExcludedElementsProperty =
-            ExcludedElementsPropertyKey.DependencyProperty;
+            DependencyProperty.Register("ExcludedElements", typeof(FreezableCollection<ElementReference>),
+                                        typeof(WindowDragBehavior));
 
         public FreezableCollection<ElementReference> ExcludedElements
             => (FreezableCollection<ElementReference>)GetValue(ExcludedElementsProperty);
