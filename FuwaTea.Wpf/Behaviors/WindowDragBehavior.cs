@@ -23,17 +23,15 @@ using System.Windows.Markup;
 
 namespace FuwaTea.Wpf.Behaviors
 {
-    [ContentProperty("ExcludedElements")]
+    [ContentProperty(nameof(ExcludedElements))]
     public class WindowDragBehavior : ControlledBehaviorBase<Window>
     {
-        public WindowDragBehavior()
-        {
-            SetValue(ExcludedElementsProperty, new FreezableCollection<ElementReference>());
-        }
+        private static readonly DependencyPropertyKey ExcludedElementsPropertyKey =
+            DependencyProperty.RegisterReadOnly("ExcludedElements", typeof(FreezableCollection<ElementReference>),
+                                        typeof(WindowDragBehavior), new PropertyMetadata(new FreezableCollection<ElementReference>()));
 
         public static readonly DependencyProperty ExcludedElementsProperty =
-            DependencyProperty.Register("ExcludedElements", typeof(FreezableCollection<ElementReference>),
-                                        typeof(WindowDragBehavior));
+            ExcludedElementsPropertyKey.DependencyProperty;
 
         public FreezableCollection<ElementReference> ExcludedElements
             => (FreezableCollection<ElementReference>)GetValue(ExcludedElementsProperty);
