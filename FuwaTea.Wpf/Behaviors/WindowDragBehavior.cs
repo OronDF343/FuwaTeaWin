@@ -16,9 +16,12 @@
 #endregion
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Markup;
 
 namespace FuwaTea.Wpf.Behaviors
@@ -38,14 +41,50 @@ namespace FuwaTea.Wpf.Behaviors
         public FreezableCollection<ElementReference> ExcludedElements
             => (FreezableCollection<ElementReference>)GetValue(ExcludedElementsProperty);
 
+        public static readonly DependencyProperty EnableNegativePositionProperty =
+            DependencyProperty.Register("EnableNegativePosition", typeof(bool), typeof(WindowDragBehavior),
+                                        new PropertyMetadata(true));
+
+        public bool EnableNegativePosition
+        {
+            get { return (bool)GetValue(EnableNegativePositionProperty); }
+            set { SetValue(EnableNegativePositionProperty, value); }
+        }
+
         protected override void OnAttached()
         {
             AssociatedObject.PreviewMouseLeftButtonDown += OnPreviewMouseLeftButtonDown;
             AssociatedObject.PreviewMouseMove += OnPreviewMouseMove;
             AssociatedObject.PreviewMouseLeftButtonUp += OnPreviewMouseLeftButtonUp;
+            AddSourceHook();
+            AssociatedObject.SourceInitialized += AssociatedObject_SourceInitialized;
             base.OnAttached();
         }
 
+        private void AssociatedObject_SourceInitialized(object sender, EventArgs e)
+        {
+            AddSourceHook();
+        }
+
+        private void AddSourceHook()
+        {
+            if (_hwnd != null) return;
+            _hwnd = (HwndSource)PresentationSource.FromVisual(AssociatedObject);
+            _hwnd?.AddHook(HwndSourceHook); // should never be null
+        }
+
+        protected override void OnDetaching()
+        {
+            AssociatedObject.PreviewMouseLeftButtonDown -= OnPreviewMouseLeftButtonDown;
+            AssociatedObject.PreviewMouseMove -= OnPreviewMouseMove;
+            AssociatedObject.PreviewMouseLeftButtonUp -= OnPreviewMouseLeftButtonUp;
+            AssociatedObject.SourceInitialized -= AssociatedObject_SourceInitialized;
+            _hwnd?.RemoveHook(HwndSourceHook);
+            _hwnd = null;
+            base.OnDetaching();
+        }
+
+        private HwndSource _hwnd;
         private Point _startPoint;
         private ResizeMode _previous;
         private bool _dragConfirmed;
@@ -63,8 +102,7 @@ namespace FuwaTea.Wpf.Behaviors
         {
             if (!_dragConfirmed) return;
             var newPoint = e.GetPosition(AssociatedObject);
-            if (e.LeftButton == MouseButtonState.Pressed
-                && Enabled
+            if (e.LeftButton == MouseButtonState.Pressed && Enabled
                 && (Math.Abs(newPoint.X - _startPoint.X) > SystemParameters.MinimumHorizontalDragDistance
                     || Math.Abs(newPoint.Y - _startPoint.Y) > SystemParameters.MinimumVerticalDragDistance))
             {
@@ -77,6 +115,30 @@ namespace FuwaTea.Wpf.Behaviors
             if (!_dragConfirmed) return;
             AssociatedObject.ResizeMode = _previous;
             _dragConfirmed = false;
+        }
+
+        [SuppressMessage("ReSharper", "InconsistentNaming")]
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+        public struct WINDOWPOS
+        {
+            public IntPtr hwnd;
+            public IntPtr hwndInsertAfter;
+            public int x;
+            public int y;
+            public int cx;
+            public int cy;
+            public uint flags;
+        };
+
+        private IntPtr HwndSourceHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            if (hwnd == _hwnd.Handle && msg == 0x46 && EnableNegativePosition && _dragConfirmed && Mouse.LeftButton != MouseButtonState.Pressed) // WM_WINDOWPOSCHANGING
+            {
+                var wp = (WINDOWPOS)Marshal.PtrToStructure(lParam, typeof(WINDOWPOS));
+                wp.flags = wp.flags | 2; // SWP_NOMOVE
+                Marshal.StructureToPtr(wp, lParam, false);
+            }
+            return IntPtr.Zero;
         }
     }
 
