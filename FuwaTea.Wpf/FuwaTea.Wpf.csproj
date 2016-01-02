@@ -93,7 +93,6 @@
     <Compile Include="Helpers\ExtensionMethods.cs" />
     <Compile Include="Helpers\FlowDirectionUpdater.cs" />
     <Compile Include="Helpers\OptionalToolTip.cs" />
-    <Compile Include="Helpers\StateManager.cs" />
     <Compile Include="Helpers\WindowPositioner.cs" />
     <Compile Include="Keyboard\KeyboardListener.cs" />
     <Compile Include="NativeMethods.cs" />

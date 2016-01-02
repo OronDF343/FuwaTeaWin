@@ -308,7 +308,15 @@
                         </fuwa:DynamicStyle.DerivedStyle>
                     </Slider>
                     <Button Grid.Row="1" Grid.Column="7" fuwa:DynamicStyle.BaseStyle="{DynamicResource {x:Type Button}}"
-                            fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}">
+                            fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}"
+                            fuwa:DataStatesHelper.Binding="{Binding PlaybackManager.EnableShuffle}">
+                        <fuwa:DataStatesHelper.States>
+                            <fuwa:StateCollection>
+                                <fuwa:State StateName="ShuffleOn">
+                                    <system:Boolean>True</system:Boolean>
+                                </fuwa:State>
+                            </fuwa:StateCollection>
+                        </fuwa:DataStatesHelper.States>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
                                 <command:EventToCommand Command="{Binding ShuffleCommand}" PassEventArgsToCommand="True" />
@@ -319,10 +327,10 @@
                                 <Setter Property="Content" Value="{DynamicResource InactiveShuffleButtonContent}" />
                                 <Setter Property="fuwa:OptionalToolTip.ToolTipContent" Value="{lex:Loc ShuffleOffToolTip}" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding PlaybackManager.EnableShuffle}" Value="True">
+                                    <Trigger Property="fuwa:DataStatesHelper.CurrentStateName" Value="ShuffleOn">
                                         <Setter Property="Content" Value="{DynamicResource ShuffleButtonContent}" />
                                         <Setter Property="fuwa:OptionalToolTip.ToolTipContent" Value="{lex:Loc ShuffleOnToolTip}" />
-                                    </DataTrigger>
+                                    </Trigger>
                                 </Style.Triggers>
                             </Style>
                         </fuwa:DynamicStyle.DerivedStyle>

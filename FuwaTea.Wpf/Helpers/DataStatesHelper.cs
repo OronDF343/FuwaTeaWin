@@ -2,87 +2,90 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Markup;
+using ModularFramework;
 
 namespace FuwaTea.Wpf.Helpers
 {
-    [ContentProperty(nameof(States))]
-    public class DataStatesHelper : DependencyObject
+    public class DataStatesHelper
     {
-        public static readonly DependencyProperty HelperObjectProperty = DependencyProperty.RegisterAttached(
-                                                                "HelperObject", typeof(DataStatesHelper), typeof(DataStatesHelper),
-                                                                new PropertyMetadata(new DataStatesHelper()));
-
-        public static void SetHelperObject(DependencyObject element, DataStatesHelper value)
-        {
-            element.SetValue(HelperObjectProperty, value);
-        }
-
-        public static DataStatesHelper GetHelperObject(DependencyObject element)
-        {
-            return (DataStatesHelper)element.GetValue(HelperObjectProperty);
-        }
-
-        public static readonly DependencyProperty BindingProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty BindingProperty = DependencyProperty.RegisterAttached(
                                                         "Binding", typeof(object), typeof(DataStatesHelper), new PropertyMetadata(null, OnBindingUpdated));
 
         protected static void OnBindingUpdated(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
-            var dsb = (DataStatesHelper)obj;
-            dsb.CurrentState = dsb.States.FirstOrDefault(s => s.DataType.IsInstanceOfType(args.NewValue) && s.Value.Equals(args.NewValue));
+            var states = GetStates(obj);
+            SetCurrentState(obj, states?.FirstOrDefault(s => Equals(s.Value, args.NewValue)));
         }
 
-        public object Binding { get { return GetValue(BindingProperty); } set { SetValue(BindingProperty, value); } }
+        [CanBeNull]
+        public static object GetBinding(DependencyObject d)
+        {
+            return d.GetValue(BindingProperty);
+        }
 
-        private static readonly DependencyPropertyKey CurrentStatePropertyKey = DependencyProperty.RegisterReadOnly(
+        public static void SetBinding(DependencyObject d, [CanBeNull] object value)
+        {
+            d.SetValue(BindingProperty, value);
+        }
+
+        private static readonly DependencyPropertyKey CurrentStatePropertyKey = DependencyProperty.RegisterAttachedReadOnly(
                                                         "CurrentState", typeof(State), typeof(DataStatesHelper), new PropertyMetadata(null));
 
         public static readonly DependencyProperty CurrentStateProperty = CurrentStatePropertyKey.DependencyProperty;
 
-        public State CurrentState
+        [CanBeNull]
+        public static State GetCurrentState(DependencyObject d)
         {
-            get
-            {
-                return (State)GetValue(CurrentStateProperty);
-            }
-            protected set
-            {
-                SetValue(CurrentStatePropertyKey, value);
-                SetValue(CurrentStateNamePropertyKey, value.StateName);
-            }
+            return (State)d.GetValue(CurrentStateProperty);
         }
 
-        private static readonly DependencyPropertyKey CurrentStateNamePropertyKey = DependencyProperty.RegisterReadOnly(
+        protected static void SetCurrentState(DependencyObject d, [CanBeNull] State value)
+        {
+            d.SetValue(CurrentStatePropertyKey, value);
+            d.SetValue(CurrentStateNamePropertyKey, value?.StateName);
+        }
+
+        private static readonly DependencyPropertyKey CurrentStateNamePropertyKey = DependencyProperty.RegisterAttachedReadOnly(
                                                         "CurrentStateName", typeof(string), typeof(DataStatesHelper), new PropertyMetadata(null));
 
         public static readonly DependencyProperty CurrentStateNameProperty =
             CurrentStateNamePropertyKey.DependencyProperty;
 
-        public string CurrentStateName => (string)GetValue(CurrentStateNameProperty);
+        [CanBeNull]
+        public static string GetCurrentStateName(DependencyObject d)
+        {
+            return (string)d.GetValue(CurrentStateNameProperty);
+        }
 
-        private static readonly DependencyPropertyKey StatesPropertyKey = DependencyProperty.RegisterReadOnly(
-                                                        "States", typeof(FreezableCollection<State>), typeof(DataStatesHelper), new PropertyMetadata(new FreezableCollection<State>()));
+        public static readonly DependencyProperty StatesProperty = DependencyProperty.RegisterAttached(
+                                                        "States", typeof(StateCollection), typeof(DataStatesHelper), new PropertyMetadata(null));
 
-        public static readonly DependencyProperty StatesProperty = StatesPropertyKey.DependencyProperty;
+        [CanBeNull]
+        public static StateCollection GetStates(DependencyObject d)
+        {
+            return (StateCollection)d.GetValue(StatesProperty);
+        }
 
-        public FreezableCollection<State> States => (FreezableCollection<State>)GetValue(StatesProperty);
+        public static void SetStates(DependencyObject d, StateCollection value)
+        {
+            d.SetValue(StatesProperty, value);
+        }
     }
 
+    public class StateCollection : FreezableCollection<State> { }
+    
     [ContentProperty(nameof(Value))]
     public class State : Freezable
     {
         public static readonly DependencyProperty StateNameProperty = DependencyProperty.Register(
-                                                        "StateName", typeof(string), typeof(State), new PropertyMetadata(default(string)));
+                                                        "StateName", typeof(string), typeof(State), new PropertyMetadata(""));
 
         public string StateName { get { return (string)GetValue(StateNameProperty); } set { SetValue(StateNameProperty, value); } }
 
-        public static readonly DependencyProperty DataTypeProperty = DependencyProperty.Register(
-                                                        "DataType", typeof(Type), typeof(State), new PropertyMetadata(default(Type)));
-
-        public Type DataType { get { return (Type)GetValue(DataTypeProperty); } set { SetValue(DataTypeProperty, value); } }
-
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
-                                                        "Value", typeof(object), typeof(State), new PropertyMetadata(default(object)));
+                                                        "Value", typeof(object), typeof(State), new PropertyMetadata(null));
 
+        [CanBeNull]
         public object Value { get { return GetValue(ValueProperty); } set { SetValue(ValueProperty, value); } }
 
         protected override Freezable CreateInstanceCore()
