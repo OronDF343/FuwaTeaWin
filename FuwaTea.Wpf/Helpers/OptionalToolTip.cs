@@ -112,5 +112,31 @@ namespace FuwaTea.Wpf.Helpers
         {
             obj.SetValue(ToolTipContentProperty, value);
         }
+
+        public static readonly DependencyProperty UseDataStatesProperty = DependencyProperty.RegisterAttached(
+                                                                "UseDataStates", typeof(bool), typeof(OptionalToolTip),
+                                                                new PropertyMetadata(false, UseDataStatesChanged));
+
+        private static void UseDataStatesChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
+        {
+            if ((bool)args.NewValue)
+                BindingOperations.SetBinding(d, ToolTipContentProperty,
+                                             new Binding
+                                             {
+                                                 Source = d,
+                                                 Path = new PropertyPath("(0)." + nameof(State.Tag), DataStatesHelper.CurrentStateProperty)
+                                             });
+            else BindingOperations.ClearBinding(d, ToolTipContentProperty);
+        }
+
+        public static void SetUseDataStates(DependencyObject element, bool value)
+        {
+            element.SetValue(UseDataStatesProperty, value);
+        }
+
+        public static bool GetUseDataStates(DependencyObject element)
+        {
+            return (bool)element.GetValue(UseDataStatesProperty);
+        }
     }
 }

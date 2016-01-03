@@ -8,6 +8,9 @@
              mc:Ignorable="d">
     <Application.Resources>
         <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="States.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
             <!--Global View Model Locator-->
             <viewModels:ViewModelLocator x:Key="Locator" />
             <Storyboard x:Key="VolumeFadeOut">

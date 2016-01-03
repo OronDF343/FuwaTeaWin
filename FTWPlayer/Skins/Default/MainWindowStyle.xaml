@@ -148,11 +148,14 @@
     <Style BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{DynamicResource DefaultBrush}" />
         <Setter Property="Focusable" Value="False" />
+        <Setter Property="BorderThickness" Value="0"/>
         <!-- Important! -->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Border Background="{TemplateBinding Background}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Border>
                 </ControlTemplate>
@@ -164,6 +167,31 @@
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="{DynamicResource SelectedBrush}" />
+            </Trigger>
+            <!-- Data States -->
+            <!-- Shuffle States -->
+            <Trigger Property="fuwa:DataStatesHelper.CurrentStateName" Value="ShuffleOff">
+                <Setter Property="Content" Value="{DynamicResource InactiveShuffleButtonContent}" />
+            </Trigger>
+            <Trigger Property="fuwa:DataStatesHelper.CurrentStateName" Value="ShuffleOn">
+                <Setter Property="Content" Value="{DynamicResource ShuffleButtonContent}" />
+            </Trigger>
+            <!-- Repeat States -->
+            <Trigger Property="fuwa:DataStatesHelper.CurrentStateName" Value="RepeatOff">
+                <Setter Property="Content" Value="{DynamicResource InactiveRepeatButtonContent}"/>
+            </Trigger>
+            <Trigger Property="fuwa:DataStatesHelper.CurrentStateName" Value="RepeatSingle">
+                <Setter Property="Content" Value="{DynamicResource SingleRepeatButtonContent}"/>
+            </Trigger>
+            <Trigger Property="fuwa:DataStatesHelper.CurrentStateName" Value="RepeatAll">
+                <Setter Property="Content" Value="{DynamicResource RepeatButtonContent}"/>
+            </Trigger>
+            <!-- Window States -->
+            <Trigger Property="fuwa:DataStatesHelper.CurrentStateName" Value="Compact">
+                <Setter Property="Content" Value="{DynamicResource ResizeUpButtonContent}" />
+            </Trigger>
+            <Trigger Property="fuwa:DataStatesHelper.CurrentStateName" Value="Expanded">
+                <Setter Property="Content" Value="{DynamicResource ResizeDownButtonContent}" />
             </Trigger>
         </Style.Triggers>
     </Style>

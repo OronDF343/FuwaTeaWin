@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Markup;
 using ModularFramework;
 
@@ -75,6 +76,7 @@ namespace FuwaTea.Wpf.Helpers
     public class StateCollection : FreezableCollection<State> { }
     
     [ContentProperty(nameof(Value))]
+    [DictionaryKeyProperty(nameof(StateName))]
     public class State : Freezable
     {
         public static readonly DependencyProperty StateNameProperty = DependencyProperty.Register(
@@ -87,6 +89,12 @@ namespace FuwaTea.Wpf.Helpers
 
         [CanBeNull]
         public object Value { get { return GetValue(ValueProperty); } set { SetValue(ValueProperty, value); } }
+
+        public static readonly DependencyProperty TagProperty = DependencyProperty.Register(
+                                                        "Tag", typeof(object), typeof(State), new PropertyMetadata(null));
+
+        [CanBeNull]
+        public object Tag { get { return GetValue(TagProperty); } set { SetValue(TagProperty, value); } }
 
         protected override Freezable CreateInstanceCore()
         {

@@ -307,77 +307,38 @@
                             </Style>
                         </fuwa:DynamicStyle.DerivedStyle>
                     </Slider>
-                    <Button Grid.Row="1" Grid.Column="7" fuwa:DynamicStyle.BaseStyle="{DynamicResource {x:Type Button}}"
+                    <Button Grid.Row="1" Grid.Column="7"
                             fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}"
-                            fuwa:DataStatesHelper.Binding="{Binding PlaybackManager.EnableShuffle}">
-                        <fuwa:DataStatesHelper.States>
-                            <fuwa:StateCollection>
-                                <fuwa:State StateName="ShuffleOn">
-                                    <system:Boolean>True</system:Boolean>
-                                </fuwa:State>
-                            </fuwa:StateCollection>
-                        </fuwa:DataStatesHelper.States>
+                            fuwa:OptionalToolTip.UseDataStates="True"
+                            fuwa:DataStatesHelper.Binding="{Binding PlaybackManager.EnableShuffle}"
+                            fuwa:DataStatesHelper.States="{StaticResource ShuffleStates}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
                                 <command:EventToCommand Command="{Binding ShuffleCommand}" PassEventArgsToCommand="True" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
-                        <fuwa:DynamicStyle.DerivedStyle>
-                            <Style TargetType="Button">
-                                <Setter Property="Content" Value="{DynamicResource InactiveShuffleButtonContent}" />
-                                <Setter Property="fuwa:OptionalToolTip.ToolTipContent" Value="{lex:Loc ShuffleOffToolTip}" />
-                                <Style.Triggers>
-                                    <Trigger Property="fuwa:DataStatesHelper.CurrentStateName" Value="ShuffleOn">
-                                        <Setter Property="Content" Value="{DynamicResource ShuffleButtonContent}" />
-                                        <Setter Property="fuwa:OptionalToolTip.ToolTipContent" Value="{lex:Loc ShuffleOnToolTip}" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </fuwa:DynamicStyle.DerivedStyle>
                     </Button>
-                    <Button Grid.Row="1" Grid.Column="8" fuwa:DynamicStyle.BaseStyle="{DynamicResource {x:Type Button}}"
-                            fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}">
+                    <Button Grid.Row="1" Grid.Column="8"
+                            fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}"
+                            fuwa:OptionalToolTip.UseDataStates="True"
+                            fuwa:DataStatesHelper.Binding="{Binding PlaybackManager.LoopType}"
+                            fuwa:DataStatesHelper.States="{StaticResource RepeatStates}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
                                 <command:EventToCommand Command="{Binding RepeatCommand}" PassEventArgsToCommand="True" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
-                        <fuwa:DynamicStyle.DerivedStyle>
-                            <Style TargetType="Button">
-                                <Setter Property="Content" Value="{DynamicResource InactiveRepeatButtonContent}" />
-                                <Setter Property="fuwa:OptionalToolTip.ToolTipContent" Value="{lex:Loc RepeatOffToolTip}" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding PlaybackManager.LoopType}" Value="Single">
-                                        <Setter Property="Content" Value="{DynamicResource SingleRepeatButtonContent}" />
-                                        <Setter Property="fuwa:OptionalToolTip.ToolTipContent" Value="{lex:Loc RepeatSingleToolTip}" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding PlaybackManager.LoopType}" Value="All">
-                                        <Setter Property="Content" Value="{DynamicResource RepeatButtonContent}" />
-                                        <Setter Property="fuwa:OptionalToolTip.ToolTipContent" Value="{lex:Loc RepeatAllToolTip}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </fuwa:DynamicStyle.DerivedStyle>
                     </Button>
-                    <Button Grid.Row="1" Grid.Column="9" fuwa:DynamicStyle.BaseStyle="{DynamicResource {x:Type Button}}"
-                            fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}">
+                    <Button Grid.Row="1" Grid.Column="9"
+                            fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}"
+                            fuwa:OptionalToolTip.UseDataStates="True"
+                            fuwa:DataStatesHelper.Binding="{Binding Expanded}"
+                            fuwa:DataStatesHelper.States="{StaticResource WindowStates}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
                                 <command:EventToCommand Command="{Binding ExpandCommand}" PassEventArgsToCommand="True" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
-                        <fuwa:DynamicStyle.DerivedStyle>
-                            <Style TargetType="Button">
-                                <Setter Property="Content" Value="{DynamicResource ResizeUpButtonContent}" />
-                                <Setter Property="fuwa:OptionalToolTip.ToolTipContent" Value="{lex:Loc ExpandToolTip}" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Expanded}" Value="True">
-                                        <Setter Property="Content" Value="{DynamicResource ResizeDownButtonContent}" />
-                                        <Setter Property="fuwa:OptionalToolTip.ToolTipContent" Value="{lex:Loc CompactToolTip}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </fuwa:DynamicStyle.DerivedStyle>
                     </Button>
                     <Button Grid.Row="1" Grid.Column="10" Content="{DynamicResource MinimizeButtonContent}"
                             Click="MinimizeButton_OnClick"

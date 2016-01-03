@@ -1,0 +1,33 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:fuwa="https://github.com/OronDF343/FuwaTeaWin"
+                    xmlns:lex="http://wpflocalizeextension.codeplex.com"
+                    xmlns:playback="clr-namespace:FuwaTea.Playback;assembly=FuwaTea.Playback">
+    <!-- Constants -->
+    <sys:Boolean x:Key="True">True</sys:Boolean>
+    <sys:Boolean x:Key="False">False</sys:Boolean>
+    <!-- Shuffle States -->
+    <fuwa:State x:Key="ShuffleOff" StateName="ShuffleOff" Value="{StaticResource False}" Tag="{lex:Loc ShuffleOffToolTip}"/>
+    <fuwa:State x:Key="ShuffleOn" StateName="ShuffleOn" Value="{StaticResource True}" Tag="{lex:Loc ShuffleOnToolTip}"/>
+    <fuwa:StateCollection x:Key="ShuffleStates">
+        <StaticResource ResourceKey="ShuffleOff"/>
+        <StaticResource ResourceKey="ShuffleOn"/>
+    </fuwa:StateCollection>
+    <!-- Repeat States -->
+    <fuwa:State x:Key="RepeatOff" StateName="RepeatOff" Value="{x:Static playback:LoopTypes.None}" Tag="{lex:Loc RepeatOffToolTip}"/>
+    <fuwa:State x:Key="RepeatSingle" StateName="RepeatSingle" Value="{x:Static playback:LoopTypes.Single}" Tag="{lex:Loc RepeatSingleToolTip}"/>
+    <fuwa:State x:Key="RepeatAll" StateName="RepeatAll" Value="{x:Static playback:LoopTypes.All}" Tag="{lex:Loc RepeatAllToolTip}"/>
+    <fuwa:StateCollection x:Key="RepeatStates">
+        <StaticResource ResourceKey="RepeatOff"/>
+        <StaticResource ResourceKey="RepeatSingle"/>
+        <StaticResource ResourceKey="RepeatAll"/>
+    </fuwa:StateCollection>
+    <!-- Window States -->
+    <fuwa:State x:Key="Compact" StateName="Compact" Value="{StaticResource False}" Tag="{lex:Loc ExpandToolTip}"/>
+    <fuwa:State x:Key="Expanded" StateName="Expanded" Value="{StaticResource True}" Tag="{lex:Loc CompactToolTip}"/>
+    <fuwa:StateCollection x:Key="WindowStates">
+        <StaticResource ResourceKey="Compact"/>
+        <StaticResource ResourceKey="Expanded"/>
+    </fuwa:StateCollection>
+</ResourceDictionary>
