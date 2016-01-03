@@ -76,6 +76,7 @@ namespace FuwaTea.Wpf.Helpers
     public class StateCollection : FreezableCollection<State> { }
     
     [ContentProperty(nameof(Value))]
+    // This attribute doesn't work. Hasn't been fixed in 8 years... (Microsoft :disappointed:)
     [DictionaryKeyProperty(nameof(StateName))]
     public class State : Freezable
     {
