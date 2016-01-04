@@ -216,12 +216,12 @@ namespace FTWPlayer.ViewModels
         private decimal _tempVolume;
         private void MuteClick(RoutedEventArgs e)
         {
-            if (PlaybackManager.Volume == 0)
-                PlaybackManager.Volume = _tempVolume > 0 ? _tempVolume : 1;
+            if (Volume == 0)
+                Volume = _tempVolume > 0 ? _tempVolume : 1;
             else
             {
-                _tempVolume = PlaybackManager.Volume;
-                PlaybackManager.Volume = 0;
+                _tempVolume = Volume;
+                Volume = 0;
             }
         }
 

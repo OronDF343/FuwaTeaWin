@@ -7,6 +7,22 @@
     <!-- Constants -->
     <sys:Boolean x:Key="True">True</sys:Boolean>
     <sys:Boolean x:Key="False">False</sys:Boolean>
+    <sys:Int32 x:Key="Zero">0</sys:Int32>
+    <sys:Int32 x:Key="One">1</sys:Int32>
+    <!-- Volume States -->
+    <fuwa:State x:Key="VolumeMuted" StateName="VolumeMuted" Value="{StaticResource Zero}"/>
+    <fuwa:State x:Key="VolumeOn" StateName="VolumeOn" MinValue="{StaticResource One}"/>
+    <fuwa:StateCollection x:Key="VolumeStates">
+        <StaticResource ResourceKey="VolumeMuted"/>
+        <StaticResource ResourceKey="VolumeOn"/>
+    </fuwa:StateCollection>
+    <!-- Volume Slider States -->
+    <fuwa:State x:Key="VolumeSliderHidden" StateName="VolumeSliderHidden" Value="{StaticResource False}"/>
+    <fuwa:State x:Key="VolumeSliderShown" StateName="VolumeSliderShown" Value="{StaticResource True}"/>
+    <fuwa:StateCollection x:Key="VolumeSliderStates">
+        <StaticResource ResourceKey="VolumeSliderHidden"/>
+        <StaticResource ResourceKey="VolumeSliderShown"/>
+    </fuwa:StateCollection>
     <!-- Shuffle States -->
     <fuwa:State x:Key="ShuffleOff" StateName="ShuffleOff" Value="{StaticResource False}" Tag="{lex:Loc ShuffleOffToolTip}"/>
     <fuwa:State x:Key="ShuffleOn" StateName="ShuffleOn" Value="{StaticResource True}" Tag="{lex:Loc ShuffleOnToolTip}"/>
@@ -24,10 +40,10 @@
         <StaticResource ResourceKey="RepeatAll"/>
     </fuwa:StateCollection>
     <!-- Window States -->
-    <fuwa:State x:Key="Compact" StateName="Compact" Value="{StaticResource False}" Tag="{lex:Loc ExpandToolTip}"/>
-    <fuwa:State x:Key="Expanded" StateName="Expanded" Value="{StaticResource True}" Tag="{lex:Loc CompactToolTip}"/>
+    <fuwa:State x:Key="WindowCompact" StateName="WindowCompact" Value="{StaticResource False}" Tag="{lex:Loc ExpandToolTip}"/>
+    <fuwa:State x:Key="WindowExpanded" StateName="WindowExpanded" Value="{StaticResource True}" Tag="{lex:Loc CompactToolTip}"/>
     <fuwa:StateCollection x:Key="WindowStates">
-        <StaticResource ResourceKey="Compact"/>
-        <StaticResource ResourceKey="Expanded"/>
+        <StaticResource ResourceKey="WindowCompact"/>
+        <StaticResource ResourceKey="WindowExpanded"/>
     </fuwa:StateCollection>
 </ResourceDictionary>

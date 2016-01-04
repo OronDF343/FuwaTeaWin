@@ -169,6 +169,13 @@
                 <Setter Property="Background" Value="{DynamicResource SelectedBrush}" />
             </Trigger>
             <!-- Data States -->
+            <!-- Volume States -->
+            <Trigger Property="fuwa:DataStatesHelper.CurrentStateName" Value="VolumeMuted">
+                <Setter Property="Content" Value="{DynamicResource VolumeButtonMutedContent}"/>
+            </Trigger>
+            <Trigger Property="fuwa:DataStatesHelper.CurrentStateName" Value="VolumeOn">
+                <Setter Property="Content" Value="{DynamicResource VolumeButtonContent}"/>
+            </Trigger>
             <!-- Shuffle States -->
             <Trigger Property="fuwa:DataStatesHelper.CurrentStateName" Value="ShuffleOff">
                 <Setter Property="Content" Value="{DynamicResource InactiveShuffleButtonContent}" />
@@ -187,10 +194,10 @@
                 <Setter Property="Content" Value="{DynamicResource RepeatButtonContent}"/>
             </Trigger>
             <!-- Window States -->
-            <Trigger Property="fuwa:DataStatesHelper.CurrentStateName" Value="Compact">
+            <Trigger Property="fuwa:DataStatesHelper.CurrentStateName" Value="WindowCompact">
                 <Setter Property="Content" Value="{DynamicResource ResizeUpButtonContent}" />
             </Trigger>
-            <Trigger Property="fuwa:DataStatesHelper.CurrentStateName" Value="Expanded">
+            <Trigger Property="fuwa:DataStatesHelper.CurrentStateName" Value="WindowExpanded">
                 <Setter Property="Content" Value="{DynamicResource ResizeDownButtonContent}" />
             </Trigger>
         </Style.Triggers>
@@ -302,6 +309,24 @@
         <Style.Triggers>
             <Trigger Property="Orientation" Value="Horizontal">
                 <Setter Property="Template" Value="{StaticResource HorizontalSlider}" />
+            </Trigger>
+            <!-- Data States -->
+            <!-- Volume Slider States -->
+            <Trigger Property="fuwa:DataStatesHelper.CurrentStateName" Value="VolumeSliderShown">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard TargetProperty="Width">
+                            <DoubleAnimation From="0" To="80" Duration="0:0:0.5" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard TargetProperty="Width">
+                            <DoubleAnimation From="80" To="0" Duration="0:0:0.5" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
             </Trigger>
         </Style.Triggers>
     </Style>

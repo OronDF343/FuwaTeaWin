@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Markup;
+using log4net;
 using ModularFramework;
 
 namespace FuwaTea.Wpf.Helpers
@@ -15,7 +16,30 @@ namespace FuwaTea.Wpf.Helpers
         protected static void OnBindingUpdated(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
             var states = GetStates(obj);
-            SetCurrentState(obj, states?.FirstOrDefault(s => Equals(s.Value, args.NewValue)));
+            var current = states?.Where(s => Equals(s.Value, args.NewValue) || BoundsCheck(args.NewValue, s.MinValue, s.MaxValue)).ToList();
+            SetCurrentState(obj, current?.FirstOrDefault());
+            SetStateChecker(obj, current == null ? new StateChecker() : new StateChecker(current));
+        }
+
+        private static bool BoundsCheck(object v, object min, object max)
+        {
+            try
+            {
+                var cv = v as IComparable;
+                var cmin = min as IComparable;
+                var cmax = max as IComparable;
+                if (cmin == null && cmax == null) return false;
+                if (cv == null) return false;
+                var res = false;
+                if (cmin != null) res = cmin.CompareTo(cv) <= 0;
+                if (cmax != null) res = res && cmax.CompareTo(cv) > 0;
+                return res;
+            }
+            catch (Exception e)
+            {
+                LogManager.GetLogger(typeof(DataStatesHelper)).Warn("Min/max value comparison error: ", e);
+                return false;
+            }
         }
 
         [CanBeNull]
@@ -71,6 +95,40 @@ namespace FuwaTea.Wpf.Helpers
         {
             d.SetValue(StatesProperty, value);
         }
+
+        public static readonly DependencyProperty StateCheckerProperty = DependencyProperty.RegisterAttached(
+                                                                "StateChecker", typeof(StateChecker), typeof(DataStatesHelper),
+                                                                new PropertyMetadata(default(StateChecker)));
+
+        public static void SetStateChecker(DependencyObject element, StateChecker value)
+        {
+            element.SetValue(StateCheckerProperty, value);
+        }
+
+        public static StateChecker GetStateChecker(DependencyObject element)
+        {
+            return (StateChecker)element.GetValue(StateCheckerProperty);
+        }
+    }
+
+    public class StateChecker
+    {
+        private readonly HashSet<State> _states;
+
+        public StateChecker()
+        {
+            _states = new HashSet<State>();
+        }
+
+        public StateChecker(IEnumerable<State> states)
+        {
+            _states = new HashSet<State>(states);
+        }
+
+        public bool this[string s]
+        {
+            get { return _states.Any(x => x.StateName.Equals(s, StringComparison.OrdinalIgnoreCase)); }
+        }
     }
 
     public class StateCollection : FreezableCollection<State> { }
@@ -90,6 +148,16 @@ namespace FuwaTea.Wpf.Helpers
 
         [CanBeNull]
         public object Value { get { return GetValue(ValueProperty); } set { SetValue(ValueProperty, value); } }
+
+        public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
+                                                        "MinValue", typeof(object), typeof(State), new PropertyMetadata(null));
+
+        public object MinValue { get { return GetValue(MinValueProperty); } set { SetValue(MinValueProperty, value); } }
+
+        public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
+                                                        "MaxValue", typeof(object), typeof(State), new PropertyMetadata(null));
+
+        public object MaxValue { get { return GetValue(MaxValueProperty); } set { SetValue(MaxValueProperty, value); } }
 
         public static readonly DependencyProperty TagProperty = DependencyProperty.Register(
                                                         "Tag", typeof(object), typeof(State), new PropertyMetadata(null));

@@ -245,9 +245,10 @@
                         </i:Interaction.Triggers>
                     </Button>
                     <Button x:Name="VolumeButton" Grid.Row="1" Grid.Column="5"
-                            fuwa:DynamicStyle.BaseStyle="{DynamicResource {x:Type Button}}"
                             fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}"
-                            fuwa:OptionalToolTip.ToolTipContent="{lex:Loc VolumeToolTip}">
+                            fuwa:OptionalToolTip.ToolTipContent="{lex:Loc VolumeToolTip}"
+                            fuwa:DataStatesHelper.Binding="{Binding Volume, Converter={StaticResource VolConv}}"
+                            fuwa:DataStatesHelper.States="{StaticResource VolumeStates}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
                                 <command:EventToCommand Command="{Binding MuteClickCommand}" PassEventArgsToCommand="True" />
@@ -260,16 +261,6 @@
                                                        CommandParameter="{Binding ElementName=VolumeSlider}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
-                        <fuwa:DynamicStyle.DerivedStyle>
-                            <Style TargetType="Button">
-                                <Setter Property="Content" Value="{DynamicResource VolumeButtonContent}" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding PlaybackManager.Volume}" Value="0">
-                                        <Setter Property="Content" Value="{DynamicResource VolumeButtonMutedContent}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </fuwa:DynamicStyle.DerivedStyle>
                     </Button>
                     <Slider x:Name="VolumeSlider" Grid.Row="1" Grid.Column="6" Orientation="Horizontal"
                             AutoToolTipPlacement="TopLeft"
@@ -277,35 +268,14 @@
                             Minimum="0" Maximum="100" Interval="1" LargeChange="10" SmallChange="5"
                             IsSnapToTickEnabled="True" TickFrequency="1"
                             Width="0" VerticalAlignment="Center"
-                            fuwa:DynamicStyle.BaseStyle="{DynamicResource {x:Type Slider}}">
+                            fuwa:DataStatesHelper.Binding="{Binding ShowVolumeSlider}"
+                            fuwa:DataStatesHelper.States="{StaticResource VolumeSliderStates}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseLeave">
                                 <i:InvokeCommandAction Command="{Binding VolumeMouseLeaveCommand}"
                                                        CommandParameter="{Binding ElementName=VolumeButton}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
-                        <fuwa:DynamicStyle.DerivedStyle>
-                            <Style TargetType="Slider">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ShowVolumeSlider}" Value="True">
-                                        <DataTrigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard TargetProperty="Width">
-                                                    <DoubleAnimation From="0" To="80" Duration="0:0:0.5" />
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.EnterActions>
-                                        <DataTrigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard TargetProperty="Width">
-                                                    <DoubleAnimation From="80" To="0" Duration="0:0:0.5" />
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.ExitActions>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </fuwa:DynamicStyle.DerivedStyle>
                     </Slider>
                     <Button Grid.Row="1" Grid.Column="7"
                             fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}"
