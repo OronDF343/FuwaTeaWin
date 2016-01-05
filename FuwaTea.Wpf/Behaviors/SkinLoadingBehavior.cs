@@ -34,6 +34,7 @@ namespace FuwaTea.Wpf.Behaviors
 
         private static readonly List<SkinLoadingBehavior> Elements = new List<SkinLoadingBehavior>();
         private static Dictionary<string, ResourceDictionary> _skinDictionaries;
+        public static Dictionary<string, ResourceDictionary> LoadedSkin => _skinDictionaries;
 
         public static void UpdateSkin(Dictionary<string, ResourceDictionary> skinDictionaries)
         {

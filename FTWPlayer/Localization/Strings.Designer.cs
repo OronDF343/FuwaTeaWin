@@ -106,6 +106,15 @@ namespace FTWPlayer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apply.
+        /// </summary>
+        internal static string Apply {
+            get {
+                return ResourceManager.GetString("Apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change to Compact Mode.
         /// </summary>
         internal static string CompactToolTip {
@@ -183,6 +192,15 @@ namespace FTWPlayer.Localization {
         internal static string LibraryTabHeader {
             get {
                 return ResourceManager.GetString("LibraryTabHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Currently loaded skin:.
+        /// </summary>
+        internal static string LoadedSkin {
+            get {
+                return ResourceManager.GetString("LoadedSkin", resourceCulture);
             }
         }
         

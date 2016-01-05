@@ -229,4 +229,10 @@
     <value>נזרקה חריגה שלא טופלה! למידע נוסף עיינו בקובץ ftw.log.
 אנא דווחו על שגיאה זו למפתח התוכנה וצרפו את הקובץ ftw.log.</value>
   </data>
+  <data name="Apply" xml:space="preserve">
+    <value>החל</value>
+  </data>
+  <data name="LoadedSkin" xml:space="preserve">
+    <value>ערכת הנושא הנוכחית:</value>
+  </data>
 </root>

@@ -13,5 +13,6 @@ namespace FTWPlayer.Skins
 
         public string Path { get; }
         public Dictionary<string, ResourceDictionary> SkinParts { get; }
+        public ResourceDictionaryIdentifier Identifier => this.GetIdentifier();
     }
 }

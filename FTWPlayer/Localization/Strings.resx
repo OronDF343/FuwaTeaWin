@@ -233,4 +233,10 @@
     <value>An unhandled exception has occured! See ftw.log for more information.
 Please report this to the author with a copy of ftw.log.</value>
   </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="LoadedSkin" xml:space="preserve">
+    <value>Currently loaded skin:</value>
+  </data>
 </root>

@@ -254,6 +254,12 @@ namespace FTWPlayer.Skins
             return rd.HasIdentifier() ? rd.SkinParts["commonstyle"]["SkinIdentifier"] as ResourceDictionaryIdentifier : null;
         }
 
+        [CanBeNull]
+        public static ResourceDictionaryIdentifier GetIdentifier(this Dictionary<string, ResourceDictionary> rd)
+        {
+            return rd.HasIdentifier() ? rd["commonstyle"]["SkinIdentifier"] as ResourceDictionaryIdentifier : null;
+        }
+
         public static bool HasIdentifier(this SkinPackage rd)
         {
             return rd.SkinParts.HasIdentifier();
