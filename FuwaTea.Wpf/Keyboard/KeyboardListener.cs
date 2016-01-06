@@ -11,7 +11,7 @@ using System.Windows.Threading;
 namespace FuwaTea.Wpf.Keyboard
 {
     // Credit: Ciantic https://gist.github.com/Ciantic/471698
-    // resharped
+    // Modified by OronDF343 so it actually works...
     /// <summary>
     /// Listens keyboard globally.
     ///
@@ -67,9 +67,9 @@ namespace FuwaTea.Wpf.Keyboard
         /// <summary>
         /// Asynchronous callback hook.
         /// </summary>
-        /// <param name="character">Character</param>
         /// <param name="keyEvent">Keyboard event</param>
         /// <param name="vkCode">VKCode</param>
+        /// <param name="character">Character</param>
         private delegate void KeyboardCallbackAsync(InterceptKeys.KeyEvent keyEvent, int vkCode, string character);
 
         /// <summary>
@@ -86,15 +86,17 @@ namespace FuwaTea.Wpf.Keyboard
         {
             if (nCode >= 0)
                 if (wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_KEYDOWN ||
-                wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_KEYUP /*||
+                wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_KEYUP ||
                 wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_SYSKEYDOWN ||
-                wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_SYSKEYUP*/)
+                wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_SYSKEYUP)
                 {
+                    var vkCode = Marshal.ReadInt32(lParam);
+                    var keyEvent = (InterceptKeys.KeyEvent)wParam.ToUInt32();
+
                     // Captures the character(s) pressed only on WM_KEYDOWN
-                    var chars = InterceptKeys.VkCodeToString((uint)Marshal.ReadInt32(lParam),
-                        wParam.ToUInt32() == (int)InterceptKeys.KeyEvent.WM_KEYDOWN);
-                    
-                    _hookedKeyboardCallbackAsync.BeginInvoke((InterceptKeys.KeyEvent)wParam.ToUInt32(), Marshal.ReadInt32(lParam), chars, null, null);
+                    var chars = InterceptKeys.VkCodeToString((uint)vkCode, keyEvent == InterceptKeys.KeyEvent.WM_KEYDOWN);
+
+                    _hookedKeyboardCallbackAsync.BeginInvoke(keyEvent, vkCode, chars, null, null);
                 }
             return NativeMethods.CallNextHookEx(_hookId, nCode, wParam, lParam);
         }
@@ -122,9 +124,6 @@ namespace FuwaTea.Wpf.Keyboard
             {
                 // KeyDown events
                 case InterceptKeys.KeyEvent.WM_KEYDOWN:
-                    if (KeyDown != null)
-                        _dispatcher.BeginInvoke(new RawKeyEventHandler(KeyDown), this, new RawKeyEventArgs(vkCode, false, character));
-                    break;
                 case InterceptKeys.KeyEvent.WM_SYSKEYDOWN:
                     if (KeyDown != null)
                         _dispatcher.BeginInvoke(new RawKeyEventHandler(KeyDown), this, new RawKeyEventArgs(vkCode, true, character));
@@ -132,9 +131,6 @@ namespace FuwaTea.Wpf.Keyboard
 
                 // KeyUp events
                 case InterceptKeys.KeyEvent.WM_KEYUP:
-                    if (KeyUp != null)
-                        _dispatcher.BeginInvoke(new RawKeyEventHandler(KeyUp), this, new RawKeyEventArgs(vkCode, false, character));
-                    break;
                 case InterceptKeys.KeyEvent.WM_SYSKEYUP:
                     if (KeyUp != null)
                         _dispatcher.BeginInvoke(new RawKeyEventHandler(KeyUp), this, new RawKeyEventArgs(vkCode, true, character));
@@ -299,35 +295,17 @@ namespace FuwaTea.Wpf.Keyboard
             var sbString = new StringBuilder(5);
 
             var bKeyState = new byte[255];
-            bool bKeyStateStatus;
             var isDead = false;
+            
+            // Get the keyboard state (OronDF343 edited: Don't hook other window - causes keys to be "eaten")
+            // On failure we return empty string.
+            if (!NativeMethods.GetKeyboardState(bKeyState))
+                return "";
 
-            // Gets the current windows window handle, threadID, processID
+            // Gets the current window's window handle, threadID, processID
             var currentHWnd = NativeMethods.GetForegroundWindow();
             uint currentProcessId;
             var currentWindowThreadId = NativeMethods.GetWindowThreadProcessId(currentHWnd, out currentProcessId);
-
-            // This programs Thread ID
-            var thisProgramThreadId = NativeMethods.GetCurrentThreadId();
-
-            // Attach to active thread so we can get that keyboard state
-            if (NativeMethods.AttachThreadInput(thisProgramThreadId, currentWindowThreadId, true))
-            {
-                // Current state of the modifiers in keyboard
-                bKeyStateStatus = NativeMethods.GetKeyboardState(bKeyState);
-
-                // Detach
-                NativeMethods.AttachThreadInput(thisProgramThreadId, currentWindowThreadId, false);
-            }
-            else
-            {
-                // Could not attach, perhaps it is this process?
-                bKeyStateStatus = NativeMethods.GetKeyboardState(bKeyState);
-            }
-
-            // On failure we return empty string.
-            if (!bKeyStateStatus)
-                return "";
 
             // Gets the layout of keyboard
             var hkl = NativeMethods.GetKeyboardLayout(currentWindowThreadId);
