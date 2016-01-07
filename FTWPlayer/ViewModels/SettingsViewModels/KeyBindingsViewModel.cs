@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
+using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 using FTWPlayer.Views.SettingsViews;
@@ -44,11 +45,8 @@ namespace FTWPlayer.ViewModels.SettingsViewModels
             if (context[0] == null || context[1] == null) return;
             var set = context[0] as ObservableHashSet<Key>;
             var set2 = context[0] as ObservableCollection<string>;
-            foreach (var item in (IList)context[1])
-            {
-                set?.Remove((Key)item);
-                set2?.Remove((string)item);
-            }
+            foreach (var item in ((IList)context[1]).OfType<Key>().ToList()) set?.Remove(item);
+            foreach (var item in ((IList)context[1]).OfType<string>().ToList()) set2?.Remove(item);
         }
     }
 }

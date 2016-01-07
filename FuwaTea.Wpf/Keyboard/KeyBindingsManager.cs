@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using System.Xml.Serialization;
 using log4net;
 
 namespace FuwaTea.Wpf.Keyboard
@@ -43,10 +42,11 @@ namespace FuwaTea.Wpf.Keyboard
 
         private void Listener_KeyDown(object sender, RawKeyEventArgs e)
         {
-            if (_chosenKeyBinding == null || !_keysDown.Contains(e.Key)) _keysDown.Add(e.Key);
-            else return;
             if (_chosenKeyBinding == null)
+            {
+                _keysDown.Add(e.Key);
                 _chosenKeyBinding = KeyBindings.FirstOrDefault(kb => kb.KeyGesture.SetEquals(_keysDown) && kb.Enabled);
+            }
             if (_chosenKeyBinding == null) return;
             if (_cmd == null)
                 _cmd = KeyCommands.FirstOrDefault(kc => kc.Key == _chosenKeyBinding.CommandKey);
@@ -71,9 +71,11 @@ namespace FuwaTea.Wpf.Keyboard
         private void Listener_KeyUp(object sender, RawKeyEventArgs e)
         {
             _keysDown.Remove(e.Key);
-            if (_keysDown.Count > 0) return;
-            if (_chosenKeyBinding != null && _cmd != null)
-                _chosenKeyBinding.OnGestureUp(_cmd);
+            if (_chosenKeyBinding != null)
+            {
+                if (_chosenKeyBinding.KeyGesture.SetEquals(_keysDown)) return;
+                if (_cmd != null) _chosenKeyBinding.OnGestureUp(_cmd);
+            }
             _cmd = null;
             _chosenKeyBinding = null;
         }
