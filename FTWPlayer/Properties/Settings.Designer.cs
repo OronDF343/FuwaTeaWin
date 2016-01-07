@@ -305,5 +305,53 @@ namespace FTWPlayer.Properties {
                 this["TrayIconPreference"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
+<KeyBindingCollection xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
+  <Items>
+    <KeyBinding Name=""Hold shift to seek"" Enabled=""true"" CommandKey=""CompactSeekCommand"" Kind=""Hold"">
+      <KeyGesture>
+        <Key>LeftShift</Key>
+      </KeyGesture>
+      <CommandParameters />
+    </KeyBinding>
+    <KeyBinding Name=""Previous"" Enabled=""true"" CommandKey=""PreviousCommand"" Kind=""Normal"">
+      <KeyGesture>
+        <Key>MediaPreviousTrack</Key>
+      </KeyGesture>
+      <CommandParameters />
+    </KeyBinding>
+    <KeyBinding Name=""Play / Pause / Resume"" Enabled=""true"" CommandKey=""PlayPauseResumeCommand"" Kind=""Normal"">
+      <KeyGesture>
+        <Key>MediaPlayPause</Key>
+      </KeyGesture>
+      <CommandParameters />
+    </KeyBinding>
+    <KeyBinding Name=""Next"" Enabled=""true"" CommandKey=""NextCommand"" Kind=""Normal"">
+      <KeyGesture>
+        <Key>MediaNextTrack</Key>
+      </KeyGesture>
+      <CommandParameters />
+    </KeyBinding>
+    <KeyBinding Name=""Stop"" Enabled=""true"" CommandKey=""StopCommand"" Kind=""Normal"">
+      <KeyGesture>
+        <Key>MediaStop</Key>
+      </KeyGesture>
+      <CommandParameters />
+    </KeyBinding>
+  </Items>
+</KeyBindingCollection>")]
+        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
+        public global::FuwaTea.Wpf.Keyboard.KeyBindingCollection KeyBindings {
+            get {
+                return ((global::FuwaTea.Wpf.Keyboard.KeyBindingCollection)(this["KeyBindings"]));
+            }
+            set {
+                this["KeyBindings"] = value;
+            }
+        }
     }
 }

@@ -16,11 +16,13 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -73,14 +75,17 @@ namespace FTWPlayer.ViewModels
                         break;
                 }
             };
-            
+
+            // Create commands:
             PreviousCommand = new RelayCommand<RoutedEventArgs>(PreviousButtonClick);
             PlayPauseResumeCommand = new RelayCommand<RoutedEventArgs>(PlayPauseResumeButtonClick);
             NextCommand = new RelayCommand<RoutedEventArgs>(NextButtonClick);
             StopCommand = new RelayCommand<RoutedEventArgs>(StopButtonClick);
-            MuteClickCommand = new RelayCommand<RoutedEventArgs>(MuteClick);
+            MuteCommand = new RelayCommand<RoutedEventArgs>(MuteClick);
             VolumeClickCommand = new RelayCommand(VolumeClick);
             VolumeMouseLeaveCommand = new RelayCommand<Control>(VolumeMouseLeave);
+            VolumeAddCommand = new RelayCommand<string>(VolumeAdd, VolumeChangeCanExecute);
+            VolumeSubtractCommand = new RelayCommand<string>(VolumeSubtract, VolumeChangeCanExecute);
             ShuffleCommand = new RelayCommand<RoutedEventArgs>(ShuffleButtonClick);
             RepeatCommand = new RelayCommand<RoutedEventArgs>(RepeatButtonClick);
             ExpandCommand = new RelayCommand<RoutedEventArgs>(ExpandClick);
@@ -88,6 +93,8 @@ namespace FTWPlayer.ViewModels
             KeyUpCommand = new RelayCommand<KeyEventArgs>(OnKeyUp);
             ToolTipUpdateCommand = new RelayCommand<MouseEventArgs>(ToolTipUpdate);
             SeekCommand = new RelayCommand<Grid>(Seek);
+            SeekAddCommand = new RelayCommand<string>(SeekAdd, SeekChangeCanExecute);
+            SeekSubtractCommand = new RelayCommand<string>(SeekSubtract, SeekChangeCanExecute);
             MouseEnterSeekAreaCommand = new RelayCommand<MouseEventArgs>(MouseEnterSeekArea);
             MouseLeaveSeekAreaCommand = new RelayCommand<MouseEventArgs>(MouseLeaveSeekArea);
             DragEnterCommand = new RelayCommand<DragEventArgs>(DragEnter);
@@ -116,18 +123,93 @@ namespace FTWPlayer.ViewModels
             PlaybackManager.EqualizerBands.Add(new EqualizerBand { Bandwidth = 1f, Frequency = 8000, Gain = 0 });
             PlaybackManager.EqualizerBands.Add(new EqualizerBand { Bandwidth = 1f, Frequency = 16000, Gain = 0 });
 
-            //Begin post-UI-loading
+            // Create key commands
+            KeyBindingsManager.Instance.KeyCommands.Add(new KeyCommand
+            {
+                Key = "CompactSeekCommand",
+                SupportedKinds = new HashSet<KeyBindingKind> { KeyBindingKind.Hold, KeyBindingKind.Toggle },
+                Commands = new List<ICommand> { new RelayCommand(LeftShiftKeyDown), new RelayCommand(LeftShiftKeyUp) }
+            });
+            KeyBindingsManager.Instance.KeyCommands.Add(new KeyCommand
+            {
+                Key = nameof(PreviousCommand),
+                SupportedKinds = new HashSet<KeyBindingKind> { KeyBindingKind.Normal, KeyBindingKind.Repeat },
+                Commands = new List<ICommand> { PreviousCommand }
+            });
+            KeyBindingsManager.Instance.KeyCommands.Add(new KeyCommand
+            {
+                Key = nameof(PlayPauseResumeCommand),
+                SupportedKinds = new HashSet<KeyBindingKind> { KeyBindingKind.Normal },
+                Commands = new List<ICommand> { PlayPauseResumeCommand }
+            });
+            KeyBindingsManager.Instance.KeyCommands.Add(new KeyCommand
+            {
+                Key = nameof(NextCommand),
+                SupportedKinds = new HashSet<KeyBindingKind> { KeyBindingKind.Normal, KeyBindingKind.Repeat },
+                Commands = new List<ICommand> { NextCommand }
+            });
+            KeyBindingsManager.Instance.KeyCommands.Add(new KeyCommand
+            {
+                Key = nameof(StopCommand),
+                SupportedKinds = new HashSet<KeyBindingKind> { KeyBindingKind.Normal },
+                Commands = new List<ICommand> { StopCommand }
+            });
+            KeyBindingsManager.Instance.KeyCommands.Add(new KeyCommand
+            {
+                Key = nameof(MuteCommand),
+                SupportedKinds = new HashSet<KeyBindingKind> { KeyBindingKind.Normal, KeyBindingKind.Hold },
+                Commands = new List<ICommand> { MuteCommand, MuteCommand }
+            });
+            KeyBindingsManager.Instance.KeyCommands.Add(new KeyCommand
+            {
+                Key = nameof(VolumeAddCommand),
+                SupportedKinds = new HashSet<KeyBindingKind> { KeyBindingKind.Normal, KeyBindingKind.Repeat },
+                Commands = new List<ICommand> { VolumeAddCommand }
+            });
+            KeyBindingsManager.Instance.KeyCommands.Add(new KeyCommand
+            {
+                Key = nameof(VolumeSubtractCommand),
+                SupportedKinds = new HashSet<KeyBindingKind> { KeyBindingKind.Normal, KeyBindingKind.Repeat },
+                Commands = new List<ICommand> { VolumeSubtractCommand }
+            });
+            KeyBindingsManager.Instance.KeyCommands.Add(new KeyCommand
+            {
+                Key = nameof(ShuffleCommand),
+                SupportedKinds = new HashSet<KeyBindingKind> { KeyBindingKind.Normal },
+                Commands = new List<ICommand> { ShuffleCommand }
+            });
+            KeyBindingsManager.Instance.KeyCommands.Add(new KeyCommand
+            {
+                Key = nameof(RepeatCommand),
+                SupportedKinds = new HashSet<KeyBindingKind> { KeyBindingKind.Normal },
+                Commands = new List<ICommand> { RepeatCommand }
+            });
+            KeyBindingsManager.Instance.KeyCommands.Add(new KeyCommand
+            {
+                Key = nameof(ExpandCommand),
+                SupportedKinds = new HashSet<KeyBindingKind> { KeyBindingKind.Normal },
+                Commands = new List<ICommand> { ExpandCommand }
+            });
+            KeyBindingsManager.Instance.KeyCommands.Add(new KeyCommand
+            {
+                Key = nameof(SeekAddCommand),
+                SupportedKinds = new HashSet<KeyBindingKind> { KeyBindingKind.Normal, KeyBindingKind.Repeat },
+                Commands = new List<ICommand> { SeekAddCommand }
+            });
+            KeyBindingsManager.Instance.KeyCommands.Add(new KeyCommand
+            {
+                Key = nameof(SeekSubtractCommand),
+                SupportedKinds = new HashSet<KeyBindingKind> { KeyBindingKind.Normal, KeyBindingKind.Repeat },
+                Commands = new List<ICommand> { SeekSubtractCommand }
+            });
+
+            // Begin post-UI-loading
             if (MiscUtils.ParseClArgs(Environment.GetCommandLineArgs().ToList()) == false)
                 MessageBox.Show(Application.Current.MainWindow, "Unsupported file!", "LoadObject",
                                 MessageBoxButton.OK, MessageBoxImage.Error);
-            _kbdListen = new KeyboardListener();
-            _kbdListen.KeyDown += KbdListen_KeyDown;
-            _kbdListen.KeyUp += KbdListen_KeyUp;
-            _kbdListen.IsEnabled = Settings.Default.EnableKeyboardHook;
+
             Settings.Default.PropertyChanged += (s, e) => 
             {
-                if (e.PropertyName == nameof(Settings.Default.EnableKeyboardHook))
-                    _kbdListen.IsEnabled = Settings.Default.EnableKeyboardHook;
                 if (e.PropertyName == nameof(Settings.Default.ScrollingTextFormat))
                     RaisePropertyChanged(nameof(ScrollingTextFormatString));
                 if (e.PropertyName == nameof(Settings.Default.TrayIconPreference))
@@ -138,40 +220,6 @@ namespace FTWPlayer.ViewModels
             if (Settings.Default.TrayIconPreference > 2)
                 Settings.Default.TrayIconPreference = 2;
         }
-
-        private void KbdListen_KeyDown(object sender, RawKeyEventArgs e)
-        {
-            switch (e.Key)
-            {
-                case Key.MediaPlayPause:
-                    PlayPauseResumeButtonClick(new RoutedEventArgs());
-                    break;
-                case Key.MediaPreviousTrack:
-                    PreviousButtonClick(new RoutedEventArgs());
-                    break;
-                case Key.MediaNextTrack:
-                    NextButtonClick(new RoutedEventArgs());
-                    break;
-                case Key.MediaStop:
-                    StopButtonClick(new RoutedEventArgs());
-                    break;
-                case Key.LeftShift:
-                    LeftShiftKeyDown();
-                    break;
-            }
-        }
-
-        private void KbdListen_KeyUp(object sender, RawKeyEventArgs e)
-        {
-            switch (e.Key)
-            {
-                case Key.LeftShift:
-                    LeftShiftKeyUp();
-                    break;
-            }
-        }
-
-        private readonly KeyboardListener _kbdListen;
 
         private readonly DispatcherTimer _tmr;
         private void Tick(object sender, EventArgs e)
@@ -211,7 +259,7 @@ namespace FTWPlayer.ViewModels
             PlaybackManager.Stop();
         }
 
-        public ICommand MuteClickCommand { get; private set; }
+        public ICommand MuteCommand { get; private set; }
 
         private decimal _tempVolume;
         private void MuteClick(RoutedEventArgs e)
@@ -232,6 +280,26 @@ namespace FTWPlayer.ViewModels
         public ICommand VolumeMouseLeaveCommand { get; private set; }
 
         private void VolumeMouseLeave(Control e) { if (!e.IsMouseOver) ShowVolumeSlider = false; }
+
+        public ICommand VolumeAddCommand { get; private set; }
+
+        private void VolumeAdd(string s)
+        {
+            Volume += decimal.Parse(s);
+        }
+
+        public ICommand VolumeSubtractCommand { get; private set; }
+
+        private void VolumeSubtract(string s)
+        {
+            Volume -= decimal.Parse(s);
+        }
+
+        private bool VolumeChangeCanExecute(string s)
+        {
+            decimal d;
+            return decimal.TryParse(s, out d) && d > 0 && d < 1;
+        }
 
         public ICommand ShuffleCommand { get; private set; }
 
@@ -305,13 +373,42 @@ namespace FTWPlayer.ViewModels
             RaisePropertyChanged(nameof(MouseY));
         }
 
-        public ICommand SeekCommand { get; set; }
+        public ICommand SeekCommand { get; private set; }
 
         private void Seek(Grid bar)
         {
             if (!ShiftMode) return;
             var p = NativeMethods.CorrectGetPosition(bar);
             PlaybackManager.Position = TimeSpan.FromMilliseconds(PlaybackManager.Duration.TotalMilliseconds / bar.ActualWidth * p.X);
+        }
+
+        private const string SeekTimeSpanFormat = @"hh\:mm\:ss\.FFF";
+        private const string PercentOfTimeRegex = @"^[\d-[0]]\d?(?:\.\d+)?%$";
+
+        public ICommand SeekAddCommand { get; private set; }
+
+        private void SeekAdd(string time)
+        {
+            PlaybackManager.Position += Regex.IsMatch(time, PercentOfTimeRegex)
+                                            ? TimeSpan.FromMilliseconds(PlaybackManager.Position.TotalMilliseconds
+                                                                        * (double.Parse(time.TrimEnd('%')) / 100))
+                                            : TimeSpan.ParseExact(time, SeekTimeSpanFormat, null);
+        }
+
+        public ICommand SeekSubtractCommand { get; private set; }
+
+        private void SeekSubtract(string time)
+        {
+            PlaybackManager.Position -= Regex.IsMatch(time, PercentOfTimeRegex)
+                                            ? TimeSpan.FromMilliseconds(PlaybackManager.Position.TotalMilliseconds
+                                                                        * (double.Parse(time.TrimEnd('%')) / 100))
+                                            : TimeSpan.ParseExact(time, SeekTimeSpanFormat, null);
+        }
+
+        private bool SeekChangeCanExecute(string time)
+        {
+            TimeSpan ts;
+            return Regex.IsMatch(time, PercentOfTimeRegex) || TimeSpan.TryParseExact(time, SeekTimeSpanFormat, null, out ts);
         }
 
         public ICommand MouseEnterSeekAreaCommand { get; private set; }

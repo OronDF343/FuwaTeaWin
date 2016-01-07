@@ -251,7 +251,7 @@
                             fuwa:DataStatesHelper.States="{StaticResource VolumeStates}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
-                                <command:EventToCommand Command="{Binding MuteClickCommand}" PassEventArgsToCommand="True" />
+                                <command:EventToCommand Command="{Binding MuteCommand}" PassEventArgsToCommand="True" />
                             </i:EventTrigger>
                             <i:EventTrigger EventName="MouseRightButtonDown">
                                 <i:InvokeCommandAction Command="{Binding VolumeClickCommand}" />

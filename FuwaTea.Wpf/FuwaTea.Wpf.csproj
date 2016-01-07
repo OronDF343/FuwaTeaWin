@@ -94,6 +94,10 @@
     <Compile Include="Helpers\FlowDirectionUpdater.cs" />
     <Compile Include="Helpers\OptionalToolTip.cs" />
     <Compile Include="Helpers\WindowPositioner.cs" />
+    <Compile Include="Keyboard\KeyBindingCollection.cs" />
+    <Compile Include="Keyboard\KeyCommand.cs" />
+    <Compile Include="Keyboard\KeyBinding.cs" />
+    <Compile Include="Keyboard\KeyBindingsManager.cs" />
     <Compile Include="Keyboard\KeyboardListener.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -65,5 +65,42 @@
     <Setting Name="TrayIconPreference" Provider="FuwaTea.Lib.PortableSettingsProvider" Roaming="true" Type="System.UInt32" Scope="User">
       <Value Profile="(Default)">3</Value>
     </Setting>
+    <Setting Name="KeyBindings" Provider="FuwaTea.Lib.PortableSettingsProvider" Roaming="true" Type="FuwaTea.Wpf.Keyboard.KeyBindingCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;KeyBindingCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;Items&gt;
+    &lt;KeyBinding Name="Hold shift to seek" Enabled="true" CommandKey="CompactSeekCommand" Kind="Hold"&gt;
+      &lt;KeyGesture&gt;
+        &lt;Key&gt;LeftShift&lt;/Key&gt;
+      &lt;/KeyGesture&gt;
+      &lt;CommandParameters /&gt;
+    &lt;/KeyBinding&gt;
+    &lt;KeyBinding Name="Previous" Enabled="true" CommandKey="PreviousCommand" Kind="Normal"&gt;
+      &lt;KeyGesture&gt;
+        &lt;Key&gt;MediaPreviousTrack&lt;/Key&gt;
+      &lt;/KeyGesture&gt;
+      &lt;CommandParameters /&gt;
+    &lt;/KeyBinding&gt;
+    &lt;KeyBinding Name="Play / Pause / Resume" Enabled="true" CommandKey="PlayPauseResumeCommand" Kind="Normal"&gt;
+      &lt;KeyGesture&gt;
+        &lt;Key&gt;MediaPlayPause&lt;/Key&gt;
+      &lt;/KeyGesture&gt;
+      &lt;CommandParameters /&gt;
+    &lt;/KeyBinding&gt;
+    &lt;KeyBinding Name="Next" Enabled="true" CommandKey="NextCommand" Kind="Normal"&gt;
+      &lt;KeyGesture&gt;
+        &lt;Key&gt;MediaNextTrack&lt;/Key&gt;
+      &lt;/KeyGesture&gt;
+      &lt;CommandParameters /&gt;
+    &lt;/KeyBinding&gt;
+    &lt;KeyBinding Name="Stop" Enabled="true" CommandKey="StopCommand" Kind="Normal"&gt;
+      &lt;KeyGesture&gt;
+        &lt;Key&gt;MediaStop&lt;/Key&gt;
+      &lt;/KeyGesture&gt;
+      &lt;CommandParameters /&gt;
+    &lt;/KeyBinding&gt;
+  &lt;/Items&gt;
+&lt;/KeyBindingCollection&gt;</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

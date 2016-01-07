@@ -38,6 +38,7 @@ using FuwaTea.Playback;
 using FuwaTea.Playlist;
 using FuwaTea.Wpf.Behaviors;
 using FuwaTea.Wpf.Helpers;
+using FuwaTea.Wpf.Keyboard;
 using GalaSoft.MvvmLight.Threading;
 using log4net;
 using log4net.Config;
@@ -152,13 +153,17 @@ namespace FTWPlayer
             using (LogicalThreadContext.Stacks["NDC"].Push(nameof(LoadSkins)))
                 LoadSkins();
 
+            // Load key bindings:
+            using (LogicalThreadContext.Stacks["NDC"].Push(nameof(LoadKeyBindings)))
+                LoadKeyBindings();
+
             // Set priority: 
             try { Process.GetCurrentProcess().PriorityClass = Settings.Default.ProcessPriority; }
             catch (Win32Exception w32)
             {
                 Logger.Error("Failed to set the process priority!", w32);
             }
-            
+
             Logger.Info("Ready to open the main window!");
             // Manually show main window (pervents loading it on shutdown)
             MainWindow = new MainWindow();
@@ -523,6 +528,24 @@ namespace FTWPlayer
                 SkinLoadingBehavior.UpdateSkin(skin.SkinParts);
                 Logger.Info($"Successfully loaded skin: Name=\"{skin.GetIdentifier()?.Name ?? "null"}\" Path=\"{skin.Path}\"");
             }
+        }
+
+        private void LoadKeyBindings()
+        {
+            Logger.Info("Loading key bindings engine...");
+            KeyBindingsManager.Instance.Listener = new KeyboardListener();
+            KeyBindingsManager.Instance.Listener.IsEnabled = Settings.Default.EnableKeyboardHook;
+            Settings.Default.PropertyChanged += (s, args) =>
+            {
+                if (args.PropertyName == nameof(Settings.Default.EnableKeyboardHook))
+                    KeyBindingsManager.Instance.Listener.IsEnabled = Settings.Default.EnableKeyboardHook;
+            };
+            if (Settings.Default.KeyBindings != null)
+                foreach (var keyBinding in Settings.Default.KeyBindings.Items)
+                    KeyBindingsManager.Instance.KeyBindings.Add(keyBinding);
+            KeyBindingsManager.Instance.KeyBindings.CollectionChanged +=
+                (s, args) =>
+                Settings.Default.KeyBindings = new KeyBindingCollection(KeyBindingsManager.Instance.KeyBindings);
         }
 
         /// <summary>

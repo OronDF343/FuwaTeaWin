@@ -45,6 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppDirUtils.cs" />
+    <Compile Include="DataModel\IKeyedElement.cs" />
+    <Compile Include="DataModel\SugoiObject.cs" />
     <Compile Include="FileAssociations\AppCapabilities.cs" />
     <Compile Include="FileAssociations\ApplicationAssociationRegistrationUI.cs" />
     <Compile Include="Collections\ExtensionMethods.cs" />
