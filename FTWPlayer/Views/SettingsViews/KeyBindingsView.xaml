@@ -21,8 +21,8 @@
                 <x:Type TypeName="Key"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
-        <converters:ItemsContextMultiConverter x:Key="ItCtxMConv" />
-        <fuwa:BindingProxy x:Key="CommonProxy" Data="{Binding Path=.}"/>
+        <converters:ItemsContextMultiConverter x:Key="ItCtxMConv"/>
+        <fuwa:BindingProxy x:Key="CommonProxy" Data="{Binding}"/>
         <converters:FindByKeyMultiConverterStringWrapper x:Key="FindByKeyMConv" />
     </TabItem.Resources>
     <Grid>
@@ -38,34 +38,34 @@
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Header="{lex:BLoc Enabled}" Binding="{Binding Enabled}"/>
                 <DataGridTextColumn Header="{lex:BLoc Name}" Binding="{Binding Name}"/>
-                <DataGridTemplateColumn Header="{lex:BLoc Keys}">
+                <fuwa:CustomDataGridTemplateColumn Header="{lex:BLoc Keys}" Binding="{Binding KeyGesture}">
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="{x:Type keyboard:KeyBinding}">
-                            <ListBox ItemsSource="{Binding KeyGesture}" IsEnabled="False"/>
+                        <DataTemplate>
+                            <ListBox ItemsSource="{Binding}" IsEnabled="False"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate DataType="{x:Type keyboard:KeyBinding}">
+                        <DataTemplate>
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition MaxHeight="72"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
+                                    <ColumnDefinition />
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <ListBox x:Name="GestureListBox"
-                                         ItemsSource="{Binding KeyGesture}"
+                                         ItemsSource="{Binding}"
                                          Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
                                     <ListBox.Resources>
-                                        <fuwa:BindingProxy x:Key="LocalProxy" Data="{Binding ElementName=GestureListBox, Mode=OneWay}"/>
+                                        <fuwa:BindingProxy x:Key="LocalProxy" Data="{Binding ElementName=GestureListBox}"/>
                                     </ListBox.Resources>
                                     <ListBox.InputBindings>
                                         <KeyBinding Key="Delete" Command="{Binding Data.RemoveItemCommand, Source={StaticResource CommonProxy}}">
                                             <KeyBinding.CommandParameter>
                                                 <MultiBinding Converter="{StaticResource ItCtxMConv}">
-                                                    <Binding Path="KeyGesture"/>
+                                                    <Binding />
                                                     <Binding Source="{StaticResource LocalProxy}" Path="Data.SelectedItems"/>
                                                 </MultiBinding>
                                             </KeyBinding.CommandParameter>
@@ -76,7 +76,7 @@
                                             <MenuItem Header="{lex:BLoc Remove}" Command="{Binding Data.RemoveItemCommand, Source={StaticResource CommonProxy}}">
                                                 <MenuItem.CommandParameter>
                                                     <MultiBinding Converter="{StaticResource ItCtxMConv}">
-                                                        <Binding Path="KeyGesture"/>
+                                                        <Binding />
                                                         <Binding Source="{StaticResource LocalProxy}" Path="Data.SelectedItems"/>
                                                     </MultiBinding>
                                                 </MenuItem.CommandParameter>
@@ -89,15 +89,15 @@
                                         Command="{Binding Data.AddItemCommand, Source={StaticResource CommonProxy}}">
                                     <Button.CommandParameter>
                                         <MultiBinding Converter="{StaticResource ItCtxMConv}">
-                                            <Binding/>
-                                            <Binding ElementName="NewItemComboBox" Path="SelectedItem"/>
+                                            <Binding />
+                                            <Binding ElementName="NewItemComboBox" Path="SelectedValue"/>
                                         </MultiBinding>
                                     </Button.CommandParameter>
                                 </Button>
                             </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
+                </fuwa:CustomDataGridTemplateColumn>
                 <DataGridComboBoxColumn Header="{lex:BLoc Command}"
                                         ItemsSource="{Binding KeyCommands, Source={x:Static keyboard:KeyBindingsManager.Instance}}"
                                         DisplayMemberPath="Key"
@@ -128,14 +128,14 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="{lex:BLoc Parameters}">
+                <fuwa:CustomDataGridTemplateColumn Header="{lex:BLoc Parameters}" Binding="{Binding CommandParameters}">
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="{x:Type keyboard:KeyBinding}">
-                            <ListBox ItemsSource="{Binding CommandParameters}" IsEnabled="False"/>
+                        <DataTemplate>
+                            <ListBox ItemsSource="{Binding}" IsEnabled="False"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate DataType="{x:Type keyboard:KeyBinding}">
+                        <DataTemplate>
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition MaxHeight="72"/>
@@ -146,16 +146,16 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <ListBox x:Name="ParametersListBox"
-                                         ItemsSource="{Binding CommandParameters}"
+                                         ItemsSource="{Binding}"
                                          Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
                                     <ListBox.Resources>
-                                        <fuwa:BindingProxy x:Key="LocalProxy" Data="{Binding ElementName=ParametersListBox, Mode=OneWay}"/>
+                                        <fuwa:BindingProxy x:Key="LocalProxy" Data="{Binding ElementName=ParametersListBox}"/>
                                     </ListBox.Resources>
                                     <ListBox.InputBindings>
                                         <KeyBinding Key="Delete" Command="{Binding Data.RemoveItemCommand, Source={StaticResource CommonProxy}}">
                                             <KeyBinding.CommandParameter>
                                                 <MultiBinding Converter="{StaticResource ItCtxMConv}">
-                                                    <Binding Path="CommandParameters"/>
+                                                    <Binding />
                                                     <Binding Source="{StaticResource LocalProxy}" Path="Data.SelectedItems"/>
                                                 </MultiBinding>
                                             </KeyBinding.CommandParameter>
@@ -166,7 +166,7 @@
                                             <MenuItem Header="{lex:BLoc Remove}" Command="{Binding Data.RemoveItemCommand, Source={StaticResource CommonProxy}}">
                                                 <MenuItem.CommandParameter>
                                                     <MultiBinding Converter="{StaticResource ItCtxMConv}">
-                                                        <Binding Path="CommandParameters"/>
+                                                        <Binding />
                                                         <Binding Source="{StaticResource LocalProxy}" Path="Data.SelectedItems"/>
                                                     </MultiBinding>
                                                 </MenuItem.CommandParameter>
@@ -179,7 +179,7 @@
                                         <KeyBinding Key="Enter" Command="{Binding Data.AddItemCommand, Source={StaticResource CommonProxy}}">
                                             <KeyBinding.CommandParameter>
                                                 <MultiBinding Converter="{StaticResource ItCtxMConv}">
-                                                    <Binding/>
+                                                    <Binding />
                                                     <Binding ElementName="NewItemTextBox" Path="Text"/>
                                                 </MultiBinding>
                                             </KeyBinding.CommandParameter>
@@ -190,7 +190,7 @@
                                         Command="{Binding Data.AddItemCommand, Source={StaticResource CommonProxy}}">
                                     <Button.CommandParameter>
                                         <MultiBinding Converter="{StaticResource ItCtxMConv}">
-                                            <Binding/>
+                                            <Binding />
                                             <Binding ElementName="NewItemTextBox" Path="Text"/>
                                         </MultiBinding>
                                     </Button.CommandParameter>
@@ -198,7 +198,7 @@
                             </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
+                </fuwa:CustomDataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
