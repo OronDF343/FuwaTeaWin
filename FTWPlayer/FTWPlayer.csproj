@@ -107,6 +107,8 @@
     <Compile Include="Converters\DoubleMaxMultiConverter.cs" />
     <Compile Include="Converters\DoubleMinMultiConverter.cs" />
     <Compile Include="Converters\DoubleSubtractMultiConverter.cs" />
+    <Compile Include="Converters\FindByKeyMultiConverter.cs" />
+    <Compile Include="Converters\ItemsContextMultiConverter.cs" />
     <Compile Include="Converters\ScaleMultiConverter.cs" />
     <Compile Include="Converters\TagFormatterMultiConverter.cs" />
     <Compile Include="Converters\UIntParseConverter.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="Converters\TimeSpanFormatterConverter.cs" />
     <Compile Include="Converters\UnitsConverter.cs" />
     <Compile Include="Converters\VolumeConverter.cs" />
+    <Compile Include="Converters\FindByKeyMultiConverterStringWrapper.cs" />
     <Compile Include="IUIPart.cs" />
     <Compile Include="Localization\LocalizationProvider.cs" />
     <Compile Include="Localization\Strings.Designer.cs">
@@ -135,6 +138,7 @@
     <Compile Include="Skins\SkinPackage.cs" />
     <Compile Include="ViewModels\SettingsViewModels\ISettingsTab.cs" />
     <Compile Include="ViewModels\SettingsViewModels\AllSettingsViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModels\KeyBindingsViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModels\PlaybackSettingsViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModels\SkinsViewModel.cs" />
     <Compile Include="ViewModels\TagsViewModel.cs" />
@@ -163,6 +167,9 @@
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\SettingsViews\AllSettingsView.xaml.cs">
       <DependentUpon>AllSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsViews\KeyBindingsView.xaml.cs">
+      <DependentUpon>KeyBindingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsViews\PlaybackSettingsView.xaml.cs">
       <DependentUpon>PlaybackSettingsView.xaml</DependentUpon>
@@ -255,6 +262,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\SettingsViews\AllSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsViews\KeyBindingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

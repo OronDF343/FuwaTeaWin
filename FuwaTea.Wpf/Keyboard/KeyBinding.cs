@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using System.Xml.Serialization;
+using FuwaTea.Lib.Collections;
 using FuwaTea.Lib.DataModel;
 using log4net;
 using ModularFramework;
@@ -24,9 +26,9 @@ namespace FuwaTea.Wpf.Keyboard
         }
 
         private bool _enabled = true;
-        private HashSet<Key> _keyGesture = new HashSet<Key>();
+        private ObservableHashSet<Key> _keyGesture = new ObservableHashSet<Key>();
         private string _commandKey;
-        private List<string> _commandParameters = new List<string>();
+        private ObservableCollection<string> _commandParameters = new ObservableCollection<string>();
         private KeyBindingKind _kind;
 
         [XmlAttribute]
@@ -43,7 +45,7 @@ namespace FuwaTea.Wpf.Keyboard
 
         [XmlArray(nameof(KeyGesture))]
         [XmlArrayItem(nameof(System.Windows.Input.Key))]
-        public HashSet<Key> KeyGesture
+        public ObservableHashSet<Key> KeyGesture
         {
             get { return _keyGesture; }
             set
@@ -68,7 +70,7 @@ namespace FuwaTea.Wpf.Keyboard
 
         [XmlArray(nameof(CommandParameters))]
         [XmlArrayItem("Parameter")]
-        public List<string> CommandParameters
+        public ObservableCollection<string> CommandParameters
         {
             get { return _commandParameters; }
             set
@@ -96,9 +98,9 @@ namespace FuwaTea.Wpf.Keyboard
             return new KeyBinding
             {
                 Name = Name,
-                KeyGesture = new HashSet<Key>(KeyGesture),
+                KeyGesture = new ObservableHashSet<Key>(KeyGesture),
                 CommandKey = CommandKey,
-                CommandParameters = new List<string>(CommandParameters),
+                CommandParameters = new ObservableCollection<string>(CommandParameters),
                 Kind = Kind
             };
         }
