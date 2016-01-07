@@ -390,7 +390,7 @@ namespace FTWPlayer.ViewModels
         private void SeekAdd(string time)
         {
             PlaybackManager.Position += Regex.IsMatch(time, PercentOfTimeRegex)
-                                            ? TimeSpan.FromMilliseconds(PlaybackManager.Position.TotalMilliseconds
+                                            ? TimeSpan.FromMilliseconds(PlaybackManager.Duration.TotalMilliseconds
                                                                         * (double.Parse(time.TrimEnd('%')) / 100))
                                             : TimeSpan.ParseExact(time, SeekTimeSpanFormat, null);
         }
@@ -400,7 +400,7 @@ namespace FTWPlayer.ViewModels
         private void SeekSubtract(string time)
         {
             PlaybackManager.Position -= Regex.IsMatch(time, PercentOfTimeRegex)
-                                            ? TimeSpan.FromMilliseconds(PlaybackManager.Position.TotalMilliseconds
+                                            ? TimeSpan.FromMilliseconds(PlaybackManager.Duration.TotalMilliseconds
                                                                         * (double.Parse(time.TrimEnd('%')) / 100))
                                             : TimeSpan.ParseExact(time, SeekTimeSpanFormat, null);
         }
