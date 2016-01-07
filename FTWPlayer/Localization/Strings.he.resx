@@ -235,4 +235,34 @@
   <data name="LoadedSkin" xml:space="preserve">
     <value>ערכת הנושא הנוכחית:</value>
   </data>
+  <data name="Add" xml:space="preserve">
+    <value>הוסף</value>
+  </data>
+  <data name="Command" xml:space="preserve">
+    <value>פעולה</value>
+  </data>
+  <data name="Enabled" xml:space="preserve">
+    <value>מופעל</value>
+  </data>
+  <data name="EnableKeyBindings" xml:space="preserve">
+    <value>הפעל קיצורי דרך</value>
+  </data>
+  <data name="KeyBindings" xml:space="preserve">
+    <value>קיצורי דרך</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>כפתורים</value>
+  </data>
+  <data name="Kind" xml:space="preserve">
+    <value>סוג</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>שם</value>
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value>פרמטרים</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>הסר</value>
+  </data>
 </root>

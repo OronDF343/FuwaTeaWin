@@ -29,6 +29,13 @@
 	                       M462,317.89H343v-64h119V317.89z M422.5,233.89V118.5h-40v115.39H422.5z M382.5,347.89v45.61h40v-45.61H382.5z"
                   FillRule="Nonzero"
                   Transform="{StaticResource 512To32Transform}"/>
+    <PathGeometry x:Key="KeyBindingsIcon"
+                  Figures="M0 3v18h24V3H0zm13 4h3v3h-3V7zM9 7h3v3H9V7zm4 4v3h-3v-3h3zM4 7h4v3H4V7zm2 4h3v3H6v-3zm10 7H8v-3h8v3zm2-4h-4v-3h4v3zm2-4h-3V7h3v3z"
+                  FillRule="Nonzero">
+        <PathGeometry.Transform>
+            <ScaleTransform ScaleX="1.3333" ScaleY="1.3333"/>
+        </PathGeometry.Transform>
+    </PathGeometry>
 
     <Path x:Key="AllSettingsButtonContent" Fill="{DynamicResource ActiveBrush}" Width="32" Height="32"
           Data="{DynamicResource GearIcon}" />
@@ -36,6 +43,8 @@
           Data="{DynamicResource SkinsIcon}" />
     <Path x:Key="PlaybackSettingsButtonContent" Fill="{DynamicResource ActiveBrush}" Width="32" Height="32"
           Data="{DynamicResource PlaybackSettingsIcon}" />
+    <Path x:Key="KeyBindingsButtonContent" Fill="{DynamicResource ActiveBrush}" Width="32" Height="32"
+          Data="{DynamicResource KeyBindingsIcon}"/>
 
     <!-- Settings TabItems -->
     <ControlTemplate x:Key="SettingsTabItemTemplate" TargetType="{x:Type TabItem}">
@@ -52,7 +61,7 @@
                                   TextBlock.Foreground="{DynamicResource TextBrush}"
                                   TextBlock.FontWeight="Bold"
                                   VerticalAlignment="Top"
-                                  HorizontalAlignment="Center" />
+                                  HorizontalAlignment="Center"/>
             </Grid>
         </Border>
         <ControlTemplate.Triggers>

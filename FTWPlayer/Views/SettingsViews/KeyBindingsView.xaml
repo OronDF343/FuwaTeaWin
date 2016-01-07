@@ -30,14 +30,15 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <CheckBox x:Name="EnableCheckBox" Content="Enable Key Bindings" Grid.Row="0" IsChecked="{Binding Settings[EnableKeyboardHook]}"/>
+        <CheckBox x:Name="EnableCheckBox" Content="{lex:BLoc EnableKeyBindings}" Grid.Row="0"
+                  IsChecked="{Binding Settings[EnableKeyboardHook]}" Margin="0,0,0,8"/>
         <DataGrid Grid.Row="1" IsEnabled="{Binding IsChecked, ElementName=EnableCheckBox}"
                   ItemsSource="{Binding KeyBindings, Source={x:Static keyboard:KeyBindingsManager.Instance}}"
                   AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn Header="Enabled" Binding="{Binding Enabled}"/>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
-                <DataGridTemplateColumn Header="Keys">
+                <DataGridCheckBoxColumn Header="{lex:BLoc Enabled}" Binding="{Binding Enabled}"/>
+                <DataGridTextColumn Header="{lex:BLoc Name}" Binding="{Binding Name}"/>
+                <DataGridTemplateColumn Header="{lex:BLoc Keys}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="{x:Type keyboard:KeyBinding}">
                             <ListBox ItemsSource="{Binding KeyGesture}" IsEnabled="False"/>
@@ -72,7 +73,7 @@
                                     </ListBox.InputBindings>
                                     <ListBox.ContextMenu>
                                         <ContextMenu>
-                                            <MenuItem Header="Remove" Command="{Binding Data.RemoveItemCommand, Source={StaticResource CommonProxy}}">
+                                            <MenuItem Header="{lex:BLoc Remove}" Command="{Binding Data.RemoveItemCommand, Source={StaticResource CommonProxy}}">
                                                 <MenuItem.CommandParameter>
                                                     <MultiBinding Converter="{StaticResource ItCtxMConv}">
                                                         <Binding Path="KeyGesture"/>
@@ -84,7 +85,7 @@
                                     </ListBox.ContextMenu>
                                 </ListBox>
                                 <ComboBox x:Name="NewItemComboBox" Grid.Column="0" Grid.Row="1" ItemsSource="{Binding Source={StaticResource Keys}}"/>
-                                <Button Grid.Column="1" Grid.Row="1" Content="Add"
+                                <Button Grid.Column="1" Grid.Row="1" Content="{lex:BLoc Add}"
                                         Command="{Binding Data.AddItemCommand, Source={StaticResource CommonProxy}}">
                                     <Button.CommandParameter>
                                         <MultiBinding Converter="{StaticResource ItCtxMConv}">
@@ -97,12 +98,12 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
-                <DataGridComboBoxColumn Header="Command"
+                <DataGridComboBoxColumn Header="{lex:BLoc Command}"
                                         ItemsSource="{Binding KeyCommands, Source={x:Static keyboard:KeyBindingsManager.Instance}}"
                                         DisplayMemberPath="Key"
                                         SelectedValuePath="Key"
                                         SelectedValueBinding="{Binding CommandKey}"/>
-                <DataGridTemplateColumn Header="Kind">
+                <DataGridTemplateColumn Header="{lex:BLoc Kind}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="keyboard:KeyBinding">
                             <ContentPresenter Content="{Binding Kind}"/>
@@ -127,7 +128,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Parameters">
+                <DataGridTemplateColumn Header="{lex:BLoc Parameters}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="{x:Type keyboard:KeyBinding}">
                             <ListBox ItemsSource="{Binding CommandParameters}" IsEnabled="False"/>
@@ -162,7 +163,7 @@
                                     </ListBox.InputBindings>
                                     <ListBox.ContextMenu>
                                         <ContextMenu>
-                                            <MenuItem Header="Remove" Command="{Binding Data.RemoveItemCommand, Source={StaticResource CommonProxy}}">
+                                            <MenuItem Header="{lex:BLoc Remove}" Command="{Binding Data.RemoveItemCommand, Source={StaticResource CommonProxy}}">
                                                 <MenuItem.CommandParameter>
                                                     <MultiBinding Converter="{StaticResource ItCtxMConv}">
                                                         <Binding Path="CommandParameters"/>
@@ -185,7 +186,7 @@
                                         </KeyBinding>
                                     </TextBox.InputBindings>
                                 </TextBox>
-                                <Button Grid.Column="1" Grid.Row="1" Content="Add"
+                                <Button Grid.Column="1" Grid.Row="1" Content="{lex:BLoc Add}"
                                         Command="{Binding Data.AddItemCommand, Source={StaticResource CommonProxy}}">
                                     <Button.CommandParameter>
                                         <MultiBinding Converter="{StaticResource ItCtxMConv}">

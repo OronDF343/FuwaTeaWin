@@ -61,6 +61,15 @@ namespace FTWPlayer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        internal static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add to {0}&apos;s playlist.
         /// </summary>
         internal static string AddToPlaylistFormatString {
@@ -115,11 +124,38 @@ namespace FTWPlayer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Command.
+        /// </summary>
+        internal static string Command {
+            get {
+                return ResourceManager.GetString("Command", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change to Compact Mode.
         /// </summary>
         internal static string CompactToolTip {
             get {
                 return ResourceManager.GetString("CompactToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enabled.
+        /// </summary>
+        internal static string Enabled {
+            get {
+                return ResourceManager.GetString("Enabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable keyboard shortcuts.
+        /// </summary>
+        internal static string EnableKeyBindings {
+            get {
+                return ResourceManager.GetString("EnableKeyBindings", resourceCulture);
             }
         }
         
@@ -187,6 +223,34 @@ namespace FTWPlayer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Keyboard
+        ///Shortcuts.
+        /// </summary>
+        internal static string KeyBindings {
+            get {
+                return ResourceManager.GetString("KeyBindings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Key combination.
+        /// </summary>
+        internal static string Keys {
+            get {
+                return ResourceManager.GetString("Keys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        internal static string Kind {
+            get {
+                return ResourceManager.GetString("Kind", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LIBRARY.
         /// </summary>
         internal static string LibraryTabHeader {
@@ -201,6 +265,15 @@ namespace FTWPlayer.Localization {
         internal static string LoadedSkin {
             get {
                 return ResourceManager.GetString("LoadedSkin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        internal static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
             }
         }
         
@@ -228,6 +301,15 @@ namespace FTWPlayer.Localization {
         internal static string OutputDevice {
             get {
                 return ResourceManager.GetString("OutputDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameters.
+        /// </summary>
+        internal static string Parameters {
+            get {
+                return ResourceManager.GetString("Parameters", resourceCulture);
             }
         }
         
@@ -282,6 +364,15 @@ namespace FTWPlayer.Localization {
         internal static string PreviousToolTip {
             get {
                 return ResourceManager.GetString("PreviousToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        internal static string Remove {
+            get {
+                return ResourceManager.GetString("Remove", resourceCulture);
             }
         }
         

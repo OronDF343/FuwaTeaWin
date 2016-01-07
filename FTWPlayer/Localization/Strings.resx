@@ -239,4 +239,35 @@ Please report this to the author with a copy of ftw.log.</value>
   <data name="LoadedSkin" xml:space="preserve">
     <value>Currently loaded skin:</value>
   </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Command" xml:space="preserve">
+    <value>Command</value>
+  </data>
+  <data name="Enabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="EnableKeyBindings" xml:space="preserve">
+    <value>Enable keyboard shortcuts</value>
+  </data>
+  <data name="KeyBindings" xml:space="preserve">
+    <value>Keyboard
+Shortcuts</value>
+  </data>
+  <data name="Keys" xml:space="preserve">
+    <value>Key combination</value>
+  </data>
+  <data name="Kind" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value>Parameters</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
 </root>
