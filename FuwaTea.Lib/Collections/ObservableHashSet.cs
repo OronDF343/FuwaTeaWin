@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
@@ -144,11 +145,27 @@ namespace FuwaTea.Lib.Collections
             _hashSet.CopyTo(array, arrayIndex);
         }
 
+        /// <summary>
+        /// Has the correct CollectionChanged event. Good for when the event handler is slow but the <see cref="ObservableHashSet{T}"/> contains few items.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public bool RemoveSlow(T item)
+        {
+            CheckLock();
+            var index = _hashSet.ToList().IndexOf(item);
+            if (index < 0) return false;
+            _hashSet.Remove(item);
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item, index));
+            OnPropertyChanged(nameof(Count));
+            return true;
+        }
+
         public bool Remove(T item)
         {
             CheckLock();
             if (!_hashSet.Remove(item)) return false;
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item));
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             OnPropertyChanged(nameof(Count));
             return true;
         }

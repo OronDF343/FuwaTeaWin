@@ -45,7 +45,7 @@ namespace FTWPlayer.ViewModels.SettingsViewModels
             if (context[0] == null || context[1] == null) return;
             var set = context[0] as ObservableHashSet<Key>;
             var set2 = context[0] as ObservableCollection<string>;
-            foreach (var item in ((IList)context[1]).OfType<Key>().ToList()) set?.Remove(item);
+            foreach (var item in ((IList)context[1]).OfType<Key>().ToList()) set?.RemoveSlow(item);
             foreach (var item in ((IList)context[1]).OfType<string>().ToList()) set2?.Remove(item);
         }
     }
