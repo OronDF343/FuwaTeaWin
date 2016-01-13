@@ -18,9 +18,9 @@
 using FuwaTea.Lib;
 using NAudio.Wave;
 
-namespace FuwaTea.Playback.NAudio.Codecs
+namespace FuwaTea.Playback.NAudio
 {
-    public interface IWaveStreamProvider : IFileHandler
+    public interface ICodecProvider : IFileHandler, INAudioExtension
     {
         WaveStream CreateWaveStream(string path);
         bool IsSampleProvider { get; }

@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
+using FuwaTea.Playback.NAudio;
 using FuwaTea.Playback.NAudio.Codecs;
 using ModularFramework.Attributes;
 
@@ -16,7 +17,7 @@ using ModularFramework.Attributes;
 [assembly: AssemblyCulture("")]
 
 // Modular
-[assembly: ModuleDefinition("NAudio", typeof(CodecAttribute), typeof(IWaveStreamProvider))]
+[assembly: ModuleDefinition("NAudio", typeof(NAudioExtensionAttribute), typeof(INAudioExtension))]
 [assembly: ModuleImplementation("Players")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 

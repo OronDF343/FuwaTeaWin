@@ -21,8 +21,8 @@ using NAudio.Wave;
 
 namespace FuwaTea.Playback.NAudio.Codecs
 {
-    [Codec("Vorbis file reader")]
-    public class VorbisCodec : IWaveStreamProvider
+    [NAudioExtension("Vorbis file reader")]
+    public class VorbisCodec : ICodecProvider
     {
         public WaveStream CreateWaveStream(string path)
         {

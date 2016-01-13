@@ -3,8 +3,8 @@ using NAudio.Wave;
 
 namespace FuwaTea.Playback.NAudio.Codecs
 {
-    [Codec("Wavpack file reader")]
-    public class WavpackCodec : IWaveStreamProvider
+    [NAudioExtension("Wavpack file reader")]
+    public class WavpackCodec : ICodecProvider
     {
         public WaveStream CreateWaveStream(string path)
         {
