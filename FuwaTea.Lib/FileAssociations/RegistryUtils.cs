@@ -51,6 +51,9 @@ namespace FuwaTea.Lib.FileAssociations
                 var addF = c.FindOrCreateEntry("AddToPlaylist");
                 addF.Command = $"\"{loc}\" \"%1\" --add";
                 addF.Description = addTo; //string.Format(LocalizationProvider.GetLocalizedValue<string>("AddToPlaylistFormatString"), title);
+                var openF = c.FindOrCreateEntry("open");
+                openF.Command = $"\"{loc}\" \"%1\"";
+                openF.LegacyDisable = true;
                 c.WriteValues();
             }
             // Capabilities
