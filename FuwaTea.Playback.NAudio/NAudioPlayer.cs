@@ -22,7 +22,6 @@ using System.IO;
 using System.Linq;
 using FuwaTea.Lib;
 using FuwaTea.Metadata.Tags;
-using FuwaTea.Playback.NAudio.Codecs;
 using FuwaTea.Playback.NAudio.Utils;
 using log4net;
 using ModularFramework;

@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 using FuwaTea.Playback.NAudio;
-using FuwaTea.Playback.NAudio.Codecs;
 using ModularFramework.Attributes;
 
 // General Information about an assembly is controlled through the following 
