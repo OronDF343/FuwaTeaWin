@@ -147,7 +147,6 @@
     <!-- Flat Button Style -->
     <Style BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{DynamicResource DefaultBrush}" />
-        <Setter Property="Focusable" Value="False" />
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Padding" Value="0"/>
         <!-- Important! -->
@@ -308,6 +307,7 @@
 
     <Style TargetType="{x:Type Slider}">
         <Setter Property="SnapsToDevicePixels" Value="true" />
+        <!--<Setter Property="Visibility" Value="Collapsed"/>-->
         <Style.Triggers>
             <Trigger Property="Orientation" Value="Horizontal">
                 <Setter Property="Template" Value="{StaticResource HorizontalSlider}" />
@@ -317,15 +317,21 @@
             <Trigger Property="fuwa:DataStatesHelper.CurrentStateName" Value="VolumeSliderShown">
                 <Trigger.EnterActions>
                     <BeginStoryboard>
-                        <Storyboard TargetProperty="Width">
-                            <DoubleAnimation From="0" To="80" Duration="0:0:0.5" />
+                        <Storyboard>
+                            <DoubleAnimation From="0" To="80" Duration="0:0:0.5" Storyboard.TargetProperty="Width" />
+                            <!--<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{x:Static Visibility.Visible}"/>
+                            </ObjectAnimationUsingKeyFrames>-->
                         </Storyboard>
                     </BeginStoryboard>
                 </Trigger.EnterActions>
                 <Trigger.ExitActions>
                     <BeginStoryboard>
-                        <Storyboard TargetProperty="Width">
-                            <DoubleAnimation From="80" To="0" Duration="0:0:0.5" />
+                        <Storyboard>
+                            <DoubleAnimation From="80" To="0" Duration="0:0:0.5" Storyboard.TargetProperty="Width" />
+                            <!--<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility">
+                                <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="{x:Static Visibility.Collapsed}"/>
+                            </ObjectAnimationUsingKeyFrames>-->
                         </Storyboard>
                     </BeginStoryboard>
                 </Trigger.ExitActions>

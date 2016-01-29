@@ -229,6 +229,8 @@ namespace FTWPlayer.ViewModels
 
         public IPlaybackManager PlaybackManager { get; }
 
+        public string AppName => Assembly.GetEntryAssembly().GetAttribute<AssemblyTitleAttribute>().Title;
+
         #region Commands
 
         public ICommand PreviousCommand { get; private set; }
@@ -444,6 +446,10 @@ namespace FTWPlayer.ViewModels
                                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        public ICommand ShowCommand => new RelayCommand(Application.Current.MainWindow.Show);
+        public ICommand HideCommand => new RelayCommand(Application.Current.MainWindow.Hide);
+        public ICommand CloseCommand => new RelayCommand(Application.Current.MainWindow.Close);
 
         #endregion
 

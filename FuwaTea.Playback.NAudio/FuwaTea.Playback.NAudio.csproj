@@ -61,13 +61,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IEffectProvider.cs" />
+    <Compile Include="INAudioExtension.cs" />
     <Compile Include="Utils\BalanceSampleProvider.cs" />
     <Compile Include="Utils\BufferedWaveStream.cs" />
-    <Compile Include="Codecs\CodecAttribute.cs" />
+    <Compile Include="NAudioExtensionAttribute.cs" />
     <Compile Include="Codecs\CoreCodec.cs" />
     <Compile Include="Codecs\FlacCodec.cs" />
     <Compile Include="Codecs\FlacReader.cs" />
-    <Compile Include="Codecs\IWaveStreamProvider.cs" />
+    <Compile Include="ICodecProvider.cs" />
     <Compile Include="Codecs\MediaFoundationCodec.cs" />
     <Compile Include="Codecs\VorbisCodec.cs" />
     <Compile Include="Codecs\WavpackCodec.cs" />

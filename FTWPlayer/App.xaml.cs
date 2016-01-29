@@ -29,6 +29,7 @@ using System.Security;
 using System.Security.AccessControl;
 using System.Threading;
 using System.Windows;
+using System.Windows.Interop;
 using FTWPlayer.Localization;
 using FTWPlayer.Properties;
 using FTWPlayer.Skins;
@@ -167,10 +168,37 @@ namespace FTWPlayer
             Logger.Info("Ready to open the main window!");
             // Manually show main window (pervents loading it on shutdown)
             MainWindow = new MainWindow();
+            MainWindow.SourceInitialized += MainWindow_OnSourceInitialized;
             MainWindow.Show();
             WindowPositioner.SetAutoPosition(MainWindow, Settings.Default.AutoWindowPosition);
             base.OnStartup(e);
         }
+        
+        #region Single Instance Application
+
+        private void MainWindow_OnSourceInitialized(object sender, EventArgs e)
+        {
+            // Single Instance Application hook
+            var source = (HwndSource)PresentationSource.FromVisual(MainWindow);
+            source?.AddHook(HwndSourceHook); // should never be null
+            // Needs to happen here:
+            FlowDirectionUpdater.UpdateFlowDirection(LocalizeDictionary.Instance.Culture.TextInfo.IsRightToLeft ? FlowDirection.RightToLeft : FlowDirection.LeftToRight);
+        }
+
+        private IntPtr HwndSourceHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            if (msg == Message)
+            {
+                MainWindow.Show();
+                var clArgs = File.ReadAllLines(Assembly.GetExecutingAssembly().GetSpecificPath(true, @"ClArgs.txt", false)).ToList(); // TODO: find better way of passing args
+                // TODO: better handling of clArgs
+                // TODO: finish this
+                MiscUtils.ParseClArgs(clArgs);
+            }
+            return IntPtr.Zero;
+        }
+
+        #endregion
 
         /// <summary>
         /// Restart the application and request administrator rights
@@ -554,8 +582,12 @@ namespace FTWPlayer
         /// <param name="e">An <see cref="T:System.Windows.ExitEventArgs"/> that contains the event data.</param>
         protected override void OnExit([NotNull] ExitEventArgs e)
         {
-            Settings.Default.Save();
-            Dispose();
+            using (LogicalThreadContext.Stacks["NDC"].Push(nameof(OnExit)))
+            {
+                Logger.Info("Saving settings...");
+                Settings.Default.Save();
+                Dispose();
+            }
             base.OnExit(e);
         }
 

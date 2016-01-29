@@ -20,8 +20,8 @@ using NAudio.Wave;
 
 namespace FuwaTea.Playback.NAudio.Codecs
 {
-    [Codec("NAudio built-in readers (non-MF)")]
-    public class CoreCodec : IWaveStreamProvider
+    [NAudioExtension("NAudio built-in readers (non-MF)")]
+    public class CoreCodec : ICodecProvider
     {
         public WaveStream CreateWaveStream(string path)
         {

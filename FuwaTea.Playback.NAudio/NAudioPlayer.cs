@@ -22,7 +22,6 @@ using System.IO;
 using System.Linq;
 using FuwaTea.Lib;
 using FuwaTea.Metadata.Tags;
-using FuwaTea.Playback.NAudio.Codecs;
 using FuwaTea.Playback.NAudio.Utils;
 using log4net;
 using ModularFramework;
@@ -39,11 +38,11 @@ namespace FuwaTea.Playback.NAudio
     {
         public NAudioPlayer()
         {
-            _codecs = ModuleFactory.GetElements<IWaveStreamProvider>().ToList();
+            _codecs = ModuleFactory.GetElements<ICodecProvider>().ToList();
             //EqualizerBands = new ObservableCollection<EqualizerBand>(); :warning: DON'T DO THIS! Leave it set to null!
         }
 
-        private readonly List<IWaveStreamProvider> _codecs;
+        private readonly List<ICodecProvider> _codecs;
 
         #region IAudioPlayer implementation
 
@@ -62,7 +61,7 @@ namespace FuwaTea.Playback.NAudio
         private ShoutcastStream _shoutcastStream;
 
         private IWavePlayer _wavePlayer;
-        private IWaveStreamProvider _currentCodec;
+        private ICodecProvider _currentCodec;
         private WaveStream _waveStream;
         private BalanceSampleProvider _balanceSampleProvider;
         private VolumeSampleProvider _volumeSampleProvider;
@@ -173,8 +172,19 @@ namespace FuwaTea.Playback.NAudio
             else _volumeSampleProvider = new VolumeSampleProvider(sp);
             // Create Equalizer
             _equalizer = new Equalizer(_volumeSampleProvider, EqualizerBands) { Enabled = EnableEqualizer };
+            ISampleProvider lastSampleProvider = _equalizer;
+            // Apply effects
+            foreach (var effect in ModuleFactory.GetElements<IEffectProvider>())
+            {
+                try { lastSampleProvider = effect.ApplyEffect(lastSampleProvider); }
+                catch (Exception e)
+                {
+                    LogManager.GetLogger(GetType()).Error("Failed to load effect: "
+                                                           + effect.GetType().GetAttribute<NAudioExtensionAttribute>().ElementName, e);
+                }
+            }
             // Init player
-            _wavePlayer.Init(_equalizer);
+            _wavePlayer.Init(lastSampleProvider);
             _volumeSampleProvider.Volume = (float)Volume;
         }
 

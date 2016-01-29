@@ -52,7 +52,8 @@ namespace FuwaTea.Lib.FileAssociations
                      select new ShellEntry(k)
                             {
                                 Description = (string)sk.GetValue(""),
-                                Command = (string)sk.CreateSubKey(CommandKeyName)?.GetValue("")
+                                Command = (string)sk.CreateSubKey(CommandKeyName)?.GetValue(""),
+                                LegacyDisable = sk.GetValue(nameof(ShellEntry.LegacyDisable)) != null
                             };
             ShellEntries.AddRange(sh);
         }
@@ -72,6 +73,10 @@ namespace FuwaTea.Lib.FileAssociations
                 var k = shell.CreateSubKey(entry.KeyName);
                 k.SetValue("", entry.Description, RegistryValueKind.String);
                 k.CreateSubKey(CommandKeyName).SetValue("", entry.Command, RegistryValueKind.String);
+                if (entry.LegacyDisable)
+                    k.SetValue(nameof(ShellEntry.LegacyDisable), "", RegistryValueKind.String);
+                else
+                    k.DeleteValue(nameof(ShellEntry.LegacyDisable));
             }
         }
 
@@ -79,8 +84,9 @@ namespace FuwaTea.Lib.FileAssociations
         {
             public ShellEntry(string keyName) { KeyName = keyName; }
             public string KeyName { get; }
-            public string Description { get; set; }
-            public string Command { get; set; }
+            public string Description { get; set; } = "";
+            public string Command { get; set; } = "";
+            public bool LegacyDisable { get; set; }
         }
     }
 }

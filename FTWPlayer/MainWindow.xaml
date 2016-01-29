@@ -20,7 +20,6 @@
         MaxHeight="{DynamicResource MaxHeight}"
         MinWidth="{DynamicResource MinWidth}"
         MaxWidth="{DynamicResource MaxWidth}"
-        SourceInitialized="MainWindow_OnSourceInitialized"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         WindowStyle="None" AllowsTransparency="True" ResizeMode="CanResize" Background="Transparent"
         AllowDrop="True" FlowDirection="LeftToRight"
@@ -311,11 +310,11 @@
                         </i:Interaction.Triggers>
                     </Button>
                     <Button Grid.Row="1" Grid.Column="10" Content="{DynamicResource MinimizeButtonContent}"
-                            Click="MinimizeButton_OnClick"
+                            Command="{Binding HideCommand}"
                             fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}"
                             fuwa:OptionalToolTip.ToolTipContent="{lex:Loc HideToolTip}" />
                     <Button Grid.Row="1" Grid.Column="11" Content="{DynamicResource CloseButtonContent}"
-                            Click="CloseButton_OnClick"
+                            Command="{Binding CloseCommand}"
                             fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}"
                             fuwa:OptionalToolTip.ToolTipContent="{lex:Loc ExitToolTip}" />
 
@@ -409,7 +408,7 @@
                 </TabControl>
             </Grid>
         </Border>
-        <hc:TaskbarIcon ToolTip="FTW Player" TrayMouseDoubleClick="MaximizeButton_OnClick">
+        <hc:TaskbarIcon ToolTipText="{Binding AppName}" DoubleClickCommand="{Binding ShowCommand}">
             <hc:TaskbarIcon.ContextMenu>
                 <ContextMenu fuwa:FlowDirectionUpdater.AutoUpdateMode="Enabled">
                     <MenuItem Header="{lex:BLoc PreviousToolTip}">
@@ -458,8 +457,8 @@
                         </i:Interaction.Triggers>
                     </MenuItem>
                     <Separator/>
-                    <MenuItem Header="{lex:BLoc ShowToolTip}" Click="MaximizeButton_OnClick" FontWeight="Bold"/>
-                    <MenuItem Header="{lex:BLoc ExitToolTip}" Click="CloseButton_OnClick"/>
+                    <MenuItem Header="{lex:BLoc ShowToolTip}" Command="{Binding ShowCommand}" FontWeight="Bold"/>
+                    <MenuItem Header="{lex:BLoc ExitToolTip}" Command="{Binding CloseCommand}"/>
                 </ContextMenu>
             </hc:TaskbarIcon.ContextMenu>
         </hc:TaskbarIcon>

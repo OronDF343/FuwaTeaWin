@@ -22,9 +22,9 @@ using NAudio.Wave;
 
 namespace FuwaTea.Playback.NAudio.Codecs
 {
-    [Codec("MediaFoundation on Windows Vista and higher (MP3, WMA, M4A, AAC) (M4A/AAC on Windows Vista requires KB2117917)")]
+    [NAudioExtension("MediaFoundation on Windows Vista and higher (MP3, WMA, M4A, AAC) (M4A/AAC on Windows Vista requires KB2117917)")]
     [OSFilter(FilterActions.Whitelist, PlatformID.Win32NT, FilterRules.GreaterThan, "6.0.0.0")]
-    public class MediaFoundationVistaCodec : IWaveStreamProvider
+    public class MediaFoundationVistaCodec : ICodecProvider
     {
         public WaveStream CreateWaveStream(string path)
         {
@@ -37,9 +37,9 @@ namespace FuwaTea.Playback.NAudio.Codecs
         public bool CanSeek => true;
     }
 
-    [Codec("MediaFoundation on Windows 7 and higher (ADTS)")]
+    [NAudioExtension("MediaFoundation on Windows 7 and higher (ADTS)")]
     [OSFilter(FilterActions.Whitelist, PlatformID.Win32NT, FilterRules.GreaterThan, "6.1.0.0")]
-    public class MediaFoundationWin7Codec : IWaveStreamProvider
+    public class MediaFoundationWin7Codec : ICodecProvider
     {
         public WaveStream CreateWaveStream(string path)
         {
@@ -52,9 +52,9 @@ namespace FuwaTea.Playback.NAudio.Codecs
         public bool CanSeek => true;
     }
 
-    [Codec("MediaFoundation on Windows 8 and higher (AC3)")]
+    [NAudioExtension("MediaFoundation on Windows 8 and higher (AC3)")]
     [OSFilter(FilterActions.Whitelist, PlatformID.Win32NT, FilterRules.GreaterThan, "6.2.0.0")]
-    public class MediaFoundationWin8Codec : IWaveStreamProvider
+    public class MediaFoundationWin8Codec : ICodecProvider
     {
         public WaveStream CreateWaveStream(string path)
         {
@@ -67,9 +67,9 @@ namespace FuwaTea.Playback.NAudio.Codecs
         public bool CanSeek => true;
     }
 
-    [Codec("MediaFoundation on Windows 10 and higher (FLAC)")]
+    [NAudioExtension("MediaFoundation on Windows 10 and higher (FLAC)")]
     [OSFilter(FilterActions.Whitelist, PlatformID.Win32NT, FilterRules.GreaterThan, "10.0.0.0")]
-    public class MediaFoundationWin10Codec : IWaveStreamProvider
+    public class MediaFoundationWin10Codec : ICodecProvider
     {
         public WaveStream CreateWaveStream(string path)
         {
