@@ -39,17 +39,20 @@ namespace FuwaTea.Playlist
 
         public bool EnableShuffle
         {
-            get
-            {
-                return _shuffle;
-            }
+            get { return _shuffle; }
             set
             {
                 var temp = _shuffle;
                 _shuffle = value;
                 if (temp != _shuffle) OnPropertyChanged();
                 if (ElementCount < 1) return;
-                if (!temp && _shuffle) CurrentIndex = _playlist.AbsoluteToShuffled(CurrentIndex);
+                if (!temp && _shuffle)
+                {
+                    // TODO: this is a terrible hack
+                    _index = -1;
+                    _playlist.Reshuffle();
+                    CurrentIndex = 0;
+                }
                 else if (temp && !_shuffle) CurrentIndex = _playlist.ShuffledToAbsolute(CurrentIndex);
             }
         }
@@ -63,9 +66,8 @@ namespace FuwaTea.Playlist
             get { return _index; }
             private set
             {
-                var temp = _index;
+                if (value == _index) return;
                 _index = value;
-                if (temp == _index) return;
                 OnPropertyChanged(nameof(CurrentIndexAbsolute));
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(Current));
