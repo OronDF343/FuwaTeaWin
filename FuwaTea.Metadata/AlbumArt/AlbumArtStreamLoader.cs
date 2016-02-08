@@ -47,7 +47,7 @@ namespace FuwaTea.Metadata.AlbumArt
                 }
             }
             if (imgs == null || imgs.Length == 0) return null;
-            var img = imgs.FirstOrDefault(i => filetypeWhitelist.Contains(i.Extension));
+            var img = imgs.FirstOrDefault(i => filetypeWhitelist.Contains(i.Extension.ToLowerInvariant()));
             return img == null ? null : new FileStream(img.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
         }
 
