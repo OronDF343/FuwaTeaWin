@@ -75,7 +75,7 @@ namespace FuwaTea.Lib.FileAssociations
                 k.CreateSubKey(CommandKeyName).SetValue("", entry.Command, RegistryValueKind.String);
                 if (entry.LegacyDisable)
                     k.SetValue(nameof(ShellEntry.LegacyDisable), "", RegistryValueKind.String);
-                else
+                else if (k.GetValue(nameof(ShellEntry.LegacyDisable)) != null)
                     k.DeleteValue(nameof(ShellEntry.LegacyDisable));
             }
         }
