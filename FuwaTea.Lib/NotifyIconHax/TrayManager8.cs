@@ -11,28 +11,31 @@ namespace FuwaTea.Lib.NotifyIconHax
     public class TrayManager8 : ITrayManager
     {
         private readonly ITrayNotify8 _trayNotify;
-        private readonly IntPtr _ptr;
+        private readonly IntPtr _itemPtr;
+
         public TrayManager8()
         {
             _trayNotify = new TrayNotify8();
-            _ptr = InteropUtils.CreateStructPtr(new NOTIFYITEM());
+            _itemPtr = InteropUtils.CreateStructPtr(new NOTIFYITEM());
         }
 
-        public void RegisterCallback(CallBack ncb)
+        public bool GetNotifyItems(NotifyItemCallback ncb)
         {
-            uint i = 0;
-            _trayNotify.RegisterCallback(new NotificationCallBackWrapper(ncb), ref i);
+            var i = 0;
+            var hr = _trayNotify.RegisterCallback(new NotificationCallbackWrapper(ncb), ref i);
+            _trayNotify.UnregisterCallback(ref i);
+            return hr >= 0;
         }
 
-        public void SetPreference(NOTIFYITEM notifyItem)
+        public bool SetPreference(NOTIFYITEM notifyItem)
         {
-            if (InteropUtils.UpdateStructPtr(_ptr, notifyItem))
-                _trayNotify.SetPreference(_ptr);
+            if (!InteropUtils.UpdateStructPtr(_itemPtr, notifyItem)) return false;
+            return _trayNotify.SetPreference(_itemPtr) >= 0;
         }
 
         public void Dispose()
         {
-            InteropUtils.FreeStructPtr(_ptr);
+            InteropUtils.FreeStructPtr(_itemPtr);
             Marshal.ReleaseComObject(_trayNotify);
         }
     }
@@ -45,16 +48,16 @@ namespace FuwaTea.Lib.NotifyIconHax
     //Virtual Functions for Windows 8
     public interface ITrayNotify8
     {
-        void RegisterCallback(INotificationCB ncb, ref uint ci);
+        int RegisterCallback(INotificationCB ncb, ref int ci);
 
-        void UnregisterCallback(ref uint ci);
+        int UnregisterCallback(ref int ci);
 
-        void SetPreference(IntPtr notifyItem);
+        int SetPreference(IntPtr notifyItem);
 
-        void EnableAutoTray([MarshalAs(UnmanagedType.Bool)] bool b);
+        int EnableAutoTray([MarshalAs(UnmanagedType.Bool)] bool b);
 
         //Look at virtual function table for correct signature
-        void DoAction([MarshalAs(UnmanagedType.Bool)] bool b);
+        int DoAction([MarshalAs(UnmanagedType.Bool)] bool b);
     }
 
     [ClassInterface(ClassInterfaceType.None)]
@@ -64,19 +67,19 @@ namespace FuwaTea.Lib.NotifyIconHax
     public sealed class TrayNotify8 : ITrayNotify8
     {
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern void RegisterCallback(INotificationCB ncb, ref uint ci);
+        public extern int RegisterCallback(INotificationCB ncb, ref int ci);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern void UnregisterCallback(ref uint ci);
+        public extern int UnregisterCallback(ref int ci);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern void SetPreference(IntPtr notifyItem);
+        public extern int SetPreference(IntPtr notifyItem);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern void EnableAutoTray(bool b);
+        public extern int EnableAutoTray(bool b);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         //Look at virtual function table for correct signature
-        public extern void DoAction(bool b);
+        public extern int DoAction(bool b);
     }
 }

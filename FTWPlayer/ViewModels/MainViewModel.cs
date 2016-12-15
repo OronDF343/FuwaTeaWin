@@ -34,6 +34,7 @@ using FuwaTea.Playback;
 using FuwaTea.Playlist;
 using FuwaTea.Wpf.Keyboard;
 using GalaSoft.MvvmLight.CommandWpf;
+using log4net;
 using ModularFramework;
 
 namespace FTWPlayer.ViewModels
@@ -213,12 +214,12 @@ namespace FTWPlayer.ViewModels
                 if (e.PropertyName == nameof(Settings.Default.ScrollingTextFormat))
                     RaisePropertyChanged(nameof(ScrollingTextFormatString));
                 if (e.PropertyName == nameof(Settings.Default.TrayIconPreference))
-                    NotifyIconHaxUtils.SetPreference(Assembly.GetEntryAssembly().Location, Settings.Default.TrayIconPreference);
+                    if (!NotifyIconHaxUtils.SetPreference(Assembly.GetEntryAssembly().Location, (NOTIFYITEM_PREFERENCE)Settings.Default.TrayIconPreference)) LogManager.GetLogger(GetType()).Warn("Failed to set NotifyIcon preference!");
             };
             // Run once: Set NotifyIcon to always visible
             // This setting purposely doesn't update to reflect the system setting
             if (Settings.Default.TrayIconPreference > 2)
-                Settings.Default.TrayIconPreference = 2;
+                Settings.Default.TrayIconPreference = (uint)NOTIFYITEM_PREFERENCE.Always;
         }
 
         private readonly DispatcherTimer _tmr;

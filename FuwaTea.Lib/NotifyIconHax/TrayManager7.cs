@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using ModularFramework;
 using ModularFramework.Attributes;
 
 namespace FuwaTea.Lib.NotifyIconHax
@@ -9,28 +10,32 @@ namespace FuwaTea.Lib.NotifyIconHax
     [OSFilter(FilterActions.Whitelist, PlatformID.Win32NT, FilterRules.LessThan, "6.2.0.0")]
     public class TrayManager7 : ITrayManager
     {
+        [NotNull]
         private readonly ITrayNotify7 _trayNotify;
-        private readonly IntPtr _ptr;
+        private readonly IntPtr _itemPtr;
+
         public TrayManager7()
         {
             _trayNotify = new TrayNotify7();
-            _ptr = InteropUtils.CreateStructPtr(new NOTIFYITEM());
+            _itemPtr = InteropUtils.CreateStructPtr(new NOTIFYITEM());
         }
 
-        public void RegisterCallback(CallBack ncb)
+        public bool GetNotifyItems(NotifyItemCallback ncb)
         {
-            _trayNotify.RegisterCallback(new NotificationCallBackWrapper(ncb));
+            var hr = _trayNotify.RegisterCallback(new NotificationCallbackWrapper(ncb));
+            _trayNotify.RegisterCallback(null);
+            return hr >= 0;
         }
 
-        public void SetPreference(NOTIFYITEM notifyItem)
+        public bool SetPreference(NOTIFYITEM notifyItem)
         {
-            if (InteropUtils.UpdateStructPtr(_ptr, notifyItem))
-                _trayNotify.SetPreference(_ptr);
+            if (!InteropUtils.UpdateStructPtr(_itemPtr, notifyItem)) return false;
+            return _trayNotify.SetPreference(_itemPtr) >= 0;
         }
 
         public void Dispose()
         {
-            InteropUtils.FreeStructPtr(_ptr);
+            InteropUtils.FreeStructPtr(_itemPtr);
             Marshal.ReleaseComObject(_trayNotify);
         }
     }
@@ -42,11 +47,11 @@ namespace FuwaTea.Lib.NotifyIconHax
     [TypeLibImportClass(typeof(TrayNotify7))]
     public interface ITrayNotify7
     {
-        void RegisterCallback(INotificationCB ncb);
+        int RegisterCallback(INotificationCB ncb);
 
-        void SetPreference(IntPtr notifyItem);
+        int SetPreference(IntPtr notifyItem);
 
-        void EnableAutoTray([MarshalAs(UnmanagedType.Bool)] bool b);
+        int EnableAutoTray([MarshalAs(UnmanagedType.Bool)] bool b);
     }
 
     [ClassInterface(ClassInterfaceType.None)]
@@ -56,12 +61,12 @@ namespace FuwaTea.Lib.NotifyIconHax
     public sealed class TrayNotify7 : ITrayNotify7
     {
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern void RegisterCallback(INotificationCB ncb);
+        public extern int RegisterCallback(INotificationCB ncb);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern void SetPreference(IntPtr notifyItem);
+        public extern int SetPreference(IntPtr notifyItem);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern void EnableAutoTray(bool b);
+        public extern int EnableAutoTray(bool b);
     }
 }
