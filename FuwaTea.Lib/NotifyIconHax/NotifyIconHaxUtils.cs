@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Text.RegularExpressions;
 using log4net;
 using ModularFramework;
 
@@ -23,8 +25,18 @@ namespace FuwaTea.Lib.NotifyIconHax
             logger.Debug("Registering callback");
             return _trayManager.GetNotifyItems(notifyitem =>
             {
-                logger.Debug(notifyitem.ExeName);
-                if (!string.Equals(notifyitem.ExeName, exeFullPath, StringComparison.OrdinalIgnoreCase)) return;
+                var nexe = notifyitem.ExeName;
+                var match = Regex.Match(notifyitem.ExeName, @"^\{[0-9a-fA-F-]{32,36}\}");
+                if (match.Success)
+                {
+                    var guid = Guid.Parse(notifyitem.ExeName.Substring(0, match.Length));
+                    string knownFolder;
+                    NativeMethods.SHGetKnownFolderPath(guid, 0, IntPtr.Zero, out knownFolder);
+                    if (!string.IsNullOrWhiteSpace(knownFolder))
+                        nexe = Path.Combine(knownFolder, nexe.Substring(match.Length + 1));
+                }
+                logger.Info("EXE path expanded: " + nexe);
+                if (!string.Equals(nexe, exeFullPath, StringComparison.OrdinalIgnoreCase)) return;
                 notifyitem.Preference = (uint)pref;
                 _trayManager.SetPreference(notifyitem);
             });

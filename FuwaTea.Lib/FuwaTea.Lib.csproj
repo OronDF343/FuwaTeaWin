@@ -61,6 +61,7 @@
     <Compile Include="IFileHandler.cs" />
     <Compile Include="ILibComponent.cs" />
     <Compile Include="LibComponentAttribute.cs" />
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="NotifyIconHax\INotificationCB.cs" />
     <Compile Include="NotifyIconHax\InteropUtils.cs" />
     <Compile Include="NotifyIconHax\ITrayManager.cs" />
