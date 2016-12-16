@@ -35,7 +35,7 @@ namespace FuwaTea.Lib.NotifyIconHax
                     if (!string.IsNullOrWhiteSpace(knownFolder))
                         nexe = Path.Combine(knownFolder, nexe.Substring(match.Length + 1));
                 }
-                logger.Info("EXE path expanded: " + nexe);
+                logger.Debug("EXE path expanded: " + nexe);
                 if (!string.Equals(nexe, exeFullPath, StringComparison.OrdinalIgnoreCase)) return;
                 notifyitem.Preference = (uint)pref;
                 _trayManager.SetPreference(notifyitem);
