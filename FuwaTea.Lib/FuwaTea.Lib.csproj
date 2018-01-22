@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FuwaTea.Lib</RootNamespace>
     <AssemblyName>FuwaTea.Lib</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
@@ -44,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppDirUtils.cs" />
+    <Compile Include="AssemblyLoader.cs" />
     <Compile Include="Collections\ObservableHashSet.cs" />
     <Compile Include="DataModel\IKeyedElement.cs" />
     <Compile Include="DataModel\SugoiObject.cs" />
@@ -58,16 +63,14 @@
     <Compile Include="FileAssociations\RegistryClass.cs" />
     <Compile Include="FileAssociations\RegistryUtils.cs" />
     <Compile Include="IFileHandler.cs" />
-    <Compile Include="ILibComponent.cs" />
-    <Compile Include="LibComponentAttribute.cs" />
     <Compile Include="NativeMethods.cs" />
-    <Compile Include="NotifyIconHax\INotificationCB.cs" />
-    <Compile Include="NotifyIconHax\InteropUtils.cs" />
-    <Compile Include="NotifyIconHax\ITrayManager.cs" />
-    <Compile Include="NotifyIconHax\NotifyIconHaxUtils.cs" />
-    <Compile Include="NotifyIconHax\TrayManager7.cs" />
-    <Compile Include="NotifyIconHax\TrayManager8.cs" />
-    <Compile Include="NotifyIconHax\TrayManager81.cs" />
+    <Compile Include="NotifyIcon\INotificationCB.cs" />
+    <Compile Include="NotifyIcon\InteropUtils.cs" />
+    <Compile Include="NotifyIcon\ITrayManager.cs" />
+    <Compile Include="NotifyIcon\NotifyIconHaxUtils.cs" />
+    <Compile Include="NotifyIcon\TrayManager7.cs" />
+    <Compile Include="NotifyIcon\TrayManager8.cs" />
+    <Compile Include="NotifyIcon\TrayManager81.cs" />
     <Compile Include="PathUtils.cs" />
     <Compile Include="PortableSettingsProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -75,13 +78,13 @@
     <Compile Include="StringUtils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ModularFramework\ModularFramework.csproj">
-      <Project>{8517E03E-DC80-419D-BFAD-78D80354192B}</Project>
-      <Name>ModularFramework</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\FuwaTea.Extensibility\FuwaTea.Extensibility.csproj">
+      <Project>{e4773a23-838d-40ad-8466-58fdb07237e0}</Project>
+      <Name>FuwaTea.Extensibility</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

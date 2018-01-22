@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using ModularFramework;
+using JetBrains.Annotations;
 
-namespace FuwaTea.Lib.NotifyIconHax
+namespace FuwaTea.Lib.NotifyIcon
 {
     /// <summary>
     /// The COM interface which defines a NotifyIcon callback.

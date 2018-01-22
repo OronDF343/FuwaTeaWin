@@ -17,8 +17,6 @@
 
 using System.Reflection;
 using System.Runtime.InteropServices;
-using FuwaTea.Lib;
-using ModularFramework.Attributes;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -39,8 +37,6 @@ using ModularFramework.Attributes;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("91d28c20-e2ef-44ae-a1f8-c0e0e940b4e8")]
-
-[assembly: ModuleDefinition("LibComponents", typeof(LibComponentAttribute), typeof(ILibComponent))]
 
 // Version information for an assembly consists of the following four values:
 //

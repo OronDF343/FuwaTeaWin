@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using ModularFramework.Attributes;
 
-namespace FuwaTea.Lib.NotifyIconHax
+namespace FuwaTea.Lib.NotifyIcon
 {
-    [LibComponent("Windows 8 Tray Manager")]
-    [OSFilter(FilterActions.Blacklist, PlatformID.Win32NT, FilterRules.GreaterThan, "6.3.0.0")]
-    [OSFilter(FilterActions.Whitelist, PlatformID.Win32NT, FilterRules.GreaterThan, "6.2.0.0")]
-    public class TrayManager8 : ITrayManager
+    [LibComponent("Windows 8.1+ Tray Manager")]
+    [OSFilter(FilterActions.Whitelist, PlatformID.Win32NT, FilterRules.GreaterThan, "6.3.0.0")]
+    public class TrayManager81 : ITrayManager
     {
-        private readonly ITrayNotify8 _trayNotify;
+        private readonly ITrayNotify81 _trayNotify;
         private readonly IntPtr _itemPtr;
 
-        public TrayManager8()
+        public TrayManager81()
         {
-            _trayNotify = new TrayNotify8();
+            _trayNotify = new TrayNotify81();
             _itemPtr = InteropUtils.CreateStructPtr(new NOTIFYITEM());
         }
 
@@ -40,13 +38,13 @@ namespace FuwaTea.Lib.NotifyIconHax
         }
     }
 
-    [CoClass(typeof(TrayNotify8))]
+    [CoClass(typeof(TrayNotify81))]
     [ComImport]
-    [Guid("FB852B2C-6BAD-4605-9551-F15F87830935")]
+    [Guid("D133CE13-3537-48BA-93A7-AFCD5D2053B4")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    [TypeLibImportClass(typeof(TrayNotify8))]
+    [TypeLibImportClass(typeof(TrayNotify81))]
     //Virtual Functions for Windows 8
-    public interface ITrayNotify8
+    public interface ITrayNotify81
     {
         int RegisterCallback(INotificationCB ncb, ref int ci);
 
@@ -64,7 +62,7 @@ namespace FuwaTea.Lib.NotifyIconHax
     [ComImport]
     [Guid("25DEAD04-1EAC-4911-9E3A-AD0A4AB560FD")]
     [TypeLibType(TypeLibTypeFlags.FCanCreate)]
-    public sealed class TrayNotify8 : ITrayNotify8
+    public sealed class TrayNotify81 : ITrayNotify81
     {
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern int RegisterCallback(INotificationCB ncb, ref int ci);

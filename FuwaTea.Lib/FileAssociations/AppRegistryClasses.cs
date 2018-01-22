@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using Microsoft.Win32;
-using ModularFramework;
 
 namespace FuwaTea.Lib.FileAssociations
 {

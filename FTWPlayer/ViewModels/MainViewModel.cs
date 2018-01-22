@@ -29,7 +29,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using FTWPlayer.Localization;
 using FTWPlayer.Properties;
-using FuwaTea.Lib.NotifyIconHax;
+using FuwaTea.Lib.NotifyIcon;
 using FuwaTea.Playback;
 using FuwaTea.Playlist;
 using FuwaTea.Wpf.Keyboard;
@@ -214,7 +214,7 @@ namespace FTWPlayer.ViewModels
                 if (e.PropertyName == nameof(Settings.Default.ScrollingTextFormat))
                     RaisePropertyChanged(nameof(ScrollingTextFormatString));
                 if (e.PropertyName == nameof(Settings.Default.TrayIconPreference))
-                    if (!NotifyIconHaxUtils.SetPreference(Assembly.GetEntryAssembly().Location, (NOTIFYITEM_PREFERENCE)Settings.Default.TrayIconPreference)) LogManager.GetLogger(GetType()).Warn("Failed to set NotifyIcon preference!");
+                    if (!NotifyIconManager.SetPreference(Assembly.GetEntryAssembly().Location, (NOTIFYITEM_PREFERENCE)Settings.Default.TrayIconPreference)) LogManager.GetLogger(GetType()).Warn("Failed to set NotifyIcon preference!");
             };
             // Run once: Set NotifyIcon to always visible
             // This setting purposely doesn't update to reflect the system setting
@@ -518,7 +518,7 @@ namespace FTWPlayer.ViewModels
 
         public void Dispose()
         {
-            NotifyIconHaxUtils.Dispose();
+            NotifyIconManager.Dispose();
             // IMPORTANT!
             PlaybackManager.Dispose();
         }

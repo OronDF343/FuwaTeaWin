@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using ModularFramework;
+using JetBrains.Annotations;
 
-namespace FuwaTea.Lib.NotifyIconHax
+namespace FuwaTea.Lib.NotifyIcon
 {
     /// <summary>
     /// Utillity class for safely handling pointers to structures in unmanaged memory.

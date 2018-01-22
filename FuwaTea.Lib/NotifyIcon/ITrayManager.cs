@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using ModularFramework;
+using JetBrains.Annotations;
 
 // ReSharper disable InconsistentNaming
 
-namespace FuwaTea.Lib.NotifyIconHax
+namespace FuwaTea.Lib.NotifyIcon
 {
     /// <summary>
     /// Callback when info about a NotifyIcon is recieved.
@@ -15,7 +15,7 @@ namespace FuwaTea.Lib.NotifyIconHax
     /// <summary>
     /// A wrapper for the ITrayManager COM interface, which is different between versions of Windows.
     /// </summary>
-    public interface ITrayManager : IDisposable, ILibComponent
+    public interface ITrayManager : IDisposable
     {
         /// <summary>
         /// Get information about NotifyIcons.
