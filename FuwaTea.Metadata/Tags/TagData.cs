@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using ModularFramework;
+using JetBrains.Annotations;
 
 namespace FuwaTea.Metadata.Tags
 {

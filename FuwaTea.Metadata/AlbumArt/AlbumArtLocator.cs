@@ -16,14 +16,24 @@
 #endregion
 
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
-using ModularFramework;
 
 namespace FuwaTea.Metadata.AlbumArt
 {
-    [MetadataLoader("Album Art Locator")]
+    //[MetadataLoader("Album Art Locator")]
+    [Export(typeof(IAlbumArtLocator))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class AlbumArtLocator : IAlbumArtLocator
     {
+        private readonly IAlbumArtStreamLoader _loader;
+
+        [ImportingConstructor]
+        public AlbumArtLocator([Import] IAlbumArtStreamLoader loader)
+        {
+            _loader = loader;
+        }
+
         public AlbumArtLocations[] LocationPriority { get; set; } =
         {
             AlbumArtLocations.Custom,
@@ -38,21 +48,20 @@ namespace FuwaTea.Metadata.AlbumArt
         {
             //TODO: Incomplete
             Stream img = null;
-            var loader = ModuleFactory.GetElement<IAlbumArtStreamLoader>();
             foreach (var location in LocationPriority)
             {
                 switch (location)
                 {
                     case AlbumArtLocations.Embedded:
-                        img = loader.GetEmbeddedImage(m);
+                        img = _loader.GetEmbeddedImage(m);
                         break;
                     case AlbumArtLocations.InFolder:
                         if (m.FileInfo != null)
-                            img = loader.GetImageInFolder(m.FileInfo?.DirectoryName, ImageTypeDictionary);
+                            img = _loader.GetImageInFolder(m.FileInfo?.DirectoryName, ImageTypeDictionary);
                         break;
                     case AlbumArtLocations.UpFolder:
                         if (m.FileInfo?.Directory?.Parent != null)
-                            img = loader.GetImageInFolder(m.FileInfo.Directory.Parent.FullName, ImageTypeDictionary);
+                            img = _loader.GetImageInFolder(m.FileInfo.Directory.Parent.FullName, ImageTypeDictionary);
                         break;
                     case AlbumArtLocations.DownFolder:
                         // TODO: implement logic

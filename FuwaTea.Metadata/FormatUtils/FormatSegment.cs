@@ -1,6 +1,6 @@
 ﻿using System;
+using JetBrains.Annotations;
 using log4net;
-using ModularFramework;
 
 namespace FuwaTea.Metadata.FormatUtils
 {

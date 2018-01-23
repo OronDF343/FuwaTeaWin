@@ -3,7 +3,7 @@
 namespace FuwaTea.Extensibility
 {
     [Flags]
-    public enum Architecture
+    public enum OSArch
     {
         Other = 0,
         X86 = 1,

@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
-using FuwaTea.Metadata;
-using ModularFramework.Attributes;
+using FuwaTea.Extensibility;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -16,7 +15,7 @@ using ModularFramework.Attributes;
 [assembly: AssemblyCulture("")]
 
 // Modular
-[assembly: ModuleDefinition("MetadataLoaders", typeof(MetadataLoaderAttribute), typeof(IMetadataLoader))]
+[assembly: Extension("MetadataLoaders", ExtensibilityConstants.CurrentApiVersion)]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 

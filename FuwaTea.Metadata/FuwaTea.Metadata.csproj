@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DryIocAttributes, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DryIocAttributes.dll.3.1.0\lib\net45\DryIocAttributes.dll</HintPath>
+    </Reference>
     <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
@@ -38,6 +41,7 @@
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -60,7 +64,6 @@
     <Compile Include="IMetadataLoader.cs" />
     <Compile Include="IMusicInfoModel.cs" />
     <Compile Include="Tags\ITagProvider.cs" />
-    <Compile Include="MetadataLoaderAttribute.cs" />
     <Compile Include="Tags\NullTag.cs" />
     <Compile Include="Tags\Picture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -70,13 +73,13 @@
     <Compile Include="Tags\TagLibTagProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FuwaTea.Extensibility\FuwaTea.Extensibility.csproj">
+      <Project>{e4773a23-838d-40ad-8466-58fdb07237e0}</Project>
+      <Name>FuwaTea.Extensibility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FuwaTea.Lib\FuwaTea.Lib.csproj">
       <Project>{A9BB4650-68CC-4640-9B5A-65F4AA80C2AB}</Project>
       <Name>FuwaTea.Lib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ModularFramework\ModularFramework.csproj">
-      <Project>{8517E03E-DC80-419D-BFAD-78D80354192B}</Project>
-      <Name>ModularFramework</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

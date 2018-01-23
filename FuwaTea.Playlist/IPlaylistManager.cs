@@ -17,7 +17,7 @@
 
 using System.Collections.Generic;
 using System.ComponentModel;
-using ModularFramework;
+using JetBrains.Annotations;
 
 namespace FuwaTea.Playlist
 {

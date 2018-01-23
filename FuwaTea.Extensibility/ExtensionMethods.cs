@@ -23,18 +23,18 @@ namespace FuwaTea.Extensibility
                    && filter.ProcessArchitecture.AppliesTo(RuntimeInformation.ProcessArchitecture);
         }
 
-        public static bool AppliesTo(this Architecture arch, System.Runtime.InteropServices.Architecture arch2)
+        public static bool AppliesTo(this OSArch arch, System.Runtime.InteropServices.Architecture arch2)
         {
             switch (arch2)
             {
                 case System.Runtime.InteropServices.Architecture.X86:
-                    return arch.HasFlag(Architecture.X86);
+                    return arch.HasFlag(OSArch.X86);
                 case System.Runtime.InteropServices.Architecture.X64:
-                    return arch.HasFlag(Architecture.X64);
+                    return arch.HasFlag(OSArch.X64);
                 case System.Runtime.InteropServices.Architecture.Arm:
-                    return arch.HasFlag(Architecture.Arm);
+                    return arch.HasFlag(OSArch.Arm);
                 case System.Runtime.InteropServices.Architecture.Arm64:
-                    return arch.HasFlag(Architecture.Arm64);
+                    return arch.HasFlag(OSArch.Arm64);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(arch2), arch2, null);
             }

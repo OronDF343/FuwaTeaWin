@@ -16,11 +16,14 @@
 #endregion
 
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using NAudio.Wave;
 
 namespace FuwaTea.Playback.NAudio.Codecs
 {
-    [NAudioExtension("NAudio built-in readers (non-MF)")]
+    //[NAudioExtension("NAudio built-in readers (non-MF)")]
+    [Export(typeof(ICodecProvider))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class CoreCodec : ICodecProvider
     {
         public WaveStream CreateWaveStream(string path)

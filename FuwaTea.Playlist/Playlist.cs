@@ -21,25 +21,27 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using FuwaTea.Lib;
 using FuwaTea.Lib.Collections;
 using FuwaTea.Metadata;
 using FuwaTea.Metadata.Tags;
-using ModularFramework;
 
 namespace FuwaTea.Playlist
 {
     public class Playlist : ObservableCollection<IMusicInfoModel>, IPlaylist
     {
-        public Playlist()
+        public Playlist(List<ITagProvider> tagProviders) // TODO: Potentail issues because tag providers are shared between playlists by reference!!!
         {
+            _tagProviders = tagProviders;
             PositionManager = new PlaylistPositionManager(this);
             _shuffleMap = new int[0];
         }
 
         private bool _init;
+        private readonly List<ITagProvider> _tagProviders;
 
         public void Init(string path, IEnumerable<string> items)
         {
@@ -59,7 +61,7 @@ namespace FuwaTea.Playlist
 
         public void Add(string musicFile)
         {
-            var tag = ModuleFactory.GetElements<ITagProvider>().FirstOrDefault(r => r.GetExtensions().Contains(Path.GetExtension(musicFile).ToLowerInvariant()));
+            var tag = _tagProviders.FirstOrDefault(r => r.GetExtensions().Contains(Path.GetExtension(musicFile).ToLowerInvariant()));
             Add(new MusicInfoModel(musicFile, tag?.Create(musicFile)));
         }
 

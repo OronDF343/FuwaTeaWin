@@ -18,31 +18,36 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using FuwaTea.Lib;
 using FuwaTea.Metadata.Tags;
 using FuwaTea.Playback.NAudio.Utils;
 using log4net;
-using ModularFramework;
-using ModularFramework.Configuration;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 
 namespace FuwaTea.Playback.NAudio
 {
-    [ConfigurableElement]
-    [PlaybackElement("NAudio playback engine")]
+    // TODO [ConfigurableElement] see below!!!
+    //[PlaybackElement("NAudio playback engine")]
+    [Export(typeof(IAudioPlayer))]
+    [Export(typeof(IStreamingAudioPlayer))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public sealed class NAudioPlayer : IAudioPlayer, IStreamingAudioPlayer
     {
-        public NAudioPlayer()
+        [ImportingConstructor]
+        public NAudioPlayer([ImportMany] IEnumerable<ICodecProvider> codecs, [ImportMany] IEnumerable<IEffectProvider> effects)
         {
-            _codecs = ModuleFactory.GetElements<ICodecProvider>().ToList();
+            _codecs = codecs.ToList();
+            _effects = effects.ToList();
             //EqualizerBands = new ObservableCollection<EqualizerBand>(); :warning: DON'T DO THIS! Leave it set to null!
         }
 
         private readonly List<ICodecProvider> _codecs;
+        private readonly List<IEffectProvider> _effects;
 
         #region IAudioPlayer implementation
 
@@ -76,33 +81,33 @@ namespace FuwaTea.Playback.NAudio
             Asio
         }
 
-        [ConfigurableProperty(nameof(OutputApi), DefaultValue = OutputApis.Wasapi)]
+        //[ConfigurableProperty(nameof(OutputApi), DefaultValue = OutputApis.Wasapi)]
         public OutputApis OutputApi { get; set; }
 
-        [ConfigurableProperty(nameof(DirectSoundDevice))]
+        //[ConfigurableProperty(nameof(DirectSoundDevice))]
         public Guid DirectSoundDevice { get; set; }
 
-        [PropertyOptionsEnumerator(nameof(DirectSoundDevice))]
+        //[PropertyOptionsEnumerator(nameof(DirectSoundDevice))]
         public Dictionary<Guid, string> DirectSoundDevices => DirectSoundOut.Devices.ToDictionary(d => d.Guid, d => d.Description);
 
-        [ConfigurableProperty(nameof(WasapiDevice))]
+        //[ConfigurableProperty(nameof(WasapiDevice))]
         public string WasapiDevice { get; set; }
 
-        [PropertyOptionsEnumerator(nameof(WasapiDevice))]
+        //[PropertyOptionsEnumerator(nameof(WasapiDevice))]
         public Dictionary<string, string> WasapiDevices
             => new MMDeviceEnumerator().EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active)
                                        .ToDictionary(mmd => mmd.ID, mmd => mmd.FriendlyName);
 
-        [ConfigurableProperty(nameof(AsioDevice))]
+        //[ConfigurableProperty(nameof(AsioDevice))]
         public string AsioDevice { get; set; }
 
-        [PropertyOptionsEnumerator(nameof(AsioDevice))]
+        //[PropertyOptionsEnumerator(nameof(AsioDevice))]
         public string[] AsioDevices => AsioOut.GetDriverNames();
 
-        [ConfigurableProperty(nameof(WasapiExclusive))]
+        //[ConfigurableProperty(nameof(WasapiExclusive))]
         public bool WasapiExclusive { get; set; }
         
-        [ConfigurableProperty(nameof(DesiredLatency), DefaultValue = -1)]
+        //[ConfigurableProperty(nameof(DesiredLatency), DefaultValue = -1)]
         public int DesiredLatency { get; set; }
 
         public void Load(string path)
@@ -174,13 +179,13 @@ namespace FuwaTea.Playback.NAudio
             _equalizer = new Equalizer(_volumeSampleProvider, EqualizerBands) { Enabled = EnableEqualizer };
             ISampleProvider lastSampleProvider = _equalizer;
             // Apply effects
-            foreach (var effect in ModuleFactory.GetElements<IEffectProvider>())
+            foreach (var effect in _effects)
             {
                 try { lastSampleProvider = effect.ApplyEffect(lastSampleProvider); }
                 catch (Exception e)
                 {
-                    LogManager.GetLogger(GetType()).Error("Failed to load effect: "
-                                                           + effect.GetType().GetAttribute<NAudioExtensionAttribute>().ElementName, e);
+                    /* TODO LogManager.GetLogger(GetType()).Error("Failed to load effect: "
+                                                           + effect.GetType().GetAttribute<NAudioExtensionAttribute>().ElementName, e);*/
                 }
             }
             // Init player

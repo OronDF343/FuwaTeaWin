@@ -17,7 +17,7 @@
 
 using System.Collections.Generic;
 using System.IO;
-using ModularFramework;
+using JetBrains.Annotations;
 
 namespace FuwaTea.Metadata.AlbumArt
 {

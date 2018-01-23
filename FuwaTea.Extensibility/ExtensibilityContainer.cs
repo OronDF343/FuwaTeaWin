@@ -26,7 +26,6 @@ namespace FuwaTea.Extensibility
 
         public ExtensionInfo LoadExtension(AssemblyName dll, bool overrideApiVersionWhitelist = false)
         {
-            // TODO: Add platform checking!
             if (dll == null) throw new ArgumentNullException(nameof(dll));
 
             Assembly a;
@@ -46,9 +45,12 @@ namespace FuwaTea.Extensibility
         public ExtensionInfo LoadExtension(Assembly a, bool overrideApiVersionWhitelist = false)
         {
             // TODO: Update code for ApiVersion checking?
+            // TODO: Add platform checking!
             
             var extdef = a.GetCustomAttribute<ExtensionAttribute>();
             // Check ApiVersion here
+            var platformFilter = a.GetCustomAttribute<PlatformFilterAttribute>();
+            // Check platform here
 
             var exports = AttributedModel.Scan(new[] { a }).ToList();
             var c = new Container().WithMefAttributedModel();

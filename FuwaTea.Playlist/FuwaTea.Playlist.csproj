@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DryIocAttributes, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DryIocAttributes.dll.3.1.0\lib\net45\DryIocAttributes.dll</HintPath>
+    </Reference>
     <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
@@ -38,6 +41,7 @@
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -57,7 +61,6 @@
     <Compile Include="Writers\M3UPlaylistWriter.cs" />
     <Compile Include="MusicInfoModel.cs" />
     <Compile Include="Playlist.cs" />
-    <Compile Include="PlaylistHandlerAttribute.cs" />
     <Compile Include="PlaylistManager.cs" />
     <Compile Include="PlaylistPositionManager.cs" />
     <Compile Include="Readers\PLSPlaylistReader.cs" />
@@ -73,10 +76,6 @@
     <ProjectReference Include="..\FuwaTea.Metadata\FuwaTea.Metadata.csproj">
       <Project>{17853F95-1A56-448C-825E-5662E1FC1426}</Project>
       <Name>FuwaTea.Metadata</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ModularFramework\ModularFramework.csproj">
-      <Project>{8517E03E-DC80-419D-BFAD-78D80354192B}</Project>
-      <Name>ModularFramework</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

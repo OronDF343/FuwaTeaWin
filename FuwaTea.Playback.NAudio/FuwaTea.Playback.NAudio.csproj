@@ -34,6 +34,9 @@
     <Reference Include="CSCore, Version=1.2.1.2, Culture=neutral, PublicKeyToken=5a08f2b6f4415dea, processorArchitecture=MSIL">
       <HintPath>..\packages\CSCore.1.2.1.2\lib\net35-client\CSCore.dll</HintPath>
     </Reference>
+    <Reference Include="DryIocAttributes, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DryIocAttributes.dll.3.1.0\lib\net45\DryIocAttributes.dll</HintPath>
+    </Reference>
     <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
@@ -51,6 +54,7 @@
       <HintPath>..\packages\NVorbis.0.8.5.0\lib\NVorbis.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -64,7 +68,6 @@
     <Compile Include="INAudioExtension.cs" />
     <Compile Include="Utils\BalanceSampleProvider.cs" />
     <Compile Include="Utils\BufferedWaveStream.cs" />
-    <Compile Include="NAudioExtensionAttribute.cs" />
     <Compile Include="Codecs\CoreCodec.cs" />
     <Compile Include="Codecs\FlacCodec.cs" />
     <Compile Include="Codecs\FlacReader.cs" />
@@ -80,6 +83,10 @@
     <Compile Include="Utils\ShoutcastStream.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FuwaTea.Extensibility\FuwaTea.Extensibility.csproj">
+      <Project>{e4773a23-838d-40ad-8466-58fdb07237e0}</Project>
+      <Name>FuwaTea.Extensibility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FuwaTea.Lib\FuwaTea.Lib.csproj">
       <Project>{A9BB4650-68CC-4640-9B5A-65F4AA80C2AB}</Project>
       <Name>FuwaTea.Lib</Name>
@@ -91,10 +98,6 @@
     <ProjectReference Include="..\FuwaTea.Playback\FuwaTea.Playback.csproj">
       <Project>{fcc6c9c3-58cf-4c29-bc8f-8468de31ad93}</Project>
       <Name>FuwaTea.Playback</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ModularFramework\ModularFramework.csproj">
-      <Project>{8517e03e-dc80-419d-bfad-78d80354192b}</Project>
-      <Name>ModularFramework</Name>
     </ProjectReference>
     <ProjectReference Include="..\WavpackDecoder\WavpackDecoder.csproj">
       <Project>{1CF67E61-3DAE-41A1-BE0A-904A35E04AAF}</Project>

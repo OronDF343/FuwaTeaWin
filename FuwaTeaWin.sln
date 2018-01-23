@@ -14,8 +14,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Lib", "FuwaTea.Lib\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WavpackDecoder", "WavpackDecoder\WavpackDecoder.csproj", "{1CF67E61-3DAE-41A1-BE0A-904A35E04AAF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModularFramework", "ModularFramework\ModularFramework.csproj", "{8517E03E-DC80-419D-BFAD-78D80354192B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Playback", "FuwaTea.Playback\FuwaTea.Playback.csproj", "{FCC6C9C3-58CF-4C29-BC8F-8468DE31AD93}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Playback.NAudio", "FuwaTea.Playback.NAudio\FuwaTea.Playback.NAudio.csproj", "{C6003F63-4717-4B45-8890-B3C02F7209D9}"
@@ -24,7 +22,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Playlist", "FuwaTea
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Metadata", "FuwaTea.Metadata\FuwaTea.Metadata.csproj", "{17853F95-1A56-448C-825E-5662E1FC1426}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Extensibility", "FuwaTea.Extensibility\FuwaTea.Extensibility.csproj", "{E4773A23-838D-40AD-8466-58FDB07237E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuwaTea.Extensibility", "FuwaTea.Extensibility\FuwaTea.Extensibility.csproj", "{E4773A23-838D-40AD-8466-58FDB07237E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,10 +46,6 @@ Global
 		{1CF67E61-3DAE-41A1-BE0A-904A35E04AAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CF67E61-3DAE-41A1-BE0A-904A35E04AAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CF67E61-3DAE-41A1-BE0A-904A35E04AAF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8517E03E-DC80-419D-BFAD-78D80354192B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8517E03E-DC80-419D-BFAD-78D80354192B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8517E03E-DC80-419D-BFAD-78D80354192B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8517E03E-DC80-419D-BFAD-78D80354192B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FCC6C9C3-58CF-4C29-BC8F-8468DE31AD93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FCC6C9C3-58CF-4C29-BC8F-8468DE31AD93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCC6C9C3-58CF-4C29-BC8F-8468DE31AD93}.Release|Any CPU.ActiveCfg = Release|Any CPU

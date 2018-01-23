@@ -43,6 +43,9 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DryIocAttributes, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DryIocAttributes.dll.3.1.0\lib\net45\DryIocAttributes.dll</HintPath>
+    </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
@@ -66,6 +69,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -325,10 +329,6 @@
     <ProjectReference Include="..\FuwaTea.Wpf\FuwaTea.Wpf.csproj">
       <Project>{09bb648a-dcaa-4a8d-9fb6-fc4a82e17820}</Project>
       <Name>FuwaTea.Wpf</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ModularFramework\ModularFramework.csproj">
-      <Project>{8517e03e-dc80-419d-bfad-78d80354192b}</Project>
-      <Name>ModularFramework</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

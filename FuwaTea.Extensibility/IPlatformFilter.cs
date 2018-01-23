@@ -5,7 +5,7 @@
         FilterAction Action { get; }
         OSKind OSKind { get; }
         //FilterRule Rule { get; }
-        Architecture ProcessArchitecture { get; }
+        OSArch ProcessArchitecture { get; }
         //string Version { get; }
     }
 }

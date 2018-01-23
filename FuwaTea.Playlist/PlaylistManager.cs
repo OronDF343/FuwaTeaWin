@@ -18,25 +18,45 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using FuwaTea.Lib;
+using FuwaTea.Metadata.Tags;
 using FuwaTea.Playlist.Readers;
 using FuwaTea.Playlist.Writers;
-using ModularFramework;
+using JetBrains.Annotations;
 
 namespace FuwaTea.Playlist
 {
-    [PlaylistHandler("Playlist Manager")]
+    //[PlaylistHandler("Playlist Manager")]
+    [Export(typeof(IPlaylistManager))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class PlaylistManager : IPlaylistManager
     {
+        [ImportingConstructor]
+        public PlaylistManager([ImportMany] IEnumerable<IPlaylistReader> readers,
+                               [ImportMany] IEnumerable<IPlaylistWriter> writers,
+                               [ImportMany] IEnumerable<ITagProvider> tagProviders)
+        {
+            _readers = readers.ToList();
+            ReadableFileTypes = _readers.SelectMany(r => r.SupportedFileTypes).Distinct();
+            _writers = writers.ToList();
+            WriteableFileTypes = _writers.SelectMany(r => r.SupportedFileTypes).Distinct();
+            _tagProviders = tagProviders.ToList();
+        }
+
         public Dictionary<string, IPlaylist> LoadedPlaylists { get; } = new Dictionary<string, IPlaylist>();
 
         private string _selectedId;
+        private readonly List<IPlaylistReader> _readers;
+        private readonly List<IPlaylistWriter> _writers;
+        private readonly List<ITagProvider> _tagProviders;
+
         public string SelectedPlaylistId
         {
-            get { return _selectedId; }
+            get => _selectedId;
             set
             {
                 if (LoadedPlaylists.ContainsKey(value)) _selectedId = value;
@@ -46,12 +66,12 @@ namespace FuwaTea.Playlist
         }
 
         public IPlaylist SelectedPlaylist => SelectedPlaylistId != null && LoadedPlaylists.ContainsKey(SelectedPlaylistId) ? LoadedPlaylists[SelectedPlaylistId] : null;
-        public IEnumerable<string> ReadableFileTypes => ModuleFactory.GetElements<IPlaylistReader>().SelectMany(r => r.SupportedFileTypes).Distinct();
-        public IEnumerable<string> WriteableFileTypes => ModuleFactory.GetElements<IPlaylistWriter>().SelectMany(r => r.SupportedFileTypes).Distinct();
+        public IEnumerable<string> ReadableFileTypes { get; }
+        public IEnumerable<string> WriteableFileTypes { get; }
 
         public void CreatePlaylist(string name)
         {
-            LoadedPlaylists.Add(name, new Playlist());
+            LoadedPlaylists.Add(name, new Playlist(_tagProviders));
         }
 
         public void MergePlaylists(IPlaylist source, IPlaylist target)
@@ -61,8 +81,8 @@ namespace FuwaTea.Playlist
 
         public IPlaylist OpenPlaylist(string path)
         {
-            var pl = new Playlist {FileLocation = path};
-            ModuleFactory.GetElements<IPlaylistReader>().First(w => w.GetExtensions().Contains(Path.GetExtension(path).ToLowerInvariant())).LoadPlaylistFiles(path, pl);
+            var pl = new Playlist(_tagProviders) {FileLocation = path};
+            _readers.First(w => w.GetExtensions().Contains(Path.GetExtension(path).ToLowerInvariant())).LoadPlaylistFiles(path, pl);
             return pl;
         }
 
@@ -80,7 +100,7 @@ namespace FuwaTea.Playlist
 
         public void SaveCopy(IPlaylist playlist, string path)
         {
-            ModuleFactory.GetElements<IPlaylistWriter>().First(w => w.GetExtensions().Contains(Path.GetExtension(path).ToLowerInvariant())).WritePlaylist(path, playlist, true); // TODO: place for relative path option etc
+            _writers.First(w => w.GetExtensions().Contains(Path.GetExtension(path).ToLowerInvariant())).WritePlaylist(path, playlist, true); // TODO: place for relative path option etc
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

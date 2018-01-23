@@ -19,24 +19,29 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using FuwaTea.Lib;
 using FuwaTea.Metadata;
 using FuwaTea.Playlist;
+using JetBrains.Annotations;
 using log4net;
-using ModularFramework;
 
 namespace FuwaTea.Playback
 {
-    [PlaybackElement("Playback Manager")]
+    //[PlaybackElement("Playback Manager")]
+    [Export(typeof(IPlaybackManager))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class PlaybackManager : IPlaybackManager
     {
-        public PlaybackManager()
+        [ImportingConstructor]
+        public PlaybackManager([Import] IPlaylistManager playlistManager,
+                               [ImportMany] IEnumerable<IAudioPlayer> audioPlayers,
+                               [ImportMany] IEnumerable<IStreamingAudioPlayer> streamingAudioPlayers)
         {
             LogManager.GetLogger(GetType()).Info("Initializing Playback Manager");
-            LogManager.GetLogger(GetType()).Debug("Get IPlaylistManager");
-            _playlistManager = ModuleFactory.GetElement<IPlaylistManager>();
+            _playlistManager = playlistManager;
             _playlistManager.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName != nameof(IPlaylistManager.SelectedPlaylist)) return;
@@ -49,7 +54,9 @@ namespace FuwaTea.Playback
             };
             ChangePositionManager(true);
             LogManager.GetLogger(GetType()).Debug("Get all IAudioPlayer");
-            _audioPlayers = ModuleFactory.GetElements<IAudioPlayer>(e => LogManager.GetLogger(GetType()).Error("Problem loading an IAudioPlayer: ", e)).ToList();
+            _audioPlayers = audioPlayers.ToList();
+            _streamingAudioPlayers = streamingAudioPlayers.ToList();
+            //TODO _audioPlayers = ModuleFactory.GetElements<IAudioPlayer>(e => LogManager.GetLogger(GetType()).Error("Problem loading an IAudioPlayer: ", e)).ToList();
             EqualizerBands = new ObservableCollection<EqualizerBand>();
         }
 
@@ -91,6 +98,7 @@ namespace FuwaTea.Playback
         private readonly IPlaylistManager _playlistManager;
         private readonly IPlaylistPositionManager _nullManager = new PlaylistPositionManager();
         private readonly List<IAudioPlayer> _audioPlayers;
+        private readonly List<IStreamingAudioPlayer> _streamingAudioPlayers;
 
         #region IDisposable members
 
@@ -242,7 +250,7 @@ namespace FuwaTea.Playback
             if (Current.FilePath.StartsWith("http://") || Current.FilePath.StartsWith("https://"))
             {
                 if (!(_currentPlayer is IStreamingAudioPlayer))
-                    _currentPlayer = ModuleFactory.GetElement<IStreamingAudioPlayer>();
+                    _currentPlayer = _streamingAudioPlayers.FirstOrDefault(); // TODO: ???
                 ((IStreamingAudioPlayer)_currentPlayer).StreamMetadataChanged += OnStreamMetadataChanged;
             }
             else if (_currentPlayer == null || !_currentPlayer.GetExtensions().Contains(Current.FileType))
@@ -435,6 +443,7 @@ namespace FuwaTea.Playback
         public bool IsEqualizerSupported => _currentPlayer != null && _currentPlayer.IsEqualizerSupported;
 
         private bool _enableEq;
+
         public bool EnableEqualizer
         {
             get

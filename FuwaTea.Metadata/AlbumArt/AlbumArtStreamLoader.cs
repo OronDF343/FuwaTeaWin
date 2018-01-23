@@ -16,13 +16,16 @@
 #endregion
 
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using FuwaTea.Metadata.Tags;
 
 namespace FuwaTea.Metadata.AlbumArt
 {
-    [MetadataLoader("Album Art Loader")]
+    //[MetadataLoader("Album Art Loader")]
+    [Export(typeof(IAlbumArtStreamLoader))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class AlbumArtStreamLoader : IAlbumArtStreamLoader
     {
         public Stream GetEmbeddedImage(IMusicInfoModel m)

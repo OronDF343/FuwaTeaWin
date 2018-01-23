@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DryIocAttributes, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DryIocAttributes.dll.3.1.0\lib\net45\DryIocAttributes.dll</HintPath>
+    </Reference>
     <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
@@ -38,6 +41,7 @@
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -52,11 +56,14 @@
     <Compile Include="IPlaybackElement.cs" />
     <Compile Include="IPlaybackManager.cs" />
     <Compile Include="IStreamingAudioPlayer.cs" />
-    <Compile Include="PlaybackElementAttribute.cs" />
     <Compile Include="PlaybackManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FuwaTea.Extensibility\FuwaTea.Extensibility.csproj">
+      <Project>{e4773a23-838d-40ad-8466-58fdb07237e0}</Project>
+      <Name>FuwaTea.Extensibility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FuwaTea.Lib\FuwaTea.Lib.csproj">
       <Project>{A9BB4650-68CC-4640-9B5A-65F4AA80C2AB}</Project>
       <Name>FuwaTea.Lib</Name>
@@ -68,10 +75,6 @@
     <ProjectReference Include="..\FuwaTea.Playlist\FuwaTea.Playlist.csproj">
       <Project>{1606973f-7cae-4e42-bcc8-5282fc775070}</Project>
       <Name>FuwaTea.Playlist</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ModularFramework\ModularFramework.csproj">
-      <Project>{8517e03e-dc80-419d-bfad-78d80354192b}</Project>
-      <Name>ModularFramework</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

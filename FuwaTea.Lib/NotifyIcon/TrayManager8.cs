@@ -1,12 +1,16 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using FuwaTea.Extensibility;
 
 namespace FuwaTea.Lib.NotifyIcon
 {
-    [LibComponent("Windows 8 Tray Manager")]
-    [OSFilter(FilterActions.Blacklist, PlatformID.Win32NT, FilterRules.GreaterThan, "6.3.0.0")]
-    [OSFilter(FilterActions.Whitelist, PlatformID.Win32NT, FilterRules.GreaterThan, "6.2.0.0")]
+    //[LibComponent("Windows 8 Tray Manager")]
+    [Export(typeof(ITrayManager))]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
+    [PlatformFilter(FilterAction.Blacklist, OSKind.Windows, OSArch.Any, FilterRule.GreaterThan, "6.3.0.0")]
+    [PlatformFilter(FilterAction.Whitelist, OSKind.Windows, OSArch.Any, FilterRule.GreaterThan, "6.2.0.0")]
     public class TrayManager8 : ITrayManager
     {
         private readonly ITrayNotify8 _trayNotify;

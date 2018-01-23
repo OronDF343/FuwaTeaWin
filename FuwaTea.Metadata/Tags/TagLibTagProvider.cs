@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.Composition;
 
 namespace FuwaTea.Metadata.Tags
 {
-    [MetadataLoader("TagLib# Tag Provider")]
+    //[MetadataLoader("TagLib# Tag Provider")]
+    [Export(typeof(ITagProvider))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class TagLibTagProvider : ITagProvider
     {
         public IEnumerable<string> SupportedFileTypes => new[]
