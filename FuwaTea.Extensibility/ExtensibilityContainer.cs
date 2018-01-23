@@ -45,6 +45,7 @@ namespace FuwaTea.Extensibility
             // TODO: Add platform checking!
             
             var extdef = a.GetCustomAttribute<ExtensionAttribute>();
+            if (extdef == null) return null;
             // Check ApiVersion here
             var platformFilter = a.GetCustomAttribute<PlatformFilterAttribute>();
             // Check platform here
@@ -53,13 +54,18 @@ namespace FuwaTea.Extensibility
             var c = new Container().WithMefAttributedModel();
             c.RegisterExports(exports);
 
-            var info = c.Resolve<IExtensionBasicInfo>(ExtensibilityConstants.InfoExportKey) ?? new ExtensionBasicInfo
+            IExtensionBasicInfo info;
+            try { info = c.Resolve<IExtensionBasicInfo>(ExtensibilityConstants.InfoExportKey); }
+            catch
             {
-                Author = a.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company,
-                Description = a.GetCustomAttribute<AssemblyDescriptionAttribute>()?.Description,
-                Title = a.GetCustomAttribute<AssemblyTitleAttribute>()?.Title,
-                Version = a.GetCustomAttribute<AssemblyVersionAttribute>()?.Version
-            };
+                info = new ExtensionBasicInfo
+                {
+                    Author = a.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company,
+                    Description = a.GetCustomAttribute<AssemblyDescriptionAttribute>()?.Description,
+                    Title = a.GetCustomAttribute<AssemblyTitleAttribute>()?.Title,
+                    Version = a.GetCustomAttribute<AssemblyVersionAttribute>()?.Version
+                };
+            }
 
             _iocContainer = _iocContainer.With(rules => rules.WithFallbackContainer(c));
             var extinfo = new ExtensionInfo(a.GetName(), a.Location, extdef.Key, extdef.ApiVersion, info);

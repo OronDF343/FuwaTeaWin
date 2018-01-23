@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DryIocAttributes, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DryIocAttributes.dll.3.1.0\lib\net45\DryIocAttributes.dll</HintPath>
+      <HintPath>..\packages\DryIocAttributes.dll.3.1.0\lib\netstandard1.0\DryIocAttributes.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
@@ -41,7 +41,6 @@
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -52,7 +51,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppDirUtils.cs" />
-    <Compile Include="AssemblyLoader.cs" />
     <Compile Include="Collections\ObservableHashSet.cs" />
     <Compile Include="DataModel\IKeyedElement.cs" />
     <Compile Include="DataModel\SugoiObject.cs" />
@@ -71,7 +69,7 @@
     <Compile Include="NotifyIcon\INotificationCB.cs" />
     <Compile Include="NotifyIcon\InteropUtils.cs" />
     <Compile Include="NotifyIcon\ITrayManager.cs" />
-    <Compile Include="NotifyIcon\NotifyIconHaxUtils.cs" />
+    <Compile Include="NotifyIcon\NotifyIconManager.cs" />
     <Compile Include="NotifyIcon\TrayManager7.cs" />
     <Compile Include="NotifyIcon\TrayManager8.cs" />
     <Compile Include="NotifyIcon\TrayManager81.cs" />
@@ -82,13 +80,13 @@
     <Compile Include="StringUtils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\FuwaTea.Extensibility\FuwaTea.Extensibility.csproj">
       <Project>{e4773a23-838d-40ad-8466-58fdb07237e0}</Project>
       <Name>FuwaTea.Extensibility</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

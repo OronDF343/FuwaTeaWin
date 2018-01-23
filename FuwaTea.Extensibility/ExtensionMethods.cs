@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using JetBrains.Annotations;
 
@@ -38,6 +41,18 @@ namespace FuwaTea.Extensibility
                 default:
                     throw new ArgumentOutOfRangeException(nameof(arch2), arch2, null);
             }
+        }
+
+        public static IEnumerable<TAttribute> GetAttributes<TAttribute>(this ICustomAttributeProvider p, bool inherit = true)
+            where TAttribute : Attribute
+        {
+            return p.GetCustomAttributes(typeof(TAttribute), inherit).Cast<TAttribute>();
+        }
+        
+        public static TAttribute GetAttribute<TAttribute>(this ICustomAttributeProvider p, bool inherit = true)
+            where TAttribute : Attribute
+        {
+            return p.GetCustomAttributes(typeof(TAttribute), inherit).FirstOrDefault() as TAttribute;
         }
     }
 }

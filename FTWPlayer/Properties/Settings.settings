@@ -53,12 +53,6 @@
     <Setting Name="AutoWindowPosition" Provider="FuwaTea.Lib.PortableSettingsProvider" Roaming="true" Type="FuwaTea.Wpf.Helpers.WindowPositions" Scope="User">
       <Value Profile="(Default)">BottomRight</Value>
     </Setting>
-    <Setting Name="ExtensionWhitelist" Provider="FuwaTea.Lib.PortableSettingsProvider" Roaming="true" Type="ModularFramework.Extensions.ExtensionAttributeCollection" Scope="User">
-      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
-&lt;ExtensionAttributeCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;Items /&gt;
-&lt;/ExtensionAttributeCollection&gt;</Value>
-    </Setting>
     <Setting Name="ScrollingTextFormat" Provider="FuwaTea.Lib.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)">{Tag.JoinedPerformers&gt;Tag.JoinedAlbumArtists&gt;"Unknown Performer"} - {Tag.Title&gt;FileName&gt;"Unknown Title"}</Value>
     </Setting>

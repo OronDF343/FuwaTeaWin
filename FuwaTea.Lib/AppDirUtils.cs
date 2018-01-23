@@ -19,6 +19,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Security;
+using FuwaTea.Extensibility;
 using JetBrains.Annotations;
 using log4net;
 using Microsoft.Win32;

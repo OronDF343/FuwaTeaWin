@@ -23,7 +23,6 @@ using System.Linq;
 using System.Text;
 using FuwaTea.Lib;
 using FuwaTea.Lib.Exceptions;
-using FuwaTea.Playlist.Readers;
 
 namespace FuwaTea.Playlist.Writers
 {

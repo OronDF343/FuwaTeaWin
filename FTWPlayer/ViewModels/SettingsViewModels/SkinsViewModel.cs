@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using FTWPlayer.Skins;
 using FTWPlayer.Views.SettingsViews;
+using FuwaTea.Extensibility.ConfigurationTemp;
 using FuwaTea.Wpf.Behaviors;
 using GalaSoft.MvvmLight.CommandWpf;
 using JetBrains.Annotations;

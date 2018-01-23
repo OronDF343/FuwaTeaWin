@@ -264,22 +264,6 @@ namespace FTWPlayer.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ExtensionAttributeCollection xmlns:xsi=" +
-            "\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XM" +
-            "LSchema\">\r\n  <Items />\r\n</ExtensionAttributeCollection>")]
-        [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]
-        public global::ModularFramework.Extensions.ExtensionAttributeCollection ExtensionWhitelist {
-            get {
-                return ((global::ModularFramework.Extensions.ExtensionAttributeCollection)(this["ExtensionWhitelist"]));
-            }
-            set {
-                this["ExtensionWhitelist"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Configuration.SettingsProviderAttribute(typeof(FuwaTea.Lib.PortableSettingsProvider))]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("{Tag.JoinedPerformers>Tag.JoinedAlbumArtists>\"Unknown Performer\"} - {Tag.Title>Fi" +
             "leName>\"Unknown Title\"}")]
         [global::System.Configuration.SettingsManageabilityAttribute(global::System.Configuration.SettingsManageability.Roaming)]

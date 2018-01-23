@@ -9,8 +9,7 @@ namespace FuwaTea.Lib.NotifyIcon
     //[LibComponent("Windows 8 Tray Manager")]
     [Export(typeof(ITrayManager))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    [PlatformFilter(FilterAction.Blacklist, OSKind.Windows, OSArch.Any, FilterRule.GreaterThan, "6.3.0.0")]
-    [PlatformFilter(FilterAction.Whitelist, OSKind.Windows, OSArch.Any, FilterRule.GreaterThan, "6.2.0.0")]
+    [PlatformFilter(FilterAction.Whitelist, OSKind.Windows, OSArch.Any, FilterRule.Between, "6.2.0.0", OtherVersion = "6.3.0.0")]
     public class TrayManager8 : ITrayManager
     {
         private readonly ITrayNotify8 _trayNotify;

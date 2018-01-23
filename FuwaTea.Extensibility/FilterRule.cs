@@ -5,6 +5,7 @@
         Any = 0,
         LessThan = 1,
         Equals = 2,
-        GreaterThan = 3
+        GreaterThan = 3,
+        Between = 4
     }
 }

@@ -3,7 +3,7 @@ using System.ComponentModel.Composition;
 
 namespace FuwaTea.Extensibility
 {
-    [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Class | AttributeTargets.Interface)]
     [MetadataAttribute]
     public class PlatformFilterAttribute : Attribute, IPlatformFilter
     {
@@ -22,5 +22,6 @@ namespace FuwaTea.Extensibility
         public FilterRule Rule { get; }
         public OSArch ProcessArchitecture { get; }
         public string Version { get; }
+        public string OtherVersion { get; set; }
     }
 }

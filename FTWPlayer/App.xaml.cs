@@ -35,6 +35,7 @@ using FTWPlayer.Localization;
 using FTWPlayer.Properties;
 using FTWPlayer.Skins;
 using FuwaTea.Extensibility;
+using FuwaTea.Extensibility.ConfigurationTemp;
 using FuwaTea.Lib;
 using FuwaTea.Lib.FileAssociations;
 using FuwaTea.Playback;
@@ -75,7 +76,7 @@ namespace FTWPlayer
 
         private IContainer AppScope { get; set; }
 
-        //internal List<IConfigurablePropertyInfo> DynSettings { get; private set; }
+        internal List<IConfigurablePropertyInfo> DynSettings { get; private set; }
 
         public ExtensibilityContainer MainContainer { get; private set; }
 
@@ -151,9 +152,9 @@ namespace FTWPlayer
                 LoadModules();
 
             // TODO IMPORTANT: Restore DynSettings!
-            /*// Dynamic config init:
+            // Dynamic config init:
             using (LogicalThreadContext.Stacks["NDC"].Push(nameof(InitDynamicSettings)))
-                InitDynamicSettings();*/
+                InitDynamicSettings();
 
             // Load skins:
             using (LogicalThreadContext.Stacks["NDC"].Push(nameof(LoadSkins)))
@@ -485,6 +486,7 @@ namespace FTWPlayer
                 catch (Exception ex)
                 {
                     Logger.Error($"Failed to load extension {file}", ex);
+                    throw ex;
                 }
                 //if (extWhitelist.Items.Contains(exa)) return true;
                 //var res = MessageBox.Show($"Are you sure you want to load the following extension?\n\n{exa.Name} version {exa.Version}\nby {exa.Author}\n{exa.Homepage}\n\nOnly load extensions that you trust!",
@@ -536,8 +538,7 @@ namespace FTWPlayer
             AppScope = MainContainer.OpenScope(nameof(App));
         }
 
-        // TODO IMPORTANT: Restore DynSettings!
-        /*private void InitDynamicSettings()
+        private void InitDynamicSettings()
         {
             var provider = Settings.Default.Properties["LastVersion"]?.Provider;
             var dict = new SettingsAttributeDictionary
@@ -551,7 +552,7 @@ namespace FTWPlayer
                     new UserScopedSettingAttribute()
                 }
             };
-            DynSettings = ModuleFactory.GetAllConfigurableProperties(ex => Logger.Error("Error getting configurable property:", ex)).ToList();
+            DynSettings = ConfigurationUtils.GetAllConfigurableProperties(AppScope, ex => Logger.Error("Error getting configurable property:", ex)).ToList();
             foreach (var info in DynSettings)
             {
                 try
@@ -586,7 +587,7 @@ namespace FTWPlayer
                 if (p == null) return;
                 p.Value = Settings.Default[p.Name];
             };
-        }*/
+        }
 
         private void LoadSkins()
         {
