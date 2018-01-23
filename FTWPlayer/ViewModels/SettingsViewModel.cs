@@ -1,21 +1,25 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using FTWPlayer.Properties;
 using FTWPlayer.ViewModels.SettingsViewModels;
 using FTWPlayer.Views;
-using ModularFramework;
 
 namespace FTWPlayer.ViewModels
 {
-    [UIPart("Settings Tab")]
+    //[UIPart("Settings Tab")]
+    [Export(typeof(ITab))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class SettingsViewModel : ITab
     {
-        public SettingsViewModel()
+        [ImportingConstructor]
+        public SettingsViewModel([ImportMany] IEnumerable<ISettingsTab> settingsTabs)
         {
             TabObject = new SettingsView(this);
-            SettingsTabs = new ObservableCollection<TabItem>(ModuleFactory.GetElements<ISettingsTab>().OrderBy(t => t.Index).Select(t => t.GetTabItem(Settings.Default, ((App)Application.Current).DynSettings)));
+            SettingsTabs = new ObservableCollection<TabItem>(settingsTabs.OrderBy(t => t.Index).Select(t => t.GetTabItem(Settings.Default, ((App)Application.Current).DynSettings)));
         }
         public TabItem TabObject { get; }
         public decimal Index => 3;

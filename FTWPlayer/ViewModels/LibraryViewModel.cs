@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.ComponentModel.Composition;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,17 +10,19 @@ using FuwaTea.Lib;
 using FuwaTea.Playlist;
 using GalaSoft.MvvmLight.CommandWpf;
 using Microsoft.Win32;
-using ModularFramework;
 
 namespace FTWPlayer.ViewModels
 {
-    [UIPart("Library Tab")]
+    //[UIPart("Library Tab")]
+    [Export(typeof(ITab))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class LibraryViewModel : ITab
     {
-        public LibraryViewModel()
+        [ImportingConstructor]
+        public LibraryViewModel([Import] IPlaylistManager playlistManager)
         {
             TabObject = new LibraryView(this);
-            PlaylistManager = ModuleFactory.GetElement<IPlaylistManager>();
+            PlaylistManager = playlistManager;
             OpenPlaylistCommand = new RelayCommand<RoutedEventArgs>(OpenPlaylist);
             SavePlaylistCommand = new RelayCommand<RoutedEventArgs>(SavePlaylist);
             SaveAsCommand = new RelayCommand<RoutedEventArgs>(SaveAs);

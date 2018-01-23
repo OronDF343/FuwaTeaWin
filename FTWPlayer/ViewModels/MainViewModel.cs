@@ -19,34 +19,45 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Security;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using DryIoc;
 using FTWPlayer.Localization;
 using FTWPlayer.Properties;
+using FuwaTea.Lib;
 using FuwaTea.Lib.NotifyIcon;
 using FuwaTea.Playback;
 using FuwaTea.Playlist;
 using FuwaTea.Wpf.Keyboard;
 using GalaSoft.MvvmLight.CommandWpf;
+using JetBrains.Annotations;
 using log4net;
-using ModularFramework;
+using IContainer = DryIoc.IContainer;
 
 namespace FTWPlayer.ViewModels
 {
     public sealed class MainViewModel : DependencyObject, INotifyPropertyChanged, IDisposable // This is a DependencyObject so it supports animations
     {
+        public IContainer MainViewModelScope { get; }
+
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
         public MainViewModel()
         {
-            PlaybackManager = ModuleFactory.GetElement<IPlaybackManager>();
+            MainViewModelScope = ((App)Application.Current).MainContainer.OpenScope(nameof(MainViewModel));
+            PlaybackManager = MainViewModelScope.Resolve<IPlaybackManager>();
+            PlaylistManager = MainViewModelScope.Resolve<IPlaylistManager>();
+            NotifyIconManager = MainViewModelScope.Resolve<NotifyIconManager>();
 
             _tmr = new DispatcherTimer(TimeSpan.FromMilliseconds(100), DispatcherPriority.ApplicationIdle, Tick,
                 Application.Current.Dispatcher);
@@ -102,10 +113,10 @@ namespace FTWPlayer.ViewModels
             DropCommand = new RelayCommand<DragEventArgs>(Drop);
 
             // Load tabs
-            Tabs = new ObservableCollection<TabItem>(ModuleFactory.GetElements<ITab>().OrderBy(t => t.Index).Select(t => t.TabObject));
+            Tabs = new ObservableCollection<TabItem>(MainViewModelScope.ResolveMany<ITab>().OrderBy(t => t.Index).Select(t => t.TabObject));
 
             // TODO: this is testing
-            var plm = ModuleFactory.GetElement<IPlaylistManager>(); // TODO: remove logic reference
+            var plm = MainViewModelScope.Resolve<IPlaylistManager>(); // TODO: remove logic reference
             if (plm.SelectedPlaylist == null)
             {
                 if (!plm.LoadedPlaylists.ContainsKey("temp")) plm.CreatePlaylist("temp");
@@ -229,6 +240,8 @@ namespace FTWPlayer.ViewModels
         }
 
         public IPlaybackManager PlaybackManager { get; }
+        public IPlaylistManager PlaylistManager { get; }
+        public NotifyIconManager NotifyIconManager { get; }
 
         public string AppName => Assembly.GetEntryAssembly().GetAttribute<AssemblyTitleAttribute>().Title;
 

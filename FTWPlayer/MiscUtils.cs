@@ -23,11 +23,11 @@ using System.Security;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using DryIoc;
 using FuwaTea.Lib;
 using FuwaTea.Playback;
 using FuwaTea.Playlist;
 using log4net;
-using ModularFramework;
 
 namespace FTWPlayer
 {
@@ -61,8 +61,10 @@ namespace FTWPlayer
         public static bool LoadObject(string file, bool addOnly)
         {
             //TODO: update. this is temporary and WIP // TODO: error callback
-            var plm = ModuleFactory.GetElement<IPlaylistManager>();
-            var pm = ModuleFactory.GetElement<IPlaybackManager>();
+            var scope = ((App)Application.Current).MainContainer.OpenScope(nameof(MiscUtils));
+            var plm = scope.Resolve<IPlaylistManager>();
+            var pm = scope.Resolve<IPlaybackManager>();
+            scope.Dispose();
 
             if (Directory.Exists(file))
             {
@@ -108,6 +110,7 @@ namespace FTWPlayer
 
             if (pm.CurrentState != PlaybackState.Playing && !addOnly)
                 pm.PlayPauseResume();
+            
             return true;
 
             // Alternative:
@@ -157,10 +160,12 @@ namespace FTWPlayer
         /// <param name="dir">The folder to load</param>
         /// <param name="subfolders">Specifies whether subfolders should be loaded as well</param>
         /// <param name="errorCallback">An error callback</param>
-        public static async void AddFolder(DirectoryInfo dir, bool subfolders, ErrorCallback errorCallback)
+        public static async void AddFolder(DirectoryInfo dir, bool subfolders, Action<Exception> errorCallback)
         {
-            var pm = ModuleFactory.GetElement<IPlaybackManager>();
-            var plm = ModuleFactory.GetElement<IPlaylistManager>();
+            var scope = ((App)Application.Current).MainContainer.OpenScope(nameof(MiscUtils));
+            var plm = scope.Resolve<IPlaylistManager>();
+            var pm = scope.Resolve<IPlaybackManager>();
+            scope.Dispose();
             var dispatcher = Dispatcher.CurrentDispatcher;
             await Task.Run(() =>
             {

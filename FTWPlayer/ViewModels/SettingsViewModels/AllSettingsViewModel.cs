@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.Configuration;
 using System.Linq;
 using System.Windows.Controls;
 using FTWPlayer.Views.SettingsViews;
-using ModularFramework.Configuration;
 
 namespace FTWPlayer.ViewModels.SettingsViewModels
 {
-    [UIPart("All Settings Tab")]
+    //[UIPart("All Settings Tab")]
+    [Export(typeof(ISettingsTab))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class AllSettingsViewModel : ISettingsTab
     {
         public TabItem GetTabItem(ApplicationSettingsBase settings, List<IConfigurablePropertyInfo> dynSettings)

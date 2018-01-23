@@ -19,7 +19,7 @@ using System;
 using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Data;
-using ModularFramework;
+using JetBrains.Annotations;
 
 namespace FTWPlayer.Converters
 {

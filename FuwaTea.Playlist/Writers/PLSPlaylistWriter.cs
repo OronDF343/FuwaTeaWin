@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Text;
 using FuwaTea.Lib;
 
 namespace FuwaTea.Playlist.Writers
 {
-    [PlaylistHandler("PLS Playlist Writer")]
+    //[PlaylistHandler("PLS Playlist Writer")]
+    [Export(typeof(IPlaylistWriter))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class PLSPlaylistWriter : IPlaylistWriter
     {
         public IEnumerable<string> SupportedFileTypes => new[] { "pls|PLS Playlist" };

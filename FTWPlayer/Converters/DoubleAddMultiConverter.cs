@@ -2,8 +2,8 @@
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
+using JetBrains.Annotations;
 using log4net;
-using ModularFramework;
 
 namespace FTWPlayer.Converters
 {

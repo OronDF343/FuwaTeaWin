@@ -2,7 +2,7 @@
 using System.Configuration;
 using System.Windows;
 using FuwaTea.Wpf.Helpers;
-using ModularFramework;
+using JetBrains.Annotations;
 using XAMLMarkupExtensions.Base;
 
 namespace FuwaTea.Wpf.Extensions

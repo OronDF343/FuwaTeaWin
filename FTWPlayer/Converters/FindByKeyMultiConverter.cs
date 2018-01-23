@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 using FuwaTea.Lib.DataModel;
-using ModularFramework;
+using JetBrains.Annotations;
 
 namespace FTWPlayer.Converters
 {

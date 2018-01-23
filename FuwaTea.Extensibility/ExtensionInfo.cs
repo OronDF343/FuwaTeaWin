@@ -21,5 +21,10 @@ namespace FuwaTea.Extensibility
 
         // imported via IoC - because it allows localization!
         public IExtensionBasicInfo BasicInfo { get; }
+
+        public override string ToString()
+        {
+            return $"{{Key: {Key}, FullName: {AssemblyName.FullName}, Path: {DllPath}, ApiVersion: {ApiVersion}}}";
+        }
     }
 }

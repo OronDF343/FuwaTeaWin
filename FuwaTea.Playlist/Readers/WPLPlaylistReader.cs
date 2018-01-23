@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -11,7 +12,9 @@ using log4net;
 
 namespace FuwaTea.Playlist.Readers
 {
-    [PlaylistHandler("WPL Playlist Reader")]
+    //[PlaylistHandler("WPL Playlist Reader")]
+    [Export(typeof(IPlaylistReader))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class WPLPlaylistReader : IPlaylistReader
     {
         public IEnumerable<string> SupportedFileTypes => new[] {"wpl|Windows Media Playlist"};

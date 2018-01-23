@@ -69,6 +69,10 @@
     <Compile Include="Readers\WPLPlaylistReader.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FuwaTea.Extensibility\FuwaTea.Extensibility.csproj">
+      <Project>{e4773a23-838d-40ad-8466-58fdb07237e0}</Project>
+      <Name>FuwaTea.Extensibility</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FuwaTea.Lib\FuwaTea.Lib.csproj">
       <Project>{A9BB4650-68CC-4640-9B5A-65F4AA80C2AB}</Project>
       <Name>FuwaTea.Lib</Name>

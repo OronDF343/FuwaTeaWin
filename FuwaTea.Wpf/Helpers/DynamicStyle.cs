@@ -18,7 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
-using ModularFramework;
+using JetBrains.Annotations;
 
 namespace FuwaTea.Wpf.Helpers
 {

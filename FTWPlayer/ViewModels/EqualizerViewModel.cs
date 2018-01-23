@@ -1,19 +1,22 @@
-﻿using System.Windows;
+﻿using System.ComponentModel.Composition;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using FTWPlayer.Views;
 using FuwaTea.Playback;
 using GalaSoft.MvvmLight.CommandWpf;
-using ModularFramework;
 
 namespace FTWPlayer.ViewModels
 {
-    [UIPart("Equalizer Tab")]
+    //[UIPart("Equalizer Tab")]
+    [Export(typeof(ITab))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class EqualizerViewModel : ITab
     {
-        public EqualizerViewModel()
+        [ImportingConstructor]
+        public EqualizerViewModel([Import] IPlaybackManager playbackManager)
         {
-            PlaybackManager = ModuleFactory.GetElement<IPlaybackManager>();
+            PlaybackManager = playbackManager;
             ResetEqCommand = new RelayCommand<RoutedEventArgs>(ResetEq);
             TabObject = new EqualizerControl(this);
         }

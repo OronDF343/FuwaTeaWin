@@ -15,13 +15,10 @@ namespace FuwaTea.Extensibility
         [NotNull]
         private readonly Dictionary<string, (ExtensionInfo, IContainer)> _extensions;
 
-        private readonly Func<AssemblyName, Assembly> _loadDllFunc;
-
-        public ExtensibilityContainer(Func<AssemblyName, Assembly> loadDllFunc)
+        public ExtensibilityContainer()
         {
             _extensions = new Dictionary<string, (ExtensionInfo, IContainer)>();
             _iocContainer = new Container();
-            _loadDllFunc = loadDllFunc;
         }
 
         public ExtensionInfo LoadExtension(AssemblyName dll, bool overrideApiVersionWhitelist = false)

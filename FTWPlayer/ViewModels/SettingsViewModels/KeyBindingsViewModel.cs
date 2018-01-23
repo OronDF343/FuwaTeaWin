@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.Configuration;
 using System.Linq;
 using System.Windows.Controls;
@@ -8,11 +9,12 @@ using System.Windows.Input;
 using FTWPlayer.Views.SettingsViews;
 using FuwaTea.Lib.Collections;
 using GalaSoft.MvvmLight.CommandWpf;
-using ModularFramework.Configuration;
 
 namespace FTWPlayer.ViewModels.SettingsViewModels
 {
-    [UIPart("Key Bindings settings tab")]
+    //[UIPart("Key Bindings settings tab")]
+    [Export(typeof(ISettingsTab))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class KeyBindingsViewModel : ISettingsTab
     {
         public TabItem GetTabItem(ApplicationSettingsBase settings, List<IConfigurablePropertyInfo> dynSettings)

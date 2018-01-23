@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using FuwaTea.Lib;
@@ -7,7 +8,9 @@ using log4net;
 
 namespace FuwaTea.Playlist.Readers
 {
-    [PlaylistHandler("PLS Playlist Reader")]
+    //[PlaylistHandler("PLS Playlist Reader")]
+    [Export(typeof(IPlaylistReader))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class PLSPlaylistReader : IPlaylistReader
     {
         public IEnumerable<string> SupportedFileTypes => new[] { "pls|PLS Playlist" };

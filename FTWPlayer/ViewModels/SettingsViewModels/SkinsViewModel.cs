@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Configuration;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls;
@@ -8,17 +9,19 @@ using FTWPlayer.Skins;
 using FTWPlayer.Views.SettingsViews;
 using FuwaTea.Wpf.Behaviors;
 using GalaSoft.MvvmLight.CommandWpf;
-using ModularFramework;
-using ModularFramework.Configuration;
+using JetBrains.Annotations;
 
 namespace FTWPlayer.ViewModels.SettingsViewModels
 {
-    [UIPart("Skin Selection")]
+    //[UIPart("Skin Selection")]
+    [Export(typeof(ISettingsTab))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class SkinsViewModel : ISettingsTab, INotifyPropertyChanged
     {
-        public SkinsViewModel()
+        [ImportingConstructor]
+        public SkinsViewModel([Import] ISkinManager skinManager)
         {
-            SkinManager = ModuleFactory.GetElement<ISkinManager>();
+            SkinManager = skinManager;
             LoadSkin = new RelayCommand(OnLoadSkin);
         }
 

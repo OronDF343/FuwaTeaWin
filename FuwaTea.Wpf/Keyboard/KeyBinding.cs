@@ -4,8 +4,8 @@ using System.Windows.Input;
 using System.Xml.Serialization;
 using FuwaTea.Lib.Collections;
 using FuwaTea.Lib.DataModel;
+using JetBrains.Annotations;
 using log4net;
-using ModularFramework;
 
 namespace FuwaTea.Wpf.Keyboard
 {

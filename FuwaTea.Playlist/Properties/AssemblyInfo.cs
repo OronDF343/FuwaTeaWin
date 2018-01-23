@@ -1,7 +1,6 @@
-﻿using ModularFramework.Attributes;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.InteropServices;
-using FuwaTea.Playlist;
+using FuwaTea.Extensibility;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -16,7 +15,7 @@ using FuwaTea.Playlist;
 [assembly: AssemblyCulture("")]
 
 // Modular
-[assembly: ModuleDefinition("PlaylistHandlers", typeof(PlaylistHandlerAttribute), typeof(IPlaylistHandler))]
+[assembly: Extension("Playlist", ExtensibilityConstants.CurrentApiVersion)]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 

@@ -1,21 +1,27 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using FTWPlayer.Views;
 using FuwaTea.Metadata.AlbumArt;
 using FuwaTea.Playback;
-using ModularFramework;
+using JetBrains.Annotations;
 
 namespace FTWPlayer.ViewModels
 {
-    [UIPart("Player Tab")]
+    //[UIPart("Player Tab")]
+    [Export(typeof(ITab))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class PlayerViewModel : ITab, INotifyPropertyChanged
     {
-        public PlayerViewModel()
+        [ImportingConstructor]
+        public PlayerViewModel([Import] IPlaybackManager playbackManager, [Import] IAlbumArtLocator albumArtLocator)
         {
-            PlaybackManager = ModuleFactory.GetElement<IPlaybackManager>();
+            PlaybackManager = playbackManager;
+            AlbumArtLocator = albumArtLocator;
             TabObject = new AlbumArtView(this);
             PlaybackManager.PropertyChanged += PlaybackManager_PropertyChanged;
         }
@@ -29,7 +35,7 @@ namespace FTWPlayer.ViewModels
                 CurrentAlbumArt = null;
                 return;
             }
-            var s = ModuleFactory.GetElement<IAlbumArtLocator>().GetAlbumArt(PlaybackManager.Current);
+            var s = AlbumArtLocator.GetAlbumArt(PlaybackManager.Current);
             if (s == null)
             {
                 CurrentAlbumArt = null;
@@ -65,6 +71,7 @@ namespace FTWPlayer.ViewModels
         public decimal Index => 0;
 
         public IPlaybackManager PlaybackManager { get; }
+        public IAlbumArtLocator AlbumArtLocator { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

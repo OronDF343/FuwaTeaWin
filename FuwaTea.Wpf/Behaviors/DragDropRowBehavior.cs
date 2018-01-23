@@ -5,7 +5,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media;
-using ModularFramework;
+using JetBrains.Annotations;
 
 namespace FuwaTea.Wpf.Behaviors
 {

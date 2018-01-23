@@ -30,9 +30,11 @@ using System.Security.AccessControl;
 using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
+using DryIoc;
 using FTWPlayer.Localization;
 using FTWPlayer.Properties;
 using FTWPlayer.Skins;
+using FuwaTea.Extensibility;
 using FuwaTea.Lib;
 using FuwaTea.Lib.FileAssociations;
 using FuwaTea.Playback;
@@ -41,12 +43,11 @@ using FuwaTea.Wpf.Behaviors;
 using FuwaTea.Wpf.Helpers;
 using FuwaTea.Wpf.Keyboard;
 using GalaSoft.MvvmLight.Threading;
+using JetBrains.Annotations;
 using log4net;
 using log4net.Config;
-using ModularFramework;
-using ModularFramework.Configuration;
-using ModularFramework.Extensions;
 using WPFLocalizeExtension.Engine;
+using IContainer = DryIoc.IContainer;
 
 namespace FTWPlayer
 {
@@ -66,14 +67,17 @@ namespace FTWPlayer
         private string _prod, _title;
         private bool _isinst;
         private static readonly ILog Logger = LogManager.GetLogger(typeof(App));
-        private readonly ErrorCallback _ec = ex => Logger.Warn("AssemblyLoader reported an error:", ex);
         private const string SetupFileAssocArg = "--setup-file-associations";
         private const string CleanupFileAssocArg = "--clean-up-file-associations";
         private const string ConfigureFileAssocArg = "--configure-file-associations";
         private const string ShouldBeAdminArg = "--admin";
         private const string SetLangArg = "--set-lang";
 
-        internal List<IConfigurablePropertyInfo> DynSettings { get; private set; }
+        private IContainer AppScope { get; set; }
+
+        //internal List<IConfigurablePropertyInfo> DynSettings { get; private set; }
+
+        public ExtensibilityContainer MainContainer { get; private set; }
 
         /// <summary>
         /// Raises the <see cref="E:System.Windows.Application.Startup"/> event.
@@ -146,9 +150,10 @@ namespace FTWPlayer
             using (LogicalThreadContext.Stacks["NDC"].Push(nameof(LoadModules)))
                 LoadModules();
 
-            // Dynamic config init:
+            // TODO IMPORTANT: Restore DynSettings!
+            /*// Dynamic config init:
             using (LogicalThreadContext.Stacks["NDC"].Push(nameof(InitDynamicSettings)))
-                InitDynamicSettings();
+                InitDynamicSettings();*/
 
             // Load skins:
             using (LogicalThreadContext.Stacks["NDC"].Push(nameof(LoadSkins)))
@@ -280,8 +285,8 @@ namespace FTWPlayer
                 Logger.Info("Detected argument: Setup File Associations");
                 LoadModules();
                 var l = Assembly.GetExecutingAssembly().Location;
-                var pm = ModuleFactory.GetElement<IPlaybackManager>();
-                var plm = ModuleFactory.GetElement<IPlaylistManager>();
+                var pm = AppScope.Resolve<IPlaybackManager>();
+                var plm = AppScope.Resolve<IPlaylistManager>();
                 var supported = pm.GetExtensionsInfo().Union(StringUtils.GetExtensionsInfo(plm.ReadableFileTypes)).ToDictionary(p => p.Key, p => p.Value);
                 try
                 {
@@ -427,17 +432,31 @@ namespace FTWPlayer
         /// <param name="loadExtensions">Specifies whether to load extensions as well</param>
         public void LoadModules(bool loadExtensions = true)
         {
-            Func<string, bool> sel =
-                f =>
-                f.ToLowerInvariant().EndsWith(".dll")
-                || (!f.ToLowerInvariant().EndsWith("unins000.exe") && f.ToLowerInvariant().EndsWith(".exe"));
+            bool Sel(string f) => f.ToLowerInvariant().EndsWith(".dll") || (!f.ToLowerInvariant().EndsWith("unins000.exe") && f.ToLowerInvariant().EndsWith(".exe"));
             var ef = Assembly.GetEntryAssembly().GetExeFolder();
             if (ef == null)
             {
                 Logger.Fatal("Failed to load modular components - I don't know where I am!");
                 return; // TODO: return false and check
             }
-            ModuleFactory.LoadFolder(ef, sel, _ec, true);
+
+            MainContainer = new ExtensibilityContainer();
+
+            // TODO: Refactor this
+            foreach (var file in Directory.EnumerateFiles(ef))
+            {
+                if (!Sel(file)) continue;
+                try
+                {
+                    var ext = MainContainer.LoadExtension(AssemblyName.GetAssemblyName(file));
+                    Logger.Info($"Loaded: {ext}");
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error($"Failed to load component {file}", ex);
+                }
+            }
+
             if (!loadExtensions) return;
             string extDir;
             try { extDir = Assembly.GetEntryAssembly().GetSpecificPath(false, "extensions", true); }
@@ -451,17 +470,29 @@ namespace FTWPlayer
                 Logger.Error("Access denied to extensions directory!", uae);
                 return;
             }
-            var extWhitelist = Settings.Default.ExtensionWhitelist ?? new ExtensionAttributeCollection();
-            ExtensionUtils.ExtensionLoadCallback =
-                exa =>
+
+            // TODO: Extension whitelist
+            //var extWhitelist = Settings.Default.ExtensionWhitelist ?? new ExtensionAttributeCollection();
+
+            foreach (var file in Directory.EnumerateFiles(extDir))
+            {
+                if (!Sel(file)) continue;
+                try
                 {
-                    if (extWhitelist.Items.Contains(exa)) return true;
-                    var res = MessageBox.Show($"Are you sure you want to load the following extension?\n\n{exa.Name} version {exa.Version}\nby {exa.Author}\n{exa.Homepage}\n\nOnly load extensions that you trust!",
-                                              "FTW Extension Loader", MessageBoxButton.YesNo, MessageBoxImage.Exclamation) == MessageBoxResult.Yes;
-                    if (res) extWhitelist.Items.Add(exa);
-                    return res;
-                };
-            ExtensionUtils.LoadExtensions(extDir, sel, _ec);
+                    var ext = MainContainer.LoadExtension(AssemblyName.GetAssemblyName(file));
+                    Logger.Info($"Loaded: {ext}");
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error($"Failed to load extension {file}", ex);
+                }
+                //if (extWhitelist.Items.Contains(exa)) return true;
+                //var res = MessageBox.Show($"Are you sure you want to load the following extension?\n\n{exa.Name} version {exa.Version}\nby {exa.Author}\n{exa.Homepage}\n\nOnly load extensions that you trust!",
+                //                          "FTW Extension Loader", MessageBoxButton.YesNo, MessageBoxImage.Exclamation) == MessageBoxResult.Yes;
+                //if (res) extWhitelist.Items.Add(exa);
+                //return res;
+            }
+            
             IEnumerable<string> dirs;
             try { dirs = Directory.EnumerateDirectories(extDir); }
             catch (UnauthorizedAccessException uae)
@@ -479,12 +510,34 @@ namespace FTWPlayer
                 Logger.Error("The extensions directory is a file?!", ie);
                 return;
             }
+
             foreach (var dir in dirs)
-                ExtensionUtils.LoadExtensions(dir, sel, _ec);
-            Settings.Default.ExtensionWhitelist = extWhitelist;
+            {
+                foreach (var file in Directory.EnumerateFiles(dir))
+                {
+                    if (!Sel(file)) continue;
+                    try
+                    {
+                        var ext = MainContainer.LoadExtension(AssemblyName.GetAssemblyName(file));
+                        Logger.Info($"Loaded: {ext}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error($"Failed to load extension {file}", ex);
+                    }
+                    //if (extWhitelist.Items.Contains(exa)) return true;
+                    //var res = MessageBox.Show($"Are you sure you want to load the following extension?\n\n{exa.Name} version {exa.Version}\nby {exa.Author}\n{exa.Homepage}\n\nOnly load extensions that you trust!",
+                    //                          "FTW Extension Loader", MessageBoxButton.YesNo, MessageBoxImage.Exclamation) == MessageBoxResult.Yes;
+                    //if (res) extWhitelist.Items.Add(exa);
+                    //return res;
+                }
+            }
+            //Settings.Default.ExtensionWhitelist = extWhitelist;
+            AppScope = MainContainer.OpenScope(nameof(App));
         }
 
-        private void InitDynamicSettings()
+        // TODO IMPORTANT: Restore DynSettings!
+        /*private void InitDynamicSettings()
         {
             var provider = Settings.Default.Properties["LastVersion"]?.Provider;
             var dict = new SettingsAttributeDictionary
@@ -533,11 +586,11 @@ namespace FTWPlayer
                 if (p == null) return;
                 p.Value = Settings.Default[p.Name];
             };
-        }
+        }*/
 
         private void LoadSkins()
         {
-            var sm = ModuleFactory.GetElement<ISkinManager>();
+            var sm = AppScope.Resolve<ISkinManager>();
             if (string.IsNullOrWhiteSpace(Settings.Default.Skin)) SkinLoadingBehavior.UpdateSkin(sm.LoadFallbackSkin().SkinParts);
             else
             {

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Markup;
+using JetBrains.Annotations;
 using log4net;
-using ModularFramework;
 
 namespace FuwaTea.Wpf.Helpers
 {

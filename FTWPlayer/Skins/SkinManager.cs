@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -11,13 +12,15 @@ using System.Windows.Baml2006;
 using System.Windows.Markup;
 using System.Xaml;
 using FuwaTea.Lib;
+using JetBrains.Annotations;
 using log4net;
-using ModularFramework;
 using XamlReader = System.Windows.Markup.XamlReader;
 
 namespace FTWPlayer.Skins
 {
-    [UIPart("Skin Manager")]
+    //[UIPart("Skin Manager")]
+    [Export(typeof(ISkinManager))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class SkinManager : ISkinManager
     {
         public ObservableCollection<SkinPackage> LoadedSkins { get; } = new ObservableCollection<SkinPackage>();
@@ -34,7 +37,7 @@ namespace FTWPlayer.Skins
         /// <exception cref="System.Security.SecurityException">The caller does not have the required permission. </exception>
         /// <exception cref="UnauthorizedAccessException">The caller does not have the required permission. </exception>
         /// <exception cref="SkinLoadException">An error occured while loading a skin</exception>
-        public void LoadAllSkins(ErrorCallback ec)
+        public void LoadAllSkins(Action<Exception> ec)
         {
             // Built-in (explicit):
             LoadSkinFromPackUri(DefaultSkin);

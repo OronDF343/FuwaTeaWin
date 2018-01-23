@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using FuwaTea.Metadata;
 using FuwaTea.Metadata.FormatUtils;
-using ModularFramework;
+using JetBrains.Annotations;
 
 namespace FTWPlayer.Converters
 {

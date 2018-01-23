@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
@@ -7,11 +8,14 @@ using log4net;
 namespace FuwaTea.Lib.NotifyIcon
 {
     // Based on https://hianz.wordpress.com/2013/09/03/new-windows-tray-notification-manager-is-here/
+    [Export]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class NotifyIconManager : IDisposable
     {
         private readonly ITrayManager _trayManager;
 
-        public NotifyIconManager(ITrayManager trayManager)
+        [ImportingConstructor]
+        public NotifyIconManager([Import] ITrayManager trayManager)
         {
             _trayManager = trayManager;
         }

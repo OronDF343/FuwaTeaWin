@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,15 +9,19 @@ using FuwaTea.Metadata.Tags;
 using FuwaTea.Playback;
 using FuwaTea.Wpf.Helpers;
 using GalaSoft.MvvmLight.CommandWpf;
-using ModularFramework;
+using JetBrains.Annotations;
 
 namespace FTWPlayer.ViewModels
 {
-    [UIPart("Tag editor")]
+    //[UIPart("Tag editor")]
+    [Export(typeof(ITab))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class TagsViewModel : ITab, INotifyPropertyChanged
     {
-        public TagsViewModel()
+        [ImportingConstructor]
+        public TagsViewModel([Import] IPlaybackManager playbackManager)
         {
+            _playbackManager = playbackManager;
             DiscardChangesCommand = new RelayCommand<RoutedEventArgs>(DiscardChanges);
             SaveChangesCommand = new RelayCommand<RoutedEventArgs>(SaveChanges);
             DeleteTagsCommand = new RelayCommand<RoutedEventArgs>(DeleteTags);
@@ -29,7 +34,7 @@ namespace FTWPlayer.ViewModels
             TabObject = new TagsView(this);
         }
 
-        private readonly IPlaybackManager _playbackManager = ModuleFactory.GetElement<IPlaybackManager>();
+        private readonly IPlaybackManager _playbackManager;
 
         public TabItem TabObject { get; }
         public decimal Index => 0.5m;

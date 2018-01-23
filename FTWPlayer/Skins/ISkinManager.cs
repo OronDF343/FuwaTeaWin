@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using ModularFramework;
+using JetBrains.Annotations;
 
 namespace FTWPlayer.Skins
 {
@@ -16,7 +17,7 @@ namespace FTWPlayer.Skins
         /// <exception cref="System.Security.SecurityException">The caller does not have the required permission. </exception>
         /// <exception cref="System.UnauthorizedAccessException">The caller does not have the required permission. </exception>
         /// <exception cref="SkinLoadException">An error occured while loading a skin</exception>
-        void LoadAllSkins(ErrorCallback ec);
+        void LoadAllSkins(Action<Exception> ec);
 
         /// <summary>
         /// Loads a skin

@@ -33,6 +33,12 @@ namespace FuwaTea.Playlist
 {
     public class Playlist : ObservableCollection<IMusicInfoModel>, IPlaylist
     {
+        public Playlist()
+        {
+            PositionManager = new PlaylistPositionManager(this);
+            _shuffleMap = new int[0];
+        }
+
         public Playlist(List<ITagProvider> tagProviders) // TODO: Potentail issues because tag providers are shared between playlists by reference!!!
         {
             _tagProviders = tagProviders;
@@ -61,7 +67,7 @@ namespace FuwaTea.Playlist
 
         public void Add(string musicFile)
         {
-            var tag = _tagProviders.FirstOrDefault(r => r.GetExtensions().Contains(Path.GetExtension(musicFile).ToLowerInvariant()));
+            var tag = _tagProviders?.FirstOrDefault(r => r.GetExtensions().Contains(Path.GetExtension(musicFile).ToLowerInvariant()));
             Add(new MusicInfoModel(musicFile, tag?.Create(musicFile)));
         }
 

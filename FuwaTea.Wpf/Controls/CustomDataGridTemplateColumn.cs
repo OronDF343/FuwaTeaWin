@@ -14,7 +14,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using ModularFramework;
+using JetBrains.Annotations;
 
 namespace FuwaTea.Wpf.Controls
 {

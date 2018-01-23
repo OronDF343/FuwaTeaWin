@@ -17,15 +17,19 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Text;
 using FuwaTea.Lib;
 using FuwaTea.Lib.Exceptions;
+using FuwaTea.Playlist.Readers;
 
 namespace FuwaTea.Playlist.Writers
 {
-    [PlaylistHandler("M3U / M3U8 playlist writer")]
+    //[PlaylistHandler("M3U / M3U8 playlist writer")]
+    [Export(typeof(IPlaylistWriter))]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class M3UPlaylistWriter : IPlaylistWriter
     {
         public IEnumerable<string> SupportedFileTypes => new[] { "m3u8|M3U Playlist (UTF-8)", "m3u|M3U Playlist" };
