@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
+using DryIocAttributes;
 using FuwaTea.Lib;
 using FuwaTea.Lib.Collections;
 using FuwaTea.Lib.Exceptions;
@@ -14,7 +15,7 @@ namespace FuwaTea.Playlist.Readers
 {
     //[PlaylistHandler("WPL Playlist Reader")]
     [Export(typeof(IPlaylistReader))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Reuse(ReuseType.Singleton)]
     public class WPLPlaylistReader : IPlaylistReader
     {
         public IEnumerable<string> SupportedFileTypes => new[] {"wpl|Windows Media Playlist"};

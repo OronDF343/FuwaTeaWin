@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using DryIocAttributes;
 using FTWPlayer.Localization;
 using FTWPlayer.Views;
 using FuwaTea.Lib;
@@ -15,7 +16,7 @@ namespace FTWPlayer.ViewModels
 {
     //[UIPart("Library Tab")]
     [Export(typeof(ITab))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Reuse(ReuseType.Singleton)]
     public class LibraryViewModel : ITab
     {
         [ImportingConstructor]

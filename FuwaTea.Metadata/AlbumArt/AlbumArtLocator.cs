@@ -18,12 +18,13 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
+using DryIocAttributes;
 
 namespace FuwaTea.Metadata.AlbumArt
 {
     //[MetadataLoader("Album Art Locator")]
     [Export(typeof(IAlbumArtLocator))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Reuse(ReuseType.Singleton)]
     public class AlbumArtLocator : IAlbumArtLocator
     {
         private readonly IAlbumArtStreamLoader _loader;

@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Baml2006;
 using System.Windows.Markup;
 using System.Xaml;
+using DryIocAttributes;
 using FuwaTea.Lib;
 using JetBrains.Annotations;
 using log4net;
@@ -20,7 +21,7 @@ namespace FTWPlayer.Skins
 {
     //[UIPart("Skin Manager")]
     [Export(typeof(ISkinManager))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Reuse(ReuseType.Singleton)]
     public class SkinManager : ISkinManager
     {
         public ObservableCollection<SkinPackage> LoadedSkins { get; } = new ObservableCollection<SkinPackage>();

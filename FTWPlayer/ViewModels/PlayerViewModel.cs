@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using DryIocAttributes;
 using FTWPlayer.Views;
 using FuwaTea.Metadata.AlbumArt;
 using FuwaTea.Playback;
@@ -13,7 +14,7 @@ namespace FTWPlayer.ViewModels
 {
     //[UIPart("Player Tab")]
     [Export(typeof(ITab))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Reuse(ReuseType.Singleton)]
     public class PlayerViewModel : ITab, INotifyPropertyChanged
     {
         [ImportingConstructor]

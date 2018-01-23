@@ -22,6 +22,7 @@ using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using DryIocAttributes;
 using FuwaTea.Lib;
 using FuwaTea.Metadata;
 using FuwaTea.Playlist;
@@ -32,7 +33,7 @@ namespace FuwaTea.Playback
 {
     //[PlaybackElement("Playback Manager")]
     [Export(typeof(IPlaybackManager))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Reuse(ReuseType.Singleton)]
     public class PlaybackManager : IPlaybackManager
     {
         [ImportingConstructor]

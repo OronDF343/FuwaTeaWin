@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using DryIocAttributes;
 using FTWPlayer.Properties;
 using FTWPlayer.ViewModels.SettingsViewModels;
 using FTWPlayer.Views;
@@ -12,7 +13,7 @@ namespace FTWPlayer.ViewModels
 {
     //[UIPart("Settings Tab")]
     [Export(typeof(ITab))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Reuse(ReuseType.Singleton)]
     public class SettingsViewModel : ITab
     {
         [ImportingConstructor]

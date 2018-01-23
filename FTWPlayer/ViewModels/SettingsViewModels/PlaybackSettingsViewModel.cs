@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.Configuration;
 using System.Linq;
 using System.Windows.Controls;
+using DryIocAttributes;
 using FTWPlayer.Views.SettingsViews;
 using FuwaTea.Extensibility.ConfigurationTemp;
 
@@ -11,7 +12,7 @@ namespace FTWPlayer.ViewModels.SettingsViewModels
 {
     //[UIPart("Playback settings tab")]
     [Export(typeof(ISettingsTab))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Reuse(ReuseType.Singleton)]
     public class PlaybackSettingsViewModel : ISettingsTab
     {
         public TabItem GetTabItem(ApplicationSettingsBase settings, List<IConfigurablePropertyInfo> dynSettings)

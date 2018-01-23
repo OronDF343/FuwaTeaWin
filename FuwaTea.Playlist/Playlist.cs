@@ -38,7 +38,7 @@ namespace FuwaTea.Playlist
             _shuffleMap = new int[0];
         }
 
-        public Playlist(List<ITagProvider> tagProviders) // TODO: Potentail issues because tag providers are shared between playlists by reference!!!
+        public Playlist(List<ITagProvider> tagProviders) // TODO: Potential issues because tag providers are shared between playlists by reference!!!
         {
             _tagProviders = tagProviders;
             PositionManager = new PlaylistPositionManager(this);

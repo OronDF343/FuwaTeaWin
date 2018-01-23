@@ -21,6 +21,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Text;
+using DryIocAttributes;
 using FuwaTea.Lib;
 using FuwaTea.Lib.Exceptions;
 
@@ -28,7 +29,7 @@ namespace FuwaTea.Playlist.Readers
 {
     //[PlaylistHandler("M3U / M3U8 playlist reader")]
     [Export(typeof(IPlaylistReader))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Reuse(ReuseType.Singleton)]
     public class M3UPlaylistReader : IPlaylistReader
     {
         public IEnumerable<string> SupportedFileTypes => new[] {"m3u|M3U Playlist", "m3u8|M3U Playlist (UTF-8)"};

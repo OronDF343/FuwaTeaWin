@@ -2,6 +2,7 @@
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Text.RegularExpressions;
+using DryIocAttributes;
 using JetBrains.Annotations;
 using log4net;
 
@@ -9,7 +10,7 @@ namespace FuwaTea.Lib.NotifyIcon
 {
     // Based on https://hianz.wordpress.com/2013/09/03/new-windows-tray-notification-manager-is-here/
     [Export]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Reuse(ReuseType.Singleton)]
     public class NotifyIconManager : IDisposable
     {
         private readonly ITrayManager _trayManager;

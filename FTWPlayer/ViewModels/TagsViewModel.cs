@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using DryIocAttributes;
 using FTWPlayer.Views;
 using FuwaTea.Metadata.Tags;
 using FuwaTea.Playback;
@@ -15,7 +16,7 @@ namespace FTWPlayer.ViewModels
 {
     //[UIPart("Tag editor")]
     [Export(typeof(ITab))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Reuse(ReuseType.Singleton)]
     public class TagsViewModel : ITab, INotifyPropertyChanged
     {
         [ImportingConstructor]

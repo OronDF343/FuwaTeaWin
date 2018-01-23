@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using System.Windows.Input;
+using DryIocAttributes;
 using FTWPlayer.Skins;
 using FTWPlayer.Views.SettingsViews;
 using FuwaTea.Extensibility.ConfigurationTemp;
@@ -16,7 +17,7 @@ namespace FTWPlayer.ViewModels.SettingsViewModels
 {
     //[UIPart("Skin Selection")]
     [Export(typeof(ISettingsTab))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Reuse(ReuseType.Singleton)]
     public class SkinsViewModel : ISettingsTab, INotifyPropertyChanged
     {
         [ImportingConstructor]

@@ -7,13 +7,13 @@ namespace FTWPlayer.Converters
 {
     public class NullCheckConverter : IValueConverter
     {
-        public object Convert([CanBeNull] object value, [NotNull] Type targetType, [CanBeNull] object parameter,
+        public object Convert(object value, [NotNull] Type targetType, object parameter,
                               [NotNull] CultureInfo culture)
         {
             return parameter as bool? == true ? value == null : value != null;
         }
 
-        public object ConvertBack([CanBeNull] object value, [NotNull] Type targetType, [CanBeNull] object parameter,
+        public object ConvertBack(object value, [NotNull] Type targetType, object parameter,
                                   [NotNull] CultureInfo culture)
         {
             throw new NotImplementedException();

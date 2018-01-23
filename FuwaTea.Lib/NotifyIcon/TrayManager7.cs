@@ -2,6 +2,7 @@
 using System.ComponentModel.Composition;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using DryIocAttributes;
 using FuwaTea.Extensibility;
 using JetBrains.Annotations;
 
@@ -9,7 +10,7 @@ namespace FuwaTea.Lib.NotifyIcon
 {
     // [LibComponent("Windows XP/Vista/7 Tray Manager")]
     [Export(typeof(ITrayManager))]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
+    [Reuse(ReuseType.Transient)]
     [PlatformFilter(FilterAction.Whitelist, OSKind.Windows, OSArch.Any, FilterRule.LessThan, "6.2.0.0")]
     public class TrayManager7 : ITrayManager
     {

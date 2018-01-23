@@ -10,15 +10,13 @@ namespace FuwaTea.Extensibility
 {
     public class ExtensibilityContainer : IDisposable
     {
-        [NotNull]
-        private IContainer _iocContainer;
+        private IContainer _iocContainer = new Container();
         [NotNull]
         private readonly Dictionary<string, (ExtensionInfo, IContainer)> _extensions;
 
         public ExtensibilityContainer()
         {
             _extensions = new Dictionary<string, (ExtensionInfo, IContainer)>();
-            _iocContainer = new Container();
         }
 
         public ExtensionInfo LoadExtension(AssemblyName dll, bool overrideApiVersionWhitelist = false)

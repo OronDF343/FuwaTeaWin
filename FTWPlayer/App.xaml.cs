@@ -481,7 +481,7 @@ namespace FTWPlayer
                 try
                 {
                     var ext = MainContainer.LoadExtension(AssemblyName.GetAssemblyName(file));
-                    Logger.Info($"Loaded: {ext}");
+                    if (ext != null) Logger.Info($"Loaded: {ext}");
                 }
                 catch (Exception ex)
                 {

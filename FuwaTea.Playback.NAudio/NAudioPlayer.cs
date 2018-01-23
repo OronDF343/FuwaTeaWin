@@ -21,6 +21,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
+using DryIocAttributes;
 using FuwaTea.Lib;
 using FuwaTea.Metadata.Tags;
 using FuwaTea.Playback.NAudio.Utils;
@@ -35,7 +36,7 @@ namespace FuwaTea.Playback.NAudio
     //[PlaybackElement("NAudio playback engine")]
     [Export(typeof(IAudioPlayer))]
     [Export(typeof(IStreamingAudioPlayer))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Reuse(ReuseType.Singleton)]
     public sealed class NAudioPlayer : IAudioPlayer, IStreamingAudioPlayer
     {
         [ImportingConstructor]

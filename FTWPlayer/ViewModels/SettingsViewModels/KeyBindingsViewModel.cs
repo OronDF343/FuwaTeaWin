@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
+using DryIocAttributes;
 using FTWPlayer.Views.SettingsViews;
 using FuwaTea.Extensibility.ConfigurationTemp;
 using FuwaTea.Lib.Collections;
@@ -15,7 +16,7 @@ namespace FTWPlayer.ViewModels.SettingsViewModels
 {
     //[UIPart("Key Bindings settings tab")]
     [Export(typeof(ISettingsTab))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Reuse(ReuseType.Singleton)]
     public class KeyBindingsViewModel : ISettingsTab
     {
         public TabItem GetTabItem(ApplicationSettingsBase settings, List<IConfigurablePropertyInfo> dynSettings)

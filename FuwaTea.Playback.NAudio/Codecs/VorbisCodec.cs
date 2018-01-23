@@ -17,6 +17,7 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using DryIocAttributes;
 using NAudio.Vorbis;
 using NAudio.Wave;
 
@@ -24,7 +25,7 @@ namespace FuwaTea.Playback.NAudio.Codecs
 {
     //[NAudioExtension("Vorbis file reader")]
     [Export(typeof(ICodecProvider))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [Reuse(ReuseType.Singleton)]
     public class VorbisCodec : ICodecProvider
     {
         public WaveStream CreateWaveStream(string path)
