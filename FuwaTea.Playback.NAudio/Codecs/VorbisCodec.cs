@@ -16,7 +16,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using DryIocAttributes;
 using NAudio.Vorbis;
 using NAudio.Wave;
@@ -24,7 +23,6 @@ using NAudio.Wave;
 namespace FuwaTea.Playback.NAudio.Codecs
 {
     //[NAudioExtension("Vorbis file reader")]
-    [Export(typeof(ICodecProvider))]
     [Reuse(ReuseType.Singleton)]
     public class VorbisCodec : ICodecProvider
     {

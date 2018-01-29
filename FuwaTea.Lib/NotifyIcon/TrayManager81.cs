@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.Composition;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using DryIocAttributes;
@@ -8,7 +7,6 @@ using FuwaTea.Extensibility;
 namespace FuwaTea.Lib.NotifyIcon
 {
     //[LibComponent("Windows 8.1+ Tray Manager")]
-    [Export(typeof(ITrayManager))]
     [Reuse(ReuseType.Transient)]
     [PlatformFilter(FilterAction.Whitelist, OSKind.Windows, OSArch.Any, FilterRule.GreaterThan, "6.3.0.0")]
     public class TrayManager81 : ITrayManager

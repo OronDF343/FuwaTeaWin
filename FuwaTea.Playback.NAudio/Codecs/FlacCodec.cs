@@ -16,7 +16,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using DryIocAttributes;
 using FuwaTea.Extensibility;
 using NAudio.Wave;
@@ -24,7 +23,6 @@ using NAudio.Wave;
 namespace FuwaTea.Playback.NAudio.Codecs
 {
     //[NAudioExtension("FLAC file reader (non-MF)")]
-    [Export(typeof(ICodecProvider))]
     [Reuse(ReuseType.Singleton)]
     [PlatformFilter(FilterAction.Whitelist, OSKind.Windows, OSArch.Any, FilterRule.LessThan, "10.0.0.0")]
     public class FlacCodec : ICodecProvider

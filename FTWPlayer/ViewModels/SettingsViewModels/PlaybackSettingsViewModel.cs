@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Configuration;
 using System.Linq;
 using System.Windows.Controls;
@@ -11,7 +10,6 @@ using FuwaTea.Extensibility.ConfigurationTemp;
 namespace FTWPlayer.ViewModels.SettingsViewModels
 {
     //[UIPart("Playback settings tab")]
-    [Export(typeof(ISettingsTab))]
     [Reuse(ReuseType.Singleton)]
     public class PlaybackSettingsViewModel : ISettingsTab
     {

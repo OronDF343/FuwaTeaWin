@@ -16,7 +16,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using DryIocAttributes;
 using FuwaTea.Extensibility;
 using NAudio.Wave;
@@ -24,7 +23,6 @@ using NAudio.Wave;
 namespace FuwaTea.Playback.NAudio.Codecs
 {
     //[NAudioExtension("MediaFoundation on Windows Vista and higher (MP3, WMA, M4A, AAC) (M4A/AAC on Windows Vista requires KB2117917)")]
-    [Export(typeof(ICodecProvider))]
     [Reuse(ReuseType.Singleton)]
     [PlatformFilter(FilterAction.Whitelist, OSKind.Windows, OSArch.Any, FilterRule.GreaterThan, "6.0.0.0")]
     public class MediaFoundationVistaCodec : ICodecProvider
@@ -41,7 +39,6 @@ namespace FuwaTea.Playback.NAudio.Codecs
     }
 
     //[NAudioExtension("MediaFoundation on Windows 7 and higher (ADTS)")]
-    [Export(typeof(ICodecProvider))]
     [Reuse(ReuseType.Singleton)]
     [PlatformFilter(FilterAction.Whitelist, OSKind.Windows, OSArch.Any, FilterRule.GreaterThan, "6.1.0.0")]
     public class MediaFoundationWin7Codec : ICodecProvider
@@ -58,7 +55,6 @@ namespace FuwaTea.Playback.NAudio.Codecs
     }
 
     //[NAudioExtension("MediaFoundation on Windows 8 and higher (AC3)")]
-    [Export(typeof(ICodecProvider))]
     [Reuse(ReuseType.Singleton)]
     [PlatformFilter(FilterAction.Whitelist, OSKind.Windows, OSArch.Any, FilterRule.GreaterThan, "6.2.0.0")]
     public class MediaFoundationWin8Codec : ICodecProvider
@@ -75,7 +71,6 @@ namespace FuwaTea.Playback.NAudio.Codecs
     }
 
     //[NAudioExtension("MediaFoundation on Windows 10 and higher (FLAC)")]
-    [Export(typeof(ICodecProvider))]
     [Reuse(ReuseType.Singleton)]
     [PlatformFilter(FilterAction.Whitelist, OSKind.Windows, OSArch.Any, FilterRule.GreaterThan, "10.0.0.0")]
     public class MediaFoundationWin10Codec : ICodecProvider

@@ -13,11 +13,10 @@ using JetBrains.Annotations;
 namespace FTWPlayer.ViewModels
 {
     //[UIPart("Player Tab")]
-    [Export(typeof(ITab))]
     [Reuse(ReuseType.Singleton)]
     public class PlayerViewModel : ITab, INotifyPropertyChanged
     {
-        [ImportingConstructor]
+        
         public PlayerViewModel([Import] IPlaybackManager playbackManager, [Import] IAlbumArtLocator albumArtLocator)
         {
             PlaybackManager = playbackManager;

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
 using System.Configuration;
 using System.Linq;
 using System.Windows.Controls;
@@ -15,7 +14,6 @@ using GalaSoft.MvvmLight.CommandWpf;
 namespace FTWPlayer.ViewModels.SettingsViewModels
 {
     //[UIPart("Key Bindings settings tab")]
-    [Export(typeof(ISettingsTab))]
     [Reuse(ReuseType.Singleton)]
     public class KeyBindingsViewModel : ISettingsTab
     {

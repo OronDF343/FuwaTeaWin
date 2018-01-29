@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using JetBrains.Annotations;
 
 namespace FTWPlayer.Skins
 {
+    [InheritedExport]
     public interface ISkinManager : IUIPart
     {
         ObservableCollection<SkinPackage> LoadedSkins { get; }

@@ -32,11 +32,10 @@ using JetBrains.Annotations;
 namespace FuwaTea.Playlist
 {
     //[PlaylistHandler("Playlist Manager")]
-    [Export(typeof(IPlaylistManager))]
     [Reuse(ReuseType.Singleton)]
     public class PlaylistManager : IPlaylistManager
     {
-        [ImportingConstructor]
+        
         public PlaylistManager([ImportMany] IEnumerable<IPlaylistReader> readers,
                                [ImportMany] IEnumerable<IPlaylistWriter> writers,
                                [ImportMany] IEnumerable<ITagProvider> tagProviders)

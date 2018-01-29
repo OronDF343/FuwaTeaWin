@@ -15,10 +15,12 @@
 //     along with FuwaTeaWin.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 
+using System.ComponentModel.Composition;
 using FuwaTea.Lib;
 
 namespace FuwaTea.Playlist.Writers
 {
+    [InheritedExport]
     public interface IPlaylistWriter : IFileHandler, IPlaylistHandler
     {
         /// <summary>

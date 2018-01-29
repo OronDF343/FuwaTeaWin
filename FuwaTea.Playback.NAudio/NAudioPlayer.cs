@@ -39,7 +39,7 @@ namespace FuwaTea.Playback.NAudio
     [Reuse(ReuseType.Singleton)]
     public sealed class NAudioPlayer : IAudioPlayer, IStreamingAudioPlayer
     {
-        [ImportingConstructor]
+        
         public NAudioPlayer([ImportMany] IEnumerable<ICodecProvider> codecs, [ImportMany] IEnumerable<IEffectProvider> effects)
         {
             _codecs = codecs.ToList();

@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using DryIocAttributes;
 using NAudio.Wave;
 
 namespace FuwaTea.Playback.NAudio.Codecs
 {
     //[NAudioExtension("Wavpack file reader")]
-    [Export(typeof(ICodecProvider))]
     [Reuse(ReuseType.Singleton)]
     public class WavpackCodec : ICodecProvider
     {

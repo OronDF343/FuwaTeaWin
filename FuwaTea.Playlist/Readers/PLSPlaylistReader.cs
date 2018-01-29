@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using DryIocAttributes;
@@ -10,7 +9,6 @@ using log4net;
 namespace FuwaTea.Playlist.Readers
 {
     //[PlaylistHandler("PLS Playlist Reader")]
-    [Export(typeof(IPlaylistReader))]
     [Reuse(ReuseType.Singleton)]
     public class PLSPlaylistReader : IPlaylistReader
     {

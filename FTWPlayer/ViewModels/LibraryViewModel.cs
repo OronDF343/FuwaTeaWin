@@ -15,11 +15,10 @@ using Microsoft.Win32;
 namespace FTWPlayer.ViewModels
 {
     //[UIPart("Library Tab")]
-    [Export(typeof(ITab))]
     [Reuse(ReuseType.Singleton)]
     public class LibraryViewModel : ITab
     {
-        [ImportingConstructor]
+        
         public LibraryViewModel([Import] IPlaylistManager playlistManager)
         {
             TabObject = new LibraryView(this);

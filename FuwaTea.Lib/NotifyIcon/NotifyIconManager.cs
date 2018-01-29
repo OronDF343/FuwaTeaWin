@@ -15,7 +15,7 @@ namespace FuwaTea.Lib.NotifyIcon
     {
         private readonly ITrayManager _trayManager;
 
-        [ImportingConstructor]
+        
         public NotifyIconManager([Import] ITrayManager trayManager)
         {
             _trayManager = trayManager;

@@ -16,11 +16,10 @@ using JetBrains.Annotations;
 namespace FTWPlayer.ViewModels.SettingsViewModels
 {
     //[UIPart("Skin Selection")]
-    [Export(typeof(ISettingsTab))]
     [Reuse(ReuseType.Singleton)]
     public class SkinsViewModel : ISettingsTab, INotifyPropertyChanged
     {
-        [ImportingConstructor]
+        
         public SkinsViewModel([Import] ISkinManager skinManager)
         {
             SkinManager = skinManager;

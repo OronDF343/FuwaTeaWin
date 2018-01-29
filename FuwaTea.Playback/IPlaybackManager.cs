@@ -17,11 +17,13 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using FuwaTea.Lib;
 using FuwaTea.Playlist;
 
 namespace FuwaTea.Playback
 {
+    [InheritedExport]
     public interface IPlaybackManager : IPlaylistPositionManager, IPlaybackElement, IFileHandler, IDisposable
     {
         bool IsSomethingLoaded { get; }

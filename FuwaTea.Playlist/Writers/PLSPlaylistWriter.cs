@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.IO;
 using System.Text;
 using DryIocAttributes;
@@ -8,7 +7,6 @@ using FuwaTea.Lib;
 namespace FuwaTea.Playlist.Writers
 {
     //[PlaylistHandler("PLS Playlist Writer")]
-    [Export(typeof(IPlaylistWriter))]
     [Reuse(ReuseType.Singleton)]
     public class PLSPlaylistWriter : IPlaylistWriter
     {

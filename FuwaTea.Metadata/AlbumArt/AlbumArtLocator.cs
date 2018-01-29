@@ -23,13 +23,12 @@ using DryIocAttributes;
 namespace FuwaTea.Metadata.AlbumArt
 {
     //[MetadataLoader("Album Art Locator")]
-    [Export(typeof(IAlbumArtLocator))]
     [Reuse(ReuseType.Singleton)]
     public class AlbumArtLocator : IAlbumArtLocator
     {
         private readonly IAlbumArtStreamLoader _loader;
 
-        [ImportingConstructor]
+        
         public AlbumArtLocator([Import] IAlbumArtStreamLoader loader)
         {
             _loader = loader;

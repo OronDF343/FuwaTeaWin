@@ -15,11 +15,10 @@ using JetBrains.Annotations;
 namespace FTWPlayer.ViewModels
 {
     //[UIPart("Tag editor")]
-    [Export(typeof(ITab))]
     [Reuse(ReuseType.Singleton)]
     public class TagsViewModel : ITab, INotifyPropertyChanged
     {
-        [ImportingConstructor]
+        
         public TagsViewModel([Import] IPlaybackManager playbackManager)
         {
             _playbackManager = playbackManager;

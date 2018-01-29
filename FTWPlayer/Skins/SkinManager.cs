@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -20,7 +19,6 @@ using XamlReader = System.Windows.Markup.XamlReader;
 namespace FTWPlayer.Skins
 {
     //[UIPart("Skin Manager")]
-    [Export(typeof(ISkinManager))]
     [Reuse(ReuseType.Singleton)]
     public class SkinManager : ISkinManager
     {

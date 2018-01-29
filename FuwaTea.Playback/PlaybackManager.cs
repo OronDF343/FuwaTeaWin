@@ -32,11 +32,10 @@ using log4net;
 namespace FuwaTea.Playback
 {
     //[PlaybackElement("Playback Manager")]
-    [Export(typeof(IPlaybackManager))]
     [Reuse(ReuseType.Singleton)]
     public class PlaybackManager : IPlaybackManager
     {
-        [ImportingConstructor]
+        
         public PlaybackManager([Import] IPlaylistManager playlistManager,
                                [ImportMany] IEnumerable<IAudioPlayer> audioPlayers,
                                [ImportMany] IEnumerable<IStreamingAudioPlayer> streamingAudioPlayers)

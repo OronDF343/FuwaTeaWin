@@ -17,10 +17,12 @@
 
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using JetBrains.Annotations;
 
 namespace FuwaTea.Playlist
 {
+    [InheritedExport]
     public interface IPlaylistManager : IPlaylistHandler, INotifyPropertyChanged
     {
         [NotNull]

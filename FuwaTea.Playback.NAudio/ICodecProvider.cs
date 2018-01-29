@@ -15,11 +15,13 @@
 //     along with FuwaTeaWin.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 
+using System.ComponentModel.Composition;
 using FuwaTea.Lib;
 using NAudio.Wave;
 
 namespace FuwaTea.Playback.NAudio
 {
+    [InheritedExport]
     public interface ICodecProvider : IFileHandler, INAudioExtension
     {
         WaveStream CreateWaveStream(string path);

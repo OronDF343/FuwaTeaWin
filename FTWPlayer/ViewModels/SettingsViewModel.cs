@@ -12,11 +12,10 @@ using FTWPlayer.Views;
 namespace FTWPlayer.ViewModels
 {
     //[UIPart("Settings Tab")]
-    [Export(typeof(ITab))]
     [Reuse(ReuseType.Singleton)]
     public class SettingsViewModel : ITab
     {
-        [ImportingConstructor]
+        
         public SettingsViewModel([ImportMany] IEnumerable<ISettingsTab> settingsTabs)
         {
             TabObject = new SettingsView(this);

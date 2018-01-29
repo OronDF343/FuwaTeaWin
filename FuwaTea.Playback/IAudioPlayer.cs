@@ -17,10 +17,12 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using FuwaTea.Lib;
 
 namespace FuwaTea.Playback
 {
+    [InheritedExport]
     public interface IAudioPlayer : IPlaybackElement, IFileHandler, IDisposable
     {
         /// <summary>

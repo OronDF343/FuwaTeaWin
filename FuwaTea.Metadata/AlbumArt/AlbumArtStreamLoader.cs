@@ -16,7 +16,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using DryIocAttributes;
@@ -25,7 +24,6 @@ using FuwaTea.Metadata.Tags;
 namespace FuwaTea.Metadata.AlbumArt
 {
     //[MetadataLoader("Album Art Loader")]
-    [Export(typeof(IAlbumArtStreamLoader))]
     [Reuse(ReuseType.Singleton)]
     public class AlbumArtStreamLoader : IAlbumArtStreamLoader
     {

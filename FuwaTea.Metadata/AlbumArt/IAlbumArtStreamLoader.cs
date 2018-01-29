@@ -16,11 +16,13 @@
 #endregion
 
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
 using JetBrains.Annotations;
 
 namespace FuwaTea.Metadata.AlbumArt
 {
+    [InheritedExport]
     public interface IAlbumArtStreamLoader : IMetadataLoader
     {
         [CanBeNull]
