@@ -52,13 +52,13 @@ namespace FuwaTea.Extensibility
             var platformFilter = a.GetCustomAttribute<PlatformFilterAttribute>();
             // First, check the arch
             if (platformFilter.Action == FilterAction.Whitelist ^ platformFilter.ProcessArchitecture.AppliesTo(RuntimeInformation.ProcessArchitecture))
-                throw new ExtensibilityException($"Process architecture mismatch: Extension {extdef.Key} expects platform {platformFilter.ProcessArchitecture}, but this process runs as {RuntimeInformation.ProcessArchitecture}!");
+                throw new ExtensibilityException($"Process architecture mismatch: Extension {extdef.Key} will {platformFilter.Action} platform {platformFilter.ProcessArchitecture}, but this process runs as {RuntimeInformation.ProcessArchitecture}!");
             // Next, the OS
             if (platformFilter.Action == FilterAction.Whitelist ^ RuntimeInformation.IsOSPlatform(platformFilter.OSKind.ToOSPlatform()))
-                throw new ExtensibilityException($"OS kind mismatch: Extension {extdef.Key} expects OS kind {platformFilter.OSKind}, but the current OS is different!");
+                throw new ExtensibilityException($"OS kind mismatch: Extension {extdef.Key} will {platformFilter.Action} OS kind {platformFilter.OSKind}, but the current OS is different!");
             // Finally, the OS version
             if (platformFilter.Action == FilterAction.Whitelist ^ platformFilter.OSVersionMatches())
-                throw new ExtensibilityException($"OS version mismatch: Extension {extdef.Key} expects OS version {platformFilter.Rule} {platformFilter.Version}{(platformFilter.Rule == FilterRule.Between ? " and " + platformFilter.OtherVersion : "")}, but the current OS is of a version outside of this range!");
+                throw new ExtensibilityException($"OS version mismatch: Extension {extdef.Key} will {platformFilter.Action} an OS version that is {platformFilter.Rule} {platformFilter.Version}{(platformFilter.Rule == FilterRule.Between ? " and " + platformFilter.OtherVersion : "")}, but the current OS is of a version outside of this range!");
             
             var exports = AttributedModel.Scan(new[] { a }).ToList();
             _iocContainer.RegisterExports(exports); //*
