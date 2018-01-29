@@ -20,24 +20,38 @@ namespace FuwaTea.Extensibility
             }
         }
 
-        public static bool AppliesToCurrentPlatform([NotNull] this IPlatformFilter filter)
+        public static bool OSVersionMatches([NotNull] this IPlatformFilter filter)
         {
-            return RuntimeInformation.IsOSPlatform(filter.OSKind.ToOSPlatform())
-                   && filter.ProcessArchitecture.AppliesTo(RuntimeInformation.ProcessArchitecture);
+            var cver = Environment.OSVersion.Version;
+            var fver = new Version(filter.Version);
+            switch (filter.Rule)
+            {
+                case FilterRule.Any: return true;
+                case FilterRule.Equals: return cver == fver;
+                case FilterRule.LessThan: return cver < fver;
+                case FilterRule.GreaterThan: return cver > fver;
+                case FilterRule.LessThanOrEqualTo: return cver < fver;
+                case FilterRule.GreaterThanOrEqualTo: return cver > fver;
+                case FilterRule.Between:
+                    var fver2 = new Version(filter.OtherVersion);
+                    return cver > fver && cver < fver2; // TODO: Consider <= >= combinations
+            }
+
+            return false;
         }
 
-        public static bool AppliesTo(this OSArch arch, System.Runtime.InteropServices.Architecture arch2)
+        public static bool AppliesTo(this ProcessArch arch, Architecture arch2)
         {
             switch (arch2)
             {
-                case System.Runtime.InteropServices.Architecture.X86:
-                    return arch.HasFlag(OSArch.X86);
-                case System.Runtime.InteropServices.Architecture.X64:
-                    return arch.HasFlag(OSArch.X64);
-                case System.Runtime.InteropServices.Architecture.Arm:
-                    return arch.HasFlag(OSArch.Arm);
-                case System.Runtime.InteropServices.Architecture.Arm64:
-                    return arch.HasFlag(OSArch.Arm64);
+                case Architecture.X86:
+                    return (arch & ProcessArch.X86) > 0;
+                case Architecture.X64:
+                    return (arch & ProcessArch.X64) > 0;
+                case Architecture.Arm:
+                    return (arch & ProcessArch.Arm) > 0;
+                case Architecture.Arm64:
+                    return (arch & ProcessArch.Arm64) > 0;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(arch2), arch2, null);
             }

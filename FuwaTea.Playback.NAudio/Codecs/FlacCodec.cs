@@ -24,7 +24,7 @@ namespace FuwaTea.Playback.NAudio.Codecs
 {
     //[NAudioExtension("FLAC file reader (non-MF)")]
     [Reuse(ReuseType.Singleton)]
-    [PlatformFilter(FilterAction.Whitelist, OSKind.Windows, OSArch.Any, FilterRule.LessThan, "10.0.0.0")]
+    [PlatformFilter(FilterAction.Whitelist, OSKind.Windows, ProcessArch.Any, FilterRule.LessThan, "10.0.0.0")]
     public class FlacCodec : ICodecProvider
     {
         public WaveStream CreateWaveStream(string path)

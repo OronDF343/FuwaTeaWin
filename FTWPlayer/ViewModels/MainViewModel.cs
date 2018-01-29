@@ -54,7 +54,6 @@ namespace FTWPlayer.ViewModels
             MainViewModelScope = ((App)Application.Current).MainContainer.OpenScope(nameof(MainViewModel));
             PlaybackManager = MainViewModelScope.Resolve<IPlaybackManager>();
             PlaylistManager = MainViewModelScope.Resolve<IPlaylistManager>();
-            MainViewModelScope.Resolve<ITrayManager>();
             NotifyIconManager = MainViewModelScope.Resolve<NotifyIconManager>();
 
             _tmr = new DispatcherTimer(TimeSpan.FromMilliseconds(100), DispatcherPriority.ApplicationIdle, Tick,

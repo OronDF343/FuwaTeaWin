@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using DryIoc;
 using DryIoc.MefAttributedModel;
 using JetBrains.Annotations;
@@ -12,11 +14,12 @@ namespace FuwaTea.Extensibility
     {
         private IContainer _iocContainer = new Container();
         [NotNull]
-        private readonly Dictionary<string, (ExtensionInfo, IContainer)> _extensions;
+        private readonly Dictionary<string, ExtensionInfo> _extensions;
+        public IReadOnlyDictionary<string, ExtensionInfo> LoadedExtensions => new ReadOnlyDictionary<string, ExtensionInfo>(_extensions);
 
         public ExtensibilityContainer()
         {
-            _extensions = new Dictionary<string, (ExtensionInfo, IContainer)>();
+            _extensions = new Dictionary<string, ExtensionInfo>();
         }
 
         public ExtensionInfo LoadExtension(AssemblyName dll, bool overrideApiVersionWhitelist = false)
@@ -39,21 +42,31 @@ namespace FuwaTea.Extensibility
 
         public ExtensionInfo LoadExtension(Assembly a, bool overrideApiVersionWhitelist = false)
         {
-            // TODO: Update code for ApiVersion checking?
-            // TODO: Add platform checking!
-            
             var extdef = a.GetCustomAttribute<ExtensionAttribute>();
-            if (extdef == null) return null;
-            // Check ApiVersion here
-            var platformFilter = a.GetCustomAttribute<PlatformFilterAttribute>();
-            // Check platform here
+            if (extdef == null) throw new ExtensibilityException($"The assembly {a.FullName} is not an extension!");
+            // Check ApiVersion
+            if (!ExtensibilityConstants.CheckApiVersion(extdef.ApiVersion, overrideApiVersionWhitelist))
+                throw new ExtensibilityException($"API version mismatch: Extension {extdef.Key} targets the wrong API version {extdef.ApiVersion}, current version is {ExtensibilityConstants.CurrentApiVersion}!");
 
+            // Check platform
+            var platformFilter = a.GetCustomAttribute<PlatformFilterAttribute>();
+            // First, check the arch
+            if (platformFilter.Action == FilterAction.Whitelist ^ platformFilter.ProcessArchitecture.AppliesTo(RuntimeInformation.ProcessArchitecture))
+                throw new ExtensibilityException($"Process architecture mismatch: Extension {extdef.Key} expects platform {platformFilter.ProcessArchitecture}, but this process runs as {RuntimeInformation.ProcessArchitecture}!");
+            // Next, the OS
+            if (platformFilter.Action == FilterAction.Whitelist ^ RuntimeInformation.IsOSPlatform(platformFilter.OSKind.ToOSPlatform()))
+                throw new ExtensibilityException($"OS kind mismatch: Extension {extdef.Key} expects OS kind {platformFilter.OSKind}, but the current OS is different!");
+            // Finally, the OS version
+            if (platformFilter.Action == FilterAction.Whitelist ^ platformFilter.OSVersionMatches())
+                throw new ExtensibilityException($"OS version mismatch: Extension {extdef.Key} expects OS version {platformFilter.Rule} {platformFilter.Version}{(platformFilter.Rule == FilterRule.Between ? " and " + platformFilter.OtherVersion : "")}, but the current OS is of a version outside of this range!");
+            
             var exports = AttributedModel.Scan(new[] { a }).ToList();
-            var c = new Container().WithMefAttributedModel();
-            c.RegisterExports(exports);
+            _iocContainer.RegisterExports(exports); //*
+            //var c = new Container().WithMefAttributedModel();
+            //c.RegisterExports(exports);
 
             IExtensionBasicInfo info;
-            try { info = c.Resolve<IExtensionBasicInfo>(ExtensibilityConstants.InfoExportKey); }
+            try { info = _iocContainer.Resolve<IExtensionBasicInfo>(ExtensibilityConstants.InfoExportKey); }
             catch
             {
                 info = new ExtensionBasicInfo
@@ -65,21 +78,21 @@ namespace FuwaTea.Extensibility
                 };
             }
 
-            _iocContainer = _iocContainer.With(rules => rules.WithFallbackContainer(c));
+            //_iocContainer = _iocContainer.With(rules => rules.WithFallbackContainer(c));
             var extinfo = new ExtensionInfo(a.GetName(), a.Location, extdef.Key, extdef.ApiVersion, info);
-            _extensions.Add(extdef.Key, (extinfo, c));
+            _extensions.Add(extdef.Key, extinfo);
             return extinfo;
         }
 
         // TODO: Save/load cache - in Core
 
-        public void UnloadExtension(string key)
-        {
-            if (key == null) throw new ArgumentNullException(nameof(key));
-            var c = GetExtensionContainer(key);
-            if (c == null) return;
-            _iocContainer = _iocContainer.With(rules => rules.WithoutFallbackContainer(c));
-        }
+        //public void UnloadExtension(string key)
+        //{
+        //    if (key == null) throw new ArgumentNullException(nameof(key));
+        //    var c = GetExtensionContainer(key);
+        //    if (c == null) return;
+        //    _iocContainer = _iocContainer.With(rules => rules.WithoutFallbackContainer(c));
+        //}
 
         // Use with caution!!!
         public void DeleteAllSingletonsAndCache()
@@ -93,44 +106,15 @@ namespace FuwaTea.Extensibility
             return _iocContainer.OpenScope(name);
         }
 
-        public IEnumerable<ExtensionInfo> GetAllExtensionInfo()
-        {
-            return _extensions.Values.Select(ext => ext.Item1);
-        }
-
-        // Extension method?
-        public ExtensionInfo GetExtensionInfo(string key = null, string dllPath = null)
-        {
-            return _extensions.FirstOrDefault(p => p.Key == key || p.Value.Item1.DllPath == dllPath).Value.Item1;
-        }
-
-        public bool IsExtensionLoaded([NotNull] string extensionKey)
-        {
-            if (extensionKey == null) throw new ArgumentNullException(nameof(extensionKey));
-            var c = GetExtensionContainer(extensionKey);
-            return c != null && IsExtensionLoaded(c);
-        }
-
-        public bool ReloadExtension([NotNull] string extensionKey)
-        {
-            // TODO: Check if extension is already loaded
-            if (extensionKey == null) throw new ArgumentNullException(nameof(extensionKey));
-            var c = GetExtensionContainer(extensionKey);
-            if (c == null) return false;
-            _iocContainer = _iocContainer.With(rules => rules.WithFallbackContainer(c));
-            return true;
-        }
-
-        [CanBeNull]
-        private IContainer GetExtensionContainer([NotNull] string extensionKey)
-        {
-            return _extensions.TryGetValue(extensionKey, out var ext) ? ext.Item2 : null;
-        }
-
-        private bool IsExtensionLoaded([NotNull] IContainer c)
-        {
-            return _iocContainer.Rules.FallbackContainers.Any(cwr => cwr.Container == c);
-        }
+        //public bool ReloadExtension([NotNull] string extensionKey)
+        //{
+        //    // TODO: Check if extension is already loaded
+        //    if (extensionKey == null) throw new ArgumentNullException(nameof(extensionKey));
+        //    var c = GetExtensionContainer(extensionKey);
+        //    if (c == null) return false;
+        //    _iocContainer = _iocContainer.With(rules => rules.WithFallbackContainer(c));
+        //    return true;
+        //}
 
         public void Dispose()
         {

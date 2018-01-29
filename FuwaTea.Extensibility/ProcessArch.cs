@@ -3,7 +3,7 @@
 namespace FuwaTea.Extensibility
 {
     [Flags]
-    public enum OSArch
+    public enum ProcessArch
     {
         Other = 0,
         X86 = 1,

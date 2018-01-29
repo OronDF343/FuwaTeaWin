@@ -8,8 +8,8 @@ using JetBrains.Annotations;
 namespace FuwaTea.Lib.NotifyIcon
 {
     // [LibComponent("Windows XP/Vista/7 Tray Manager")]
-    [Reuse(ReuseType.Transient)]
-    [PlatformFilter(FilterAction.Whitelist, OSKind.Windows, OSArch.Any, FilterRule.LessThan, "6.2.0.0")]
+    [Reuse(ReuseType.Singleton)]
+    [PlatformFilter(FilterAction.Whitelist, OSKind.Windows, ProcessArch.Any, FilterRule.LessThan, "6.2.0.0")]
     public class TrayManager7 : ITrayManager
     {
         [NotNull]

@@ -7,7 +7,7 @@ namespace FuwaTea.Extensibility
     [MetadataAttribute]
     public class PlatformFilterAttribute : Attribute, IPlatformFilter
     {
-        public PlatformFilterAttribute(FilterAction action, OSKind osKind, OSArch procArch = OSArch.Any,
+        public PlatformFilterAttribute(FilterAction action, OSKind osKind, ProcessArch procArch = ProcessArch.Any,
                                        FilterRule rule = FilterRule.Any, string version = null)
         {
             Action = action;
@@ -20,7 +20,7 @@ namespace FuwaTea.Extensibility
         public FilterAction Action { get; }
         public OSKind OSKind { get; }
         public FilterRule Rule { get; }
-        public OSArch ProcessArchitecture { get; }
+        public ProcessArch ProcessArchitecture { get; }
         public string Version { get; }
         public string OtherVersion { get; set; }
     }
