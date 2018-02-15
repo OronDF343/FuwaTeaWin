@@ -14,13 +14,9 @@ namespace FuwaTea.Extensibility
     {
         private IContainer _iocContainer = new Container();
         [NotNull]
-        private readonly Dictionary<string, ExtensionInfo> _extensions;
+        private readonly Dictionary<string, ExtensionInfo> _extensions = new Dictionary<string, ExtensionInfo>();
         public IReadOnlyDictionary<string, ExtensionInfo> LoadedExtensions => new ReadOnlyDictionary<string, ExtensionInfo>(_extensions);
-
-        public ExtensibilityContainer()
-        {
-            _extensions = new Dictionary<string, ExtensionInfo>();
-        }
+        private readonly Dictionary<string, IContainer> _isolatedContainers = new Dictionary<string, IContainer>();
 
         public ExtensionInfo LoadExtension(AssemblyName dll, bool overrideApiVersionWhitelist = false)
         {
@@ -39,8 +35,8 @@ namespace FuwaTea.Extensibility
                 throw new ExtensibilityException("Failed to load assembly: result was null - possible platform error");
             return LoadExtension(a, overrideApiVersionWhitelist);
         }
-
-        public ExtensionInfo LoadExtension(Assembly a, bool overrideApiVersionWhitelist = false)
+        
+        public ExtensionInfo LoadExtension(Assembly a, bool isolated = false, bool overrideApiVersionWhitelist = false)
         {
             var extdef = a.GetCustomAttribute<ExtensionAttribute>();
             if (extdef == null) throw new ExtensibilityException($"The assembly {a.FullName} is not an extension!");
@@ -61,12 +57,20 @@ namespace FuwaTea.Extensibility
                 throw new ExtensibilityException($"OS version mismatch: Extension {extdef.Key} will {platformFilter.Action} an OS version that is {platformFilter.Rule} {platformFilter.Version}{(platformFilter.Rule == FilterRule.Between ? " and " + platformFilter.OtherVersion : "")}, but the current OS is of a version outside of this range!");
             
             var exports = AttributedModel.Scan(new[] { a }).ToList();
-            _iocContainer.RegisterExports(exports); //*
-            //var c = new Container().WithMefAttributedModel();
-            //c.RegisterExports(exports);
+            IContainer target;
+            if (isolated)
+            {
+                target = new Container().WithMefAttributedModel();
+                target.RegisterExports(exports);
+            }
+            else
+            {
+                target = _iocContainer;
+                _iocContainer.RegisterExports(exports);
+            }
 
             IExtensionBasicInfo info;
-            try { info = _iocContainer.Resolve<IExtensionBasicInfo>(ExtensibilityConstants.InfoExportKey); }
+            try { info = target.Resolve<IExtensionBasicInfo>(ExtensibilityConstants.InfoExportKey); }
             catch
             {
                 info = new ExtensionBasicInfo
@@ -78,21 +82,25 @@ namespace FuwaTea.Extensibility
                 };
             }
 
-            //_iocContainer = _iocContainer.With(rules => rules.WithFallbackContainer(c));
             var extinfo = new ExtensionInfo(a.GetName(), a.Location, extdef.Key, extdef.ApiVersion, info);
+            if (target != _iocContainer)
+            {
+                _iocContainer = _iocContainer.With(rules => rules.WithFallbackContainer(target));
+                _isolatedContainers.Add(extdef.Key, target);
+            }
             _extensions.Add(extdef.Key, extinfo);
             return extinfo;
         }
 
         // TODO: Save/load cache - in Core
-
-        //public void UnloadExtension(string key)
-        //{
-        //    if (key == null) throw new ArgumentNullException(nameof(key));
-        //    var c = GetExtensionContainer(key);
-        //    if (c == null) return;
-        //    _iocContainer = _iocContainer.With(rules => rules.WithoutFallbackContainer(c));
-        //}
+        
+        public void UnloadIsolatedExtension(string key)
+        {
+            if (key == null) throw new ArgumentNullException(nameof(key));
+            var c = _isolatedContainers[key];
+            _iocContainer = _iocContainer.With(rules => rules.WithoutFallbackContainer(c));
+            _isolatedContainers.Remove(key);
+        }
 
         // Use with caution!!!
         public void DeleteAllSingletonsAndCache()
