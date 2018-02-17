@@ -7,4 +7,9 @@ namespace FuwaTea.Extensibility
         public AutoInitializeAttribute()
             : base(ExtensibilityConstants.AutoInitKey) { }
     }
+    public class InheritedAutoInitializeAttribute : InheritedExportAttribute
+    {
+        public InheritedAutoInitializeAttribute()
+            : base(ExtensibilityConstants.AutoInitKey) { }
+    }
 }
