@@ -56,6 +56,7 @@ namespace FuwaTea.Extensibility
             if (platformFilter.Action == FilterAction.Whitelist ^ platformFilter.OSVersionMatches())
                 throw new ExtensibilityException($"OS version mismatch: Extension {extdef.Key} will {platformFilter.Action} an OS version that is {platformFilter.Rule} {platformFilter.Version}{(platformFilter.Rule == FilterRule.Between ? " and " + platformFilter.OtherVersion : "")}, but the current OS is of a version outside of this range!");
             
+            // Building and registration
             var exports = AttributedModel.Scan(new[] { a }).ToList();
             IContainer target;
             if (isolated)
@@ -69,6 +70,7 @@ namespace FuwaTea.Extensibility
                 _iocContainer.RegisterExports(exports);
             }
 
+            // Get extension info
             IExtensionBasicInfo info;
             try { info = target.Resolve<IExtensionBasicInfo>(ExtensibilityConstants.InfoExportKey); }
             catch
@@ -81,8 +83,13 @@ namespace FuwaTea.Extensibility
                     Version = a.GetCustomAttribute<AssemblyVersionAttribute>()?.Version
                 };
             }
-
             var extinfo = new ExtensionInfo(a.GetName(), a.Location, extdef.Key, extdef.ApiVersion, info);
+
+            // AutoInitialize
+            target.ResolveMany(null, serviceKey: ExtensibilityConstants.AutoInitKey).ToList();
+            // This should have forced initialization of the objects
+
+            // Finishing up
             if (target != _iocContainer)
             {
                 _iocContainer = _iocContainer.With(rules => rules.WithFallbackContainer(target));
