@@ -2,5 +2,6 @@
 {
     public interface IConfigPage
     {
+        // TODO: Custom serialization overrides
     }
 }

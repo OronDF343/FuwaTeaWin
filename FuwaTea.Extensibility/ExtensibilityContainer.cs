@@ -92,14 +92,26 @@ namespace FuwaTea.Extensibility
             return extinfo;
         }
 
+        public void AddIsolatedContainer(IContainer c, string key)
+        {
+            _iocContainer = _iocContainer.With(rules => rules.WithFallbackContainer(c));
+            _isolatedContainers.Add(key, c);
+        }
+
         // TODO: Save/load cache - in Core
         
-        public void UnloadIsolatedExtension(string key)
+        public void UnloadIsolated(string key)
         {
             if (key == null) throw new ArgumentNullException(nameof(key));
             var c = _isolatedContainers[key];
             _iocContainer = _iocContainer.With(rules => rules.WithoutFallbackContainer(c));
             _isolatedContainers.Remove(key);
+        }
+
+        public void UnloadAllIsolated()
+        {
+            foreach (var key in _isolatedContainers.Keys)
+                UnloadIsolated(key);
         }
 
         // Use with caution!!!

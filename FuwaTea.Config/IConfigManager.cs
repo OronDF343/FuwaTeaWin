@@ -3,7 +3,7 @@
 namespace FuwaTea.Config
 {
     [InheritedExport]
-    public interface IConfigFile
+    public interface IConfigManager
     {
 
     }
