@@ -5,6 +5,7 @@ VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 12.0.31101.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FTWPlayer", "FTWPlayer\FTWPlayer.csproj", "{D14F368C-AB9B-4DF3-A8F7-CF42B66F7E40}"
 	ProjectSection(ProjectDependencies) = postProject
+		{E4773A23-838D-40AD-8466-58FDB07237E0} = {E4773A23-838D-40AD-8466-58FDB07237E0}
 		{C6003F63-4717-4B45-8890-B3C02F7209D9} = {C6003F63-4717-4B45-8890-B3C02F7209D9}
 	EndProjectSection
 EndProject
@@ -24,7 +25,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Metadata", "FuwaTea
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuwaTea.Extensibility", "FuwaTea.Extensibility\FuwaTea.Extensibility.csproj", "{E4773A23-838D-40AD-8466-58FDB07237E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Config", "FuwaTea.Config\FuwaTea.Config.csproj", "{8FCC92DC-2982-4017-8944-C50571F40A33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuwaTea.Config", "FuwaTea.Config\FuwaTea.Config.csproj", "{8FCC92DC-2982-4017-8944-C50571F40A33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

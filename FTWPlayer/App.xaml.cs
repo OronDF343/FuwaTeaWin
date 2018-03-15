@@ -34,6 +34,7 @@ using DryIoc;
 using FTWPlayer.Localization;
 using FTWPlayer.Properties;
 using FTWPlayer.Skins;
+using FuwaTea.Config;
 using FuwaTea.Extensibility;
 using FuwaTea.Extensibility.ConfigurationTemp;
 using FuwaTea.Lib;
@@ -540,6 +541,9 @@ namespace FTWPlayer
 
         private void InitDynamicSettings()
         {
+            AppScope.Resolve<IConfigManager>().LoadAllConfigPages();
+
+            // TODO: Remove below here when ready!
             var provider = Settings.Default.Properties["LastVersion"]?.Provider;
             var dict = new SettingsAttributeDictionary
             {

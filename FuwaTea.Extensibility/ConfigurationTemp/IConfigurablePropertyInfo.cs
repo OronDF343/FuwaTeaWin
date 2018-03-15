@@ -5,6 +5,7 @@ using System.Reflection;
 
 namespace FuwaTea.Extensibility.ConfigurationTemp
 {
+    [Obsolete]
     public interface IConfigurablePropertyInfo : INotifyPropertyChanged
     {
         string Name { get; }

@@ -313,6 +313,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FuwaTea.Config\FuwaTea.Config.csproj">
+      <Project>{8FCC92DC-2982-4017-8944-C50571F40A33}</Project>
+      <Name>FuwaTea.Config</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FuwaTea.Extensibility\FuwaTea.Extensibility.csproj">
       <Project>{e4773a23-838d-40ad-8466-58fdb07237e0}</Project>
       <Name>FuwaTea.Extensibility</Name>

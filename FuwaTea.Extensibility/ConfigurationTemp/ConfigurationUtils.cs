@@ -5,6 +5,7 @@ using DryIoc;
 
 namespace FuwaTea.Extensibility.ConfigurationTemp
 {
+    [Obsolete]
     public static class ConfigurationUtils
     {
         /// <summary>

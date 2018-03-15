@@ -8,6 +8,7 @@ using JetBrains.Annotations;
 
 namespace FuwaTea.Extensibility.ConfigurationTemp
 {
+    [Obsolete]
     public class ConfigurablePropertyInfo<TElement> : IConfigurablePropertyInfo
     {
         public ConfigurablePropertyInfo(PropertyInfo pi, ConfigurablePropertyAttribute cpa)

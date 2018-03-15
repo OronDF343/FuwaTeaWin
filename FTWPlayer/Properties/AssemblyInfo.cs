@@ -27,8 +27,8 @@ using FuwaTea.Extensibility;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("OronDF343")]
-[assembly: AssemblyProduct("FuwaTeaWin")]
-[assembly: AssemblyCopyright("Copyright © 2015 OronDF343")]
+[assembly: AssemblyProduct("FuwaTeaWin_Rewrite2018")]
+[assembly: AssemblyCopyright("Copyright © 2018 OronDF343")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -69,5 +69,5 @@ using FuwaTea.Extensibility;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.1.0.0")]
-[assembly: AssemblyFileVersion("0.1.0.0")]
+[assembly: AssemblyVersion("0.2.0.0")]
+[assembly: AssemblyFileVersion("0.2.0.0")]

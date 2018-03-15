@@ -2,6 +2,7 @@
 
 namespace FuwaTea.Extensibility.ConfigurationTemp
 {
+    [Obsolete]
     [AttributeUsage(AttributeTargets.Property)]
     public class PropertyOptionsEnumeratorAttribute : Attribute
     {
