@@ -16,9 +16,11 @@ namespace FuwaTea.Lib.NotifyIcon
         private readonly ITrayManager _trayManager;
 
         
-        public NotifyIconManager([Import] ITrayManager trayManager)
+        public NotifyIconManager()
         {
-            _trayManager = trayManager;
+            _trayManager = Environment.OSVersion.Version > new Version(6, 3, 0, 0) ? new TrayManager81() :
+                           Environment.OSVersion.Version > new Version(6, 2, 0, 0) ? (ITrayManager)new TrayManager8() :
+                           new TrayManager7();
         }
 
         /// <summary>

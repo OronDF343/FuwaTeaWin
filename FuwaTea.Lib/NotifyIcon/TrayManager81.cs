@@ -7,8 +7,6 @@ using FuwaTea.Extensibility;
 namespace FuwaTea.Lib.NotifyIcon
 {
     //[LibComponent("Windows 8.1+ Tray Manager")]
-    [Reuse(ReuseType.Singleton)]
-    [PlatformFilter(FilterAction.Whitelist, OSKind.Windows, ProcessArch.Any, FilterRule.GreaterThan, "6.3.0.0")]
     public class TrayManager81 : ITrayManager
     {
         private readonly ITrayNotify81 _trayNotify;

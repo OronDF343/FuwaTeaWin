@@ -16,7 +16,6 @@ namespace FuwaTea.Lib.NotifyIcon
     /// <summary>
     /// A wrapper for the ITrayManager COM interface, which is different between versions of Windows.
     /// </summary>
-    [InheritedExport]
     public interface ITrayManager : IDisposable
     {
         /// <summary>
