@@ -15,7 +15,7 @@ namespace FuwaTea.Wpf.Keyboard
         [XmlAttribute]
         public string Name
         {
-            get { return Key; }
+            get => Key;
             set
             {
                 if (Key == value) return;
@@ -33,7 +33,7 @@ namespace FuwaTea.Wpf.Keyboard
         [XmlAttribute]
         public bool Enabled
         {
-            get { return _enabled; }
+            get => _enabled;
             set
             {
                 if (_enabled == value) return;
@@ -46,7 +46,7 @@ namespace FuwaTea.Wpf.Keyboard
         [XmlArrayItem(nameof(System.Windows.Input.Key))]
         public ObservableHashSet<Key> KeyGesture
         {
-            get { return _keyGesture; }
+            get => _keyGesture;
             set
             {
                 if (_keyGesture == value) return;
@@ -58,7 +58,7 @@ namespace FuwaTea.Wpf.Keyboard
         [XmlAttribute]
         public string CommandKey
         {
-            get { return _commandKey; }
+            get => _commandKey;
             set
             {
                 if (_commandKey == value) return;
@@ -71,7 +71,7 @@ namespace FuwaTea.Wpf.Keyboard
         [XmlArrayItem("Parameter")]
         public ObservableCollection<string> CommandParameters
         {
-            get { return _commandParameters; }
+            get => _commandParameters;
             set
             {
                 if (_commandParameters == value) return;
@@ -83,7 +83,7 @@ namespace FuwaTea.Wpf.Keyboard
         [XmlAttribute]
         public KeyBindingKind Kind
         {
-            get { return _kind; }
+            get => _kind;
             set
             {
                 if (_kind == value) return;

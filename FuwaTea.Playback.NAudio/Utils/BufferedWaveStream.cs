@@ -44,12 +44,12 @@ namespace FuwaTea.Playback.NAudio.Utils
 
         public override WaveFormat WaveFormat => _src.WaveFormat;
 
-        public TimeSpan BufferDuration { get { return _bwp.BufferDuration; } set { _bwp.BufferDuration = value; } }
+        public TimeSpan BufferDuration { get => _bwp.BufferDuration; set => _bwp.BufferDuration = value; }
         public int RefillAtPercent { get; set; } = 33;
         public int RefillBatches { get; set; } = 3;
 
         public override long Length => (long)(_bwp.BufferDuration.TotalSeconds * WaveFormat.AverageBytesPerSecond);
-        public override long Position { get { return (long)(_bwp.BufferedDuration.TotalSeconds * WaveFormat.AverageBytesPerSecond); } set { LogManager.GetLogger(GetType()).Warn("Attempt to change position!"); } }
+        public override long Position { get => (long)(_bwp.BufferedDuration.TotalSeconds * WaveFormat.AverageBytesPerSecond); set => LogManager.GetLogger(GetType()).Warn("Attempt to change position!"); }
 
         protected override void Dispose(bool disposing)
         {

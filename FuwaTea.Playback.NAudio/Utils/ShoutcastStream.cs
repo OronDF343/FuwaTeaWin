@@ -63,20 +63,17 @@ namespace FuwaTea.Playback.NAudio.Utils
 
         public override bool CanWrite => false;
 
-        public string StreamTitle { get { return StreamMetadata.Title; } private set { StreamMetadata.Title = value; } }
+        public string StreamTitle { get => StreamMetadata.Title; private set => StreamMetadata.Title = value; }
         public string MimeType { get; }
 
         public override void Flush() { }
         
-        public override long Length
-        {
-            get { throw new NotSupportedException(); }
-        }
-        
+        public override long Length => throw new NotSupportedException();
+
         public override long Position
         {
-            get { throw new NotSupportedException(); }
-            set { throw new NotSupportedException(); }
+            get => throw new NotSupportedException();
+            set => throw new NotSupportedException();
         }
 
         public override int Read(byte[] buffer, int offset, int count)

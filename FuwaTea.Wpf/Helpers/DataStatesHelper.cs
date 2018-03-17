@@ -141,29 +141,29 @@ namespace FuwaTea.Wpf.Helpers
         public static readonly DependencyProperty StateNameProperty = DependencyProperty.Register(
                                                         "StateName", typeof(string), typeof(State), new PropertyMetadata(""));
 
-        public string StateName { get { return (string)GetValue(StateNameProperty); } set { SetValue(StateNameProperty, value); } }
+        public string StateName { get => (string)GetValue(StateNameProperty); set => SetValue(StateNameProperty, value); }
 
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
                                                         "Value", typeof(object), typeof(State), new PropertyMetadata(null));
 
         [CanBeNull]
-        public object Value { get { return GetValue(ValueProperty); } set { SetValue(ValueProperty, value); } }
+        public object Value { get => GetValue(ValueProperty); set => SetValue(ValueProperty, value); }
 
         public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register(
                                                         "MinValue", typeof(object), typeof(State), new PropertyMetadata(null));
 
-        public object MinValue { get { return GetValue(MinValueProperty); } set { SetValue(MinValueProperty, value); } }
+        public object MinValue { get => GetValue(MinValueProperty); set => SetValue(MinValueProperty, value); }
 
         public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(
                                                         "MaxValue", typeof(object), typeof(State), new PropertyMetadata(null));
 
-        public object MaxValue { get { return GetValue(MaxValueProperty); } set { SetValue(MaxValueProperty, value); } }
+        public object MaxValue { get => GetValue(MaxValueProperty); set => SetValue(MaxValueProperty, value); }
 
         public static readonly DependencyProperty TagProperty = DependencyProperty.Register(
                                                         "Tag", typeof(object), typeof(State), new PropertyMetadata(null));
 
         [CanBeNull]
-        public object Tag { get { return GetValue(TagProperty); } set { SetValue(TagProperty, value); } }
+        public object Tag { get => GetValue(TagProperty); set => SetValue(TagProperty, value); }
 
         protected override Freezable CreateInstanceCore()
         {

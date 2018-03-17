@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using DryIocAttributes;
-using FuwaTea.Extensibility;
 
 namespace FuwaTea.Lib.NotifyIcon
 {

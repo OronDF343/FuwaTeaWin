@@ -31,7 +31,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <CheckBox x:Name="EnableCheckBox" Content="{lex:BLoc EnableKeyBindings}" Grid.Row="0"
-                  IsChecked="{Binding Settings[EnableKeyboardHook]}" Margin="0,0,0,8"/>
+                  IsChecked="{Binding Settings.EnableKeyboardHook}" Margin="0,0,0,8"/>
         <DataGrid Grid.Row="1" IsEnabled="{Binding IsChecked, ElementName=EnableCheckBox}"
                   ItemsSource="{Binding KeyBindings, Source={x:Static keyboard:KeyBindingsManager.Instance}}"
                   AutoGenerateColumns="False">

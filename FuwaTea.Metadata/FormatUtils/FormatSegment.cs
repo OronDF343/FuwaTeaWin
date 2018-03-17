@@ -21,7 +21,7 @@ namespace FuwaTea.Metadata.FormatUtils
         /// <summary>
         /// Setter only effective if InheritFormat=false, however the underlying field is still changed.
         /// </summary>
-        public string Format { get { return InheritFormat ? Parent?.Format : _format; } set { _format = value; } }
+        public string Format { get => InheritFormat ? Parent?.Format : _format; set => _format = value; }
         /// <summary>
         /// Should never be set for the first segment.
         /// </summary>
@@ -37,7 +37,7 @@ namespace FuwaTea.Metadata.FormatUtils
         /// </summary>
         public FormatSegment Parent
         {
-            get { return _parent; }
+            get => _parent;
             set
             {
                 if (_parent != null) _parent._next = null;
@@ -53,7 +53,7 @@ namespace FuwaTea.Metadata.FormatUtils
         /// </summary>
         public FormatSegment Next
         {
-            get { return _next; }
+            get => _next;
             set
             {
                 if (_next != null) _next._parent = null;

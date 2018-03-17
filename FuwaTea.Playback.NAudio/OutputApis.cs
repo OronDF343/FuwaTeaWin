@@ -15,21 +15,14 @@
 //     along with FuwaTeaWin.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 
-using System.Windows;
-using System.Windows.Interactivity;
 
-namespace FuwaTea.Wpf.Behaviors
+namespace FuwaTea.Playback.NAudio
 {
-    public class ControlledBehaviorBase<T> : Behavior<T>
-        where T : FrameworkElement
+    public enum OutputApis
     {
-        public static readonly DependencyProperty EnabledProperty =
-            DependencyProperty.Register("Enabled", typeof(bool), typeof(ControlledBehaviorBase<T>), new PropertyMetadata(true));
-
-        public bool Enabled
-        {
-            get => (bool)GetValue(EnabledProperty);
-            set => SetValue(EnabledProperty, value);
-        }
+        DirectSound,
+        WaveOut,
+        Wasapi,
+        Asio
     }
 }

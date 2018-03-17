@@ -40,10 +40,11 @@ namespace FuwaTea.Playback.NAudio
     public sealed class NAudioPlayer : IAudioPlayer, IStreamingAudioPlayer
     {
         
-        public NAudioPlayer([ImportMany] IEnumerable<ICodecProvider> codecs, [ImportMany] IEnumerable<IEffectProvider> effects)
+        public NAudioPlayer([ImportMany] IEnumerable<ICodecProvider> codecs, [ImportMany] IEnumerable<IEffectProvider> effects, [Import] NAudioPlaybackSettings settings)
         {
             _codecs = codecs.ToList();
             _effects = effects.ToList();
+            _settings = settings;
             //EqualizerBands = new ObservableCollection<EqualizerBand>(); :warning: DON'T DO THIS! Leave it set to null!
         }
 
@@ -72,44 +73,8 @@ namespace FuwaTea.Playback.NAudio
         private BalanceSampleProvider _balanceSampleProvider;
         private VolumeSampleProvider _volumeSampleProvider;
         private Equalizer _equalizer;
-        #endregion
 
-        public enum OutputApis
-        {
-            DirectSound,
-            WaveOut,
-            Wasapi,
-            Asio
-        }
-
-        //[ConfigurableProperty(nameof(OutputApi), DefaultValue = OutputApis.Wasapi)]
-        public OutputApis OutputApi { get; set; }
-
-        //[ConfigurableProperty(nameof(DirectSoundDevice))]
-        public Guid DirectSoundDevice { get; set; }
-
-        //[PropertyOptionsEnumerator(nameof(DirectSoundDevice))]
-        public Dictionary<Guid, string> DirectSoundDevices => DirectSoundOut.Devices.ToDictionary(d => d.Guid, d => d.Description);
-
-        //[ConfigurableProperty(nameof(WasapiDevice))]
-        public string WasapiDevice { get; set; }
-
-        //[PropertyOptionsEnumerator(nameof(WasapiDevice))]
-        public Dictionary<string, string> WasapiDevices
-            => new MMDeviceEnumerator().EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active)
-                                       .ToDictionary(mmd => mmd.ID, mmd => mmd.FriendlyName);
-
-        //[ConfigurableProperty(nameof(AsioDevice))]
-        public string AsioDevice { get; set; }
-
-        //[PropertyOptionsEnumerator(nameof(AsioDevice))]
-        public string[] AsioDevices => AsioOut.GetDriverNames();
-
-        //[ConfigurableProperty(nameof(WasapiExclusive))]
-        public bool WasapiExclusive { get; set; }
-        
-        //[ConfigurableProperty(nameof(DesiredLatency), DefaultValue = -1)]
-        public int DesiredLatency { get; set; }
+#endregion
 
         public void Load(string path)
         {
@@ -135,27 +100,27 @@ namespace FuwaTea.Playback.NAudio
             }
             // Create player (see Unload() for why we need this every time)
             _wavePlayer?.Dispose();
-            switch (OutputApi)
+            switch (_settings.OutputApi)
             {
                 case OutputApis.DirectSound:
-                    _wavePlayer = new DirectSoundOut(DirectSoundDevice, DesiredLatency > 0 ? DesiredLatency : 40);
+                    _wavePlayer = new DirectSoundOut(_settings.DirectSoundDevice, _settings.DesiredLatency > 0 ? _settings.DesiredLatency : 40);
                     break;
                 case OutputApis.Wasapi:
                     var denum = new MMDeviceEnumerator();
-                    var dev = string.IsNullOrWhiteSpace(WasapiDevice)
+                    var dev = string.IsNullOrWhiteSpace(_settings.WasapiDevice)
                                   ? denum.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia)
-                                  : denum.GetDevice(WasapiDevice);
+                                  : denum.GetDevice(_settings.WasapiDevice);
                     _wavePlayer = new WasapiOut(dev,
-                                                WasapiExclusive
+                                                _settings.WasapiExclusive
                                                     ? AudioClientShareMode.Exclusive
                                                     : AudioClientShareMode.Shared, true,
-                                                DesiredLatency > 0 ? DesiredLatency : 200);
+                                                _settings.DesiredLatency > 0 ? _settings.DesiredLatency : 200);
                     break;
                 case OutputApis.WaveOut:
                     _wavePlayer = new WaveOut();
                     break;
                 case OutputApis.Asio:
-                    _wavePlayer = string.IsNullOrEmpty(AsioDevice) ? new AsioOut() : new AsioOut(AsioDevice);
+                    _wavePlayer = string.IsNullOrEmpty(_settings.AsioDevice) ? new AsioOut() : new AsioOut(_settings.AsioDevice);
                     break;
             }
             // Check if the WaveStream supports ISampleProvider and is IeeeFloat format. If so, cast it.
@@ -257,7 +222,7 @@ namespace FuwaTea.Playback.NAudio
 
         public TimeSpan Position
         {
-            get { return _waveStream?.CurrentTime ?? TimeSpan.Zero; }
+            get => _waveStream?.CurrentTime ?? TimeSpan.Zero;
             set { if (_waveStream != null) _waveStream.CurrentTime = value; }
         }
 
@@ -269,7 +234,7 @@ namespace FuwaTea.Playback.NAudio
         private decimal _volume = 1.0m;
         public decimal Volume
         {
-            get { return _volume; }
+            get => _volume;
             set
             {
                 _volume = value;
@@ -279,7 +244,7 @@ namespace FuwaTea.Playback.NAudio
         private decimal _leftVolume = 1.0m;
         public decimal LeftVolume
         {
-            get { return _leftVolume; }
+            get => _leftVolume;
             set
             {
                 _leftVolume = value;
@@ -289,7 +254,7 @@ namespace FuwaTea.Playback.NAudio
         private decimal _rightVolume = 1.0m;
         public decimal RightVolume
         {
-            get { return _rightVolume; }
+            get => _rightVolume;
             set
             {
                 _rightVolume = value;
@@ -299,9 +264,11 @@ namespace FuwaTea.Playback.NAudio
 
         public bool IsEqualizerSupported => true;
         private bool _enableEqualizer;
+        private NAudioPlaybackSettings _settings;
+
         public bool EnableEqualizer
         {
-            get { return _enableEqualizer; }
+            get => _enableEqualizer;
             set
             {
                 _enableEqualizer = value;

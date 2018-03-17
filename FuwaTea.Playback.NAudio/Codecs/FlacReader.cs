@@ -23,8 +23,8 @@ namespace FuwaTea.Playback.NAudio.Codecs
         public override long Length => _flacFile.Length;
         public override long Position
         {
-            get { return _flacFile.Position; }
-            set { _flacFile.Position = value; }
+            get => _flacFile.Position;
+            set => _flacFile.Position = value;
         }
     }
 }

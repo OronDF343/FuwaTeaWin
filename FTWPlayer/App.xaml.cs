@@ -17,8 +17,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -32,7 +32,6 @@ using System.Windows;
 using System.Windows.Interop;
 using DryIoc;
 using FTWPlayer.Localization;
-using FTWPlayer.Properties;
 using FTWPlayer.Skins;
 using FuwaTea.Config;
 using FuwaTea.Extensibility;
@@ -77,6 +76,9 @@ namespace FTWPlayer
 
         private IContainer AppScope { get; set; }
 
+        private UISettings Settings { get; set; }
+        
+        [Obsolete("TODO", true)]
         internal List<IConfigurablePropertyInfo> DynSettings { get; private set; }
 
         public ExtensibilityContainer MainContainer { get; private set; }
@@ -122,13 +124,6 @@ namespace FTWPlayer
 
             Logger.Info("Exceptions are tracked, logging is configured, begin loading!");
 
-            // Upgrade settings:
-            using (LogicalThreadContext.Stacks["NDC"].Push(nameof(UpgradeSettings)))
-                UpgradeSettings();
-
-            using (LogicalThreadContext.Stacks["NDC"].Push(nameof(ConfigureLocalization)))
-                ConfigureLocalization();
-
             _isinst = Assembly.GetEntryAssembly().IsInstalledCopy();
             _prod = Assembly.GetEntryAssembly().GetProduct();
             _title = Assembly.GetEntryAssembly().GetAttribute<AssemblyTitleAttribute>().Title;
@@ -151,11 +146,17 @@ namespace FTWPlayer
             // Load modules:
             using (LogicalThreadContext.Stacks["NDC"].Push(nameof(LoadModules)))
                 LoadModules();
+            
+            // Load settings:
+            using (LogicalThreadContext.Stacks["NDC"].Push(nameof(LoadSettings)))
+                LoadSettings();
 
-            // TODO IMPORTANT: Restore DynSettings!
-            // Dynamic config init:
-            using (LogicalThreadContext.Stacks["NDC"].Push(nameof(InitDynamicSettings)))
-                InitDynamicSettings();
+            // Upgrade settings:
+            using (LogicalThreadContext.Stacks["NDC"].Push(nameof(UpgradeSettings)))
+                UpgradeSettings();
+
+            using (LogicalThreadContext.Stacks["NDC"].Push(nameof(ConfigureLocalization)))
+                ConfigureLocalization();
 
             // Load skins:
             using (LogicalThreadContext.Stacks["NDC"].Push(nameof(LoadSkins)))
@@ -166,7 +167,7 @@ namespace FTWPlayer
                 LoadKeyBindings();
 
             // Set priority: 
-            try { Process.GetCurrentProcess().PriorityClass = Settings.Default.ProcessPriority; }
+            try { Process.GetCurrentProcess().PriorityClass = Settings.ProcessPriority; }
             catch (Win32Exception w32)
             {
                 Logger.Error("Failed to set the process priority!", w32);
@@ -177,7 +178,7 @@ namespace FTWPlayer
             MainWindow = new MainWindow();
             MainWindow.SourceInitialized += MainWindow_OnSourceInitialized;
             MainWindow.Show();
-            WindowPositioner.SetAutoPosition(MainWindow, Settings.Default.AutoWindowPosition);
+            WindowPositioner.SetAutoPosition(MainWindow, Settings.AutoWindowPosition);
             base.OnStartup(e);
         }
         
@@ -235,17 +236,18 @@ namespace FTWPlayer
 
         private void UpgradeSettings()
         {
-            var ver = Settings.Default.LastVersion;
-            var cver = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            if (string.Equals(ver, cver, StringComparison.OrdinalIgnoreCase)) return;
-            Logger.Info("The settings are from an older version, upgrading now");
-            try { Settings.Default.Upgrade(); }
-            catch (ConfigurationErrorsException cee)
-            {
-                Logger.Error("Configuration errors when upgrading settings!", cee);
-            }
-            Settings.Default.LastVersion = cver;
-            Settings.Default.Save();
+            // TODO: Is this necessary?
+            //var ver = Settings.LastVersion;
+            //var cver = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            //if (string.Equals(ver, cver, StringComparison.OrdinalIgnoreCase)) return;
+            //Logger.Info("The settings are from an older version, upgrading now");
+            //try { Settings.Upgrade(); }
+            //catch (ConfigurationErrorsException cee)
+            //{
+            //    Logger.Error("Configuration errors when upgrading settings!", cee);
+            //}
+            //Settings.LastVersion = cver;
+            //Settings.Save();
         }
 
         private void ConfigureLocalization()
@@ -254,30 +256,30 @@ namespace FTWPlayer
             var li = _clArgs.IndexOf(SetLangArg) + 1;
             if (li > 0 && _clArgs.Count > li)
             {
-                Settings.Default.OverrideDefaultLanguage = true;
-                Settings.Default.SelectedLanguage = _clArgs[li];
+                Settings.OverrideDefaultLanguage = true;
+                Settings.SelectedLanguage = _clArgs[li];
             }
 
             // Set localization:
             LocalizeDictionary.Instance.SetCurrentThreadCulture = true;
-            if (Settings.Default.OverrideDefaultLanguage) UpdateLanguage();
+            if (Settings.OverrideDefaultLanguage) UpdateLanguage();
             // Update if changed:
-            Settings.Default.PropertyChanged += (sender, args) =>
+            Settings.PropertyChanged += (sender, args) =>
             {
                 // ReSharper disable once RedundantJumpStatement
-                if (!Settings.Default.OverrideDefaultLanguage
-                     || args.PropertyName != nameof(Settings.Default.SelectedLanguage)
-                     && args.PropertyName != nameof(Settings.Default.OverrideDefaultLanguage)) return;
+                if (!Settings.OverrideDefaultLanguage
+                     || args.PropertyName != nameof(Settings.SelectedLanguage)
+                     && args.PropertyName != nameof(Settings.OverrideDefaultLanguage)) return;
                 //UpdateLanguage(); BUG: This causes an exception "Binding cannot be changed after it has been used" in WPFLocalizeExtension
             };
         }
 
         private void UpdateLanguage()
         {
-            LocalizeDictionary.Instance.Culture = string.IsNullOrWhiteSpace(Settings.Default.SelectedLanguage)
+            LocalizeDictionary.Instance.Culture = string.IsNullOrWhiteSpace(Settings.SelectedLanguage)
                                                       ? CultureInfo.CurrentUICulture
-                                                      : CultureInfo.CreateSpecificCulture(Settings.Default.SelectedLanguage);
-            Settings.Default.PropertyValues[nameof(Settings.Default.SelectedLanguage)].PropertyValue = LocalizeDictionary.Instance.Culture.IetfLanguageTag;
+                                                      : CultureInfo.CreateSpecificCulture(Settings.SelectedLanguage);
+            Settings.SelectedLanguage = LocalizeDictionary.Instance.Culture.IetfLanguageTag;
         }
 
         private bool ProcessAssocClArgs()
@@ -378,7 +380,7 @@ namespace FTWPlayer
             }
             try
             {
-                if (!_mutex.WaitOne(Settings.Default.InstanceCreationTimeout))
+                if (!_mutex.WaitOne(Settings.InstanceCreationTimeout))
                 {
                     Logger
                               .Fatal("Failed to create an instance: The operation has timed out.");
@@ -474,7 +476,7 @@ namespace FTWPlayer
             }
 
             // TODO: Extension whitelist
-            //var extWhitelist = Settings.Default.ExtensionWhitelist ?? new ExtensionAttributeCollection();
+            //var extWhitelist = Settings.ExtensionWhitelist ?? new ExtensionAttributeCollection();
 
             foreach (var file in Directory.EnumerateFiles(extDir))
             {
@@ -535,72 +537,76 @@ namespace FTWPlayer
                     //return res;
                 }
             }
-            //Settings.Default.ExtensionWhitelist = extWhitelist;
+            //Settings.ExtensionWhitelist = extWhitelist;
             AppScope = MainContainer.OpenScope(nameof(App));
         }
 
-        private void InitDynamicSettings()
+        private void LoadSettings()
         {
-            AppScope.Resolve<IConfigManager>().LoadAllConfigPages();
+            SettingsManager = AppScope.Resolve<IConfigManager>();
+            SettingsManager.LoadAllConfigPages();
+            Settings = AppScope.Resolve<UISettings>();
 
             // TODO: Remove below here when ready!
-            var provider = Settings.Default.Properties["LastVersion"]?.Provider;
-            var dict = new SettingsAttributeDictionary
-            {
-                {
-                    typeof(SettingsManageabilityAttribute),
-                    new SettingsManageabilityAttribute(SettingsManageability.Roaming)
-                },
-                {
-                    typeof(UserScopedSettingAttribute),
-                    new UserScopedSettingAttribute()
-                }
-            };
-            DynSettings = ConfigurationUtils.GetAllConfigurableProperties(AppScope, ex => Logger.Error("Error getting configurable property:", ex)).ToList();
-            foreach (var info in DynSettings)
-            {
-                try
-                {
-                    Settings.Default.Properties.Add(new SettingsProperty(info.Name, info.PropertyInfo.PropertyType,
-                                                                         provider, false, info.DefaultValue,
-                                                                         SettingsSerializeAs.String, dict, true, true));
-                    info.Value = Settings.Default[info.Name];
-                }
-                catch (ConfigurationErrorsException cee)
-                {
-                    Logger.Error("The settings failed to instantiate!", cee);
-                }
-                catch (SettingsPropertyNotFoundException spnfe)
-                {
-                    Logger.Fatal("Unexpected settings error, Name=" + info.Name, spnfe);
-                }
-                catch (SettingsPropertyWrongTypeException spwte)
-                {
-                    Logger.Error("Invalid default value for setting, Name=" + info.Name + " DefaultValue=" + info.DefaultValue, spwte);
-                }
-                catch (SettingsPropertyIsReadOnlyException spiroe)
-                {
-                    Logger.Fatal("Unexpected settings error, Name=" + info.Name, spiroe);
-                }
-            }
-            Logger.Debug("Dynamic properties: " + DynSettings.Count);
-            // Handle changes
-            Settings.Default.PropertyChanged += (sender, args) =>
-            {
-                var p = DynSettings.FirstOrDefault(i => i.Name == args.PropertyName);
-                if (p == null) return;
-                p.Value = Settings.Default[p.Name];
-            };
+            //var provider = Settings.Properties["LastVersion"]?.Provider;
+            //var dict = new SettingsAttributeDictionary
+            //{
+            //    {
+            //        typeof(SettingsManageabilityAttribute),
+            //        new SettingsManageabilityAttribute(SettingsManageability.Roaming)
+            //    },
+            //    {
+            //        typeof(UserScopedSettingAttribute),
+            //        new UserScopedSettingAttribute()
+            //    }
+            //};
+            //DynSettings = ConfigurationUtils.GetAllConfigurableProperties(AppScope, ex => Logger.Error("Error getting configurable property:", ex)).ToList();
+            //foreach (var info in DynSettings)
+            //{
+            //    try
+            //    {
+            //        Settings.Properties.Add(new SettingsProperty(info.Name, info.PropertyInfo.PropertyType,
+            //                                                             provider, false, info.DefaultValue,
+            //                                                             SettingsSerializeAs.String, dict, true, true));
+            //        info.Value = Settings[info.Name];
+            //    }
+            //    catch (ConfigurationErrorsException cee)
+            //    {
+            //        Logger.Error("The settings failed to instantiate!", cee);
+            //    }
+            //    catch (SettingsPropertyNotFoundException spnfe)
+            //    {
+            //        Logger.Fatal("Unexpected settings error, Name=" + info.Name, spnfe);
+            //    }
+            //    catch (SettingsPropertyWrongTypeException spwte)
+            //    {
+            //        Logger.Error("Invalid default value for setting, Name=" + info.Name + " DefaultValue=" + info.DefaultValue, spwte);
+            //    }
+            //    catch (SettingsPropertyIsReadOnlyException spiroe)
+            //    {
+            //        Logger.Fatal("Unexpected settings error, Name=" + info.Name, spiroe);
+            //    }
+            //}
+            //Logger.Debug("Dynamic properties: " + DynSettings.Count);
+            //// Handle changes
+            //Settings.PropertyChanged += (sender, args) =>
+            //{
+            //    var p = DynSettings.FirstOrDefault(i => i.Name == args.PropertyName);
+            //    if (p == null) return;
+            //    p.Value = Settings[p.Name];
+            //};
         }
+
+        private IConfigManager SettingsManager { get; set; }
 
         private void LoadSkins()
         {
             var sm = AppScope.Resolve<ISkinManager>();
-            if (string.IsNullOrWhiteSpace(Settings.Default.Skin)) SkinLoadingBehavior.UpdateSkin(sm.LoadFallbackSkin().SkinParts);
+            if (string.IsNullOrWhiteSpace(Settings.Skin)) SkinLoadingBehavior.UpdateSkin(sm.LoadFallbackSkin().SkinParts);
             else
             {
                 SkinPackage skin;
-                try { skin = sm.LoadSkin(Settings.Default.Skin); }
+                try { skin = sm.LoadSkin(Settings.Skin); }
                 catch (InvalidOperationException ioe)
                 {
                     Logger.Error("Detected cyclic dependency between skins! Loading fallback skin instead", ioe);
@@ -620,18 +626,18 @@ namespace FTWPlayer
         {
             Logger.Info("Loading key bindings engine...");
             KeyBindingsManager.Instance.Listener = new KeyboardListener();
-            KeyBindingsManager.Instance.Listener.IsEnabled = Settings.Default.EnableKeyboardHook;
-            Settings.Default.PropertyChanged += (s, args) =>
+            KeyBindingsManager.Instance.Listener.IsEnabled = Settings.EnableKeyboardHook;
+            Settings.PropertyChanged += (s, args) =>
             {
-                if (args.PropertyName == nameof(Settings.Default.EnableKeyboardHook))
-                    KeyBindingsManager.Instance.Listener.IsEnabled = Settings.Default.EnableKeyboardHook;
+                if (args.PropertyName == nameof(Settings.EnableKeyboardHook))
+                    KeyBindingsManager.Instance.Listener.IsEnabled = Settings.EnableKeyboardHook;
             };
-            if (Settings.Default.KeyBindings != null)
-                foreach (var keyBinding in Settings.Default.KeyBindings.Items)
+            if (Settings.KeyBindings != null)
+                foreach (var keyBinding in Settings.KeyBindings)
                     KeyBindingsManager.Instance.KeyBindings.Add(keyBinding);
             KeyBindingsManager.Instance.KeyBindings.CollectionChanged +=
                 (s, args) =>
-                Settings.Default.KeyBindings = new KeyBindingCollection(KeyBindingsManager.Instance.KeyBindings);
+                Settings.KeyBindings = new ObservableCollection<KeyBinding>(KeyBindingsManager.Instance.KeyBindings);
         }
 
         /// <summary>
@@ -643,7 +649,7 @@ namespace FTWPlayer
             using (LogicalThreadContext.Stacks["NDC"].Push(nameof(OnExit)))
             {
                 Logger.Info("Saving settings...");
-                Settings.Default.Save();
+                SettingsManager.SaveAllConfigPages();
                 Dispose();
             }
             base.OnExit(e);

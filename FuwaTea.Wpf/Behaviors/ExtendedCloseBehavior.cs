@@ -29,8 +29,8 @@ namespace FuwaTea.Wpf.Behaviors
 
         public bool VolumeFadeOut
         {
-            get { return (bool)GetValue(VolumeFadeOutProperty); }
-            set { SetValue(VolumeFadeOutProperty, value); }
+            get => (bool)GetValue(VolumeFadeOutProperty);
+            set => SetValue(VolumeFadeOutProperty, value);
         }
 
         public static readonly DependencyProperty VolumeFadeOutStoryboardProperty =
@@ -38,8 +38,8 @@ namespace FuwaTea.Wpf.Behaviors
 
         public Storyboard VolumeFadeOutStoryboard
         {
-            get { return (Storyboard)GetValue(VolumeFadeOutStoryboardProperty); }
-            set { SetValue(VolumeFadeOutStoryboardProperty, value); }
+            get => (Storyboard)GetValue(VolumeFadeOutStoryboardProperty);
+            set => SetValue(VolumeFadeOutStoryboardProperty, value);
         }
 
         protected override void OnAttached()

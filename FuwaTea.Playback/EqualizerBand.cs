@@ -23,13 +23,13 @@ namespace FuwaTea.Playback
     public class EqualizerBand : INotifyPropertyChanged
     {
         private float _frequency;
-        public float Frequency { get { return _frequency; } set { _frequency = value; OnPropertyChanged(); } }
+        public float Frequency { get => _frequency; set { _frequency = value; OnPropertyChanged(); } }
 
         private float _gain;
-        public float Gain { get { return _gain; } set { _gain = value; OnPropertyChanged(); } }
+        public float Gain { get => _gain; set { _gain = value; OnPropertyChanged(); } }
 
         private float _bandwidth;
-        public float Bandwidth { get { return _bandwidth; } set { _bandwidth = value; OnPropertyChanged(); } }
+        public float Bandwidth { get => _bandwidth; set { _bandwidth = value; OnPropertyChanged(); } }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -27,6 +27,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuwaTea.Extensibility", "Fu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuwaTea.Config", "FuwaTea.Config\FuwaTea.Config.csproj", "{8FCC92DC-2982-4017-8944-C50571F40A33}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuwaTea.Core", "FuwaTea.Core\FuwaTea.Core.csproj", "{E9CA8802-30F3-49D7-81D2-ED1B0683D1D6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{45541DFF-867F-4965-89B1-2795D516C11C}"
+	ProjectSection(SolutionItems) = preProject
+		FodyWeavers.xml = FodyWeavers.xml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +80,10 @@ Global
 		{8FCC92DC-2982-4017-8944-C50571F40A33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FCC92DC-2982-4017-8944-C50571F40A33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8FCC92DC-2982-4017-8944-C50571F40A33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9CA8802-30F3-49D7-81D2-ED1B0683D1D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9CA8802-30F3-49D7-81D2-ED1B0683D1D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9CA8802-30F3-49D7-81D2-ED1B0683D1D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9CA8802-30F3-49D7-81D2-ED1B0683D1D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

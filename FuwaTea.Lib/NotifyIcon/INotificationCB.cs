@@ -28,7 +28,7 @@ namespace FuwaTea.Lib.NotifyIcon
         /// <inheritdoc/>
         public void Notify(uint e, IntPtr notifyItem)
         {
-            AddedCallBack?.Invoke(Marshal.PtrToStructure<NOTIFYITEM>(notifyItem));
+            AddedCallBack.Invoke(Marshal.PtrToStructure<NOTIFYITEM>(notifyItem));
         }
         
         [NotNull]

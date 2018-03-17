@@ -41,8 +41,8 @@ namespace FuwaTea.Wpf.Behaviors
             DependencyProperty.Register("Popup", typeof(Popup), typeof(DragDropRowBehavior));
         public Popup Popup
         {
-            get { return (Popup)GetValue(PopupProperty); }
-            set { SetValue(PopupProperty, value); }
+            get => (Popup)GetValue(PopupProperty);
+            set => SetValue(PopupProperty, value);
         }
         #endregion
 

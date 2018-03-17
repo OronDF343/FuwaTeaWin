@@ -44,26 +44,26 @@ namespace FuwaTea.Wpf.Controls
                                                                                                       typeof(ScrollingTextBlockComponent),
                                                                                                       new UIPropertyMetadata(ScrollingTextChanged));
 
-        public string ScrollingText { get { return (string)GetValue(ScrollingTextProperty); } set { SetValue(ScrollingTextProperty, value); } }
+        public string ScrollingText { get => (string)GetValue(ScrollingTextProperty); set => SetValue(ScrollingTextProperty, value); }
 
         public static readonly DependencyProperty DelayModifierProperty = DependencyProperty.Register("DelayModifier", typeof(double),
                                                                                                       typeof(ScrollingTextBlockComponent),
                                                                                                       new UIPropertyMetadata(1d));
 
-        public double DelayModifier { get { return (double)GetValue(DelayModifierProperty); } set { SetValue(DelayModifierProperty, value); } }
+        public double DelayModifier { get => (double)GetValue(DelayModifierProperty); set => SetValue(DelayModifierProperty, value); }
 
 
         public static readonly DependencyProperty TargetWidthProperty = DependencyProperty.Register("TargetWidth", typeof(int),
                                                                                                     typeof(ScrollingTextBlockComponent),
                                                                                                     new UIPropertyMetadata(100));
 
-        public int TargetWidth { get { return (int)GetValue(TargetWidthProperty); } set { SetValue(TargetWidthProperty, value); } }
+        public int TargetWidth { get => (int)GetValue(TargetWidthProperty); set => SetValue(TargetWidthProperty, value); }
 
         public static readonly DependencyProperty SpacingProperty = DependencyProperty.Register("Spacing", typeof(int),
                                                                                                 typeof(ScrollingTextBlockComponent),
                                                                                                 new UIPropertyMetadata(7));
 
-        public int Spacing { get { return (int)GetValue(SpacingProperty); } set { SetValue(SpacingProperty, value); } }
+        public int Spacing { get => (int)GetValue(SpacingProperty); set => SetValue(SpacingProperty, value); }
 
         private static void ScrollingTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DryIoc.dll" Version="2.12.7" />
+    <PackageReference Include="DryIoc.dll" Version="2.12.8" />
     <PackageReference Include="DryIoc.MefAttributedModel.dll" Version="3.2.0" />
     <PackageReference Include="JetBrains.Annotations" Version="11.1.0" />
   </ItemGroup>

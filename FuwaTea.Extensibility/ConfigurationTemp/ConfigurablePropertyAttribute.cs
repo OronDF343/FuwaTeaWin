@@ -3,7 +3,7 @@
 namespace FuwaTea.Extensibility.ConfigurationTemp
 {
     [AttributeUsage(AttributeTargets.Property)]
-    [Obsolete]
+    [Obsolete("TODO", true)]
     public class ConfigurablePropertyAttribute : Attribute
     {
         public ConfigurablePropertyAttribute() { }

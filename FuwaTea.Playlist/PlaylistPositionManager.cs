@@ -39,7 +39,7 @@ namespace FuwaTea.Playlist
 
         public bool EnableShuffle
         {
-            get { return _shuffle; }
+            get => _shuffle;
             set
             {
                 var temp = _shuffle;
@@ -63,7 +63,7 @@ namespace FuwaTea.Playlist
 
         public int CurrentIndex
         {
-            get { return _index; }
+            get => _index;
             private set
             {
                 if (value == _index) return;

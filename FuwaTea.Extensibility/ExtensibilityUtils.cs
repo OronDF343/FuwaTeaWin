@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FuwaTea.Extensibility
+﻿namespace FuwaTea.Extensibility
 {
     public static class ExtensibilityUtils
     {

@@ -2,7 +2,7 @@
 
 namespace FuwaTea.Extensibility.ConfigurationTemp
 {
-    [Obsolete]
+    [Obsolete("TODO", true)]
     [AttributeUsage(AttributeTargets.Property)]
     public class PropertyOptionsEnumeratorAttribute : Attribute
     {

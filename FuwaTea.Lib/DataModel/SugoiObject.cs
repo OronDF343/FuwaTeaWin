@@ -26,7 +26,7 @@ namespace FuwaTea.Lib.DataModel
         [XmlIgnore]
         public virtual TKey Key
         {
-            get { return _key; }
+            get => _key;
             set
             {
                 if (Equals(_key, value)) return;

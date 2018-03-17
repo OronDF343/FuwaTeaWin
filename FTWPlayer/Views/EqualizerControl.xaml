@@ -5,7 +5,6 @@
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
          xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
          xmlns:command="http://www.galasoft.ch/mvvmlight"
-         xmlns:prop="clr-namespace:FTWPlayer.Properties"
          xmlns:converters1="clr-namespace:FTWPlayer.Converters"
          xmlns:lex="http://wpflocalizeextension.codeplex.com"
          xmlns:fuwa="https://github.com/OronDF343/FuwaTeaWin"
@@ -61,8 +60,8 @@
                         <Slider Grid.Row="1"
                                 Value="{Binding Gain, Converter={StaticResource F2DConv}}" Orientation="Vertical"
                                 HorizontalAlignment="Center"
-                                Minimum="{Binding Source={x:Static prop:Settings.Default}, Path=MaxEqualizerGain, Converter={StaticResource NegConv}}"
-                                Maximum="{Binding Source={x:Static prop:Settings.Default}, Path=MaxEqualizerGain}"
+                                Minimum="{Binding Settings.MaxEqualizerGain, Converter={StaticResource NegConv}}"
+                                Maximum="{Binding Settings.MaxEqualizerGain}"
                                 Interval="1" LargeChange="1" SmallChange="0.1" IsSnapToTickEnabled="True"
                                 TickFrequency="0.1"/>
                         <Label Grid.Row="2"

@@ -4,7 +4,6 @@
          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
          xmlns:fuwa="https://github.com/OronDF343/FuwaTeaWin"
-         xmlns:properties="clr-namespace:FTWPlayer.Properties"
          xmlns:utils="clr-namespace:FTWPlayer.ViewModels.Utils"
          xmlns:lex="http://wpflocalizeextension.codeplex.com"
          mc:Ignorable="d"
@@ -14,7 +13,7 @@
          Tag="{DynamicResource AllSettingsButtonContent}">
     <DataGrid ItemsSource="{Binding SettingsPropertyValues}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
         <DataGrid.Resources>
-            <DataTemplate x:Key="StringDataTemplate">
+            <!--<DataTemplate x:Key="StringDataTemplate">
                 <TextBlock Text="{fuwa:CfgDynBinding {Binding Name, Mode=OneTime}, Repository={x:Static properties:Settings.Default}}" VerticalAlignment="Center" Padding="5"/>
             </DataTemplate>
             <DataTemplate x:Key="BooleanDataTemplate">
@@ -28,7 +27,7 @@
             </DataTemplate>
             <DataTemplate x:Key="DefaultTemplate">
                 <ContentControl Content="{fuwa:CfgDynBinding {Binding Name, Mode=OneTime}, Repository={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="5"/>
-            </DataTemplate>
+            </DataTemplate>-->
             <utils:SettingsTemplateSelector x:Key="SettingsTemplateSelector"/>
             <utils:SettingsEditingTemplateSelector x:Key="SettingsEditingTemplateSelector"/>
         </DataGrid.Resources>

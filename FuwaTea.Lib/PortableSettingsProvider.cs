@@ -34,6 +34,7 @@ namespace FuwaTea.Lib
     }
 
     // TODO: Logging
+    [Obsolete("TODO", true)]
     public class PortableSettingsProvider : SettingsProvider
     {
         const string SettingsRootName = "Settings";
@@ -66,10 +67,7 @@ namespace FuwaTea.Lib
 
         public override string ApplicationName
         {
-            get
-            {
-                return Assembly.GetEntryAssembly().GetName().Name;
-            }
+            get => Assembly.GetEntryAssembly().GetName().Name;
             set { }
         }
 

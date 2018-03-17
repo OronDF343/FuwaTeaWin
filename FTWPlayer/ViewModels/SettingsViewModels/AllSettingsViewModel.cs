@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Configuration;
-using System.Linq;
 using System.Windows.Controls;
 using DryIocAttributes;
 using FTWPlayer.Views.SettingsViews;
-using FuwaTea.Extensibility.ConfigurationTemp;
 
 namespace FTWPlayer.ViewModels.SettingsViewModels
 {
@@ -13,9 +10,10 @@ namespace FTWPlayer.ViewModels.SettingsViewModels
     [Reuse(ReuseType.Singleton)]
     public class AllSettingsViewModel : ISettingsTab
     {
-        public TabItem GetTabItem(ApplicationSettingsBase settings, List<IConfigurablePropertyInfo> dynSettings)
+        public TabItem GetTabItem()
         {
-            SettingsPropertyValues = new ObservableCollection<SettingsPropertyValue>(settings.PropertyValues.OfType<SettingsPropertyValue>().OrderBy(spv => spv.Name));
+            // TODO: Remove this tab because it is broken
+            //SettingsPropertyValues = new ObservableCollection<SettingsPropertyValue>(settings.PropertyValues.OfType<SettingsPropertyValue>().OrderBy(spv => spv.Name));
             return new AllSettingsView(this);
         }
 

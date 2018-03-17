@@ -29,7 +29,6 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using DryIoc;
 using FTWPlayer.Localization;
-using FTWPlayer.Properties;
 using FuwaTea.Extensibility;
 using FuwaTea.Lib.NotifyIcon;
 using FuwaTea.Playback;
@@ -52,9 +51,12 @@ namespace FTWPlayer.ViewModels
         public MainViewModel()
         {
             MainViewModelScope = ((App)Application.Current).MainContainer.OpenScope(nameof(MainViewModel));
+            Settings = MainViewModelScope.Resolve<UISettings>();
             PlaybackManager = MainViewModelScope.Resolve<IPlaybackManager>();
             PlaylistManager = MainViewModelScope.Resolve<IPlaylistManager>();
             NotifyIconManager = MainViewModelScope.Resolve<NotifyIconManager>();
+            VolumeProperty = DependencyProperty.Register("Volume", typeof(decimal), typeof(MainViewModel),
+                                                         new PropertyMetadata(1.0m, VolumePropertyChanged));
 
             _tmr = new DispatcherTimer(TimeSpan.FromMilliseconds(100), DispatcherPriority.ApplicationIdle, Tick,
                 Application.Current.Dispatcher);
@@ -119,7 +121,9 @@ namespace FTWPlayer.ViewModels
                 if (!plm.LoadedPlaylists.ContainsKey("temp")) plm.CreatePlaylist("temp");
                 plm.SelectedPlaylistId = "temp";
             }
-            Volume = Settings.Default.RememberVolume ? Settings.Default.LastVolume : PlaybackManager.Volume;
+
+            _settings = MainViewModelScope.Resolve<UISettings>();
+            Volume = _settings.RememberVolume ? _settings.LastVolume : PlaybackManager.Volume;
             // TODO: this is more testing
             PlaybackManager.EqualizerBands.Add(new EqualizerBand { Bandwidth = 1f, Frequency = 31, Gain = 0 });
             PlaybackManager.EqualizerBands.Add(new EqualizerBand { Bandwidth = 1f, Frequency = 62, Gain = 0 });
@@ -217,18 +221,20 @@ namespace FTWPlayer.ViewModels
                 MessageBox.Show(Application.Current.MainWindow, "Unsupported file!", "LoadObject",
                                 MessageBoxButton.OK, MessageBoxImage.Error);
 
-            Settings.Default.PropertyChanged += (s, e) => 
+            _settings.PropertyChanged += (s, e) => 
             {
-                if (e.PropertyName == nameof(Settings.Default.ScrollingTextFormat))
+                if (e.PropertyName == nameof(_settings.ScrollingTextFormat))
                     RaisePropertyChanged(nameof(ScrollingTextFormatString));
-                if (e.PropertyName == nameof(Settings.Default.TrayIconPreference))
-                    if (!NotifyIconManager.SetPreference(Assembly.GetEntryAssembly().Location, (NOTIFYITEM_PREFERENCE)Settings.Default.TrayIconPreference)) LogManager.GetLogger(GetType()).Warn("Failed to set NotifyIcon preference!");
+                if (e.PropertyName == nameof(_settings.TrayIconPreference))
+                    if (!NotifyIconManager.SetPreference(Assembly.GetEntryAssembly().Location, (NOTIFYITEM_PREFERENCE)_settings.TrayIconPreference)) LogManager.GetLogger(GetType()).Warn("Failed to set NotifyIcon preference!");
             };
             // Run once: Set NotifyIcon to always visible
             // This setting purposely doesn't update to reflect the system setting
-            if (Settings.Default.TrayIconPreference > 2)
-                Settings.Default.TrayIconPreference = (uint)NOTIFYITEM_PREFERENCE.Always;
+            if (_settings.TrayIconPreference > 2)
+                _settings.TrayIconPreference = (uint)NOTIFYITEM_PREFERENCE.Always;
         }
+
+        public UISettings Settings { get; }
 
         private readonly DispatcherTimer _tmr;
         private void Tick(object sender, EventArgs e)
@@ -351,7 +357,7 @@ namespace FTWPlayer.ViewModels
 
         private void OnKeyDown(KeyEventArgs e)
         {
-            if (e.Key != Key.LeftShift || Settings.Default.EnableKeyboardHook) return;
+            if (e.Key != Key.LeftShift || _settings.EnableKeyboardHook) return;
             LeftShiftKeyDown();
         }
 
@@ -366,7 +372,7 @@ namespace FTWPlayer.ViewModels
 
         private void OnKeyUp(KeyEventArgs e)
         {
-            if (e.Key != Key.LeftShift || Settings.Default.EnableKeyboardHook) return;
+            if (e.Key != Key.LeftShift || _settings.EnableKeyboardHook) return;
             LeftShiftKeyUp();
         }
 
@@ -467,53 +473,54 @@ namespace FTWPlayer.ViewModels
         public ObservableCollection<TabItem> Tabs { get; private set; }
 
         private bool _showVolumeSlider;
-        public bool ShowVolumeSlider { get { return _showVolumeSlider; } set { if (_showVolumeSlider == value) return; _showVolumeSlider = value; RaisePropertyChanged(); } }
+        public bool ShowVolumeSlider { get => _showVolumeSlider; set { if (_showVolumeSlider == value) return; _showVolumeSlider = value; RaisePropertyChanged(); } }
 
         private bool _expanded;
-        public bool Expanded { get { return _expanded; } set { _expanded = value; RaisePropertyChanged(); } }
+        public bool Expanded { get => _expanded; set { _expanded = value; RaisePropertyChanged(); } }
 
         private bool _shiftMode;
-        public bool ShiftMode { get { return _shiftMode; } set { _shiftMode = value; RaisePropertyChanged(); } }
+        public bool ShiftMode { get => _shiftMode; set { _shiftMode = value; RaisePropertyChanged(); } }
 
         private bool _allowDrag = true;
-        public bool AllowDrag { get { return _allowDrag; } set { _allowDrag = value; RaisePropertyChanged(); } }
+        public bool AllowDrag { get => _allowDrag; set { _allowDrag = value; RaisePropertyChanged(); } }
 
         public Point CurrentMousePosition => NativeMethods.CorrectGetPosition();
         public double MouseX => CurrentMousePosition.X;
         public double MouseY => CurrentMousePosition.Y;
 
         public string ScrollingTextFormatString => PlaybackManager.Current != null
-                                                       ? Settings.Default.ScrollingTextFormat
+                                                       ? _settings.ScrollingTextFormat
                                                        : LocalizationProvider.GetLocalizedValue<string>("WelcomeText");
 
         public string PositionTextFormatString => PlaybackManager.EnableShuffle ? "{0} ({1}) / {2} > {3} / {4}" : "{0} / {2} > {3} / {4}";
-        public int OneBasedCurrentIndex { get { return PlaybackManager.ElementCount > 0 ? PlaybackManager.CurrentIndex + 1 : 0; } set { PlaybackManager.JumpTo(value - 1); } }
-        public int OneBasedCurrentIndexAbsolute { get { return PlaybackManager.ElementCount > 0 ? PlaybackManager.CurrentIndexAbsolute + 1 : 0; } set { PlaybackManager.JumpToAbsolute(value - 1); } }
+        public int OneBasedCurrentIndex { get => PlaybackManager.ElementCount > 0 ? PlaybackManager.CurrentIndex + 1 : 0; set => PlaybackManager.JumpTo(value - 1); }
+        public int OneBasedCurrentIndexAbsolute { get => PlaybackManager.ElementCount > 0 ? PlaybackManager.CurrentIndexAbsolute + 1 : 0; set => PlaybackManager.JumpToAbsolute(value - 1); }
 
         #region Volume animation hax ++
 
         // This is a DependencyProperty so it can be animated
 
-        public static readonly DependencyProperty VolumeProperty = DependencyProperty.Register("Volume", typeof(decimal), typeof(MainViewModel), new PropertyMetadata(1.0m, VolumePropertyChanged));
+        public readonly DependencyProperty VolumeProperty;
 
-        private static void VolumePropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+        private void VolumePropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
             ((MainViewModel)obj).PlaybackManager.Volume = (decimal)args.NewValue;
-            if (((MainViewModel)obj).UpdateRememberVolume) Settings.Default.LastVolume = (decimal)args.NewValue;
+            if (((MainViewModel)obj).UpdateRememberVolume) _settings.LastVolume = (decimal)args.NewValue;
         }
 
         public decimal Volume
         {
-            get { return (decimal)GetValue(VolumeProperty); }
-            set { SetValue(VolumeProperty, value); }
+            get => (decimal)GetValue(VolumeProperty);
+            set => SetValue(VolumeProperty, value);
         }
 
         public static readonly DependencyProperty UpdateRememberVolumeProperty = DependencyProperty.Register("UpdateRememberVolume", typeof(bool), typeof(MainViewModel), new PropertyMetadata(true));
+        private UISettings _settings;
 
         public bool UpdateRememberVolume
         {
-            get { return (bool)GetValue(UpdateRememberVolumeProperty); }
-            set { SetValue(UpdateRememberVolumeProperty, value); }
+            get => (bool)GetValue(UpdateRememberVolumeProperty);
+            set => SetValue(UpdateRememberVolumeProperty, value);
         }
         #endregion
 
@@ -530,7 +537,7 @@ namespace FTWPlayer.ViewModels
         {
             NotifyIconManager.Dispose();
             // IMPORTANT!
-            PlaybackManager.Dispose();
+            //TODO PlaybackManager.Dispose();
         }
     }
 }

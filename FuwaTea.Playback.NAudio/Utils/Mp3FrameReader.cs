@@ -65,8 +65,8 @@ namespace FuwaTea.Playback.NAudio.Utils
 
         public override long Length => 0;
         public override TimeSpan TotalTime => TimeSpan.Zero;
-        public override long Position { get { return 0; } set { throw new NotSupportedException(); } }
-        public override TimeSpan CurrentTime { get { return TimeSpan.Zero; } set { } }
+        public override long Position { get => 0; set => throw new NotSupportedException(); }
+        public override TimeSpan CurrentTime { get => TimeSpan.Zero; set { } }
 
         private static IMp3FrameDecompressor CreateFrameDecompressor(Mp3Frame frame)
         {

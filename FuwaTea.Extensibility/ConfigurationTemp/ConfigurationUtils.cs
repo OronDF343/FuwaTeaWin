@@ -5,14 +5,14 @@ using DryIoc;
 
 namespace FuwaTea.Extensibility.ConfigurationTemp
 {
-    [Obsolete]
+    [Obsolete("TODO", true)]
     public static class ConfigurationUtils
     {
         /// <summary>
         /// Gets all the configurable properties of the specified element type.
         /// </summary>
         /// <param name="element">The element type. Must be a class with the <see cref="ConfigurableElementAttribute">ConfigurableElementAttribute</see> attribute.</param>
-        /// <param name="errorCallback">An <see cref="ErrorCallback">ErrorCallback</see>.</param>
+        /// <param name="errorCallback">An error callback.</param>
         /// <returns>All the configurable properties found on the element, or null if the element is not configurable.</returns>
         private static IEnumerable<IConfigurablePropertyInfo> GetProperties(Type element, Action<Exception> errorCallback)
         {

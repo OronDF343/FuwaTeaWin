@@ -28,8 +28,8 @@ namespace FuwaTea.Wpf.Behaviors
 
         public Storyboard Storyboard
         {
-            get { return (Storyboard)GetValue(StoryboardProperty); }
-            set { SetValue(StoryboardProperty, value); }
+            get => (Storyboard)GetValue(StoryboardProperty);
+            set => SetValue(StoryboardProperty, value);
         }
     }
 }

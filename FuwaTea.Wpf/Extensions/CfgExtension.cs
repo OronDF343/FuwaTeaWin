@@ -17,13 +17,13 @@ namespace FuwaTea.Wpf.Extensions
         }
 
         private string _key;
-        public string Key { get { return _key; } set { _key = value; UpdateNewValue(); } }
+        public string Key { get => _key; set { _key = value; UpdateNewValue(); } }
 
         private ApplicationSettingsBase _repo;
 
         public ApplicationSettingsBase Repository
         {
-            get { return _repo; }
+            get => _repo;
             set
             {
                 if (_repo != null) _repo.PropertyChanged -= RepoOnPropertyChanged;

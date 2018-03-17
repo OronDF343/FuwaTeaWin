@@ -156,7 +156,7 @@ namespace FuwaTea.Wpf.Keyboard
         private bool _enabled;
         public bool IsEnabled
         {
-            get { return _enabled; }
+            get => _enabled;
             set
             {
                 if (_enabled && !value)

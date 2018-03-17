@@ -1,13 +1,11 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Configuration;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 using DryIocAttributes;
 using FTWPlayer.Views.SettingsViews;
-using FuwaTea.Extensibility.ConfigurationTemp;
 using FuwaTea.Lib.Collections;
 using GalaSoft.MvvmLight.CommandWpf;
 
@@ -17,16 +15,20 @@ namespace FTWPlayer.ViewModels.SettingsViewModels
     [Reuse(ReuseType.Singleton)]
     public class KeyBindingsViewModel : ISettingsTab
     {
-        public TabItem GetTabItem(ApplicationSettingsBase settings, List<IConfigurablePropertyInfo> dynSettings)
+        public KeyBindingsViewModel([Import] UISettings settings)
         {
             Settings = settings;
+        }
+
+        public TabItem GetTabItem()
+        {
             RemoveItemCommand = new RelayCommand<object[]>(RemoveItem);
             AddItemCommand = new RelayCommand<object[]>(AddItem);
             return new KeyBindingsView(this);
         }
 
         public decimal Index => 3;
-        public ApplicationSettingsBase Settings { get; private set; }
+        public UISettings Settings { get; }
 
         public ICommand AddItemCommand { get; private set; }
 

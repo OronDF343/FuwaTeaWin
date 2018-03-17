@@ -7,7 +7,6 @@
         xmlns:command="http://www.galasoft.ch/mvvmlight"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
         xmlns:converters="clr-namespace:FTWPlayer.Converters"
-        xmlns:prop="clr-namespace:FTWPlayer.Properties"
         xmlns:fuwa="https://github.com/OronDF343/FuwaTeaWin"
         xmlns:ignore="http://www.ignore.com"
         xmlns:hc="http://www.hardcodet.net/taskbar"
@@ -23,14 +22,15 @@
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         WindowStyle="None" AllowsTransparency="True" ResizeMode="CanResize" Background="Transparent"
         AllowDrop="True" FlowDirection="LeftToRight"
-        ShowInTaskbar="{fuwa:Cfg ShowInTaskbar}"
-        Topmost="{fuwa:Cfg Topmost}"
+        ShowInTaskbar="{Binding Settings.ShowInTaskbar}"
+        Topmost="{Binding Settings.Topmost}"
         lex:LocalizeDictionary.DesignCulture="he"
         lex:ResxLocalizationProvider.DefaultAssembly="FTWPlayer"
         lex:ResxLocalizationProvider.DefaultDictionary="Strings"
-        fuwa:ConfigSource.Repository="{x:Static prop:Settings.Default}"
         ftwPlayer:WindowSizeParameters.CompactHeight="{DynamicResource CompactHeight}"
-        ftwPlayer:WindowSizeParameters.BottomHeight="{DynamicResource BottomHeight}">
+        ftwPlayer:WindowSizeParameters.BottomHeight="{DynamicResource BottomHeight}"
+        Height="{Binding Settings.DesiredMaxHeight}"
+        Width="{Binding Settings.DesiredWidth}">
     <!-- FFR: These property values enable hardware acceleration (because they make this a layered window):
          WindowStyle = None
          AllowsTransparency = True
@@ -38,12 +38,6 @@
     <WindowChrome.WindowChrome>
         <WindowChrome CornerRadius="0" ResizeBorderThickness="{Binding Expanded, Converter={StaticResource ResizeConv}}" GlassFrameThickness="0" UseAeroCaptionButtons="False" CaptionHeight="0"/>
     </WindowChrome.WindowChrome>
-    <Window.Height>
-        <fuwa:CfgBinding Repository="{x:Static prop:Settings.Default}">DesiredMaxHeight</fuwa:CfgBinding>
-    </Window.Height>
-    <Window.Width>
-        <fuwa:CfgBinding Repository="{x:Static prop:Settings.Default}">DesiredWidth</fuwa:CfgBinding>
-    </Window.Width>
     <ftwPlayer:WindowSizeParameters.TotalCompactHeight>
         <MultiBinding Converter="{StaticResource AddConv}">
             <Binding ElementName="MainBorder" Path="BorderThickness.Top"/>
@@ -68,7 +62,7 @@
     <i:Interaction.Behaviors>
         <fuwa:ExtendedCloseBehavior Storyboard="{DynamicResource ClosingAnimation}"
                                     VolumeFadeOutStoryboard="{StaticResource VolumeFadeOut}"
-                                    VolumeFadeOut="{fuwa:CfgBinding VolumeFadeOutOnExit, Repository={x:Static prop:Settings.Default}}" />
+                                    VolumeFadeOut="{Binding Settings.VolumeFadeOutOnExit}" />
         <fuwa:OpenBehavior Storyboard="{DynamicResource LoadedAnimation}" />
         <fuwa:WindowDragBehavior Enabled="{Binding AllowDrag}">
             <fuwa:ElementReference Binding="{Binding ElementName=TabControl, Path=SelectedContent}"/>
@@ -191,7 +185,7 @@
                         </TextBlock.Text>
                     </TextBlock>
                     <Button Grid.Row="1" Grid.Column="1" Content="{DynamicResource PreviousButtonContent}"
-                            fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}"
+                            fuwa:OptionalToolTip.ToolTipEnabled="{Binding Settings.ShowToolTips}"
                             fuwa:OptionalToolTip.ToolTipContent="{lex:Loc PreviousToolTip}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
@@ -200,7 +194,7 @@
                         </i:Interaction.Triggers>
                     </Button>
                     <Button Grid.Row="1" Grid.Column="2" fuwa:DynamicStyle.BaseStyle="{DynamicResource {x:Type Button}}"
-                            fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}">
+                            fuwa:OptionalToolTip.ToolTipEnabled="{Binding Settings.ShowToolTips}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
                                 <command:EventToCommand Command="{Binding PlayPauseResumeCommand}"
@@ -226,7 +220,7 @@
                         </fuwa:DynamicStyle.DerivedStyle>
                     </Button>
                     <Button Grid.Row="1" Grid.Column="3" Content="{DynamicResource NextButtonContent}"
-                            fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}"
+                            fuwa:OptionalToolTip.ToolTipEnabled="{Binding Settings.ShowToolTips}"
                             fuwa:OptionalToolTip.ToolTipContent="{lex:Loc NextToolTip}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
@@ -235,7 +229,7 @@
                         </i:Interaction.Triggers>
                     </Button>
                     <Button Grid.Row="1" Grid.Column="4" Content="{DynamicResource StopButtonContent}"
-                            fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}"
+                            fuwa:OptionalToolTip.ToolTipEnabled="{Binding Settings.ShowToolTips}"
                             fuwa:OptionalToolTip.ToolTipContent="{lex:Loc StopToolTip}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
@@ -244,7 +238,7 @@
                         </i:Interaction.Triggers>
                     </Button>
                     <Button x:Name="VolumeButton" Grid.Row="1" Grid.Column="5"
-                            fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}"
+                            fuwa:OptionalToolTip.ToolTipEnabled="{Binding Settings.ShowToolTips}"
                             fuwa:OptionalToolTip.ToolTipContent="{lex:Loc VolumeToolTip}"
                             fuwa:DataStatesHelper.Binding="{Binding Volume, Converter={StaticResource VolConv}}"
                             fuwa:DataStatesHelper.States="{StaticResource VolumeStates}">
@@ -277,7 +271,7 @@
                         </i:Interaction.Triggers>
                     </Slider>
                     <Button Grid.Row="1" Grid.Column="7"
-                            fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}"
+                            fuwa:OptionalToolTip.ToolTipEnabled="{Binding Settings.ShowToolTips}"
                             fuwa:OptionalToolTip.UseDataStates="True"
                             fuwa:DataStatesHelper.Binding="{Binding PlaybackManager.EnableShuffle}"
                             fuwa:DataStatesHelper.States="{StaticResource ShuffleStates}">
@@ -288,7 +282,7 @@
                         </i:Interaction.Triggers>
                     </Button>
                     <Button Grid.Row="1" Grid.Column="8"
-                            fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}"
+                            fuwa:OptionalToolTip.ToolTipEnabled="{Binding Settings.ShowToolTips}"
                             fuwa:OptionalToolTip.UseDataStates="True"
                             fuwa:DataStatesHelper.Binding="{Binding PlaybackManager.LoopType}"
                             fuwa:DataStatesHelper.States="{StaticResource RepeatStates}">
@@ -299,7 +293,7 @@
                         </i:Interaction.Triggers>
                     </Button>
                     <Button Grid.Row="1" Grid.Column="9"
-                            fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}"
+                            fuwa:OptionalToolTip.ToolTipEnabled="{Binding Settings.ShowToolTips}"
                             fuwa:OptionalToolTip.UseDataStates="True"
                             fuwa:DataStatesHelper.Binding="{Binding Expanded}"
                             fuwa:DataStatesHelper.States="{StaticResource WindowStates}">
@@ -311,11 +305,11 @@
                     </Button>
                     <Button Grid.Row="1" Grid.Column="10" Content="{DynamicResource MinimizeButtonContent}"
                             Command="{Binding HideCommand}"
-                            fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}"
+                            fuwa:OptionalToolTip.ToolTipEnabled="{Binding Settings.ShowToolTips}"
                             fuwa:OptionalToolTip.ToolTipContent="{lex:Loc HideToolTip}" />
                     <Button Grid.Row="1" Grid.Column="11" Content="{DynamicResource CloseButtonContent}"
                             Command="{Binding CloseCommand}"
-                            fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}"
+                            fuwa:OptionalToolTip.ToolTipEnabled="{Binding Settings.ShowToolTips}"
                             fuwa:OptionalToolTip.ToolTipContent="{lex:Loc ExitToolTip}" />
 
                     <!-- Progress Bar -->

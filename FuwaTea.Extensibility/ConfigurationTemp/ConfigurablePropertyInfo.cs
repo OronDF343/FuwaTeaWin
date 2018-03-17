@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 
 namespace FuwaTea.Extensibility.ConfigurationTemp
 {
-    [Obsolete]
+    [Obsolete("TODO", true)]
     public class ConfigurablePropertyInfo<TElement> : IConfigurablePropertyInfo
     {
         public ConfigurablePropertyInfo(PropertyInfo pi, ConfigurablePropertyAttribute cpa)
@@ -30,14 +30,14 @@ namespace FuwaTea.Extensibility.ConfigurationTemp
 
         public object BoundObject
         {
-            get { return _boundObject; }
+            get => _boundObject;
             set { if (value is TElement) _boundObject = (TElement)value; }
         }
 
         private object _value;
         public object Value
         {
-            get { return BoundObject == null ? _value : PropertyInfo.GetValue(BoundObject); }
+            get => BoundObject == null ? _value : PropertyInfo.GetValue(BoundObject);
             set
             {
                 if (BoundObject != null) PropertyInfo.SetValue(BoundObject, value);

@@ -140,7 +140,7 @@ namespace FuwaTea.Playback
 
         public bool EnableShuffle
         {
-            get { return _shuffle; }
+            get => _shuffle;
             set
             {
                 var temp = _shuffle;
@@ -373,7 +373,7 @@ namespace FuwaTea.Playback
 
         public PlaybackState CurrentState
         {
-            get { return _state; }
+            get => _state;
             private set
             {
                 var temp = _state;
@@ -383,13 +383,13 @@ namespace FuwaTea.Playback
         }
 
         private LoopTypes _loop;
-        public LoopTypes LoopType { get { return _loop; } set { _loop = value; OnPropertyChanged(); } }
+        public LoopTypes LoopType { get => _loop; set { _loop = value; OnPropertyChanged(); } }
         
         public TimeSpan Duration => _currentPlayer?.Duration ?? TimeSpan.Zero;
 
         public TimeSpan Position
         {
-            get { return _currentPlayer?.Position ?? TimeSpan.Zero; }
+            get => _currentPlayer?.Position ?? TimeSpan.Zero;
             set
             {
                 if (_currentPlayer == null) return;
@@ -409,7 +409,7 @@ namespace FuwaTea.Playback
         private decimal _volume = 1.0m;
         public decimal Volume
         {
-            get { return _volume; }
+            get => _volume;
             set
             {
                 _volume = value;
@@ -420,7 +420,7 @@ namespace FuwaTea.Playback
         private decimal _leftVolume = 1.0m;
         public decimal LeftVolume
         {
-            get { return _leftVolume; }
+            get => _leftVolume;
             set
             {
                 _leftVolume = value;
@@ -431,7 +431,7 @@ namespace FuwaTea.Playback
         private decimal _rightVolume = 1.0m;
         public decimal RightVolume
         {
-            get { return _rightVolume; }
+            get => _rightVolume;
             set
             {
                 _rightVolume = value;
@@ -446,10 +446,7 @@ namespace FuwaTea.Playback
 
         public bool EnableEqualizer
         {
-            get
-            {
-                return _enableEq;
-            }
+            get => _enableEq;
             set
             {
                 _enableEq = value;

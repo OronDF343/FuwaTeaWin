@@ -58,7 +58,7 @@ namespace FTWPlayer.ViewModels
         [UsedImplicitly]
         public ImageSource CurrentAlbumArt
         {
-            get { return _albumArt; }
+            get => _albumArt;
             private set
             {
                 _albumArt = value;

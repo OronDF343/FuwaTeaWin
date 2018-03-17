@@ -18,7 +18,7 @@ namespace FuwaTea.Wpf.Keyboard
 
         public KeyboardListener Listener
         {
-            get { return _listener; }
+            get => _listener;
             set
             {
                 if (_listener != null)

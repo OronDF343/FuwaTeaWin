@@ -14,12 +14,15 @@ namespace FTWPlayer.ViewModels
     public class EqualizerViewModel : ITab
     {
         
-        public EqualizerViewModel([Import] IPlaybackManager playbackManager)
+        public EqualizerViewModel([Import] IPlaybackManager playbackManager, [Import] UISettings settings)
         {
             PlaybackManager = playbackManager;
             ResetEqCommand = new RelayCommand<RoutedEventArgs>(ResetEq);
             TabObject = new EqualizerControl(this);
+            Settings = settings;
         }
+
+        public UISettings Settings { get; }
 
         public TabItem TabObject { get; }
         public decimal Index => 1;

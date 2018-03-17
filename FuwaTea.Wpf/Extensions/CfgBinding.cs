@@ -25,7 +25,7 @@ namespace FuwaTea.Wpf.Extensions
         private string _key;
         public string Key
         {
-            get { return _key; }
+            get => _key;
             set
             {
                 if (_key == value) return;
@@ -37,7 +37,7 @@ namespace FuwaTea.Wpf.Extensions
         private object _value;
         public object Value
         {
-            get { return _value; }
+            get => _value;
             set
             {
                 if (_value == value) return;
@@ -50,7 +50,7 @@ namespace FuwaTea.Wpf.Extensions
 
         public ApplicationSettingsBase Repository
         {
-            get { return _repo; }
+            get => _repo;
             set
             {
                 if (_repo != null) _repo.PropertyChanged -= RepoOnPropertyChanged;

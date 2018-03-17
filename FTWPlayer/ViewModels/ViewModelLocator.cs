@@ -16,8 +16,8 @@
 #endregion
 
 using System.Diagnostics.CodeAnalysis;
+using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
-using Microsoft.Practices.ServiceLocation;
 
 namespace FTWPlayer.ViewModels
 {

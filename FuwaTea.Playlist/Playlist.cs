@@ -183,7 +183,7 @@ namespace FuwaTea.Playlist
 
         public string FileLocation
         {
-            get { return _fileLocation; }
+            get => _fileLocation;
             set
             {
                 _fileLocation = value;
@@ -193,7 +193,7 @@ namespace FuwaTea.Playlist
         }
 
         private bool _unsaved;
-        public bool UnsavedChanges { get { return _unsaved; } set { _unsaved = value; OnPropertyChanged(new PropertyChangedEventArgs("UnsavedChanges")); } }
+        public bool UnsavedChanges { get => _unsaved; set { _unsaved = value; OnPropertyChanged(new PropertyChangedEventArgs("UnsavedChanges")); } }
         public string Title { get; set; }
         public Dictionary<string, object> Metadata { get; } = new Dictionary<string, object>();
 

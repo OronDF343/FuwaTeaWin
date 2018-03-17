@@ -31,8 +31,8 @@ namespace FuwaTea.Lib
 
         public override long Position
         {
-            get { return _pos; }
-            set { throw new InvalidOperationException(); }
+            get => _pos;
+            set => throw new InvalidOperationException();
         }
 
 

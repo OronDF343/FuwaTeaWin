@@ -1,6 +1,8 @@
-﻿namespace FuwaTea.Config
+﻿using System.ComponentModel;
+
+namespace FuwaTea.Config
 {
-    public interface IConfigPage
+    public interface IConfigPage : INotifyPropertyChanged
     {
         // TODO: Custom serialization overrides
     }

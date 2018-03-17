@@ -15,8 +15,8 @@ namespace FuwaTea.Wpf.Behaviors
 
         public string DictionaryIds
         {
-            get { return (string)GetValue(DictionaryIdsProperty); }
-            set { SetValue(DictionaryIdsProperty, value); }
+            get => (string)GetValue(DictionaryIdsProperty);
+            set => SetValue(DictionaryIdsProperty, value);
         }
 
         protected override void OnAttached()

@@ -47,8 +47,8 @@ namespace FuwaTea.Wpf.Behaviors
 
         public bool EnableNegativePosition
         {
-            get { return (bool)GetValue(EnableNegativePositionProperty); }
-            set { SetValue(EnableNegativePositionProperty, value); }
+            get => (bool)GetValue(EnableNegativePositionProperty);
+            set => SetValue(EnableNegativePositionProperty, value);
         }
 
         protected override void OnAttached()
@@ -150,8 +150,8 @@ namespace FuwaTea.Wpf.Behaviors
 
         public UIElement Binding
         {
-            get { return (UIElement)GetValue(BindingProperty); }
-            set { SetValue(BindingProperty, value); }
+            get => (UIElement)GetValue(BindingProperty);
+            set => SetValue(BindingProperty, value);
         }
 
         protected override Freezable CreateInstanceCore()

@@ -2,12 +2,11 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Windows;
 using System.Windows.Controls;
 using DryIocAttributes;
-using FTWPlayer.Properties;
 using FTWPlayer.ViewModels.SettingsViewModels;
 using FTWPlayer.Views;
+using FuwaTea.Config;
 
 namespace FTWPlayer.ViewModels
 {
@@ -16,10 +15,11 @@ namespace FTWPlayer.ViewModels
     public class SettingsViewModel : ITab
     {
         
-        public SettingsViewModel([ImportMany] IEnumerable<ISettingsTab> settingsTabs)
+        public SettingsViewModel([ImportMany] IEnumerable<ISettingsTab> settingsTabs, [Import] IConfigManager configManager)
         {
+            // TODO IMPORTANT: Dynamically create missing settings page tabs!!!
             TabObject = new SettingsView(this);
-            SettingsTabs = new ObservableCollection<TabItem>(settingsTabs.OrderBy(t => t.Index).Select(t => t.GetTabItem(Settings.Default, ((App)Application.Current).DynSettings)));
+            SettingsTabs = new ObservableCollection<TabItem>(settingsTabs.OrderBy(t => t.Index).Select(t => t.GetTabItem()));
         }
         public TabItem TabObject { get; }
         public decimal Index => 3;

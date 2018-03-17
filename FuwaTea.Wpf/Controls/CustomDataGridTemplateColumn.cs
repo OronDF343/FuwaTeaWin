@@ -29,8 +29,8 @@ namespace FuwaTea.Wpf.Controls
 
 		public virtual BindingBase Binding
 		{
-			get { return _binding; }
-			set
+			get => _binding;
+		    set
 			{
 			    if (_binding == value) return;
 			    var oldBinding = _binding;
@@ -42,8 +42,8 @@ namespace FuwaTea.Wpf.Controls
 
 		public override BindingBase ClipboardContentBinding
 		{
-			get { return base.ClipboardContentBinding ?? Binding; }
-			set { base.ClipboardContentBinding = value; }
+			get => base.ClipboardContentBinding ?? Binding;
+		    set => base.ClipboardContentBinding = value;
 		}
 
         [CanBeNull]

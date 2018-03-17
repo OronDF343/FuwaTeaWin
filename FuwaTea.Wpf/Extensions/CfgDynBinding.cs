@@ -23,7 +23,7 @@ namespace FuwaTea.Wpf.Extensions
 
         public ApplicationSettingsBase Repository
         {
-            get { return _repo; }
+            get => _repo;
             set
             {
                 if (_repo != null) _repo.PropertyChanged -= RepoOnPropertyChanged;

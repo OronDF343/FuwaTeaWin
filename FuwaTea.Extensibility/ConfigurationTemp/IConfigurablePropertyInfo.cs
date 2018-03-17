@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace FuwaTea.Extensibility.ConfigurationTemp
 {
-    [Obsolete]
+    [Obsolete("TODO", true)]
     public interface IConfigurablePropertyInfo : INotifyPropertyChanged
     {
         string Name { get; }

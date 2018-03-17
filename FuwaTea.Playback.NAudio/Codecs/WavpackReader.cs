@@ -40,7 +40,7 @@ namespace FuwaTea.Playback.NAudio.Codecs
 
         public override long Position
         {
-            get { return WavpackUtils.WavpackGetSampleIndex(_wavpackContext) * WaveFormat.BlockAlign; }
+            get => WavpackUtils.WavpackGetSampleIndex(_wavpackContext) * WaveFormat.BlockAlign;
             set { lock (_repositionLock) { WavpackUtils.setSample(_wavpackContext, value / WaveFormat.BlockAlign); } }
         }
 

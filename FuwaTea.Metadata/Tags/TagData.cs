@@ -35,13 +35,13 @@ namespace FuwaTea.Metadata.Tags
         public virtual string[] Genres { get; set; }
         public virtual string Grouping { get; set; }
         public abstract bool IsEmpty { get; } // HasTag
-        public string JoinedAlbumArtists { get { return Join(AlbumArtists); } set { AlbumArtists = Split(value); } }
-        public string JoinedAlbumArtistsSort { get { return Join(AlbumArtistsSort); } set { AlbumArtistsSort = Split(value); } }
-        public string JoinedComposers { get { return Join(Composers); } set { Composers = Split(value); } }
-        public string JoinedComposersSort { get { return Join(ComposersSort); } set { ComposersSort = Split(value); } }
-        public string JoinedGenres { get { return Join(Genres); } set { Genres = Split(value); } }
-        public string JoinedPerformers { get { return Join(Performers); } set { Performers = Split(value); } }
-        public string JoinedPerformersSort { get { return Join(PerformersSort); } set { PerformersSort = Split(value); } }
+        public string JoinedAlbumArtists { get => Join(AlbumArtists); set => AlbumArtists = Split(value); }
+        public string JoinedAlbumArtistsSort { get => Join(AlbumArtistsSort); set => AlbumArtistsSort = Split(value); }
+        public string JoinedComposers { get => Join(Composers); set => Composers = Split(value); }
+        public string JoinedComposersSort { get => Join(ComposersSort); set => ComposersSort = Split(value); }
+        public string JoinedGenres { get => Join(Genres); set => Genres = Split(value); }
+        public string JoinedPerformers { get => Join(Performers); set => Performers = Split(value); }
+        public string JoinedPerformersSort { get => Join(PerformersSort); set => PerformersSort = Split(value); }
         public virtual string Lyrics { get; set; }
         //public virtual string MusicBrainzArtistId { get; set; }
         //public virtual string MusicBrainzDiscId { get; set; }

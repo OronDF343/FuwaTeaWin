@@ -1,14 +1,11 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.Composition;
-using System.Configuration;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using System.Windows.Input;
 using DryIocAttributes;
 using FTWPlayer.Skins;
 using FTWPlayer.Views.SettingsViews;
-using FuwaTea.Extensibility.ConfigurationTemp;
 using FuwaTea.Wpf.Behaviors;
 using GalaSoft.MvvmLight.CommandWpf;
 using JetBrains.Annotations;
@@ -26,7 +23,7 @@ namespace FTWPlayer.ViewModels.SettingsViewModels
             LoadSkin = new RelayCommand(OnLoadSkin);
         }
 
-        public TabItem GetTabItem(ApplicationSettingsBase settings, List<IConfigurablePropertyInfo> dynSettings)
+        public TabItem GetTabItem()
         {
             return new SkinsView(this);
         }
