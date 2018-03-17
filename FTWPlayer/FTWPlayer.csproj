@@ -172,8 +172,6 @@
     </Compile>
     <Compile Include="ViewModels\PlayerViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
-    <Compile Include="ViewModels\Utils\SettingsEditingTemplateSelector.cs" />
-    <Compile Include="ViewModels\Utils\SettingsTemplateSelector.cs" />
     <Compile Include="Views\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>

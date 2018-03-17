@@ -4,7 +4,6 @@
          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
          xmlns:fuwa="https://github.com/OronDF343/FuwaTeaWin"
-         xmlns:utils="clr-namespace:FTWPlayer.ViewModels.Utils"
          xmlns:lex="http://wpflocalizeextension.codeplex.com"
          mc:Ignorable="d"
          d:DesignHeight="300" d:DesignWidth="300"
@@ -27,9 +26,9 @@
             </DataTemplate>
             <DataTemplate x:Key="DefaultTemplate">
                 <ContentControl Content="{fuwa:CfgDynBinding {Binding Name, Mode=OneTime}, Repository={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="5"/>
-            </DataTemplate>-->
+            </DataTemplate>
             <utils:SettingsTemplateSelector x:Key="SettingsTemplateSelector"/>
-            <utils:SettingsEditingTemplateSelector x:Key="SettingsEditingTemplateSelector"/>
+            <utils:SettingsEditingTemplateSelector x:Key="SettingsEditingTemplateSelector"/>-->
         </DataGrid.Resources>
         <DataGrid.Columns>
             <DataGridTemplateColumn Header="Name" IsReadOnly="True">
@@ -39,7 +38,7 @@
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTemplateColumn Header="Value" Width="*" CellTemplateSelector="{StaticResource SettingsTemplateSelector}" CellEditingTemplateSelector="{StaticResource SettingsEditingTemplateSelector}"/>
+            <DataGridTemplateColumn Header="Value" Width="*" />
         </DataGrid.Columns>
     </DataGrid>
 </TabItem>

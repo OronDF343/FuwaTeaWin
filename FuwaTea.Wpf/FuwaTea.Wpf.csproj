@@ -87,10 +87,6 @@
     <Compile Include="Controls\ScrollingTextBlockComponent.xaml.cs">
       <DependentUpon>ScrollingTextBlockComponent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Extensions\CfgBinding.cs" />
-    <Compile Include="Extensions\CfgDynBinding.cs" />
-    <Compile Include="Extensions\CfgExtension.cs" />
-    <Compile Include="Helpers\ConfigSource.cs" />
     <Compile Include="Helpers\CopyToToolTipTag.cs" />
     <Compile Include="Helpers\DynamicStyle.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
@@ -124,6 +120,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Extensions\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
