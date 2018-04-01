@@ -37,6 +37,7 @@ namespace FuwaTea.Audio
             try 
             {
                 // TODO IMPORTANT: SampleSource vs WaveSource -- Effects
+                // TODO IMPORTANT: Create interface wrapper so we don't have to depend on CSCore
                 Api.Load(dec);
                 StateTransition(AudioPlayerState.Stopped, TransitionInitiator.Manual);
             }
