@@ -43,7 +43,7 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition("https://github.com/OronDF343/FuwaTeaWin", "FuwaTea.Wpf")]
 [assembly: XmlnsDefinition("https://github.com/OronDF343/FuwaTeaWin", "FuwaTea.Wpf.Behaviors")]
 [assembly: XmlnsDefinition("https://github.com/OronDF343/FuwaTeaWin", "FuwaTea.Wpf.Controls")]
-[assembly: XmlnsDefinition("https://github.com/OronDF343/FuwaTeaWin", "FuwaTea.Wpf.Extensions")]
+//[assembly: XmlnsDefinition("https://github.com/OronDF343/FuwaTeaWin", "FuwaTea.Wpf.Extensions")]
 [assembly: XmlnsDefinition("https://github.com/OronDF343/FuwaTeaWin", "FuwaTea.Wpf.Helpers")]
 [assembly: XmlnsPrefix("https://github.com/OronDF343/FuwaTeaWin", "fuwa")]
 
