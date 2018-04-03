@@ -6,10 +6,10 @@ using CSCore.CoreAudioAPI;
 using FuwaTea.Config;
 using Newtonsoft.Json;
 
-namespace FuwaTea.Audio
+namespace FuwaTea.Audio.CSCore
 {
     [ConfigPage(nameof(Wasapi))]
-    public class WasapiConfig : CSCorePlaybackApiConfigBase
+    public class WasapiConfig : CSCoreApiConfigBase
     {
         [JsonIgnore]
         public WasapiConfig Default => new WasapiConfig();

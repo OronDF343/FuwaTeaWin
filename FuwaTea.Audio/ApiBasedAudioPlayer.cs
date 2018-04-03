@@ -7,9 +7,9 @@ namespace FuwaTea.Audio
     [Reuse(ReuseType.Transient)]
     public class ApiBasedAudioPlayer : IAudioPlayer
     {
-        protected readonly IAudioPlaybackApi Api;
+        protected readonly IAudioApi Api;
 
-        public ApiBasedAudioPlayer(IAudioPlaybackApi api)
+        public ApiBasedAudioPlayer(IAudioApi api)
         {
             Api = api;
             Api.Reinitialized += ApiOnReinitialized;

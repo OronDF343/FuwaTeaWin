@@ -1,35 +1,33 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 using CSCore;
 using CSCore.SoundOut;
-using FuwaTea.Config;
-using JetBrains.Annotations;
 
-namespace FuwaTea.Audio
+namespace FuwaTea.Audio.CSCore
 {
     [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Library name is CSCore")]
     [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor", Justification = "By design")]
-    public abstract class CSCorePlaybackApiBase<TOut, TConfig> : IAudioPlaybackApi where TOut : ISoundOut where TConfig : CSCorePlaybackApiConfigBase
+    public abstract class CSCoreApiBase<TOut, TConfig> : IAudioApi
+        where TOut : ISoundOut
+        where TConfig : CSCoreApiConfigBase
     {
-        [SuppressMessage("ReSharper", "UnassignedField.Global", Justification = "Will be set by implementing class")]
         protected TOut SoundOut;
         protected readonly TConfig Config;
         protected IWaveSource WavSrc;
 
-        public CSCorePlaybackApiBase(TConfig config)
+        public CSCoreApiBase(TConfig config)
         {
             Config = config;
             Config.PropertyChanged += ConfigOnPropertyChanged;
             CreateSoundOutWrapper();
         }
 
-        protected abstract void CreateSoundOut();
+        protected abstract TOut CreateSoundOut();
 
         protected virtual void CreateSoundOutWrapper()
         {
-            CreateSoundOut();
+            SoundOut = CreateSoundOut();
             SoundOut.Volume = Config.MasterVolume;
             SoundOut.Stopped += SoundOutOnStopped;
         }
@@ -42,7 +40,7 @@ namespace FuwaTea.Audio
 
         protected virtual void ConfigOnPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
-            if (args.PropertyName == nameof(CSCorePlaybackApiConfigBase.MasterVolume))
+            if (args.PropertyName == nameof(CSCoreApiConfigBase.MasterVolume))
                 SoundOut.Volume = Config.MasterVolume;
             else
             {
@@ -117,19 +115,6 @@ namespace FuwaTea.Audio
         protected virtual void OnPlaybackError(PlaybackErrorEventArgs args)
         {
             PlaybackError?.Invoke(this, args);
-        }
-    }
-
-    public abstract class CSCorePlaybackApiConfigBase : IConfigPage
-    {
-        public float MasterVolume { get; set; } = 1.0f;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -5,7 +5,7 @@ using CSCore;
 namespace FuwaTea.Audio
 {
     [InheritedExport]
-    public interface IAudioPlaybackApi : IDisposable
+    public interface IAudioApi : IDisposable
     {
         void Load(IWaveSource dec);
         bool CanResume { get; }

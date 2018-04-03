@@ -4,17 +4,17 @@ using CSCore.CoreAudioAPI;
 using CSCore.SoundOut;
 using DryIocAttributes;
 
-namespace FuwaTea.Audio
+namespace FuwaTea.Audio.CSCore
 {
     [Reuse(ReuseType.Transient)]
-    public class Wasapi : CSCorePlaybackApiBase<WasapiOut, WasapiConfig>
+    public class Wasapi : CSCoreApiBase<WasapiOut, WasapiConfig>
     {
         public Wasapi(WasapiConfig config)
             : base(config) { }
         
-        protected override void CreateSoundOut()
+        protected override WasapiOut CreateSoundOut()
         {
-            SoundOut = new WasapiOut(Config.UseEventSync,
+            var so = new WasapiOut(Config.UseEventSync,
                                      Config.UseExclusiveMode
                                          ? AudioClientShareMode.Exclusive
                                          : AudioClientShareMode.Shared,
@@ -25,7 +25,8 @@ namespace FuwaTea.Audio
             };
             var dev = MMDeviceEnumerator.EnumerateDevices(DataFlow.Render, DeviceState.Active)
                                         .FirstOrDefault(mmd => mmd.DevicePath == Config.Device);
-            if (dev == null) throw new AudioDeviceNotReadyException(Config.Device);
+            so.Device = dev ?? throw new AudioDeviceNotReadyException(Config.Device);
+            return so;
         }
 
         protected override void ConfigOnPropertyChanged(object sender, PropertyChangedEventArgs args)
