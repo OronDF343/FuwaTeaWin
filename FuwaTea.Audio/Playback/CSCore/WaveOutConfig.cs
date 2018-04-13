@@ -5,7 +5,7 @@ using CSCore.SoundOut;
 using FuwaTea.Config;
 using Newtonsoft.Json;
 
-namespace FuwaTea.Audio.CSCore
+namespace FuwaTea.Audio.Playback.CSCore
 {
     [ConfigPage(nameof(WaveOut))]
     public class WaveOutConfig : CSCoreApiConfigBase

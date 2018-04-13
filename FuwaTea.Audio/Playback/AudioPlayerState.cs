@@ -1,4 +1,4 @@
-﻿namespace FuwaTea.Audio
+﻿namespace FuwaTea.Audio.Playback
 {
     public enum AudioPlayerState
     {

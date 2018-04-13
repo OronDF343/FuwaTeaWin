@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using FuwaTea.Config;
 using JetBrains.Annotations;
 
-namespace FuwaTea.Audio.CSCore
+namespace FuwaTea.Audio.Playback.CSCore
 {
     [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Library name is CSCore")]
     public abstract class CSCoreApiConfigBase : IConfigPage

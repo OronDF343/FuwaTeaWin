@@ -1,6 +1,6 @@
 ﻿using CSCore.SoundOut;
 
-namespace FuwaTea.Audio.CSCore
+namespace FuwaTea.Audio.Playback.CSCore
 {
     public class DirectSound : CSCoreApiBase<DirectSoundOut, DirectSoundConfig>
     {

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using CSCore.SoundOut;
 
-namespace FuwaTea.Audio.CSCore
+namespace FuwaTea.Audio.Playback.CSCore
 {
     public class WaveOut : CSCoreApiBase<global::CSCore.SoundOut.WaveOut, WaveOutConfig>
     {

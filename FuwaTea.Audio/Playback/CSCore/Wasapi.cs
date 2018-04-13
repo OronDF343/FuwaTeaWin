@@ -4,7 +4,7 @@ using CSCore.CoreAudioAPI;
 using CSCore.SoundOut;
 using DryIocAttributes;
 
-namespace FuwaTea.Audio.CSCore
+namespace FuwaTea.Audio.Playback.CSCore
 {
     [Reuse(ReuseType.Transient)]
     public class Wasapi : CSCoreApiBase<WasapiOut, WasapiConfig>

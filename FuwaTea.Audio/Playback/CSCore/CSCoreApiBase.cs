@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using CSCore;
 using CSCore.SoundOut;
 
-namespace FuwaTea.Audio.CSCore
+namespace FuwaTea.Audio.Playback.CSCore
 {
     [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Library name is CSCore")]
     [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor", Justification = "By design")]

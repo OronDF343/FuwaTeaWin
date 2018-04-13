@@ -35,7 +35,6 @@ using FTWPlayer.Localization;
 using FTWPlayer.Skins;
 using FuwaTea.Config;
 using FuwaTea.Extensibility;
-using FuwaTea.Extensibility.ConfigurationTemp;
 using FuwaTea.Lib;
 using FuwaTea.Lib.FileAssociations;
 using FuwaTea.Playback;
@@ -78,9 +77,6 @@ namespace FTWPlayer
 
         private UISettings Settings { get; set; }
         
-        [Obsolete("TODO", true)]
-        internal List<IConfigurablePropertyInfo> DynSettings { get; private set; }
-
         public ExtensibilityContainer MainContainer { get; private set; }
 
         /// <summary>

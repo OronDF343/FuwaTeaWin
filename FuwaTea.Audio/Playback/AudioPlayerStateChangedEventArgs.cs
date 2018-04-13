@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FuwaTea.Audio 
+namespace FuwaTea.Audio.Playback 
 {
     public class AudioPlayerStateChangedEventArgs : EventArgs
     {

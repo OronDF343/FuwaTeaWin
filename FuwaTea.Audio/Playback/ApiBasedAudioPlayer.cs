@@ -2,7 +2,7 @@
 using CSCore;
 using DryIocAttributes;
 
-namespace FuwaTea.Audio
+namespace FuwaTea.Audio.Playback
 {
     [Reuse(ReuseType.Transient)]
     public class ApiBasedAudioPlayer : IAudioPlayer

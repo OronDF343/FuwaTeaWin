@@ -2,7 +2,7 @@
 using System.ComponentModel.Composition;
 using CSCore;
 
-namespace FuwaTea.Audio
+namespace FuwaTea.Audio.Playback
 {
     [InheritedExport]
     public interface IAudioApi : IDisposable

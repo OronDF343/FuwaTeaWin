@@ -7,7 +7,7 @@ using CSCore.DirectSound;
 using FuwaTea.Config;
 using Newtonsoft.Json;
 
-namespace FuwaTea.Audio.CSCore
+namespace FuwaTea.Audio.Playback.CSCore
 {
     [ConfigPage(nameof(DirectSound))]
     public class DirectSoundConfig : CSCoreApiConfigBase
