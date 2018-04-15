@@ -1,25 +1,23 @@
 FuwaTeaWin: FTW Player
 ======================
 
-**NEW** Click here to download a test build: [![Build status](https://ci.appveyor.com/api/projects/status/11ro9m9publ63xuy/branch/master?svg=true)](https://ci.appveyor.com/project/OronDF343/fuwateawin/branch/master)
-Only 3MB to install, 1MB to download!
+**Rewriting in progress, see issue #2 and the rewrite2018 branch.**
+
+Click here to download a test build: [![Build status](https://ci.appveyor.com/api/projects/status/11ro9m9publ63xuy/branch/master?svg=true)](https://ci.appveyor.com/project/OronDF343/fuwateawin/branch/master)
 
 The successor to [Sky Jukebox](https://github.com/OronDF343/Sky-Jukebox).
 
-A compact, modular and free open-source music player for Windows.
+An intuitive, modular music player.
 
-Runs on Windows Vista, 7, 8, 8.1, 10 (build 10122 and up). Requires .NET Framework 4.5.1 or newer.
+Currently runs on Windows Vista, 7, 8, 8.1, 10 (build 10122 and up). Requires .NET Framework 4.5.1 or newer.
 
-**NOTE**: Avast detects new versions of this program as Win32:Evo-gen[susp].
-**THIS IS A FALSE POSITIVE** and [an analysis on VirusTotal (of version 0.0.2.47)](https://www.virustotal.com/en/file/7267e09f6e1f89760b786c535a6cd8b11d38577842bdd5e4e29c1a551e00c84f/analysis/1439822134/) shows a detection rate of 0.
-Avast sometimes detects new versions of Git and other FOSS with the same detection name, because not many people have downloaded the file yet.
-
-**Release ETA: None (don't ask for one)**
+**New release ETA: Sometime in 2019**
 
 Contributing
 ------------
+Please follow the existing code style - braces on new line, etc. ReSharper is recommended.
 
-Please use the appropriate ANSI codepage for installer language files (*.isl) and licenses - unicode is not supported.
+For the installer: Please use the appropriate ANSI codepage for installer language files (*.isl) and licenses - unicode is not supported.
 Example: msg_he.isl and gplv3-hebrew.txt are encoded in Windows-1255.
 
 Compiling: **Visual Studio 2015** required (uses new C#6 features). Community Edition is recommended. Installer requires Inno Setup **Unicode** v5.5.6 or newer.
@@ -27,18 +25,16 @@ Compiling: **Visual Studio 2015** required (uses new C#6 features). Community Ed
 Donations:
 ----------
 
-Soon I will begin accepting donations via PayPal (probably in August).
-
-You don't have to donate to me, donating is just an especially nice way of saying thanks :)
+BTC: 3La3LEeN1iY5vuRtygyTY6GifniJ1SYSVK
 
 Contact
 -------
 
-Official blog: https://orondf343.wordpress.com/
-
 E-mail: orondf343@gmail.com
 
 Twitter: [@OronDF343](https://twitter.com/OronDF343)
+
+Most neglected blog ever: https://orondf343.wordpress.com/
 
 License:
 --------
@@ -48,7 +44,7 @@ Please respect the licenses of all the referenced libraries.
 
     FuwaTeaWin: FTW Player
     A compact, modular and free open-source music player for Windows.
-    Copyright (C) 2015 OronDF343
+    Copyright (C) 2015-2016 OronDF343
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
