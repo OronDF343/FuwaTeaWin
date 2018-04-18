@@ -2,6 +2,6 @@
 {
     public enum OSKind
     {
-        Windows, Linux, OSX
+        Windows, Linux, MacOS
     }
 }

@@ -90,6 +90,7 @@ namespace FuwaTea.Extensibility
             var extinfo = new ExtensionInfo(a.GetName(), a.Location, extdef.Key, extdef.ApiVersion, info);
 
             // AutoInitialize
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
             target.ResolveMany(null, serviceKey: ExtensibilityConstants.AutoInitKey).ToList();
             // This should have forced initialization of the objects
 

@@ -15,7 +15,7 @@ namespace FuwaTea.Extensibility
             {
                 case OSKind.Windows: return OSPlatform.Windows;
                 case OSKind.Linux: return OSPlatform.Linux;
-                case OSKind.OSX: return OSPlatform.OSX;
+                case OSKind.MacOS: return OSPlatform.OSX;
                 default: throw new ArgumentException("Invalid OS kind", nameof(osKind));
             }
         }
