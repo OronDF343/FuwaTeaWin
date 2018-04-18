@@ -17,7 +17,7 @@ namespace WavpackDecoder
         // Change the following value to an even number to reflect the maximum number of samples to be processed
         // per call to WavPackUtils.WavpackUnpackSamples
 
-        internal const int SAMPLE_BUFFER_SIZE = 5120;
+        internal const int SAMPLE_BUFFER_SIZE = 25600; // originally 5120
         
         // or-values for "flags"
 
