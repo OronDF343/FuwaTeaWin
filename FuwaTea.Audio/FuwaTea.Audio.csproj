@@ -26,4 +26,8 @@
     <ProjectReference Include="..\FuwaTea.Extensibility\FuwaTea.Extensibility.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Decoders\CSCore\" />
+  </ItemGroup>
+
 </Project>

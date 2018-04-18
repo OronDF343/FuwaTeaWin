@@ -4,9 +4,9 @@ using CSCore;
 
 namespace FuwaTea.Audio.Decoders
 {
-    public abstract class AudioDecoderBase : IAudioDecoder
+    public abstract class AudioDecoderSampleSourceBase : ISampleSource
     {
-        public AudioDecoderBase(Stream stream)
+        public AudioDecoderSampleSourceBase(Stream stream)
         {
             SourceStream = stream;
         }
