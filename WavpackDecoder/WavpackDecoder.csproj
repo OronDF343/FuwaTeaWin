@@ -48,27 +48,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bitstream.cs" />
-    <Compile Include="BitsUtils.cs" />
-    <Compile Include="ChunkHeader.cs" />
-    <Compile Include="decorr_pass.cs" />
+    <Compile Include="BitStream.cs" />
+    <Compile Include="DecorrPass.cs" />
     <Compile Include="Defines.cs" />
-    <Compile Include="entropy_data.cs" />
-    <Compile Include="FloatUtils.cs" />
+    <Compile Include="EntropyData.cs" />
     <Compile Include="MetadataUtils.cs" />
     <Compile Include="Properties\AssemblyStaticInfo.cs" />
-    <Compile Include="RiffChunkHeader.cs" />
-    <Compile Include="SupportClass.cs" />
-    <Compile Include="UnpackUtils.cs" />
-    <Compile Include="WaveHeader.cs" />
+    <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="MetadataUnpackUtils.cs" />
     <Compile Include="WavpackConfig.cs" />
     <Compile Include="WavpackContext.cs" />
     <Compile Include="WavpackHeader.cs" />
     <Compile Include="WavpackMetadata.cs" />
     <Compile Include="WavpackStream.cs" />
-    <Compile Include="WavpackUtils.cs" />
     <Compile Include="WordsUtils.cs" />
-    <Compile Include="words_data.cs" />
+    <Compile Include="WordsData.cs" />
     <Compile Include="WavpackExtraUtils.cs" />
   </ItemGroup>
   <ItemGroup>

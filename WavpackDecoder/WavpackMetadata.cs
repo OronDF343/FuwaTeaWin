@@ -10,14 +10,15 @@
 
 namespace WavpackDecoder
 {
-    class WavpackMetadata
+    internal class WavpackMetadata
     {
-        internal int byte_length;
-        internal byte[] data;
-        internal short id; // was uchar in C
-        internal int hasdata = 0; // 0 does not have data, 1 has data
-        internal int status = 0; // 0 ok, 1 error
-        internal long bytecount = 24; 	// we use this to determine if we have read all the metadata 
+        internal long ByteCount = 24; // we use this to determine if we have read all the metadata 
+        internal int ByteLength;
+        internal byte[] Data;
+        internal bool HasData = false; // 0 does not have data, 1 has data
+        //internal bool HasError = false; // 0 ok, 1 error
+
+        internal short Id; // was uchar in C
         // in a block by checking bytecount again the block length
         // ckSize is block size minus 8. WavPack header is 32 bytes long so we start at 24
     }

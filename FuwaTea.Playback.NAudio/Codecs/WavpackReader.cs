@@ -13,12 +13,10 @@ namespace FuwaTea.Playback.NAudio.Codecs
 
         public WavpackReader(string file)
         {
-            var fistream = new FileStream(file, FileMode.Open, FileAccess.Read);
-            var bstream = new BufferedStream(fistream, 16384);
-            _br = new BinaryReader(bstream);
-            _wavpackContext = WavpackUtils.WavpackOpenFileInput(_br);
-            if (_wavpackContext.error) throw new Exception("Wavpack Error: " + _wavpackContext.error_message);
-            WaveFormat = new WaveFormat((int)WavpackUtils.WavpackGetSampleRate(_wavpackContext), WavpackUtils.WavpackGetBitsPerSample(_wavpackContext), WavpackUtils.WavpackGetNumChannels(_wavpackContext));
+            _br = new BinaryReader(new BufferedStream(new FileStream(file, FileMode.Open, FileAccess.Read), 16384));
+            _wavpackContext = new WavpackContext(_br);
+            if (_wavpackContext.Error) throw new Exception("Wavpack Error: " + _wavpackContext.ErrorMessage);
+            WaveFormat = new WaveFormat((int)_wavpackContext.SampleRate, _wavpackContext.BitsPerSample, _wavpackContext.NumChannels);
         }
 
         public override int Read(byte[] buffer, int offset, int count)
@@ -27,8 +25,8 @@ namespace FuwaTea.Playback.NAudio.Codecs
             {
                 var samplesRequired = count / WaveFormat.BlockAlign;
                 var tempBuffer = new int[samplesRequired * WaveFormat.Channels];
-                var read = WavpackUtils.WavpackUnpackSamples(_wavpackContext, tempBuffer, samplesRequired);
-                var cnv = WavpackExtraUtils.FormatSamples(WavpackUtils.WavpackGetBytesPerSample(_wavpackContext), tempBuffer, read * WaveFormat.Channels);
+                var read = _wavpackContext.UnpackSamples(tempBuffer, samplesRequired);
+                var cnv = WavpackExtraUtils.FormatSamples(_wavpackContext.BytesPerSample, tempBuffer, read * WaveFormat.Channels);
                 Array.Copy(cnv, 0, buffer, offset, read * WaveFormat.BlockAlign);
                 return (int)read * WaveFormat.BlockAlign;
             }
@@ -36,12 +34,12 @@ namespace FuwaTea.Playback.NAudio.Codecs
 
         public override WaveFormat WaveFormat { get; }
 
-        public override long Length => WavpackUtils.WavpackGetNumSamples(_wavpackContext) * WaveFormat.BlockAlign;
+        public override long Length => _wavpackContext.TotalSamples * WaveFormat.BlockAlign;
 
         public override long Position
         {
-            get => WavpackUtils.WavpackGetSampleIndex(_wavpackContext) * WaveFormat.BlockAlign;
-            set { lock (_repositionLock) { WavpackUtils.setSample(_wavpackContext, value / WaveFormat.BlockAlign); } }
+            get => _wavpackContext.SampleIndex * WaveFormat.BlockAlign;
+            set { lock (_repositionLock) { _wavpackContext.SetSample(value / WaveFormat.BlockAlign); } }
         }
 
         protected override void Dispose(bool disposing)

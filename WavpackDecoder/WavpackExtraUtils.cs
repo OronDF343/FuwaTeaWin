@@ -10,52 +10,50 @@
 
 namespace WavpackDecoder
 {
-    public class WavpackExtraUtils
+    public static class WavpackExtraUtils
     {
         // Reformat samples from longs in processor's native endian mode to
         // little-endian data with (possibly) less than 4 bytes / sample.
-	
+
         public static byte[] FormatSamples(int bps, int[] src, long samcnt)
         {
             int temp;
-            int counter = 0;
-            int counter2 = 0;
-            byte[] dst = new byte[4 * Defines.SAMPLE_BUFFER_SIZE];
-		
+            var counter = 0;
+            var counter2 = 0;
+            var dst = new byte[4 * Defines.SAMPLE_BUFFER_SIZE];
+
             switch (bps)
             {
-			
-                case 1: 
+                case 1:
                     while (samcnt > 0)
                     {
-                        dst[counter] = (byte) (0x00FF & (src[counter] + 128));
+                        dst[counter] = (byte)(0x00FF & (src[counter] + 128));
                         counter++;
                         samcnt--;
                     }
+
                     break;
-			
-			
-                case 2: 
+
+                case 2:
                     while (samcnt > 0)
                     {
                         temp = src[counter2];
-                        dst[counter] = (byte) temp;
+                        dst[counter] = (byte)temp;
                         counter++;
                         //dst[counter] = (byte) (SupportClass.URShift(temp, 8));
-                        dst[counter] = (byte) (temp >> 8);
+                        dst[counter] = (byte)(temp >> 8);
                         counter++;
                         counter2++;
                         samcnt--;
                     }
-				
+
                     break;
-			
-			
-                case 3: 
+
+                case 3:
                     while (samcnt > 0)
                     {
                         temp = src[counter2];
-                        dst[counter] = (byte) temp;
+                        dst[counter] = (byte)temp;
                         counter++;
                         dst[counter] = (byte)(temp >> 8);
                         counter++;
@@ -64,29 +62,28 @@ namespace WavpackDecoder
                         counter2++;
                         samcnt--;
                     }
-				
+
                     break;
-			
-			
-                case 4: 
+
+                case 4:
                     while (samcnt > 0)
                     {
                         temp = src[counter2];
-                        dst[counter] = (byte) temp;
+                        dst[counter] = (byte)temp;
                         counter++;
-                        dst[counter] = (byte) SupportClass.URShift(temp, 8);
+                        dst[counter] = (byte)temp.UrShift(8);
                         counter++;
-                        dst[counter] = (byte) SupportClass.URShift(temp, 16);
+                        dst[counter] = (byte)temp.UrShift(16);
                         counter++;
-                        dst[counter] = (byte) SupportClass.URShift(temp, 24);
+                        dst[counter] = (byte)temp.UrShift(24);
                         counter++;
                         counter2++;
                         samcnt--;
                     }
-				
+
                     break;
             }
-		
+
             return dst;
         }
     }

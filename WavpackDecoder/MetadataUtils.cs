@@ -8,233 +8,153 @@
 ** Distributed under the BSD Software License (see license.txt)  
 ***/
 
+using System;
+
 namespace WavpackDecoder
 {
-    class MetadataUtils
+    internal static class MetadataUtils
     {
-        internal static int read_metadata_buff(WavpackContext wpc, WavpackMetadata wpmd)
+        internal static bool ReadMetadataBuff(WavpackContext wpc, WavpackMetadata wpmd)
         {
-            long bytes_to_read;
             short tchar;
-		
-            if (wpmd.bytecount >= wpc.stream.wphdr.ckSize)
-            {
-                // we have read all the data in this block
-                return Defines.FALSE;
-            }
-		
+
+            if (wpmd.ByteCount >= wpc.Stream.Wphdr.CkSize) return false;
+
             try
             {
-                wpmd.id = wpc.infile.ReadByte();
-                tchar = wpc.infile.ReadByte();
+                wpmd.Id = wpc.InFile.ReadByte();
+                tchar = wpc.InFile.ReadByte();
             }
-            catch (System.Exception e)
+            catch (Exception)
             {
-                wpmd.status = 1;
-                return Defines.FALSE;
+                //wpmd.HasError = true;
+                return false;
             }
-		
-            wpmd.bytecount += 2;
-		
-            wpmd.byte_length = tchar << 1;
-		
-            if ((wpmd.id & Defines.ID_LARGE) != 0)
+
+            wpmd.ByteCount += 2;
+
+            wpmd.ByteLength = tchar << 1;
+
+            if ((wpmd.Id & Defines.ID_LARGE) != 0)
             {
-                wpmd.id &= ~ Defines.ID_LARGE;
-			
-                try
+                wpmd.Id &= ~ Defines.ID_LARGE;
+
+                try { tchar = wpc.InFile.ReadByte(); }
+                catch (Exception)
                 {
-                    tchar = wpc.infile.ReadByte();
+                    //wpmd.HasError = true;
+                    return false;
                 }
-                catch (System.Exception e)
+
+                wpmd.ByteLength += tchar << 9;
+
+                try { tchar = wpc.InFile.ReadByte(); }
+                catch (Exception)
                 {
-                    wpmd.status = 1;
-                    return Defines.FALSE;
+                    //wpmd.HasError = true;
+                    return false;
                 }
-			
-                wpmd.byte_length += tchar << 9;
-			
-                try
-                {
-                    tchar = wpc.infile.ReadByte();
-                }
-                catch (System.Exception e)
-                {
-                    wpmd.status = 1;
-                    return Defines.FALSE;
-                }
-			
-                wpmd.byte_length += tchar << 17;
-                wpmd.bytecount += 2;
+
+                wpmd.ByteLength += tchar << 17;
+                wpmd.ByteCount += 2;
             }
-		
-            if ((wpmd.id & Defines.ID_ODD_SIZE) != 0)
+
+            if ((wpmd.Id & Defines.ID_ODD_SIZE) != 0)
             {
-                wpmd.id &= ~ Defines.ID_ODD_SIZE;
-                wpmd.byte_length--;
+                wpmd.Id &= ~ Defines.ID_ODD_SIZE;
+                wpmd.ByteLength--;
             }
-		
-            if (wpmd.byte_length == 0 || wpmd.id == Defines.ID_WV_BITSTREAM)
+
+            if (wpmd.ByteLength == 0 || wpmd.Id == Defines.ID_WV_BITSTREAM)
             {
-                wpmd.hasdata = Defines.FALSE;
-                return Defines.TRUE;
+                wpmd.HasData = false;
+                return true;
             }
-		
-            bytes_to_read = wpmd.byte_length + (wpmd.byte_length & 1);
-		
-            wpmd.bytecount += bytes_to_read;
-		
-            if (bytes_to_read > wpc.read_buffer.Length)
+
+            long bytesToRead = wpmd.ByteLength + (wpmd.ByteLength & 1);
+
+            wpmd.ByteCount += bytesToRead;
+
+            if (bytesToRead > wpc.ReadBuffer.Length)
             {
-                int bytes_read;
-                wpmd.hasdata = Defines.FALSE;
-			
-                while (bytes_to_read > wpc.read_buffer.Length)
+                int bytesRead;
+                wpmd.HasData = false;
+
+                while (bytesToRead > wpc.ReadBuffer.Length)
                 {
                     try
                     {
-                        bytes_read = wpc.infile.BaseStream.Read(wpc.read_buffer, 0, wpc.read_buffer.Length);
+                        bytesRead = wpc.InFile.BaseStream.Read(wpc.ReadBuffer, 0, wpc.ReadBuffer.Length);
 
-                        if (bytes_read != wpc.read_buffer.Length)
-                        {
-                            return Defines.FALSE;
-                        }
+                        if (bytesRead != wpc.ReadBuffer.Length) return false;
                     }
-                    catch (System.Exception e)
-                    {
-                        return Defines.FALSE;
-                    }
-                    bytes_to_read -= wpc.read_buffer.Length;
+                    catch (Exception) { return false; }
+
+                    bytesToRead -= wpc.ReadBuffer.Length;
                 }
             }
             else
             {
-                wpmd.hasdata = Defines.TRUE;
-                wpmd.data = wpc.read_buffer;
+                wpmd.HasData = true;
+                wpmd.Data = wpc.ReadBuffer;
             }
-		
-            if (bytes_to_read != 0)
-            {
-                int bytes_read;
-			
+
+            if (bytesToRead != 0)
                 try
                 {
-                    bytes_read = wpc.infile.BaseStream.Read(wpc.read_buffer, 0, (int)bytes_to_read);
+                    var bytesRead = wpc.InFile.BaseStream.Read(wpc.ReadBuffer, 0, (int)bytesToRead);
 
-                    if (bytes_read != (int) bytes_to_read)
+                    if (bytesRead != (int)bytesToRead)
                     {
-                        wpmd.hasdata = Defines.FALSE;
-                        return Defines.FALSE;
+                        wpmd.HasData = false;
+                        return false;
                     }
                 }
-                catch (System.Exception e)
+                catch (Exception)
                 {
-                    wpmd.hasdata = Defines.FALSE;
-                    return Defines.FALSE;
+                    wpmd.HasData = false;
+                    return false;
                 }
-            }
-		
-            return Defines.TRUE;
+
+            return true;
         }
-	
-        internal static int process_metadata(WavpackContext wpc, WavpackMetadata wpmd)
+
+        internal static bool ProcessMetadata(WavpackContext wpc, WavpackMetadata wpmd)
         {
-            WavpackStream wps = wpc.stream;
-		
-            switch (wpmd.id)
+            var wps = wpc.Stream;
+
+            switch (wpmd.Id)
             {
-			
-                case Defines.ID_DUMMY: 
-                {
-                    return Defines.TRUE;
-                }
-			
-			
-                case Defines.ID_DECORR_TERMS: 
-                {
-                    return UnpackUtils.read_decorr_terms(wps, wpmd);
-                }
-			
-			
-                case Defines.ID_DECORR_WEIGHTS: 
-                {
-                    return UnpackUtils.read_decorr_weights(wps, wpmd);
-                }
-			
-			
-                case Defines.ID_DECORR_SAMPLES: 
-                {
-                    return UnpackUtils.read_decorr_samples(wps, wpmd);
-                }
-			
-			
-                case Defines.ID_ENTROPY_VARS: 
-                {
-                    return WordsUtils.read_entropy_vars(wps, wpmd);
-                }
-			
-			
-                case Defines.ID_HYBRID_PROFILE: 
-                {
-                    return WordsUtils.read_hybrid_profile(wps, wpmd);
-                }
-			
-			
-                case Defines.ID_FLOAT_INFO: 
-                {
-                    return FloatUtils.read_float_info(wps, wpmd);
-                }
-			
-			
-                case Defines.ID_INT32_INFO: 
-                {
-                    return UnpackUtils.read_int32_info(wps, wpmd);
-                }
-			
-			
-                case Defines.ID_CHANNEL_INFO: 
-                {
-                    return UnpackUtils.read_channel_info(wpc, wpmd);
-                }
-			
-			
-                case Defines.ID_SAMPLE_RATE: 
-                {
-                    return UnpackUtils.read_sample_rate(wpc, wpmd);
-                }
-			
-			
-                case Defines.ID_CONFIG_BLOCK: 
-                {
-                    return UnpackUtils.read_config_info(wpc, wpmd);
-                }
-			
-			
-                case Defines.ID_WV_BITSTREAM: 
-                {
-                    return UnpackUtils.init_wv_bitstream(wpc, wpmd);
-                }
-			
-			
-                case Defines.ID_SHAPING_WEIGHTS: 
-                case Defines.ID_WVC_BITSTREAM: 
-                case Defines.ID_WVX_BITSTREAM: 
-                {
-                    return Defines.TRUE;
-                }
-			
-			
-                default: 
-                {
-                    if ((wpmd.id & Defines.ID_OPTIONAL_DATA) != 0)
-                    {
-                        return Defines.TRUE;
-                    }
-                    else
-                    {
-                        return Defines.FALSE;
-                    }
-                }
+                case Defines.ID_DUMMY: return true;
+
+                case Defines.ID_DECORR_TERMS: return wps.ReadDecorrTerms(wpmd);
+
+                case Defines.ID_DECORR_WEIGHTS: return wps.ReadDecorrWeights(wpmd);
+
+                case Defines.ID_DECORR_SAMPLES: return wps.ReadDecorrSamples(wpmd);
+
+                case Defines.ID_ENTROPY_VARS: return wps.ReadEntropyVars(wpmd);
+
+                case Defines.ID_HYBRID_PROFILE: return wps.ReadHybridProfile(wpmd);
+
+                case Defines.ID_FLOAT_INFO: return wps.ReadFloatInfo(wpmd);
+
+                case Defines.ID_INT32_INFO: return wps.ReadInt32Info(wpmd);
+
+                case Defines.ID_CHANNEL_INFO: return wpc.ReadChannelInfo(wpmd);
+
+                case Defines.ID_SAMPLE_RATE: return wpc.ReadSampleRate(wpmd);
+
+                case Defines.ID_CONFIG_BLOCK: return wpc.ReadConfigInfo(wpmd);
+
+                case Defines.ID_WV_BITSTREAM: return wpc.InitWvBitStream(wpmd);
+
+                case Defines.ID_SHAPING_WEIGHTS:
+                case Defines.ID_WVC_BITSTREAM:
+                case Defines.ID_WVX_BITSTREAM:
+                    return true;
+
+                default: return (wpmd.Id & Defines.ID_OPTIONAL_DATA) != 0;
             }
         }
     }
