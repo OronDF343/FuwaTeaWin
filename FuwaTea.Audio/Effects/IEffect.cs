@@ -1,9 +1,12 @@
-﻿using CSCore;
+﻿using System.ComponentModel.Composition;
+using CSCore;
 
 namespace FuwaTea.Audio.Effects
 {
-    public interface IEffect : ISampleAggregator
+    [InheritedExport]
+    public interface IEffect
     {
-
+        bool CanProcess(WaveFormat wf);
+        ISampleAggregator Begin(ISampleSource ss);
     }
 }

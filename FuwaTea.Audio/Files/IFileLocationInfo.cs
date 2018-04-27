@@ -25,18 +25,6 @@ namespace FuwaTea.Audio.Files
         /// <remarks>For example: "file", "http", ...</remarks>
         string Protocol { get; }
         /// <summary>
-        /// Gets the "extension" / format identifier of the subtrack (when applicable).
-        /// </summary>
-        /// <remarks>Will be null or empty if none is specified (such is the case with certain streaming protocols).</remarks>
-        string SubExtension { get; }
-        /// <summary>
-        /// Gets the subtrack ID.
-        /// </summary>
-        /// <remarks>
-        /// Used by <see cref="Decoders.ISubTrackEnumerator"/>s to determine the ID of the desired track to decode.
-        /// </remarks>
-        string SubTrackId { get; }
-        /// <summary>
         /// Gets the metadata provided by one or more of: The decoder, the subtrack container / enumerator, the playlist and the library cache.
         /// </summary>
         IAudioMetadata Metadata { get; }

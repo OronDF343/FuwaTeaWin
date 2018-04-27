@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Decoders\CSCore\" />
+    <Folder Include="Decoders\Impl\" />
   </ItemGroup>
 
 </Project>

@@ -24,14 +24,14 @@ namespace FuwaTea.Audio.Decoders
         /// </summary>
         /// <param name="file">The file.</param>
         /// <returns>The contained subtracks.</returns>
-        IEnumerable<IFileHandle> EnumerateSubTracks(IFileHandle file);
+        IEnumerable<ISubTrackInfo> EnumerateSubTracks(IFileHandle file);
         /// <summary>
-        /// Gets a specific subtrack by ID.
+        /// Open a handle to a specific subtrack.
         /// </summary>
-        /// <param name="file">The container file.</param>
-        /// <param name="subTrackId">The subtrack ID.</param>
-        /// <returns>The subtrack info.</returns>
-        IFileHandle GetSubTrack(IFileHandle file, string subTrackId);
+        /// <param name="container">A handle to the container file.</param>
+        /// <param name="subTrackInfo">The subtrack info.</param>
+        /// <returns>The subtrack handle.</returns>
+        ISubTrackHandle GetSubTrack(IFileHandle container, ISubTrackInfo subTrackInfo);
         /// <summary>
         /// Get the general metadata for the container file.
         /// </summary>
