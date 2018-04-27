@@ -7,7 +7,7 @@ namespace FuwaTea.Audio.Files
         /// <summary>
         /// Gets the full path string of the file.
         /// </summary>
-        /// <remarks>This is not necessarily a standard path - it may include additional info such as the sub-track ID.</remarks>
+        /// <remarks>This is not necessarily a standard path - it may include additional info such as the sub-track ID and the protocol.</remarks>
         string Path { get; }
         /// <summary>
         /// Gets the actual location of the file.
@@ -22,7 +22,10 @@ namespace FuwaTea.Audio.Files
         /// <summary>
         /// Gets the protocol of the file path.
         /// </summary>
-        /// <remarks>For example: "file", "http", ...</remarks>
+        /// <remarks>
+        /// For example: "file", "http", "container", ...
+        /// "container" protocol requires opening the handle with the original <see cref="Decoders.ISubTrackEnumerator"/>.
+        /// </remarks>
         string Protocol { get; }
         /// <summary>
         /// Gets the metadata provided by one or more of: The decoder, the subtrack container / enumerator, the playlist and the library cache.

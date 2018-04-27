@@ -31,7 +31,7 @@ namespace FuwaTea.Audio.Decoders
         /// <param name="container">A handle to the container file.</param>
         /// <param name="subTrackInfo">The subtrack info.</param>
         /// <returns>The subtrack handle.</returns>
-        ISubTrackHandle GetSubTrack(IFileHandle container, ISubTrackInfo subTrackInfo);
+        ISubTrackHandle OpenSubTrack(IFileHandle container, ISubTrackInfo subTrackInfo);
         /// <summary>
         /// Get the general metadata for the container file.
         /// </summary>
