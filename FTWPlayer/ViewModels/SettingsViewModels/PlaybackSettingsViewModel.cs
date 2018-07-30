@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Windows.Controls;
 using DryIocAttributes;
 using FTWPlayer.Views.SettingsViews;

@@ -13,14 +13,17 @@ namespace FuwaTea.Lib.DataModel
     public interface IImplementationPriorityManager<out TInterface, in TInput, out TOutput> : ICanHandle<TInput, TOutput>
         where TInterface : ICanHandle<TInput, TOutput>
     {
-        IEnumerable<TInterface> Implementations { get; }
-        IEnumerable<TInterface> GetImplementation([CanBeNull] string format);
-        IEnumerable<TInterface> this[[CanBeNull] string format] { get; }
-        IEnumerable<TInterface> GetImplementation([NotNull] TInput ti);
-        IEnumerable<TInterface> this[[NotNull] TInput ti] { get; }
+        IReadOnlyCollection<TInterface> Implementations { get; }
+        IReadOnlyCollection<TInterface> GetImplementations([NotNull] string format);
+        IReadOnlyCollection<TInterface> this[[NotNull] string format] { get; }
+        IReadOnlyCollection<TInterface> GetImplementations([NotNull] TInput ti);
+        IReadOnlyCollection<TInterface> this[[NotNull] TInput ti] { get; }
 
-        void ConfigurePriority([CanBeNull] string format, Func<TInterface, int> priorityFunc);
-        void ConfigurePriority([CanBeNull] string format, Comparison<TInterface> compareFunc);
+        // Ascending sort!
+        void ConfigurePriority([NotNull] string format, Func<TInterface, int> priorityFunc);
+        void ConfigurePriority([NotNull] string format, Comparison<TInterface> compareFunc);
+
+        string FormatOf(TInput ti);
     }
 
     /// <summary>
@@ -28,15 +31,5 @@ namespace FuwaTea.Lib.DataModel
     /// </summary>
     /// <typeparam name="TInput"></typeparam>
     /// <typeparam name="TOutput"></typeparam>
-    public interface IImplementationPriorityManager<in TInput, out TOutput> : IImplementationPriorityManager<ICanHandle<TInput, TOutput>, TInput, TOutput> { }
-
-    /// <summary>
-    /// Interface for determining whether an input can be handled, and if so, providing a realized output.
-    /// </summary>
-    public interface ICanHandle<in TInput, out TOutput>
-    {
-        string[] SupportedFormats { get; }
-        bool CanHandle(TInput ti);
-        TOutput Handle(TInput ti);
-    }
+    public interface IImplementationPriorityManager<TInput, TOutput> : IImplementationPriorityManager<ICanHandle<TInput, TOutput>, TInput, TOutput> { }
 }

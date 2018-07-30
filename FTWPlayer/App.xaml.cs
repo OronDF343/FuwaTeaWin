@@ -47,7 +47,6 @@ using JetBrains.Annotations;
 using log4net;
 using log4net.Config;
 using WPFLocalizeExtension.Engine;
-using IContainer = DryIoc.IContainer;
 
 namespace FTWPlayer
 {
