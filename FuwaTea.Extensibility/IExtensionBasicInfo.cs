@@ -1,8 +1,5 @@
-﻿using System.ComponentModel.Composition;
-
-namespace FuwaTea.Extensibility
+﻿namespace FuwaTea.Extensibility
 {
-    [InheritedExport(ExtensibilityConstants.InfoExportKey)]
     public interface IExtensionBasicInfo
     {
         string Title { get; }

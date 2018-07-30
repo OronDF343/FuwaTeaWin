@@ -17,7 +17,6 @@ namespace FuwaTea.Extensibility
         [NotNull]
         private readonly Dictionary<string, ExtensionInfo> _extensions = new Dictionary<string, ExtensionInfo>();
         public IReadOnlyDictionary<string, ExtensionInfo> LoadedExtensions => new ReadOnlyDictionary<string, ExtensionInfo>(_extensions);
-        private readonly Dictionary<string, IContainer> _isolatedContainers = new Dictionary<string, IContainer>();
 
         public ExtensionInfo LoadExtension(AssemblyName dll, bool overrideApiVersionWhitelist = false)
         {
@@ -37,7 +36,7 @@ namespace FuwaTea.Extensibility
             return LoadExtension(a, overrideApiVersionWhitelist);
         }
         
-        public ExtensionInfo LoadExtension(Assembly a, bool isolated = false, bool overrideApiVersionWhitelist = false)
+        public ExtensionInfo LoadExtension(Assembly a, bool overrideApiVersionWhitelist = false)
         {
             var extdef = a.GetCustomAttribute<ExtensionAttribute>();
             if (extdef == null) throw new ExtensibilityException($"The assembly {a.FullName} is not an extension!");
@@ -62,21 +61,11 @@ namespace FuwaTea.Extensibility
 
             // Building and registration
             var exports = AttributedModel.Scan(new[] { a }).ToList();
-            IContainer target;
-            if (isolated)
-            {
-                target = new Container().WithMefAttributedModel();
-                target.RegisterExports(exports);
-            }
-            else
-            {
-                target = _iocContainer;
-                _iocContainer.RegisterExports(exports);
-            }
-
+            _iocContainer.RegisterExports(exports);
+            
             // Get extension info
             IExtensionBasicInfo info;
-            try { info = target.Resolve<IExtensionBasicInfo>(ExtensibilityConstants.InfoExportKey); }
+            try { info = _iocContainer.Resolve<IExtensionBasicInfo>(extdef.Key); }
             catch
             {
                 info = new ExtensionBasicInfo
@@ -91,41 +80,16 @@ namespace FuwaTea.Extensibility
 
             // AutoInitialize
             // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
-            target.ResolveMany(null, serviceKey: ExtensibilityConstants.AutoInitKey).ToList();
+            _iocContainer.ResolveMany(null, serviceKey: ExtensibilityConstants.AutoInitKey).ToList();
             // This should have forced initialization of the objects
 
             // Finishing up
-            if (target != _iocContainer)
-            {
-                _iocContainer = _iocContainer.With(rules => rules.WithFallbackContainer(target));
-                _isolatedContainers.Add(extdef.Key, target);
-            }
             _extensions.Add(extdef.Key, extinfo);
             return extinfo;
         }
 
-        public void AddIsolatedContainer(IContainer c, string key)
-        {
-            _iocContainer = _iocContainer.With(rules => rules.WithFallbackContainer(c));
-            _isolatedContainers.Add(key, c);
-        }
-
         // TODO: Save/load cache - in Core
         
-        public void UnloadIsolated(string key)
-        {
-            if (key == null) throw new ArgumentNullException(nameof(key));
-            var c = _isolatedContainers[key];
-            _iocContainer = _iocContainer.With(rules => rules.WithoutFallbackContainer(c));
-            _isolatedContainers.Remove(key);
-        }
-
-        public void UnloadAllIsolated()
-        {
-            foreach (var key in _isolatedContainers.Keys)
-                UnloadIsolated(key);
-        }
-
         // Use with caution!!!
         public void DeleteAllSingletonsAndCache()
         {
@@ -133,20 +97,10 @@ namespace FuwaTea.Extensibility
         }
 
         // The main way to access the container
-        public IContainer OpenScope(string name = null)
+        public IResolverContext OpenScope(string name = null)
         {
             return _iocContainer.OpenScope(name);
         }
-
-        //public bool ReloadExtension([NotNull] string extensionKey)
-        //{
-        //    // TODO: Check if extension is already loaded
-        //    if (extensionKey == null) throw new ArgumentNullException(nameof(extensionKey));
-        //    var c = GetExtensionContainer(extensionKey);
-        //    if (c == null) return false;
-        //    _iocContainer = _iocContainer.With(rules => rules.WithFallbackContainer(c));
-        //    return true;
-        //}
 
         public void Dispose()
         {

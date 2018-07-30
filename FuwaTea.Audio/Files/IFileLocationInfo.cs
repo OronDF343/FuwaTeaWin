@@ -1,4 +1,5 @@
-﻿using FuwaTea.Audio.Metadata;
+﻿using System;
+using FuwaTea.Audio.Metadata;
 
 namespace FuwaTea.Audio.Files
 {
@@ -23,13 +24,16 @@ namespace FuwaTea.Audio.Files
         /// Gets the protocol of the file path.
         /// </summary>
         /// <remarks>
-        /// For example: "file", "http", "container", ...
-        /// "container" protocol requires opening the handle with the original <see cref="Decoders.ISubTrackEnumerator"/>.
+        /// For example: "file", "http", ...
         /// </remarks>
         string Protocol { get; }
         /// <summary>
         /// Gets the metadata provided by one or more of: The decoder, the subtrack container / enumerator, the playlist and the library cache.
         /// </summary>
         IAudioMetadata Metadata { get; }
+        /// <summary>
+        /// Date when the file was last modified (if available).
+        /// </summary>
+        DateTime LastWrite { get; }
     }
 }

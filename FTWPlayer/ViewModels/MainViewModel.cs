@@ -37,13 +37,12 @@ using FuwaTea.Wpf.Keyboard;
 using GalaSoft.MvvmLight.CommandWpf;
 using JetBrains.Annotations;
 using log4net;
-using IContainer = DryIoc.IContainer;
 
 namespace FTWPlayer.ViewModels
 {
     public sealed class MainViewModel : DependencyObject, INotifyPropertyChanged, IDisposable // This is a DependencyObject so it supports animations
     {
-        public IContainer MainViewModelScope { get; }
+        public IResolverContext MainViewModelScope { get; }
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.

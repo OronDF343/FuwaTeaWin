@@ -73,7 +73,7 @@ namespace FTWPlayer
         private const string ShouldBeAdminArg = "--admin";
         private const string SetLangArg = "--set-lang";
 
-        private IContainer AppScope { get; set; }
+        private IResolverContext AppScope { get; set; }
 
         private UISettings Settings { get; set; }
         
