@@ -49,13 +49,13 @@
       <HintPath>..\packages\CommonServiceLocator.2.0.3\lib\net45\CommonServiceLocator.dll</HintPath>
     </Reference>
     <Reference Include="DryIoc, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DryIoc.dll.3.0.2\lib\net45\DryIoc.dll</HintPath>
+      <HintPath>..\packages\DryIoc.dll.3.0.2\lib\netstandard2.0\DryIoc.dll</HintPath>
     </Reference>
     <Reference Include="DryIoc.MefAttributedModel, Version=4.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DryIoc.MefAttributedModel.dll.4.0.4\lib\net45\DryIoc.MefAttributedModel.dll</HintPath>
+      <HintPath>..\packages\DryIoc.MefAttributedModel.dll.4.0.4\lib\netstandard2.0\DryIoc.MefAttributedModel.dll</HintPath>
     </Reference>
     <Reference Include="DryIocAttributes, Version=4.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DryIocAttributes.dll.4.0.2\lib\net45\DryIocAttributes.dll</HintPath>
+      <HintPath>..\packages\DryIocAttributes.dll.4.0.2\lib\netstandard2.0\DryIocAttributes.dll</HintPath>
     </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.4.1.0, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
@@ -82,7 +82,6 @@
       <HintPath>..\packages\PropertyChanged.Fody.2.5.9\lib\net452\PropertyChanged.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
