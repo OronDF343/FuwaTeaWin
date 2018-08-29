@@ -298,8 +298,7 @@ namespace FuwaTea.Playback
         {
             if (_currentPlayer == null) return;
             _currentPlayer.PlaybackFinished -= CurrentPlayer_PlaybackFinished;
-            var player = _currentPlayer as IStreamingAudioPlayer;
-            if (player != null) player.StreamMetadataChanged -= OnStreamMetadataChanged;
+            if (_currentPlayer is IStreamingAudioPlayer player) player.StreamMetadataChanged -= OnStreamMetadataChanged;
             _currentPlayer.Unload();
             OnPropertyChanged(nameof(Duration));
             OnPropertyChanged(nameof(CanResume));
