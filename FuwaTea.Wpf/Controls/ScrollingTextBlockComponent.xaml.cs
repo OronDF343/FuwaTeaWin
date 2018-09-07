@@ -77,9 +77,10 @@ namespace FuwaTea.Wpf.Controls
             var typeface = new Typeface(tbox.FontFamily, tbox.FontStyle, tbox.FontWeight, tbox.FontStretch);
 
             var copy = tbox.Text.PadLeft(tbox.Text.Length + tbox.Spacing);
+            var pixelsPerDip = VisualTreeHelper.GetDpi(tbox).PixelsPerDip;
             var textGraphicalWidth =
                 new FormattedText(copy, CultureInfo.CurrentCulture, tbox.FlowDirection, typeface, tbox.FontSize,
-                                  tbox.Foreground).WidthIncludingTrailingWhitespace;
+                                  tbox.Foreground, pixelsPerDip).WidthIncludingTrailingWhitespace;
             double textLengthGraphicalWidth = 0;
             
             while (textLengthGraphicalWidth < tbox.TargetWidth)
@@ -87,12 +88,12 @@ namespace FuwaTea.Wpf.Controls
                 tbox.Text += copy;
                 textLengthGraphicalWidth =
                     new FormattedText(tbox.Text, CultureInfo.CurrentCulture, tbox.FlowDirection, typeface, tbox.FontSize,
-                                      tbox.Foreground).WidthIncludingTrailingWhitespace;
+                                      tbox.Foreground, pixelsPerDip).WidthIncludingTrailingWhitespace;
             }
             tbox.Text += tbox.Text.PadLeft(tbox.Text.Length + tbox.Spacing);
             textLengthGraphicalWidth =
                 new FormattedText(tbox.Text, CultureInfo.CurrentCulture, tbox.FlowDirection, typeface, tbox.FontSize,
-                                  tbox.Foreground).WidthIncludingTrailingWhitespace;
+                                  tbox.Foreground, pixelsPerDip).WidthIncludingTrailingWhitespace;
             // If the text direction should be different from the flowdirection, correct the animation
             // FlowDirection doesn't affect the animation at all because of this, but it does affect the text itself
             // FD  Str rev

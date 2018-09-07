@@ -150,6 +150,7 @@ namespace FuwaTea.Playback.NAudio
                 try { lastSampleProvider = effect.ApplyEffect(lastSampleProvider); }
                 catch (Exception e)
                 {
+                    Console.WriteLine(e);
                     /* TODO LogManager.GetLogger(GetType()).Error("Failed to load effect: "
                                                            + effect.GetType().GetAttribute<NAudioExtensionAttribute>().ElementName, e);*/
                 }

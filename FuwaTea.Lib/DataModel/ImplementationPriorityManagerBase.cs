@@ -43,6 +43,7 @@ namespace FuwaTea.Lib.DataModel
                 catch (Exception e)
                 {
                     // TODO: Log e
+                    Console.WriteLine(e);
                     continue;
                 }
 
