@@ -3,16 +3,19 @@ using System.IO;
 
 namespace FuwaTea.Audio.Files
 {
-    public interface IFileHandle : IFileLocationInfo, IDisposable
+    public interface IFileHandle : IFileLocationInfo
     {
         /// <summary>
         /// Gets the stream of the file's data.
         /// </summary>
         /// <remarks>
-        /// Must return a new stream wrapper on every get!
-        /// Since a new stream wrapper will be opened when this property is accessed. Therefore, avoid accessing it when not necessary.
-        /// Disposal should be handled by the caller, even though not strictly required.
+        /// Must return a new stream wrapper on every call!
+        /// Disposal should be handled by the caller.
         /// </remarks>
-        Stream Stream { get; }
+        Stream OpenStream(FileAccess fa);
+        /// <summary>
+        /// Date when the file was last modified (if available).
+        /// </summary>
+        DateTime LastWrite { get; }
     }
 }

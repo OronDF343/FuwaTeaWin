@@ -9,12 +9,13 @@ namespace FuwaTea.Lib.DataModel
     public abstract class ImplementationPriorityManagerBase<TInterface, TInput, TOutput> : IImplementationPriorityManager<TInterface, TInput, TOutput>
         where TInterface : ICanHandle<TInput, TOutput>
     {
+        protected ImplementationPriorityManagerBase() { }
         // ReSharper disable once VirtualMemberCallInConstructor
-        protected ImplementationPriorityManagerBase() => Init();
+        protected ImplementationPriorityManagerBase(IList<TInterface> implementations) => Init(implementations);
 
-        protected virtual void Init()
+        protected virtual void Init(IList<TInterface> implementations)
         {
-            Implementations = new ReadOnlyCollection<TInterface>(ProtectedImplementations);
+            Implementations = new ReadOnlyCollection<TInterface>(implementations);
             ImplementationDictionary.Add("", new List<TInterface>());
             foreach (var format in SupportedFormats)
                 ImplementationDictionary.Add(format, new List<TInterface>());
@@ -52,12 +53,7 @@ namespace FuwaTea.Lib.DataModel
         }
 
         protected Dictionary<string, List<TInterface>> ImplementationDictionary { get; } = new Dictionary<string, List<TInterface>>();
-
-        /// <summary>
-        /// Implementations must populate this list immediately, using something like [ImportMany], or in the beginning of the <see cref="Init"/> method.
-        /// </summary>
-        protected abstract IList<TInterface> ProtectedImplementations { get; }
-
+        
         /// <summary>
         /// Returns the format of an input, if known. Otherwise, returns an empty string.
         /// REQUIRED!

@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using CSCore;
 using CSCore.Codecs.FLAC;
+using DryIocAttributes;
 using FuwaTea.Audio.Files;
 
 namespace FuwaTea.Audio.Decoders.Impl
 {
+    [Reuse(ReuseType.Singleton)]
     public class FlacDecoder : ITrackDecoder
     {
         public IEnumerable<string> SupportedFormats => new[] { "flac" };
         public bool CanHandle(IFileHandle file)
         {
             bool r;
-            using (var s = file.Stream)
+            using (var s = file.OpenStream(FileAccess.Read))
             {
                 r = s.VerifyMagic("fLaC");
             }
@@ -21,7 +24,7 @@ namespace FuwaTea.Audio.Decoders.Impl
 
         public ISampleSource Handle(IFileHandle file)
         {
-            return new FlacFile(file.Stream, FlacPreScanMode.Sync).ToSampleSource();
+            return new FlacFile(file.OpenStream(FileAccess.Read), FlacPreScanMode.Sync).ToSampleSource();
         }
 
         public bool UpdateMetadata(IFileHandle file)

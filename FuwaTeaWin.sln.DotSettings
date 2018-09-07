@@ -23,4 +23,5 @@
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=OS/@EntryIndexedValue">OS</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=PLS/@EntryIndexedValue">PLS</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=UI/@EntryIndexedValue">UI</s:String>
-	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=WPL/@EntryIndexedValue">WPL</s:String></wpf:ResourceDictionary>
+	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=WPL/@EntryIndexedValue">WPL</s:String>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Fuwa/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>

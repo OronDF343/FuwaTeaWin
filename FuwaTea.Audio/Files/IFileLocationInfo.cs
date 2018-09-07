@@ -6,21 +6,6 @@ namespace FuwaTea.Audio.Files
     public interface IFileLocationInfo
     {
         /// <summary>
-        /// Gets the full path string of the file.
-        /// </summary>
-        /// <remarks>This is not necessarily a standard path - it may include additional info such as the sub-track ID and the protocol.</remarks>
-        string Path { get; }
-        /// <summary>
-        /// Gets the actual location of the file.
-        /// </summary>
-        /// <remarks>Either a local or network path, or a URL.</remarks>
-        string Location { get; }
-        /// <summary>
-        /// Gets the file extension.
-        /// </summary>
-        /// <remarks>Will be null or empty if none is specified (such is the case with certain streaming protocols).</remarks>
-        string Extension { get; }
-        /// <summary>
         /// Gets the protocol of the file path.
         /// </summary>
         /// <remarks>
@@ -28,12 +13,27 @@ namespace FuwaTea.Audio.Files
         /// </remarks>
         string Protocol { get; }
         /// <summary>
+        /// Gets the absolute path of the file.
+        /// </summary>
+        string AbsolutePath { get; }
+        /// <summary>
+        /// Gets the file extension.
+        /// </summary>
+        /// <remarks>Will be null or empty if none is specified (such is the case with certain streaming protocols).</remarks>
+        string Extension { get; }
+        /// <summary>
+        /// Gets the fragment in the file URI.
+        /// </summary>
+        /// <remarks>The URI fragment can be used to store additional info such as the subtrack ID.</remarks>
+        string Fragment { get; }
+        /// <summary>
+        /// Gets the full URI (Uniform Resource Identifier) of the file.
+        /// </summary>
+        /// <remarks>Many other string properties are derived from this one.</remarks>
+        Uri Uri { get; }
+        /// <summary>
         /// Gets the metadata provided by one or more of: The decoder, the subtrack container / enumerator, the playlist and the library cache.
         /// </summary>
-        IAudioMetadata Metadata { get; }
-        /// <summary>
-        /// Date when the file was last modified (if available).
-        /// </summary>
-        DateTime LastWrite { get; }
+        IAudioMetadata ExternalMetadata { get; }
     }
 }

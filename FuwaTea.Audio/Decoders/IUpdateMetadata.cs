@@ -8,7 +8,7 @@ namespace FuwaTea.Audio.Decoders
         /// Update the metadata for the file.
         /// </summary>
         /// <remarks>
-        /// Will update the <see cref="IFileLocationInfo.Metadata"/> property.
+        /// Will update the <see cref="IFileLocationInfo.ExternalMetadata"/> property.
         /// This method should be as efficient as possible in terms of minimizing the amount of IO required to read the metadata.
         /// </remarks>
         /// <param name="file">The file.</param>

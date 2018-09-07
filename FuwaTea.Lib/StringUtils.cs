@@ -35,5 +35,10 @@ namespace FuwaTea.Lib
         {
             return Enumerable.Range(0, hex.Length / 2).Select(x => Convert.ToByte(hex.Substring(x * 2, 2), 16)).ToArray();
         }
+
+        public static string GetExtension(this string path)
+        {
+            return path.Substring(path.LastIndexOf('.') + 1);
+        }
     }
 }
