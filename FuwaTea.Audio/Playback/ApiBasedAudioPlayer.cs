@@ -33,14 +33,19 @@ namespace FuwaTea.Audio.Playback
             StateTransition(AudioPlayerState.Stopped, TransitionInitiator.Error, args.ErrorInfo);
         }
 
+        public void Reset()
+        {
+            Unload();
+        }
+
         public virtual void Load(IWaveSource dec)
         {
             try 
             {
-                // TODO IMPORTANT: SampleSource vs WaveSource -- Effects
+                // TODO IMPORTANT: SampleSource + Effects
                 // TODO IMPORTANT: Create interface wrapper so we don't have to depend on CSCore
                 Api.Load(dec);
-                StateTransition(AudioPlayerState.Stopped, TransitionInitiator.Manual);
+                StateTransition(AudioPlayerState.Loaded, TransitionInitiator.Manual);
             }
             catch (Exception e)
             {
@@ -63,7 +68,7 @@ namespace FuwaTea.Audio.Playback
             }
             catch (Exception e)
             {
-                StateTransition(AudioPlayerState.Stopped, TransitionInitiator.Error, e);
+                StateTransition(State, TransitionInitiator.Error, e);
             }
         }
 
@@ -77,8 +82,15 @@ namespace FuwaTea.Audio.Playback
         {
             if (CanResume)
             {
-                Api.Pause();
-                StateTransition(AudioPlayerState.Paused, TransitionInitiator.Manual);
+                try
+                {
+                    Api.Pause();
+                    StateTransition(AudioPlayerState.Paused, TransitionInitiator.Manual);
+                }
+                catch (Exception e)
+                {
+                    StateTransition(AudioPlayerState.Playing, TransitionInitiator.Error, e);
+                }
             }
             else
             {

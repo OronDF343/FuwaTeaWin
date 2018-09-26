@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 
 namespace FuwaTea.Lib.DataModel
 {
+    // TODO: Save priority config
     public abstract class ImplementationPriorityManagerBase<TInterface, TInput, TOutput> : IImplementationPriorityManager<TInterface, TInput, TOutput>
         where TInterface : ICanHandle<TInput, TOutput>
     {

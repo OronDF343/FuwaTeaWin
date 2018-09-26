@@ -2,8 +2,8 @@
 {
     public enum TransitionInitiator
     {
-        Manual,
         Automatic,
+        Manual,
         Error
     }
 }
