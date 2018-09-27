@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -29,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DryIocAttributes, Version=4.0.2.0, Culture=neutral, processorArchitecture=MSIL">
@@ -58,6 +60,7 @@
     <Compile Include="DataModel\ImplementationPriorityManagerBase.cs" />
     <Compile Include="DataModel\ISupportFormats.cs" />
     <Compile Include="DataModel\SugoiObject.cs" />
+    <Compile Include="EnumUtils.cs" />
     <Compile Include="FileAssociations\AppCapabilities.cs" />
     <Compile Include="FileAssociations\ApplicationAssociationRegistrationUI.cs" />
     <Compile Include="Collections\ExtensionMethods.cs" />

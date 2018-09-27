@@ -18,6 +18,6 @@ namespace FuwaTea.Audio.Files.Impl
         public string Extension => Uri.AbsolutePath.GetExtension();
         public string Fragment => Uri.Fragment;
         public Uri Uri { get; }
-        public IAudioMetadata ExternalMetadata { get; set; }
+        public IMetadata Metadata { get; set; }
     }
 }

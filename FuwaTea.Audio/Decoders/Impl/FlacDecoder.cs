@@ -5,6 +5,9 @@ using CSCore;
 using CSCore.Codecs.FLAC;
 using DryIocAttributes;
 using FuwaTea.Audio.Files;
+using FuwaTea.Audio.Metadata.Utils;
+using TagLib;
+using File = TagLib.File;
 
 namespace FuwaTea.Audio.Decoders.Impl
 {
@@ -29,8 +32,11 @@ namespace FuwaTea.Audio.Decoders.Impl
 
         public bool UpdateMetadata(IFileHandle file)
         {
-            // Use FlacPreScanMode.None?
-            throw new NotImplementedException();
+            var fha = new FileHandleAbstraction(file);
+            var f = File.Create(fha, ReadStyle.Average);
+            f.Mode = File.AccessMode.Read;
+            var m = f.GetTag(TagTypes.FlacMetadata) as TagLib.Flac.Metadata;
+            return file.Metadata.ReadFrom(m);
         }
     }
 }

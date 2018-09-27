@@ -18,7 +18,7 @@ namespace FuwaTea.Audio.Files.Impl
         public string Extension => _fli.Extension;
         public string Fragment => _fli.Extension;
         public Uri Uri => _fli.Uri;
-        public IAudioMetadata ExternalMetadata => _fli.ExternalMetadata;
+        public IMetadata Metadata => _fli.Metadata;
         public abstract Stream OpenStream(FileAccess fa);
         public abstract DateTime LastWrite { get; }
     }

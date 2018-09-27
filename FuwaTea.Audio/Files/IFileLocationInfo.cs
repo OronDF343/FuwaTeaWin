@@ -34,6 +34,6 @@ namespace FuwaTea.Audio.Files
         /// <summary>
         /// Gets the metadata provided by one or more of: The decoder, the subtrack container / enumerator, the playlist and the library cache.
         /// </summary>
-        IAudioMetadata ExternalMetadata { get; }
+        IMetadata Metadata { get; }
     }
 }

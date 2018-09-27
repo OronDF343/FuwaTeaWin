@@ -315,8 +315,7 @@ namespace FTWPlayer.ViewModels
 
         private bool VolumeChangeCanExecute(string s)
         {
-            decimal d;
-            return decimal.TryParse(s, out d) && d > 0 && d < 1;
+            return decimal.TryParse(s, out decimal d) && d > 0 && d < 1;
         }
 
         public ICommand ShuffleCommand { get; private set; }
@@ -425,8 +424,7 @@ namespace FTWPlayer.ViewModels
 
         private bool SeekChangeCanExecute(string time)
         {
-            TimeSpan ts;
-            return Regex.IsMatch(time, PercentOfTimeRegex) || TimeSpan.TryParseExact(time, SeekTimeSpanFormat, null, out ts);
+            return Regex.IsMatch(time, PercentOfTimeRegex) || TimeSpan.TryParseExact(time, SeekTimeSpanFormat, null, out TimeSpan ts);
         }
 
         public ICommand MouseEnterSeekAreaCommand { get; private set; }
