@@ -32,8 +32,10 @@ namespace FuwaTea.Audio.Files
         /// <remarks>Many other string properties are derived from this one.</remarks>
         Uri Uri { get; }
         /// <summary>
-        /// Gets the metadata provided by one or more of: The decoder, the subtrack container / enumerator, the playlist and the library cache.
+        /// Gets the metadata provided by one of: The decoder, the subtrack container / enumerator, the playlist and the library cache.
+        /// Editable metadata should come from no more than one source.
         /// </summary>
-        IMetadata Metadata { get; }
+        IMetadata Metadata { get; set; }
+        // TODO NEXT: Make this a Dictionary<MetadataSource, IMetadata>!
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using FuwaTea.Lib;
 using TagLib;
 using TagLib.Mpeg4;
 using TagLib.Ogg;
@@ -10,7 +8,7 @@ using TagLib.Riff;
 
 namespace FuwaTea.Audio.Metadata.Utils
 {
-    public static class TagLibUtils
+    /*public static class TagLibUtils
     {
         public static bool ReadFrom(this IMetadata meta, Tag src)
         {
@@ -19,22 +17,22 @@ namespace FuwaTea.Audio.Metadata.Utils
             {
                 case TagTypes.None:
                     return false;
+                case TagTypes.FlacMetadata:
+                    return ReadFrom(meta, src as TagLib.Flac.Metadata);
                 case TagTypes.Xiph:
                     return ReadFrom(meta, src as XiphComment);
-                case TagTypes.Id3v1:
-                    return ReadFrom(meta, src as TagLib.Id3v1.Tag);
-                case TagTypes.Id3v2:
-                    return ReadFrom(meta, src as TagLib.Id3v2.Tag);
                 case TagTypes.Ape:
                     return ReadFrom(meta, src as TagLib.Ape.Tag);
+                case TagTypes.Id3v2:
+                    return ReadFrom(meta, src as TagLib.Id3v2.Tag);
                 case TagTypes.Apple:
                     return ReadFrom(meta, src as AppleTag);
                 case TagTypes.Asf:
                     return ReadFrom(meta, src as TagLib.Asf.Tag);
                 case TagTypes.RiffInfo:
                     return ReadFrom(meta, src as InfoTag);
-                case TagTypes.FlacMetadata:
-                    return ReadFrom(meta, src as TagLib.Flac.Metadata);
+                case TagTypes.Id3v1:
+                    return ReadFrom(meta, src as TagLib.Id3v1.Tag);
                 default:
                     throw new NotSupportedException("Unsupported tag format");
             }
@@ -63,7 +61,7 @@ namespace FuwaTea.Audio.Metadata.Utils
             if (!meta.ContainsKey(nameof(src.Comment)))
                 meta.Add(nameof(src.Comment), new TextField(src.Comment, maxLen: 30, encoding: Encoding.ASCII));
             if (!meta.ContainsKey(nameof(src.Genres)))
-                meta.Add(nameof(src.Genres), new EnumField<StandardGenre>(src.Genres.FirstOrDefault().ParseOrDefault<StandardGenre>()));
+                meta.Add(nameof(src.Genres), new EnumField<StandardGenre>((StandardGenre)Genres.AudioToIndex(src.Genres.FirstOrDefault())));
             if (!meta.ContainsKey(nameof(src.Track)))
                 meta.Add(nameof(src.Track), new NumericField(value: src.Track, bits: 8));
             return true;
@@ -110,10 +108,5 @@ namespace FuwaTea.Audio.Metadata.Utils
             var x = src.GetComment(false, null);
             return ReadFrom(meta, x) || src.Pictures.Length > 0;
         }
-    }
-
-    public enum StandardGenre
-    {
-        // TODO
-    }
+    }*/
 }
