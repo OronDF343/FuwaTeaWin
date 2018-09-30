@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using CSCore;
-using CSCore.Codecs.FLAC;
+using CSCore.Codecs.AIFF;
 using DryIocAttributes;
 using FuwaTea.Audio.Files;
 using FuwaTea.Audio.Metadata.Impl.TagLib;
@@ -12,22 +12,8 @@ using File = TagLib.File;
 namespace FuwaTea.Audio.Decoders.Impl
 {
     [Reuse(ReuseType.Singleton)]
-    public class FlacDecoder : ITrackDecoder
+    public class AiffDecoder : ITrackDecoder
     {
-        public IEnumerable<string> SupportedFormats => new[] { "flac" };
-        public bool CanHandle(IFileHandle file)
-        {
-            bool r;
-            using (var s = file.OpenStream(FileAccess.Read))
-                r = s.VerifyMagic("fLaC");
-            return r;
-        }
-
-        public ISampleSource Handle(IFileHandle file)
-        {
-            return new FlacFile(file.OpenStream(FileAccess.Read), FlacPreScanMode.Sync).ToSampleSource();
-        }
-
         public void UpdateMetadata(IFileHandle file)
         {
             var fha = new FileHandleAbstraction(file);
@@ -35,6 +21,25 @@ namespace FuwaTea.Audio.Decoders.Impl
             f.Mode = File.AccessMode.Read;
             var tag = TagLibUtils.ReadFrom(f);
             file.Metadata.AddOrSet(MetadataSource.Decoder, tag);
+        }
+
+        public IEnumerable<string> SupportedFormats => new[] { "aiff", "aif", "aifc" };
+        public bool CanHandle(IFileHandle ti)
+        {
+            bool r;
+            using (var s = ti.OpenStream(FileAccess.Read))
+            {
+                r = s.VerifyMagic("FORM");
+                r &= s.ReadByte() == 0;
+            }
+            return r;
+        }
+
+        public ISampleSource Handle(IFileHandle ti)
+        {
+            var s = ti.OpenStream(FileAccess.Read);
+            var res = new AiffReader(s);
+            return res.ToSampleSource();
         }
     }
 }

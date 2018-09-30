@@ -1,21 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using FuwaTea.Lib;
 using TagLib;
 using TagLib.Ogg;
 using TagLib.Riff;
+using File = TagLib.File;
 
 namespace FuwaTea.Audio.Metadata.Impl.TagLib
 {
     public static class TagLibUtils
     {
+        public static IMetadata ReadFrom(File f)
+        {
+            IMetadata m = null;
+            if (f.TagTypes.HasFlags(TagTypes.FlacMetadata)) m = ReadFrom(f.GetTag(TagTypes.FlacMetadata) as global::TagLib.Flac.Metadata);
+            else if (f.TagTypes.HasFlags(TagTypes.Xiph)) m = ReadFrom(f.GetTag(TagTypes.Xiph) as XiphComment);
+            else if (f.TagTypes.HasFlags(TagTypes.Ape)) m = ReadFrom(f.GetTag(TagTypes.Ape) as global::TagLib.Ape.Tag);
+            else if (f.TagTypes.HasFlags(TagTypes.Id3v2)) m = ReadFrom(f.GetTag(TagTypes.Id3v2) as global::TagLib.Id3v2.Tag);
+            else if (f.TagTypes.HasFlags(TagTypes.Asf)) m = ReadFrom(f.GetTag(TagTypes.Asf) as global::TagLib.Asf.Tag);
+            else if (f.TagTypes.HasFlags(TagTypes.Apple)) m = ReadFrom(f.GetTag(TagTypes.Apple) as global::TagLib.Mpeg4.AppleTag);
+            else if (f.TagTypes.HasFlags(TagTypes.RiffInfo)) m = ReadFrom(f.GetTag(TagTypes.RiffInfo) as InfoTag);
+            else if (f.TagTypes.HasFlags(TagTypes.Id3v1)) m = ReadFrom(f.GetTag(TagTypes.Id3v1) as global::TagLib.Id3v1.Tag);
+            return m;
+        }
+
         public static IMetadata ReadFrom(Tag src)
         {
             if (src == null) return null;
             switch (src.TagTypes)
             {
-                case TagTypes.None:
-                    return null;
                 case TagTypes.FlacMetadata:
                     return ReadFrom(src as global::TagLib.Flac.Metadata);
                 case TagTypes.Xiph:
@@ -33,7 +46,7 @@ namespace FuwaTea.Audio.Metadata.Impl.TagLib
                 case TagTypes.Id3v1:
                     return ReadFrom(src as global::TagLib.Id3v1.Tag);
                 default:
-                    throw new NotSupportedException("Unsupported tag format");
+                    return null;
             }
         }
 
