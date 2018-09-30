@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Text;
+﻿using System.ComponentModel.Composition;
 using CSCore;
 using FuwaTea.Audio.Files;
 using FuwaTea.Lib.DataModel;

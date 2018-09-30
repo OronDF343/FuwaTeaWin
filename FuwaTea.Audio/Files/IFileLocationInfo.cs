@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using FuwaTea.Audio.Metadata;
 
 namespace FuwaTea.Audio.Files
@@ -33,9 +34,7 @@ namespace FuwaTea.Audio.Files
         Uri Uri { get; }
         /// <summary>
         /// Gets the metadata provided by one of: The decoder, the subtrack container / enumerator, the playlist and the library cache.
-        /// Editable metadata should come from no more than one source.
         /// </summary>
-        IMetadata Metadata { get; set; }
-        // TODO NEXT: Make this a Dictionary<MetadataSource, IMetadata>!
+        IDictionary<MetadataSource, IMetadata> Metadata { get; }
     }
 }

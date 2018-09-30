@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using FuwaTea.Audio.Metadata;
 
@@ -18,7 +19,7 @@ namespace FuwaTea.Audio.Files.Impl
         public string Extension => _fli.Extension;
         public string Fragment => _fli.Extension;
         public Uri Uri => _fli.Uri;
-        public IMetadata Metadata { get => _fli.Metadata; set => _fli.Metadata = value; }
+        public IDictionary<MetadataSource, IMetadata> Metadata => _fli.Metadata;
         public abstract Stream OpenStream(FileAccess fa);
         public abstract DateTime LastWrite { get; }
     }

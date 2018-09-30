@@ -1,112 +1,124 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using TagLib;
-using TagLib.Mpeg4;
 using TagLib.Ogg;
 using TagLib.Riff;
 
 namespace FuwaTea.Audio.Metadata.Impl.TagLib
 {
-    /*public static class TagLibUtils
+    public static class TagLibUtils
     {
-        public static bool ReadFrom(this IMetadata meta, Tag src)
+        public static IMetadata ReadFrom(Tag src)
         {
-            if (src == null) return false;
+            if (src == null) return null;
             switch (src.TagTypes)
             {
                 case TagTypes.None:
-                    return false;
+                    return null;
                 case TagTypes.FlacMetadata:
-                    return ReadFrom(meta, src as TagLib.Flac.Metadata);
+                    return ReadFrom(src as global::TagLib.Flac.Metadata);
                 case TagTypes.Xiph:
-                    return ReadFrom(meta, src as XiphComment);
+                    return ReadFrom(src as XiphComment);
                 case TagTypes.Ape:
-                    return ReadFrom(meta, src as TagLib.Ape.Tag);
+                    return ReadFrom(src as global::TagLib.Ape.Tag);
                 case TagTypes.Id3v2:
-                    return ReadFrom(meta, src as TagLib.Id3v2.Tag);
+                    return ReadFrom(src as global::TagLib.Id3v2.Tag);
                 case TagTypes.Asf:
-                    return ReadFrom(meta, src as TagLib.Asf.Tag);
+                    return ReadFrom(src as global::TagLib.Asf.Tag);
                 case TagTypes.Apple:
-                    return ReadFrom(meta, src as AppleTag);
+                    return ReadFrom(src as global::TagLib.Mpeg4.AppleTag);
                 case TagTypes.RiffInfo:
-                    return ReadFrom(meta, src as InfoTag);
+                    return ReadFrom(src as InfoTag);
                 case TagTypes.Id3v1:
-                    return ReadFrom(meta, src as TagLib.Id3v1.Tag);
+                    return ReadFrom(src as global::TagLib.Id3v1.Tag);
                 default:
                     throw new NotSupportedException("Unsupported tag format");
             }
         }
 
-        public static bool ReadFrom(this IMetadata meta, XiphComment src)
+        public static IMetadata ReadFrom(XiphComment src)
         {
-            if (src == null) return false;
-            foreach (var key in src)
-                if (!meta.ContainsKey(key))
-                    meta.Add(key, new TextField(src.GetField(key).ToList()));
-            return true;
+            if (src == null) return null;
+            // TODO: Implement
+            return null;
         }
 
-        public static bool ReadFrom(this IMetadata meta, TagLib.Id3v1.Tag src)
+        public static IMetadata ReadFrom(global::TagLib.Id3v1.Tag src)
         {
-            if (src == null) return false;
-            if (!meta.ContainsKey(nameof(src.Title)))
-                meta.Add(nameof(src.Title), new TextField(src.Title, maxLen:30, encoding:Encoding.ASCII));
-            if (!meta.ContainsKey(nameof(src.Performers)))
-                meta.Add(nameof(src.Performers), new TextField(src.Performers, maxLen: 30, encoding: Encoding.ASCII));
-            if (!meta.ContainsKey(nameof(src.Album)))
-                meta.Add(nameof(src.Album), new TextField(src.Album, maxLen: 30, encoding: Encoding.ASCII));
-            if (!meta.ContainsKey(nameof(src.Year)))
-                meta.Add(nameof(src.Year), new NumericField(value: src.Year, bits: 14));
-            if (!meta.ContainsKey(nameof(src.Comment)))
-                meta.Add(nameof(src.Comment), new TextField(src.Comment, maxLen: 30, encoding: Encoding.ASCII));
-            if (!meta.ContainsKey(nameof(src.Genres)))
-                meta.Add(nameof(src.Genres), new EnumField<StandardGenre>((StandardGenre)Genres.AudioToIndex(src.Genres.FirstOrDefault())));
-            if (!meta.ContainsKey(nameof(src.Track)))
-                meta.Add(nameof(src.Track), new NumericField(value: src.Track, bits: 8));
-            return true;
+            if (src == null) return null;
+            var tag = new Id3V11();
+            tag.Title.Value = src.Title;
+            tag.Artist.Value = src.Performers.ToList();
+            tag.Album.Value = src.Album;
+            tag.Year.Year = (ushort)src.Year;
+            tag.Comment.Value = new List<string> { src.Comment };
+            tag.Track.Value = src.Track;
+            tag.Genre.Value = src.Genres.ToList();
+            return tag;
         }
 
-        public static bool ReadFrom(this IMetadata meta, TagLib.Id3v2.Tag src)
+        public static IMetadata ReadFrom(global::TagLib.Id3v2.Tag src)
         {
-            if (src == null) return false;
-            return false;
+            if (src == null) return null;
+            // TODO: Implement
+            return null;
         }
 
-        public static bool ReadFrom(this IMetadata meta, TagLib.Ape.Tag src)
+        public static IMetadata ReadFrom(global::TagLib.Ape.Tag src)
         {
-            if (src == null) return false;
-            return false;
+            if (src == null) return null;
+            // TODO: Implement
+            return null;
         }
 
-        public static bool ReadFrom(this IMetadata meta, AppleTag src)
+        public static IMetadata ReadFrom(global::TagLib.Mpeg4.AppleTag src)
         {
-            if (src == null) return false;
-            return false;
+            if (src == null) return null;
+            // TODO: Implement
+            return null;
         }
 
-        public static bool ReadFrom(this IMetadata meta, TagLib.Asf.Tag src)
+        public static IMetadata ReadFrom(global::TagLib.Asf.Tag src)
         {
-            if (src == null) return false;
-            return false;
+            if (src == null) return null;
+            // TODO: Implement
+            return null;
         }
 
-        public static bool ReadFrom(this IMetadata meta, InfoTag src)
+        public static IMetadata ReadFrom(InfoTag src)
         {
-            if (src == null) return false;
-            return false;
+            if (src == null) return null;
+            // TODO: Implement
+            return null;
         }
 
-        public static bool ReadFrom(this IMetadata meta, TagLib.Flac.Metadata src)
+        public static IMetadata ReadFrom(global::TagLib.Flac.Metadata src)
         {
-            if (src == null) return false;
-            foreach (var picture in src.Pictures.GroupBy(p => p.Type))
-            {
-                if (!meta.ContainsKey(picture.Key))
-                    meta.Add(picture.Key, new PictureField(picture.ToList()));
-            }
+            if (src == null) return null;
             var x = src.GetComment(false, null);
-            return ReadFrom(meta, x) || src.Pictures.Length > 0;
+            var t = ReadFrom(x);
+            if (t == null)
+            {
+                if (src.Pictures.Length < 1) return null;
+                t = new StringBasedMetadata();
+            }
+
+            foreach (var pic in src.Pictures)
+                t.Picture.Add(pic.ToPicture());
+
+            return t;
         }
-    }*/
+
+        public static Picture ToPicture(this global::TagLib.IPicture pic)
+        {
+            return new Picture
+            {
+                MimeType = pic.MimeType,
+                Description = pic.Description,
+                PictureType = pic.Type,
+                Data = pic.Data.Data
+            };
+        }
+    }
 }

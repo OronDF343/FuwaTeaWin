@@ -1,13 +1,10 @@
-﻿using System.Collections.Generic;
-
-namespace FuwaTea.Audio.Metadata.Impl
+﻿namespace FuwaTea.Audio.Metadata.Impl
 {
-    public class Id3V1 : MetadataBase
+    public class Id3V11 : MetadataBase
     {
-        public Id3V1(bool isReadOnly = false)
+        public Id3V11(bool isReadOnly = false)
             : base(isReadOnly, false) { }
-
-        public override IDictionary<string, IList<string>> ExtendedFields { get; } = null;
+        
         public override ITextField Title { get; } = new BasicTextField(30);
         public override IListField Artist { get; } = new JoinedListField(";", 30);
         public override ITextField Album { get; } = new BasicTextField(30);

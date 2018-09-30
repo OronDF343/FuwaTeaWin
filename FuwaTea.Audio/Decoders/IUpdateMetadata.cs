@@ -13,6 +13,6 @@ namespace FuwaTea.Audio.Decoders
         /// </remarks>
         /// <param name="file">The file.</param>
         /// <returns>True if any metadata was read.</returns>
-        bool UpdateMetadata(IFileHandle file);
+        void UpdateMetadata(IFileHandle file);
     }
 }

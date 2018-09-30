@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using FuwaTea.Audio.Metadata;
 using FuwaTea.Lib;
 
@@ -18,6 +17,6 @@ namespace FuwaTea.Audio.Files.Impl
         public string Extension => Uri.AbsolutePath.GetExtension();
         public string Fragment => Uri.Fragment;
         public Uri Uri { get; }
-        public IMetadata Metadata { get; set; }
+        public IDictionary<MetadataSource, IMetadata> Metadata { get; } = new Dictionary<MetadataSource, IMetadata>();
     }
 }
