@@ -5,7 +5,7 @@ using CSCore;
 using CSCore.Codecs.FLAC;
 using DryIocAttributes;
 using FuwaTea.Audio.Files;
-using FuwaTea.Audio.Metadata.Utils;
+using FuwaTea.Audio.Metadata.Impl.TagLib;
 using TagLib;
 using File = TagLib.File;
 

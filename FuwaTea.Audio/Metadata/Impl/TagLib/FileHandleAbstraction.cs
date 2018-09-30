@@ -2,7 +2,7 @@
 using FuwaTea.Audio.Files;
 using File = TagLib.File;
 
-namespace FuwaTea.Audio.Metadata.Utils
+namespace FuwaTea.Audio.Metadata.Impl.TagLib
 {
     public class FileHandleAbstraction : File.IFileAbstraction
     {

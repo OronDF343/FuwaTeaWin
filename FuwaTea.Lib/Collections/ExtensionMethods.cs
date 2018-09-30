@@ -79,5 +79,10 @@ namespace FuwaTea.Lib.Collections
             if (dict.ContainsKey(key)) dict[key] = value;
             else dict.Add(key, value);
         }
+
+        public static void AddMany<T>(this ICollection<T> c, IEnumerable<T> e)
+        {
+            foreach (var i in e) c.Add(i);
+        }
     }
 }

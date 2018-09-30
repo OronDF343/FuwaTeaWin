@@ -1,29 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
-using TagLib;
 
 namespace FuwaTea.Audio.Metadata
 {
     public interface IMetadata
     {
-        // Used for streams
+        // Used mostly for streams
         bool IsReadOnly { get; }
+        // 
+        bool SupportsUnicode { get; }
 
         // ID3v2.3 TXXX
         // ID3v2.3 WXXX (ISO-8859-1 only)
-        IDictionary<string, ITextField> ExtendedFields { get; }
+        IDictionary<string, IList<string>> ExtendedFields { get; }
+        // Special field / not part of tags
+        // ID3v2.3 APIC
+        /* This frame contains a picture directly related to the audio file. Image format is the MIME type and subtype for
+         * the image. In the event that the MIME media type name is omitted, "image/" will be implied. The "image/png" or
+         * "image/jpeg" picture format should be used when interoperability is wanted. Description is a short description
+         * of the picture, represented as a terminated text string. The description has a maximum length of 64 characters,
+         * but may be empty. There may be several pictures attached to one file, each in their individual "APIC" frame,
+         * but only one with the same content descriptor. There may only be one picture with the picture type declared as
+         * picture type $01 and $02 respectively. There is the possibility to put only a link to the image file by using
+         * the 'MIME type' "-->" and having a complete URL instead of picture data. The use of linked files should however
+         * be used sparingly since there is the risk of separation of files. 
+         */
+        IList<IPicture> Picture { get; }
 
         // Mp3tag basic tags
         // ID3v2.3 TIT2
         ITextField Title { get; }
+        // ID3v2.4 TSOT ([UNOFFICIAL] ID3v2.3)
+        ITextField TitleSort { get; }
         // ID3v2.3 TPE1 (separator /)
         IListField Artist { get; }
+        // ID3v2.4 TSOP ([UNOFFICIAL] ID3v2.3)
+        IListField ArtistSort { get; }
         // ID3v2.3 TALB
         ITextField Album { get; }
-        // ID3v2.3 TYER (year, numeric 4-char) + TDAT + TIME + TRDA
+        // ID3v2.4 TSOA ([UNOFFICIAL] ID3v2.3)
+        ITextField AlbumSort { get; }
+        // ID3v2.3 TYER (year, numeric 4-char) + TDAT + TIME
         // TDAT: The 'Date' frame is a numeric string in the DDMM format containing the date for the recording. This field is always four characters long.
         // TIME: The 'Time' frame is a numeric string in the HHMM format containing the time for the recording. This field is always four characters long.
-        // TRDA: The 'Recording dates' frame is a intended to be used as complement to the "TYER", "TDAT" and "TIME" frames. E.g. "4th-7th June, 12th June" in combination with the "TYER" frame.
         // ID3v2.4 TDRC (timestamp)
         IDateTimeField Year { get; }
         // ID3v2.3 TRCK (divider /)
@@ -39,7 +58,7 @@ namespace FuwaTea.Audio.Metadata
          * "(21)" or "(4)Eurodisco". Several references can be made in the same frame, e.g. "(51)(39)". If the
          * refinement should begin with a "(" character it should be replaced with "((", e.g. "((I can figure out any
          * genre)" or "(55)((I think...)". The following new content types is defined in ID3v2 and is implemented in
-         * the same way as the numerig content types, e.g. "(RX)".
+         * the same way as the numeric content types, e.g. "(RX)".
          * RX    Remix
          * CR    Cover
          */
@@ -53,15 +72,16 @@ namespace FuwaTea.Audio.Metadata
         IListField Comment { get; }
         // ID3v2.3 TPE2
         ITextField AlbumArtist { get; }
+        // [UNOFFICIAL] ID3v2.3/4 TSO2
+        ITextField AlbumArtistSort { get; }
         // ID3v2.3 TCOM (separator /)
         IListField Composer { get; }
+        // ID3v2.4 TSOC ([UNOFFICIAL] ID3v2.3)
+        IListField ComposerSort { get; }
         // ID3v2.3 TPOS (divider /)
         INumericField Disc { get; }
         //     [As above]
         INumericField DiscCount { get; }
-        // Special field / not part of tags
-        // ID3v2.3 APIC
-        IPictureField Picture { get; }
 
         // Mp3tag extended tags
         // ID3v2.3 TBPM
@@ -274,6 +294,7 @@ namespace FuwaTea.Audio.Metadata
         ITextField WwwRadioPage { get; }
 
         // Missing ID3v2.3 fields
+        // TRDA: The 'Recording dates' frame is a intended to be used as complement to the "TYER", "TDAT" and "TIME" frames. E.g. "4th-7th June, 12th June" in combination with the "TYER" frame. [DEPRECATED]
         // TDLY: 'Playlist delay'. Not relevant to us
         // TSIZ: Size of the file. Useless to us [DEPRECATED]
         // MCDI: CD TOC binary dump, should not be editable
@@ -321,19 +342,6 @@ namespace FuwaTea.Audio.Metadata
            time this field is displayed the field must be preceded with
            "Produced " (P) " ", where (P) is one character showing a P in a
            circle.
-
-           TSOA
-           The 'Album sort order' frame defines a string which should be used
-           instead of the album name (TALB) for sorting purposes. E.g. an album
-           named "A Soundtrack" might preferably be sorted as "Soundtrack".
-           
-           TSOP
-           The 'Performer sort order' frame defines a string which should be
-           used instead of the performer (TPE2) for sorting purposes.
-           
-           TSOT
-           The 'Title sort order' frame defines a string which should be used
-           instead of the title (TIT2) for sorting purposes.
          */
 
         // Not supported by Vorbis Comment, not listed in Mp3tag
@@ -345,18 +353,18 @@ namespace FuwaTea.Audio.Metadata
     }
 
     [Flags]
-    public enum MusicalKey : byte
+    public enum MusicalKey : short
     {
-        OffKey =    0b00000000,
-        C =         0b00000001,
-        D =         0b00000010,
-        E =         0b00000011,
-        F =         0b00000100,
-        G =         0b00000101,
-        A =         0b00000110,
-        B =         0b00000111,
-        Sharp =     0b00001000,
-        Flat =      0b00011000,
-        Minor =     0b00100000
+        OffKey =    0b00_00000000,
+        C =         0b00_00000001,
+        D =         0b00_00000010,
+        E =         0b00_00000100,
+        F =         0b00_00001000,
+        G =         0b00_00010000,
+        A =         0b00_00100000,
+        B =         0b00_01000000,
+        Sharp =     0b00_10000000,
+        Flat =      0b01_00000000,
+        Minor =     0b10_00000000
     }
 }

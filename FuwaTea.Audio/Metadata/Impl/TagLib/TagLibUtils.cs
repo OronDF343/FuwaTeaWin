@@ -6,7 +6,7 @@ using TagLib.Mpeg4;
 using TagLib.Ogg;
 using TagLib.Riff;
 
-namespace FuwaTea.Audio.Metadata.Utils
+namespace FuwaTea.Audio.Metadata.Impl.TagLib
 {
     /*public static class TagLibUtils
     {
@@ -25,10 +25,10 @@ namespace FuwaTea.Audio.Metadata.Utils
                     return ReadFrom(meta, src as TagLib.Ape.Tag);
                 case TagTypes.Id3v2:
                     return ReadFrom(meta, src as TagLib.Id3v2.Tag);
-                case TagTypes.Apple:
-                    return ReadFrom(meta, src as AppleTag);
                 case TagTypes.Asf:
                     return ReadFrom(meta, src as TagLib.Asf.Tag);
+                case TagTypes.Apple:
+                    return ReadFrom(meta, src as AppleTag);
                 case TagTypes.RiffInfo:
                     return ReadFrom(meta, src as InfoTag);
                 case TagTypes.Id3v1:

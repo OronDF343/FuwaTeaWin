@@ -4,21 +4,33 @@ namespace FuwaTea.Audio.Metadata
 {
     public abstract class MetadataBase : IMetadata
     {
-        public abstract bool IsReadOnly { get; }
-        public virtual IDictionary<string, ITextField> ExtendedFields { get; } = new Dictionary<string, ITextField>();
+        public MetadataBase(bool isReadOnly = false, bool supportsUnicode = true)
+        {
+            IsReadOnly = isReadOnly;
+            SupportsUnicode = supportsUnicode;
+        }
+
+        public bool IsReadOnly { get; }
+        public bool SupportsUnicode { get; }
+        public virtual IDictionary<string, IList<string>> ExtendedFields { get; } = null;
+        public virtual IList<IPicture> Picture { get; } = null;
         public virtual ITextField Title { get; } = null;
+        public virtual ITextField TitleSort { get; } = null;
         public virtual IListField Artist { get; } = null;
+        public virtual IListField ArtistSort { get; } = null;
         public virtual ITextField Album { get; } = null;
+        public virtual ITextField AlbumSort { get; } = null;
         public virtual IDateTimeField Year { get; } = null;
         public virtual INumericField Track { get; } = null;
         public virtual INumericField TrackCount { get; } = null;
         public virtual IListField Genre { get; } = null;
         public virtual IListField Comment { get; } = null;
         public virtual ITextField AlbumArtist { get; } = null;
+        public virtual ITextField AlbumArtistSort { get; } = null;
         public virtual IListField Composer { get; } = null;
+        public virtual IListField ComposerSort { get; } = null;
         public virtual INumericField Disc { get; } = null;
         public virtual INumericField DiscCount { get; } = null;
-        public virtual IPictureField Picture { get; } = null;
         public virtual INumericField Bpm { get; } = null;
         public virtual ITextField Conductor { get; } = null;
         public virtual ITextField ContentGroup { get; } = null;

@@ -1,51 +1,47 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using TagLib;
 
 namespace FuwaTea.Audio.Metadata
 {
-    public interface IPictureField
+    public interface ITextField : IMetadataField<string>
     {
-        string MimeType { get; set; }
-        PictureType PictureType { get; set; }
-        string Description { get; set; }
-        byte[] Data { get; set; }
+        uint MaxLength { get; }
     }
 
-    public interface IMetadataField
+    public interface IListField : IMetadataField<IList<string>>
     {
-        Type ActualValueType { get; }
-        object ActualValue { get; set; }
+        uint MaxCount { get; }
+        uint MaxLength { get; }
     }
 
-    public interface ITextField : IMetadataField
+    public interface IDateTimeField : IMetadataField<DateTime?>
     {
-        string TextualValue { get; set; }
+        ushort? Year { get; set; }
+        byte? Month { get; set; }
+        byte? Day { get; set; }
+        byte? Hour { get; set; }
+        byte? Minute { get; set; }
+        byte? Second { get; set; }
+        
+        /// <summary>
+        /// Specifies how many of the above fields are supported (1~6).
+        /// The order of precedence is always Year, Month, Day, Hour, Minute, Second.
+        /// </summary>
+        byte MaxResolution { get; }
     }
 
-    public interface IListField : IMetadataField
+    public interface INumericField : IMetadataField<uint?>
     {
-        string[] StringValues { get; set; }
+        uint MaxValue { get; }
     }
 
-    public interface IDateTimeField : IMetadataField
+    public interface IEnumField<T> : IMetadataField<T?> where T : struct, Enum, IConvertible
     {
-        DateTime DateTimeValue { get; set; }
+        string StringValue { get; set; }
     }
 
-    public interface INumericField : IMetadataField
+    public interface IMetadataField<T>
     {
-        uint NumericalValue { get; set; }
-    }
-
-    public interface IEnumField<T> : ITextField where T : struct, Enum
-    {
-        T EnumValue { get; set; }
-    }
-
-    public interface IMetadataField<T> : IMetadataField
-    {
-        new T ActualValue { get; set; }
+        T Value { get; set; }
     }
 }
