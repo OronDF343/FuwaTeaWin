@@ -37,7 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FuwaTea.Core\FuwaTea.Core.csproj" />
     <ProjectReference Include="..\FuwaTea.Extensibility\FuwaTea.Extensibility.csproj" />
   </ItemGroup>
 

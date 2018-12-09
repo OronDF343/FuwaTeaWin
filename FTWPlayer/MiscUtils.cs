@@ -52,7 +52,7 @@ namespace FTWPlayer
             if (clArgs.Count == 0) return null;
             var file = clArgs.Find(s => !s.StartsWith("--"));
             if (file == default) return null;
-            var addOnly = clArgs.Find(s => s.ToLowerInvariant() == "--add") != default(string);
+            var addOnly = clArgs.Find(s => s.ToLowerInvariant() == "--add") != default;
 
             return LoadObject(file, addOnly);
         }

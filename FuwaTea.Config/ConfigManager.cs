@@ -1,31 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using DryIoc;
-using FuwaTea.Core;
 
 namespace FuwaTea.Config
 {
     public class ConfigManager : IConfigManager
     {
         private readonly Dictionary<string, Meta<IConfigPage, IConfigPageMetadata>> _pages;
-        
-        public ConfigManager([Import] IEnumerable<Meta<IConfigPage, IConfigPageMetadata>> pages)
+        private readonly string _persistent;
+        private readonly string _nonPersistent;
+
+        public ConfigManager([Import] IEnumerable<Meta<IConfigPage, IConfigPageMetadata>> pages,
+                             [Import(ContractName = ConfigConstants.PersistentConfigDirKey)] string p,
+                             [Import(ContractName = ConfigConstants.NonPersistentConfigDirKey)] string np)
         {
             _pages = pages.ToDictionary(l => l.Metadata.Key, l => l);
+            _persistent = p;
+            _nonPersistent = np;
         }
 
         public void LoadAllConfigPages()
         {
-            var ppath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), AppConstants.SanitizedName, ConfigConstants.ConfigDirName);
-            var nppath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), AppConstants.SanitizedName, ConfigConstants.ConfigDirName);
-            if (!Directory.Exists(ppath)) Directory.CreateDirectory(ppath);
-            if (!Directory.Exists(nppath)) Directory.CreateDirectory(nppath);
+            if (!Directory.Exists(_persistent)) Directory.CreateDirectory(_persistent);
+            if (!Directory.Exists(_nonPersistent)) Directory.CreateDirectory(_nonPersistent);
             foreach (var item in _pages)
             {
-                var ipath = Path.Combine(item.Value.Metadata.IsPersistent ? ppath : nppath,
+                var ipath = Path.Combine(item.Value.Metadata.IsPersistent ? _persistent : _nonPersistent,
                                          item.Key + ConfigConstants.ConfigFileExtension);
                 if (!File.Exists(ipath)) continue;
                 item.Value.Value.Deserialize(File.ReadAllText(ipath));
@@ -34,13 +36,11 @@ namespace FuwaTea.Config
 
         public void SaveAllConfigPages()
         {
-            var ppath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), AppConstants.SanitizedName, ConfigConstants.ConfigDirName);
-            var nppath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), AppConstants.SanitizedName, ConfigConstants.ConfigDirName);
-            if (!Directory.Exists(ppath)) Directory.CreateDirectory(ppath);
-            if (!Directory.Exists(nppath)) Directory.CreateDirectory(nppath);
+            if (!Directory.Exists(_persistent)) Directory.CreateDirectory(_persistent);
+            if (!Directory.Exists(_nonPersistent)) Directory.CreateDirectory(_nonPersistent);
             foreach (var item in _pages)
             {
-                var ipath = Path.Combine(item.Value.Metadata.IsPersistent ? ppath : nppath,
+                var ipath = Path.Combine(item.Value.Metadata.IsPersistent ? _persistent : _nonPersistent,
                                          item.Key + ConfigConstants.ConfigFileExtension);
                 File.WriteAllText(ipath, item.Value.Value.Serialize());
             }
