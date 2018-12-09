@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using CSCore.CoreAudioAPI;
+using DryIocAttributes;
 using FuwaTea.Config;
 using Newtonsoft.Json;
 
 namespace FuwaTea.Audio.Playback.CSCore
 {
-    [ConfigPage(nameof(Wasapi))]
+    [ConfigPage(nameof(Wasapi)), Export, Reuse(ReuseType.Singleton)]
     public class WasapiConfig : CSCoreApiConfigBase
     {
         [JsonIgnore]

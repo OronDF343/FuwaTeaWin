@@ -10,7 +10,7 @@ namespace FuwaTea.Audio.Metadata.Impl.TagLib
 
         public FileHandleAbstraction(IFileHandle handle) => _handle = handle;
 
-        public string Name => _handle.AbsolutePath;
+        public string Name => _handle.LocalPath;
         
         public Stream ReadStream => _handle.OpenStream(FileAccess.Read);
 

@@ -6,8 +6,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using DryIocAttributes;
 using FTWPlayer.Views;
-using FuwaTea.Metadata.AlbumArt;
-using FuwaTea.Playback;
+using FuwaTea.Audio.Playback;
 using JetBrains.Annotations;
 
 namespace FTWPlayer.ViewModels
@@ -17,10 +16,10 @@ namespace FTWPlayer.ViewModels
     public class PlayerViewModel : ITab, INotifyPropertyChanged
     {
         
-        public PlayerViewModel([Import] IPlaybackManager playbackManager, [Import] IAlbumArtLocator albumArtLocator)
+        public PlayerViewModel([Import] IPlaybackManager playbackManager/*, [Import] IAlbumArtLocator albumArtLocator*/)
         {
             PlaybackManager = playbackManager;
-            AlbumArtLocator = albumArtLocator;
+            //AlbumArtLocator = albumArtLocator;
             TabObject = new AlbumArtView(this);
             PlaybackManager.PropertyChanged += PlaybackManager_PropertyChanged;
         }
@@ -28,13 +27,14 @@ namespace FTWPlayer.ViewModels
         private void PlaybackManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             // Users who care about the app using over 100MB of memory should avoid loading very large images or switching between songs too often.
-            if (e.PropertyName != nameof(PlaybackManager.Current)) return;
-            if (PlaybackManager.Current == null)
+            if (e.PropertyName != nameof(PlaybackManager.Index)) return;
+            if (PlaybackManager.NowPlaying == null)
             {
                 CurrentAlbumArt = null;
                 return;
             }
-            var s = AlbumArtLocator.GetAlbumArt(PlaybackManager.Current);
+            // TODO AlbumArt
+            /*var s = AlbumArtLocator.GetAlbumArt(PlaybackManager.NowPlaying);
             if (s == null)
             {
                 CurrentAlbumArt = null;
@@ -51,7 +51,7 @@ namespace FTWPlayer.ViewModels
                 bi.Freeze();
                 CurrentAlbumArt = bi;
                 s.Close();
-            }
+            }*/
         }
 
         private ImageSource _albumArt;
@@ -70,7 +70,7 @@ namespace FTWPlayer.ViewModels
         public decimal Index => 0;
 
         public IPlaybackManager PlaybackManager { get; }
-        public IAlbumArtLocator AlbumArtLocator { get; }
+        //public IAlbumArtLocator AlbumArtLocator { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

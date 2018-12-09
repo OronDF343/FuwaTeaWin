@@ -4,7 +4,7 @@ using System.ComponentModel.Composition;
 using System.Windows.Controls;
 using DryIocAttributes;
 using FTWPlayer.Views.SettingsViews;
-using FuwaTea.Playback.NAudio;
+using FuwaTea.Audio.Playback.CSCore;
 
 namespace FTWPlayer.ViewModels.SettingsViewModels
 {
@@ -12,22 +12,22 @@ namespace FTWPlayer.ViewModels.SettingsViewModels
     [Reuse(ReuseType.Singleton)]
     public class PlaybackSettingsViewModel : ISettingsTab
     {
-        public PlaybackSettingsViewModel([Import] NAudioPlaybackSettings settings)
+        public PlaybackSettingsViewModel(/*[Import] CSCoreApiConfigBase settings*/)
         {
-            Settings = settings;
+            //Settings = settings;
         }
 
         public TabItem GetTabItem()
         {
-            // TODO: Clean up this mess
-            DirectSoundDevices = Settings.DirectSoundDevices;
+            // TODO: Reimplement this
+            /*DirectSoundDevices = Settings.DirectSoundDevices;
             WasapiDevices = Settings.WasapiDevices;
             WasapiDevices?.Add("", "Default Playback Device");
-            AsioDevices = Settings.AsioDevices;
+            AsioDevices = Settings.AsioDevices;*/
             return new PlaybackSettingsView(this);
         }
         public decimal Index => 0;
-        public NAudioPlaybackSettings Settings { get; }
+        public CSCoreApiConfigBase Settings { get; }
         public Dictionary<Guid, string> DirectSoundDevices { get; private set; }
         public Dictionary<string, string> WasapiDevices { get; private set; }
         public string[] AsioDevices { get; private set; }

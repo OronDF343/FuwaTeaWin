@@ -6,7 +6,6 @@ MinimumVisualStudioVersion = 12.0.31101.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FTWPlayer", "FTWPlayer\FTWPlayer.csproj", "{D14F368C-AB9B-4DF3-A8F7-CF42B66F7E40}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E4773A23-838D-40AD-8466-58FDB07237E0} = {E4773A23-838D-40AD-8466-58FDB07237E0}
-		{C6003F63-4717-4B45-8890-B3C02F7209D9} = {C6003F63-4717-4B45-8890-B3C02F7209D9}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Wpf", "FuwaTea.Wpf\FuwaTea.Wpf.csproj", "{09BB648A-DCAA-4A8D-9FB6-FC4A82E17820}"
@@ -14,14 +13,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Lib", "FuwaTea.Lib\FuwaTea.Lib.csproj", "{A9BB4650-68CC-4640-9B5A-65F4AA80C2AB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WavpackDecoder", "WavpackDecoder\WavpackDecoder.csproj", "{1CF67E61-3DAE-41A1-BE0A-904A35E04AAF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Playback", "FuwaTea.Playback\FuwaTea.Playback.csproj", "{FCC6C9C3-58CF-4C29-BC8F-8468DE31AD93}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Playback.NAudio", "FuwaTea.Playback.NAudio\FuwaTea.Playback.NAudio.csproj", "{C6003F63-4717-4B45-8890-B3C02F7209D9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Playlist", "FuwaTea.Playlist\FuwaTea.Playlist.csproj", "{1606973F-7CAE-4E42-BCC8-5282FC775070}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Metadata", "FuwaTea.Metadata\FuwaTea.Metadata.csproj", "{17853F95-1A56-448C-825E-5662E1FC1426}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuwaTea.Extensibility", "FuwaTea.Extensibility\FuwaTea.Extensibility.csproj", "{E4773A23-838D-40AD-8466-58FDB07237E0}"
 EndProject
@@ -34,7 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		FodyWeavers.xml = FodyWeavers.xml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Audio", "FuwaTea.Audio\FuwaTea.Audio.csproj", "{678E65DB-EA46-4F3D-8105-C864BE36E206}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FuwaTea.Audio", "FuwaTea.Audio\FuwaTea.Audio.csproj", "{678E65DB-EA46-4F3D-8105-C864BE36E206}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,22 +49,6 @@ Global
 		{1CF67E61-3DAE-41A1-BE0A-904A35E04AAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CF67E61-3DAE-41A1-BE0A-904A35E04AAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CF67E61-3DAE-41A1-BE0A-904A35E04AAF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FCC6C9C3-58CF-4C29-BC8F-8468DE31AD93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FCC6C9C3-58CF-4C29-BC8F-8468DE31AD93}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FCC6C9C3-58CF-4C29-BC8F-8468DE31AD93}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FCC6C9C3-58CF-4C29-BC8F-8468DE31AD93}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C6003F63-4717-4B45-8890-B3C02F7209D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C6003F63-4717-4B45-8890-B3C02F7209D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C6003F63-4717-4B45-8890-B3C02F7209D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C6003F63-4717-4B45-8890-B3C02F7209D9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1606973F-7CAE-4E42-BCC8-5282FC775070}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1606973F-7CAE-4E42-BCC8-5282FC775070}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1606973F-7CAE-4E42-BCC8-5282FC775070}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1606973F-7CAE-4E42-BCC8-5282FC775070}.Release|Any CPU.Build.0 = Release|Any CPU
-		{17853F95-1A56-448C-825E-5662E1FC1426}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{17853F95-1A56-448C-825E-5662E1FC1426}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{17853F95-1A56-448C-825E-5662E1FC1426}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{17853F95-1A56-448C-825E-5662E1FC1426}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E4773A23-838D-40AD-8466-58FDB07237E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E4773A23-838D-40AD-8466-58FDB07237E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4773A23-838D-40AD-8466-58FDB07237E0}.Release|Any CPU.ActiveCfg = Release|Any CPU

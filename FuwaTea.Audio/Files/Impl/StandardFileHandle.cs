@@ -10,9 +10,9 @@ namespace FuwaTea.Audio.Files.Impl
 
         public override Stream OpenStream(FileAccess fa)
         {
-            return File.Open(AbsolutePath, FileMode.Open, fa);
+            return File.Open(LocalPath, FileMode.Open, fa);
         }
 
-        public override DateTime LastWrite => File.GetLastWriteTime(AbsolutePath);
+        public override DateTime LastWrite => File.GetLastWriteTime(LocalPath);
     }
 }

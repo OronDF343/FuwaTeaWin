@@ -13,7 +13,7 @@ namespace FuwaTea.Extensibility
     public class ExtensibilityContainer : IDisposable
     {
         // TODO: Export self at init!
-        private IContainer _iocContainer = new Container();
+        private IContainer _iocContainer = new Container(rules => rules.WithoutThrowOnRegisteringDisposableTransient());
         [NotNull]
         private readonly Dictionary<string, ExtensionInfo> _extensions = new Dictionary<string, ExtensionInfo>();
         public IReadOnlyDictionary<string, ExtensionInfo> LoadedExtensions => new ReadOnlyDictionary<string, ExtensionInfo>(_extensions);

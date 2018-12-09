@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using FuwaTea.Metadata;
-using FuwaTea.Metadata.FormatUtils;
+using FuwaTea.Audio.Metadata;
+using FuwaTea.Lib.FormatUtils;
 using JetBrains.Annotations;
 
 namespace FTWPlayer.Converters
@@ -14,8 +14,8 @@ namespace FTWPlayer.Converters
                               [NotNull] CultureInfo culture)
         {
             if (!(values[1] is string)) return parameter ?? "[Null]"; // TODO: Localize
-            if (!(values[0] is IMusicInfoModel)) return values[1];
-            var info = (IMusicInfoModel)values[0];
+            if (!(values[0] is IMetadata)) return values[1];
+            var info = (IMetadata)values[0];
             var fmt = (string)values[1];
             return _parser.FormatObject(fmt, info);
         }

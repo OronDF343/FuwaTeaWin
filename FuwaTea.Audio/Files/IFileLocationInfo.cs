@@ -16,7 +16,7 @@ namespace FuwaTea.Audio.Files
         /// <summary>
         /// Gets the absolute path of the file.
         /// </summary>
-        string AbsolutePath { get; }
+        string LocalPath { get; }
         /// <summary>
         /// Gets the file extension.
         /// </summary>

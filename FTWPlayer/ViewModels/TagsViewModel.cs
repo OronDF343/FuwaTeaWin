@@ -6,8 +6,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using DryIocAttributes;
 using FTWPlayer.Views;
-using FuwaTea.Metadata.Tags;
-using FuwaTea.Playback;
+using FuwaTea.Audio.Files;
+using FuwaTea.Audio.Metadata;
+using FuwaTea.Audio.Playback;
 using FuwaTea.Wpf.Helpers;
 using GalaSoft.MvvmLight.CommandWpf;
 using JetBrains.Annotations;
@@ -28,7 +29,7 @@ namespace FTWPlayer.ViewModels
             _playbackManager.PropertyChanged +=
                 (sender, args) =>
                 {
-                    if (args.PropertyName == nameof(IPlaybackManager.Current))
+                    if (args.PropertyName == nameof(IPlaybackManager.Index))
                         OnPropertyChanged(nameof(Tag));
                 };
             TabObject = new TagsView(this);
@@ -38,7 +39,8 @@ namespace FTWPlayer.ViewModels
 
         public TabItem TabObject { get; }
         public decimal Index => 0.5m;
-        public Tag Tag => _playbackManager.Current?.Tag;
+        // TODO: Meta source
+        public IMetadata Tag => _playbackManager.NowPlaying?.Metadata[MetadataSource.Decoder];
 
         public ICommand DiscardChangesCommand { get; set; }
 
@@ -51,20 +53,22 @@ namespace FTWPlayer.ViewModels
 
         private void SaveChanges(RoutedEventArgs e)
         {
-            (TabObject as TagsView).TagGrid.UpdateBindingSources(TextBox.TextProperty);
-            Tag.SaveTags();
+            // TODO: Tag editing
+            /*(TabObject as TagsView).TagGrid.UpdateBindingSources(TextBox.TextProperty);
+            Tag.SaveTags();*/
         }
 
         public ICommand DeleteTagsCommand { get; set; }
 
         private void DeleteTags(RoutedEventArgs e)
         {
-            var res = MessageBox.Show(Application.Current.MainWindow, "Are you sure?", "Confirm tag deletion",
+            // TODO: Tag editing
+            /*var res = MessageBox.Show(Application.Current.MainWindow, "Are you sure?", "Confirm tag deletion",
                                       MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (res != MessageBoxResult.Yes) return;
             Tag.Clear();
             Tag.SaveTags();
-            (TabObject as TagsView).TagGrid.UpdateBindingTargets(TextBox.TextProperty);
+            (TabObject as TagsView).TagGrid.UpdateBindingTargets(TextBox.TextProperty);*/
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

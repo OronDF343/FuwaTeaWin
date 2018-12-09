@@ -29,10 +29,10 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using DryIoc;
 using FTWPlayer.Localization;
+using FuwaTea.Audio.Decoders;
+using FuwaTea.Audio.Playback;
 using FuwaTea.Extensibility;
 using FuwaTea.Lib.NotifyIcon;
-using FuwaTea.Playback;
-using FuwaTea.Playlist;
 using FuwaTea.Wpf.Keyboard;
 using GalaSoft.MvvmLight.CommandWpf;
 using JetBrains.Annotations;
@@ -52,7 +52,7 @@ namespace FTWPlayer.ViewModels
             MainViewModelScope = ((App)Application.Current).MainContainer.OpenScope(nameof(MainViewModel));
             Settings = MainViewModelScope.Resolve<UISettings>();
             PlaybackManager = MainViewModelScope.Resolve<IPlaybackManager>();
-            PlaylistManager = MainViewModelScope.Resolve<IPlaylistManager>();
+            PlaylistManager = MainViewModelScope.Resolve<ISubTrackEnumerationManager>();
             NotifyIconManager = MainViewModelScope.Resolve<NotifyIconManager>();
             VolumeProperty = DependencyProperty.Register("Volume", typeof(decimal), typeof(MainViewModel),
                                                          new PropertyMetadata(1.0m, VolumePropertyChanged));
@@ -62,25 +62,28 @@ namespace FTWPlayer.ViewModels
             _tmr.Stop();
             PlaybackManager.PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName == nameof(IPlaybackManager.EnableShuffle))
-                    RaisePropertyChanged(nameof(PositionTextFormatString));
-                if (args.PropertyName == nameof(IPlaybackManager.CurrentIndex) || args.PropertyName == nameof(PlaybackManager.ElementCount))
+                // TODO: shuffle
+                /*if (args.PropertyName == nameof(IPlaybackManager.EnableShuffle))
+                    RaisePropertyChanged(nameof(PositionTextFormatString));*/
+                // TODO: CollectionChanged???
+                if (args.PropertyName == nameof(IPlaybackManager.Index)/* || args.PropertyName == nameof(PlaybackManager.ElementCount)*/)
                     RaisePropertyChanged(nameof(OneBasedCurrentIndex));
-                if (args.PropertyName == nameof(IPlaybackManager.CurrentIndexAbsolute) || args.PropertyName == nameof(PlaybackManager.ElementCount))
-                    RaisePropertyChanged(nameof(OneBasedCurrentIndexAbsolute));
-                if (args.PropertyName == nameof(IPlaybackManager.Current))
+                // TODO: shuffle
+                /*if (args.PropertyName == nameof(IPlaybackManager.CurrentIndexAbsolute) || args.PropertyName == nameof(PlaybackManager.ElementCount))
+                    RaisePropertyChanged(nameof(OneBasedCurrentIndexAbsolute));*/
+                if (args.PropertyName == nameof(IPlaybackManager.Index))
                     RaisePropertyChanged(nameof(ScrollingTextFormatString)); // Testing: Scrolling Text
-                if (args.PropertyName != nameof(IPlaybackManager.CurrentState)) return;
-                switch (PlaybackManager.CurrentState)
+                switch (PlaybackManager.Player.State)
                 {
-                    case PlaybackState.Stopped:
+                    case AudioPlayerState.Stopped:
                         _tmr.Stop();
-                        PlaybackManager.SendPositionUpdate();
+                        // TODO
+                        //PlaybackManager.SendPositionUpdate();
                         break;
-                    case PlaybackState.Paused:
+                    case AudioPlayerState.Paused:
                         _tmr.Stop();
                         break;
-                    case PlaybackState.Playing:
+                    case AudioPlayerState.Playing:
                         _tmr.Start();
                         break;
                 }
@@ -112,18 +115,12 @@ namespace FTWPlayer.ViewModels
 
             // Load tabs
             Tabs = new ObservableCollection<TabItem>(MainViewModelScope.ResolveMany<ITab>().OrderBy(t => t.Index).Select(t => t.TabObject));
-
-            // TODO: this is testing
-            var plm = MainViewModelScope.Resolve<IPlaylistManager>(); // TODO: remove logic reference
-            if (plm.SelectedPlaylist == null)
-            {
-                if (!plm.LoadedPlaylists.ContainsKey("temp")) plm.CreatePlaylist("temp");
-                plm.SelectedPlaylistId = "temp";
-            }
-
+            
             _settings = MainViewModelScope.Resolve<UISettings>();
-            Volume = _settings.RememberVolume ? _settings.LastVolume : PlaybackManager.Volume;
-            // TODO: this is more testing
+            // TODO
+            //Volume = _settings.RememberVolume ? _settings.LastVolume : PlaybackManager.Player.Volume;
+            // TODO: EQ
+            /*
             PlaybackManager.EqualizerBands.Add(new EqualizerBand { Bandwidth = 1f, Frequency = 31, Gain = 0 });
             PlaybackManager.EqualizerBands.Add(new EqualizerBand { Bandwidth = 1f, Frequency = 62, Gain = 0 });
             PlaybackManager.EqualizerBands.Add(new EqualizerBand { Bandwidth = 1f, Frequency = 125, Gain = 0 });
@@ -134,6 +131,7 @@ namespace FTWPlayer.ViewModels
             PlaybackManager.EqualizerBands.Add(new EqualizerBand { Bandwidth = 1f, Frequency = 4000, Gain = 0 });
             PlaybackManager.EqualizerBands.Add(new EqualizerBand { Bandwidth = 1f, Frequency = 8000, Gain = 0 });
             PlaybackManager.EqualizerBands.Add(new EqualizerBand { Bandwidth = 1f, Frequency = 16000, Gain = 0 });
+            */
 
             // Create key commands
             KeyBindingsManager.Instance.KeyCommands.Add(new KeyCommand
@@ -238,11 +236,12 @@ namespace FTWPlayer.ViewModels
         private readonly DispatcherTimer _tmr;
         private void Tick(object sender, EventArgs e)
         {
-            PlaybackManager.SendPositionUpdate();
+            // TODO
+            //PlaybackManager.SendPositionUpdate();
         }
 
         public IPlaybackManager PlaybackManager { get; }
-        public IPlaylistManager PlaylistManager { get; }
+        public ISubTrackEnumerationManager PlaylistManager { get; }
         public NotifyIconManager NotifyIconManager { get; }
 
         public string AppName => Assembly.GetEntryAssembly().GetAttribute<AssemblyTitleAttribute>().Title;
@@ -253,28 +252,36 @@ namespace FTWPlayer.ViewModels
 
         private void PreviousButtonClick(RoutedEventArgs e)
         {
-            PlaybackManager.Previous();
+            PlaybackManager.Index--;
         }
 
         public ICommand PlayPauseResumeCommand { get; private set; }
 
         private void PlayPauseResumeButtonClick(RoutedEventArgs e)
         {
-            PlaybackManager.PlayPauseResume();
+            switch (PlaybackManager.Player.State)
+            {
+                case AudioPlayerState.Playing:
+                    PlaybackManager.Player.Pause();
+                    break;
+                default:
+                    PlaybackManager.Player.Play();
+                    break;
+            }
         }
 
         public ICommand NextCommand { get; private set; }
 
         private void NextButtonClick(RoutedEventArgs e)
         {
-            PlaybackManager.Next();
+            PlaybackManager.Index++;
         }
 
         public ICommand StopCommand { get; private set; }
 
         private void StopButtonClick(RoutedEventArgs e)
         {
-            PlaybackManager.Stop();
+            PlaybackManager.Player.Stop();
         }
 
         public ICommand MuteCommand { get; private set; }
@@ -315,30 +322,31 @@ namespace FTWPlayer.ViewModels
 
         private bool VolumeChangeCanExecute(string s)
         {
-            return decimal.TryParse(s, out decimal d) && d > 0 && d < 1;
+            return decimal.TryParse(s, out var d) && d > 0 && d < 1;
         }
 
         public ICommand ShuffleCommand { get; private set; }
 
         private void ShuffleButtonClick(RoutedEventArgs e)
         {
-            PlaybackManager.EnableShuffle = !PlaybackManager.EnableShuffle;
+            // TODO: shuffle
+            //PlaybackManager.EnableShuffle = !PlaybackManager.EnableShuffle;
         }
 
         public ICommand RepeatCommand { get; private set; }
 
         private void RepeatButtonClick(RoutedEventArgs e)
         {
-            switch (PlaybackManager.LoopType)
+            switch (PlaybackManager.Behavior)
             {
-                case LoopTypes.None:
-                    PlaybackManager.LoopType = LoopTypes.Single;
+                case PlaybackBehavior.Normal:
+                    PlaybackManager.Behavior = PlaybackBehavior.RepeatTrack;
                     break;
-                case LoopTypes.Single:
-                    PlaybackManager.LoopType = LoopTypes.All;
+                case PlaybackBehavior.RepeatTrack:
+                    PlaybackManager.Behavior = PlaybackBehavior.RepeatList;
                     break;
                 default:
-                    PlaybackManager.LoopType = LoopTypes.None;
+                    PlaybackManager.Behavior = PlaybackBehavior.Normal;
                     break;
             }
         }
@@ -361,7 +369,7 @@ namespace FTWPlayer.ViewModels
 
         private void LeftShiftKeyDown()
         {
-            if (!PlaybackManager.IsSomethingLoaded || Expanded || !Application.Current.MainWindow.IsVisible) return;
+            if (PlaybackManager.NowPlaying == null || Expanded || !Application.Current.MainWindow.IsVisible) return;
             ShiftMode = true;
             AllowDrag = false;
         }
@@ -396,7 +404,7 @@ namespace FTWPlayer.ViewModels
         {
             if (!ShiftMode) return;
             var p = NativeMethods.CorrectGetPosition(bar);
-            PlaybackManager.Position = TimeSpan.FromMilliseconds(PlaybackManager.Duration.TotalMilliseconds / bar.ActualWidth * p.X);
+            PlaybackManager.Player.Position = TimeSpan.FromMilliseconds(PlaybackManager.Player.Duration.TotalMilliseconds / bar.ActualWidth * p.X);
         }
 
         private const string SeekTimeSpanFormat = @"hh\:mm\:ss\.FFF";
@@ -406,8 +414,8 @@ namespace FTWPlayer.ViewModels
 
         private void SeekAdd(string time)
         {
-            PlaybackManager.Position += Regex.IsMatch(time, PercentOfTimeRegex)
-                                            ? TimeSpan.FromMilliseconds(PlaybackManager.Duration.TotalMilliseconds
+            PlaybackManager.Player.Position += Regex.IsMatch(time, PercentOfTimeRegex)
+                                            ? TimeSpan.FromMilliseconds(PlaybackManager.Player.Duration.TotalMilliseconds
                                                                         * (double.Parse(time.TrimEnd('%')) / 100))
                                             : TimeSpan.ParseExact(time, SeekTimeSpanFormat, null);
         }
@@ -416,8 +424,8 @@ namespace FTWPlayer.ViewModels
 
         private void SeekSubtract(string time)
         {
-            PlaybackManager.Position -= Regex.IsMatch(time, PercentOfTimeRegex)
-                                            ? TimeSpan.FromMilliseconds(PlaybackManager.Duration.TotalMilliseconds
+            PlaybackManager.Player.Position -= Regex.IsMatch(time, PercentOfTimeRegex)
+                                            ? TimeSpan.FromMilliseconds(PlaybackManager.Player.Duration.TotalMilliseconds
                                                                         * (double.Parse(time.TrimEnd('%')) / 100))
                                             : TimeSpan.ParseExact(time, SeekTimeSpanFormat, null);
         }
@@ -485,13 +493,14 @@ namespace FTWPlayer.ViewModels
         public double MouseX => CurrentMousePosition.X;
         public double MouseY => CurrentMousePosition.Y;
 
-        public string ScrollingTextFormatString => PlaybackManager.Current != null
+        public string ScrollingTextFormatString => PlaybackManager.NowPlaying != null
                                                        ? _settings.ScrollingTextFormat
                                                        : LocalizationProvider.GetLocalizedValue<string>("WelcomeText");
 
-        public string PositionTextFormatString => PlaybackManager.EnableShuffle ? "{0} ({1}) / {2} > {3} / {4}" : "{0} / {2} > {3} / {4}";
-        public int OneBasedCurrentIndex { get => PlaybackManager.ElementCount > 0 ? PlaybackManager.CurrentIndex + 1 : 0; set => PlaybackManager.JumpTo(value - 1); }
-        public int OneBasedCurrentIndexAbsolute { get => PlaybackManager.ElementCount > 0 ? PlaybackManager.CurrentIndexAbsolute + 1 : 0; set => PlaybackManager.JumpToAbsolute(value - 1); }
+        // TODO: shuffle
+        public string PositionTextFormatString => /*PlaybackManager.EnableShuffle ? "{0} ({1}) / {2} > {3} / {4}" : */"{0} / {2} > {3} / {4}";
+        public int OneBasedCurrentIndex { get => PlaybackManager.List != null && PlaybackManager.List.Count > 0 ? PlaybackManager.Index + 1 : 0; set => PlaybackManager.Index = value - 1; }
+        public int OneBasedCurrentIndexAbsolute { get => PlaybackManager.List != null && PlaybackManager.List.Count > 0 ? PlaybackManager.Index + 1 : 0; set => PlaybackManager.Index = value - 1; }
 
         #region Volume animation hax ++
 
@@ -501,7 +510,8 @@ namespace FTWPlayer.ViewModels
 
         private void VolumePropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
-            ((MainViewModel)obj).PlaybackManager.Volume = (decimal)args.NewValue;
+            // TODO
+            //((MainViewModel)obj).PlaybackManager.Player.Volume = (decimal)args.NewValue;
             if (((MainViewModel)obj).UpdateRememberVolume) _settings.LastVolume = (decimal)args.NewValue;
         }
 
@@ -534,7 +544,7 @@ namespace FTWPlayer.ViewModels
         {
             NotifyIconManager.Dispose();
             // IMPORTANT!
-            //TODO PlaybackManager.Dispose();
+            PlaybackManager.Dispose();
         }
     }
 }

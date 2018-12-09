@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Security;
@@ -24,9 +25,13 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using DryIoc;
+using FuwaTea.Audio.Decoders;
+using FuwaTea.Audio.Files;
+using FuwaTea.Audio.Files.Impl;
+using FuwaTea.Audio.Playback;
 using FuwaTea.Lib;
-using FuwaTea.Playback;
-using FuwaTea.Playlist;
+using FuwaTea.Lib.Collections;
+using FuwaTea.Lib.DataModel;
 using log4net;
 
 namespace FTWPlayer
@@ -46,7 +51,7 @@ namespace FTWPlayer
             clArgs.RemoveAt(0);
             if (clArgs.Count == 0) return null;
             var file = clArgs.Find(s => !s.StartsWith("--"));
-            if (file == default(string)) return null;
+            if (file == default) return null;
             var addOnly = clArgs.Find(s => s.ToLowerInvariant() == "--add") != default(string);
 
             return LoadObject(file, addOnly);
@@ -62,8 +67,10 @@ namespace FTWPlayer
         {
             //TODO: update. this is temporary and WIP // TODO: error callback
             var scope = ((App)Application.Current).MainContainer.OpenScope(nameof(MiscUtils));
-            var plm = scope.Resolve<IPlaylistManager>();
-            var pm = scope.Resolve<IPlaybackManager>();
+            var stem = scope.Resolve<ISubTrackEnumerationManager>();
+            var dm = scope.Resolve<IDecoderManager>();
+            var plm = scope.Resolve<IPlaybackManager>();
+            var pm = scope.Resolve<IProtocolManager>();
             scope.Dispose();
 
             if (Directory.Exists(file))
@@ -83,24 +90,31 @@ namespace FTWPlayer
             }
             else
             {
-                var ext = Path.GetExtension(file).ToLowerInvariant();
-                if (StringUtils.GetExtensions(plm.ReadableFileTypes).Contains(ext))
+                var locationInfo = new FileLocationInfo(new Uri(file));
+                var ext = locationInfo.Extension;
+                var handle = pm.Handle(locationInfo);
+                if (stem.SupportedFormats.Contains(ext))
                 {
-                    if (addOnly)
+                    var impl = stem.FirstCanHandleOrDefault(handle);
+                    var list = impl.Handle(handle).Select(l => impl.Handle(l));
+                    if (plm.List != null && addOnly)
                     {
-                        plm.MergePlaylists(plm.OpenPlaylist(file), plm.SelectedPlaylist);
+                        //plm.MergePlaylists(plm.OpenPlaylist(file), plm.SelectedPlaylist);
+                        plm.List.AddMany(list);
                     }
                     else
                     {
-                        plm.LoadedPlaylists.Add(file, plm.OpenPlaylist(file)); // TODO: handle exceptions
-                        plm.SelectedPlaylistId = file;
+                        // plm.LoadedPlaylists.Add(file, plm.OpenPlaylist(file));
+                        // plm.SelectedPlaylistId = file;
+                        plm.List = new ObservableCollection<IFileHandle>(list);
                         return true;
                     }
                 }
-                else if (pm.GetExtensions().Contains(ext))
+                else if (dm.SupportedFormats.Contains(ext))
                 {
-                    plm.SelectedPlaylist?.Add(file);
-                    if (!addOnly) pm.JumpToAbsolute(pm.ElementCount - 1);
+                    if (plm.List == null) plm.List = new ObservableCollection<IFileHandle>();
+                    plm.List.Add(handle);
+                    if (!addOnly) plm.Index = plm.List.Count - 1;
                 }
                 else
                 {
@@ -108,8 +122,8 @@ namespace FTWPlayer
                 }
             }
 
-            if (pm.CurrentState != PlaybackState.Playing && !addOnly)
-                pm.PlayPauseResume();
+            if (plm.Player.State != AudioPlayerState.Playing && !addOnly)
+                plm.Player.Play();
             
             return true;
 
@@ -163,8 +177,9 @@ namespace FTWPlayer
         public static async void AddFolder(DirectoryInfo dir, bool subfolders, Action<Exception> errorCallback)
         {
             var scope = ((App)Application.Current).MainContainer.OpenScope(nameof(MiscUtils));
-            var plm = scope.Resolve<IPlaylistManager>();
-            var pm = scope.Resolve<IPlaybackManager>();
+            var dm = scope.Resolve<IDecoderManager>();
+            var plm = scope.Resolve<IPlaybackManager>();
+            var pm = scope.Resolve<IProtocolManager>();
             scope.Dispose();
             var dispatcher = Dispatcher.CurrentDispatcher;
             await Task.Run(() =>
@@ -172,15 +187,19 @@ namespace FTWPlayer
                 IEnumerable<string> stuff;
                 if (subfolders)
                     stuff = from f in dir.EnumerateFilesEx()
-                            where pm.GetExtensions().Contains(f.Extension)
+                            where dm.SupportedFormats.Contains(f.Extension)
                             select f.FullName;
                 else
                     stuff = from f in dir.GetFiles()
-                            where pm.GetExtensions().Contains(f.Extension)
+                            where dm.SupportedFormats.Contains(f.Extension)
                             select f.FullName;
                 foreach (var s in stuff)
                 {
-                    try { dispatcher.InvokeAsync(() => plm.SelectedPlaylist?.Add(s), DispatcherPriority.Background); }
+                    // TODO: Handle SubTracks here
+                    var locationInfo = new FileLocationInfo(new Uri(s));
+                    var ext = locationInfo.Extension;
+                    var handle = pm.Handle(locationInfo);
+                    try { dispatcher.InvokeAsync(() => plm.List.Add(handle), DispatcherPriority.Background); }
                     catch (Exception e)
                     {
                         errorCallback(e);

@@ -12,7 +12,6 @@ namespace FuwaTea.Audio.Playback.CSCore
         {
             var so = new global::CSCore.SoundOut.WaveOut(Config.DesiredLatency)
             {
-                Volume = Config.MasterVolume,
                 UseChannelMixingMatrices = Config.UseChannelMixingMatrices
             };
             var dev = WaveOutDevice.EnumerateDevices().FirstOrDefault(d => d.DeviceId == Config.Device);

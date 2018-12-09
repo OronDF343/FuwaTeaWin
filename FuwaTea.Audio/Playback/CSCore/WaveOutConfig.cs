@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.Linq;
 using CSCore.SoundOut;
+using DryIocAttributes;
 using FuwaTea.Config;
 using Newtonsoft.Json;
 
 namespace FuwaTea.Audio.Playback.CSCore
 {
-    [ConfigPage(nameof(WaveOut))]
+    [ConfigPage(nameof(WaveOut)), Export, Reuse(ReuseType.Singleton)]
     public class WaveOutConfig : CSCoreApiConfigBase
     {
         [JsonIgnore]

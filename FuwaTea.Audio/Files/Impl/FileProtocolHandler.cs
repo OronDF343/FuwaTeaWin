@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using DryIocAttributes;
 
 namespace FuwaTea.Audio.Files.Impl
@@ -12,7 +13,7 @@ namespace FuwaTea.Audio.Files.Impl
         public IEnumerable<string> SupportedFormats => new[] { FileProtocolString };
         public bool CanHandle(IFileLocationInfo ti)
         {
-            return string.Equals(ti.Protocol, FileProtocolString, StringComparison.OrdinalIgnoreCase);
+            return File.Exists(ti.LocalPath);
         }
 
         public IFileHandle Handle(IFileLocationInfo ti) => new StandardFileHandle(ti);

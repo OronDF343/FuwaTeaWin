@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -7,8 +9,11 @@ using System.Windows.Input;
 using DryIocAttributes;
 using FTWPlayer.Localization;
 using FTWPlayer.Views;
+using FuwaTea.Audio.Decoders;
+using FuwaTea.Audio.Files;
+using FuwaTea.Audio.Playback;
 using FuwaTea.Lib;
-using FuwaTea.Playlist;
+using FuwaTea.Lib.DataModel;
 using GalaSoft.MvvmLight.CommandWpf;
 using Microsoft.Win32;
 
@@ -18,25 +23,29 @@ namespace FTWPlayer.ViewModels
     [Reuse(ReuseType.Singleton)]
     public class LibraryViewModel : ITab
     {
-        
-        public LibraryViewModel([Import] IPlaylistManager playlistManager)
+        private readonly IProtocolManager _pm;
+
+        public LibraryViewModel([Import] IProtocolManager pm, [Import] ISubTrackEnumerationManager stem, [Import] IPlaybackManager playbackManager)
         {
+            _pm = pm;
             TabObject = new LibraryView(this);
-            PlaylistManager = playlistManager;
+            PlaylistManager = stem;
+            PlaybackManager = playbackManager;
             OpenPlaylistCommand = new RelayCommand<RoutedEventArgs>(OpenPlaylist);
             SavePlaylistCommand = new RelayCommand<RoutedEventArgs>(SavePlaylist);
             SaveAsCommand = new RelayCommand<RoutedEventArgs>(SaveAs);
         }
         public TabItem TabObject { get; }
         public decimal Index => 2;
-        public IPlaylistManager PlaylistManager { get; }
+        public ISubTrackEnumerationManager PlaylistManager { get; }
+        public IPlaybackManager PlaybackManager { get; }
 
         private string OpenFileFilter => LocalizationProvider.GetLocalizedValue<string>("AllSupportedPlaylists")
-                                         + "|*" + string.Join(";*", StringUtils.GetExtensions(PlaylistManager.ReadableFileTypes));
-        // TODO: group them?
-        private string SaveFileFilter => string.Join("|", from w in StringUtils.GetExtensionsInfo(PlaylistManager.WriteableFileTypes)
-                                                          let x = "*." + w.Key
-                                                          select $"{string.Format(LocalizationProvider.GetLocalizedValue<string>("FileTypeFormatString"), w.Value, x)}|{x}");
+                                         + "|*" + string.Join(";*.", PlaylistManager.SupportedFormats);
+        // TODO: Playlist saving
+        private string SaveFileFilter => string.Join("|", from w in PlaylistManager.SupportedFormats
+                                                          let x = "*." + w
+                                                          select $"{string.Format(LocalizationProvider.GetLocalizedValue<string>("FileTypeFormatString"), w.ToUpperInvariant(), x)}|{x}");
 
         public ICommand OpenPlaylistCommand { get; set; }
 
@@ -46,18 +55,19 @@ namespace FTWPlayer.ViewModels
             if (_ofd == null)
                 _ofd = new OpenFileDialog { Filter = OpenFileFilter, Title = "Open Playlist" };
             if (_ofd.ShowDialog(Application.Current.MainWindow) != true) return;
-            if (!PlaylistManager.LoadedPlaylists.ContainsKey(_ofd.FileName))
-                PlaylistManager.LoadedPlaylists.Add(_ofd.FileName, PlaylistManager.OpenPlaylist(_ofd.FileName));
-            PlaylistManager.SelectedPlaylistId = _ofd.FileName;
+            var h = _pm.Handle(new FileLocationInfo(new Uri(_ofd.FileName)));
+            var pr = PlaylistManager.FirstCanHandleOrDefault(h);
+            PlaybackManager.List = new ObservableCollection<IFileHandle>(pr.Handle(h).Select(t => pr.Handle(t)));
         }
 
         public ICommand SavePlaylistCommand { get; set; }
 
         private void SavePlaylist(RoutedEventArgs e)
         {
-            if (!File.Exists(PlaylistManager.SelectedPlaylist?.FileLocation))
+            // TODO: Save playlist
+            /*if (!File.Exists(PlaybackManager.SelectedPlaylist?.FileLocation))
                 SaveAs(e);
-            else PlaylistManager.Save(PlaylistManager.SelectedPlaylist);
+            else PlaybackManager.Save(PlaybackManager.SelectedPlaylist);*/
         }
 
         public ICommand SaveAsCommand { get; set; }
@@ -65,11 +75,12 @@ namespace FTWPlayer.ViewModels
         private SaveFileDialog _sfd;
         private void SaveAs(RoutedEventArgs e)
         {
+            
             if (_sfd == null)
                 _sfd = new SaveFileDialog { Filter = SaveFileFilter, Title = "Save Playlist As..." };
-            if (_sfd.ShowDialog(Application.Current.MainWindow) != true) return;
-            // TODO: ID of playlist should change?
-            PlaylistManager.SaveTo(PlaylistManager.SelectedPlaylist, _sfd.FileName);
+            // TODO: Save playlist
+            /*if (_sfd.ShowDialog(Application.Current.MainWindow) != true) return;
+            PlaybackManager.SaveTo(PlaybackManager.SelectedPlaylist, _sfd.FileName);*/
         }
     }
 }

@@ -15,7 +15,7 @@ namespace FuwaTea.Audio.Files.Impl
         }
 
         public string Protocol => _fli.Protocol;
-        public string AbsolutePath => _fli.AbsolutePath;
+        public string LocalPath => _fli.LocalPath;
         public string Extension => _fli.Extension;
         public string Fragment => _fli.Extension;
         public Uri Uri => _fli.Uri;

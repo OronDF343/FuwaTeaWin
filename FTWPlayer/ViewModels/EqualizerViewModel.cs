@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using DryIocAttributes;
 using FTWPlayer.Views;
-using FuwaTea.Playback;
+using FuwaTea.Audio.Playback;
 using GalaSoft.MvvmLight.CommandWpf;
 
 namespace FTWPlayer.ViewModels
@@ -33,11 +33,11 @@ namespace FTWPlayer.ViewModels
 
         private void ResetEq(RoutedEventArgs e)
         {
-            // TODO: EqualizerManager
-            foreach (var band in PlaybackManager.EqualizerBands)
+            // TODO: Reset EQ
+            /*foreach (var band in PlaybackManager.EqualizerBands)
             {
                 band.Gain = 0;
-            }
+            }*/
         }
     }
 }

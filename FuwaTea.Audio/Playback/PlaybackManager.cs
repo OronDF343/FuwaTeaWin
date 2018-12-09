@@ -15,21 +15,17 @@ namespace FuwaTea.Audio.Playback
     [Reuse(ReuseType.Singleton)]
     public class PlaybackManager : IPlaybackManager
     {
-        public PlaybackManager([Import] IDecoderManager decoderManager)
+        public PlaybackManager([Import] IDecoderManager decoderManager, [Import] IAudioPlayer player)
         {
             _decoderManager = decoderManager;
+            Player = player;
         }
 
         private int _index;
         private IAudioPlayer _player;
         private ObservableCollection<IFileHandle> _list;
         private readonly IDecoderManager _decoderManager;
-
-        public void Dispose()
-        {
-            
-        }
-
+        
         public void Reload()
         {
             if (BehaviorOnLoadOverrideOnce == null)
@@ -47,6 +43,7 @@ namespace FuwaTea.Audio.Playback
             get => _player;
             set
             {
+                if (ReferenceEquals(_player, value)) return;
                 if (_player != null) _player.StateChanged -= PlayerOnStateChanged;
                 _player = value;
                 if (_player != null) _player.StateChanged += PlayerOnStateChanged;
@@ -70,16 +67,13 @@ namespace FuwaTea.Audio.Playback
         }
 
         [CanBeNull]
-        public IFileHandle NowPlaying => List.Count > 0 ? List[Index] : null;
+        public IFileHandle NowPlaying =>  List != null && List.Count > 0 ? List[Index] : null;
         public int Index
         {
             get => _index;
             set
             {
-                if (_index == value) return;
-                _index = value;
-                OnPropertyChanged();
-                Reload();
+                if (SneakyUpdateIndex(value)) Reload();
             }
         }
         public bool AllowUnload { get; set; }
@@ -105,12 +99,13 @@ namespace FuwaTea.Audio.Playback
         }
 
         /* From here on: The logic */
-
-        private void SneakyUpdateIndex(int i)
+        
+        private bool SneakyUpdateIndex(int i)
         {
-            if (_index == i) return;
+            if (_index == i) return false;
             _index = i;
             OnPropertyChanged(nameof(Index));
+            return true;
         }
 
         private void ForceReset(int i = 0)
@@ -124,6 +119,7 @@ namespace FuwaTea.Audio.Playback
         private void Load()
         {
             // TODO: Where to handle effects? SampleSource vs WaveSource? Where to handle errors?
+            Player?.Unload();
             if (NowPlaying == null) return;
             Player?.Load(_decoderManager.Handle(NowPlaying).ToWaveSource());
         }
@@ -150,15 +146,15 @@ namespace FuwaTea.Audio.Playback
                 Player?.Play();
                 return;
             }
-            SneakyUpdateIndex((Index + 1) % List.Count);
-            Load();
+            if (SneakyUpdateIndex((Index + 1) % List.Count))
+                Load();
         }
 
         private void PlayerOnStateChanged(object sender, AudioPlayerStateChangedEventArgs args)
         {
             /* Possible transitions and actions:
              * NotReady, Automatic - We need to reload the file due to API configuration changes. Equivalent to switching players. => Reload
-             * NotReady, Manual - Unload() was called. Not sure why this would happen, but leave it be. => if [AllowUnload] then nop; else Reload
+             * NotReady, Manual - Unload() was called. This is intentional => nop
              * NotReady, Error - Failed to load the file. Notify the user and move to the next one. => Error, FileEnd
              * Loaded, Automatic - Should not happen; Warn. => Warn
              * Loaded, Manual - File loaded. => if [CheckBehavior()] then Play; else nop
@@ -182,7 +178,6 @@ namespace FuwaTea.Audio.Playback
                             Reload();
                             break;
                         case TransitionInitiator.Manual:
-                            if (!AllowUnload) Reload();
                             break;
                         case TransitionInitiator.Error:
                             OnError(new PlaybackErrorEventArgs(args.ErrorInfo));
@@ -283,10 +278,12 @@ namespace FuwaTea.Audio.Playback
             {
                 case NotifyCollectionChangedAction.Add:
                     // Handle Insert as well
-                    // If the change is beyond us, or the list used to be empty, ignore the change
-                    if (e.NewStartingIndex > Index || List.Count == e.NewItems.Count) return;
+                    // If the change is beyond us, ignore the change
+                    if (e.NewStartingIndex > Index) return;
+                    // If the list used to be empty, load the first item
+                    if (List.Count == e.NewItems.Count) Reload();
                     // Otherwise, correct our index quietly
-                    SneakyUpdateIndex(Index + e.NewItems.Count);
+                    else SneakyUpdateIndex(Index + e.NewItems.Count);
                     break;
                 case NotifyCollectionChangedAction.Move:
                     // First case: Items moved all from after our index
@@ -305,7 +302,7 @@ namespace FuwaTea.Audio.Playback
                         // If the moved items overlap or are beyond our old index, correct our index quietly backwards
                         SneakyUpdateIndex(Index - e.NewItems.Count);
                     }
-                    // Final case: We are one of the moves items
+                    // Final case: We are one of the moved items
                     else
                     {
                         // First get our index within NewItems
@@ -334,6 +331,11 @@ namespace FuwaTea.Audio.Playback
                     ForceReset();
                     break;
             }
+        }
+
+        public void Dispose()
+        {
+            _player?.Dispose();
         }
     }
 }

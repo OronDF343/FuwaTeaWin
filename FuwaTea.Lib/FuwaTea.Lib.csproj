@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\PropertyChanged.Fody.2.6.0\build\PropertyChanged.Fody.props" Condition="Exists('..\packages\PropertyChanged.Fody.2.6.0\build\PropertyChanged.Fody.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -12,6 +13,8 @@
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,6 +45,12 @@
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PropertyChanged, Version=2.6.0.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
+      <HintPath>..\packages\PropertyChanged.Fody.2.6.0\lib\net452\PropertyChanged.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
@@ -54,10 +63,13 @@
   <ItemGroup>
     <Compile Include="AppDirUtils.cs" />
     <Compile Include="Collections\ObservableHashSet.cs" />
+    <Compile Include="DataModel\ExtensionMethods.cs" />
     <Compile Include="DataModel\ICanHandle.cs" />
     <Compile Include="DataModel\IImplementationPriorityManager.cs" />
+    <Compile Include="DataModel\IImplementationSelector.cs" />
     <Compile Include="DataModel\IKeyedElement.cs" />
     <Compile Include="DataModel\ImplementationPriorityManagerBase.cs" />
+    <Compile Include="DataModel\ImplementationSelectorBase.cs" />
     <Compile Include="DataModel\ISupportFormats.cs" />
     <Compile Include="DataModel\SugoiObject.cs" />
     <Compile Include="EnumUtils.cs" />
@@ -71,7 +83,9 @@
     <Compile Include="FileAssociations\AppRegistryClasses.cs" />
     <Compile Include="FileAssociations\RegistryClass.cs" />
     <Compile Include="FileAssociations\RegistryUtils.cs" />
-    <Compile Include="IFileHandler.cs" />
+    <Compile Include="FormatUtils\FormatParser.cs" />
+    <Compile Include="FormatUtils\FormatSegment.cs" />
+    <Compile Include="FormatUtils\FormatStructure.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="NotifyIcon\INotificationCB.cs" />
     <Compile Include="NotifyIcon\InteropUtils.cs" />
@@ -86,6 +100,10 @@
     <Compile Include="StringUtils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FuwaTea.Config\FuwaTea.Config.csproj">
+      <Project>{8FCC92DC-2982-4017-8944-C50571F40A33}</Project>
+      <Name>FuwaTea.Config</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FuwaTea.Extensibility\FuwaTea.Extensibility.csproj">
       <Project>{e4773a23-838d-40ad-8466-58fdb07237e0}</Project>
       <Name>FuwaTea.Extensibility</Name>
@@ -94,7 +112,18 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="FodyWeavers.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Fody.3.3.3\build\Fody.targets" Condition="Exists('..\packages\Fody.3.3.3\build\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Fody.3.3.3\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.3.3.3\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\PropertyChanged.Fody.2.6.0\build\PropertyChanged.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PropertyChanged.Fody.2.6.0\build\PropertyChanged.Fody.props'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -28,7 +28,6 @@ namespace FuwaTea.Audio.Playback.CSCore
         protected virtual void CreateSoundOutWrapper()
         {
             SoundOut = CreateSoundOut();
-            SoundOut.Volume = Config.MasterVolume;
             SoundOut.Stopped += SoundOutOnStopped;
         }
 
@@ -37,11 +36,13 @@ namespace FuwaTea.Audio.Playback.CSCore
             if (args.HasError) OnPlaybackError(new PlaybackErrorEventArgs(args.Exception));
             else OnPlaybackFinished();
         }
-
+        
+        [SuppressMessage("ReSharper", "EmptyGeneralCatchClause", Justification = "There is no way to know easily if the output is already initialized")]
         protected virtual void ConfigOnPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
             if (args.PropertyName == nameof(CSCoreApiConfigBase.MasterVolume))
-                SoundOut.Volume = Config.MasterVolume;
+                try { SoundOut.Volume = Config.MasterVolume; }
+                catch { }
             else
             {
                 Unload();
@@ -54,6 +55,7 @@ namespace FuwaTea.Audio.Playback.CSCore
             // TODO IMPORTANT: Do we need to always unload first like with NAudio?
             WavSrc = dec;
             SoundOut.Initialize(WavSrc);
+            SoundOut.Volume = Config.MasterVolume;
         }
 
         public virtual bool CanResume => true;

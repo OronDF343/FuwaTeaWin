@@ -18,7 +18,7 @@ namespace FuwaTea.Lib.DataModel
         IReadOnlyCollection<TInterface> this[[NotNull] string format] { get; }
         IReadOnlyCollection<TInterface> GetImplementations([NotNull] TInput ti);
         IReadOnlyCollection<TInterface> this[[NotNull] TInput ti] { get; }
-
+        
         // Ascending sort!
         void ConfigurePriority([NotNull] string format, Func<TInterface, int> priorityFunc);
         void ConfigurePriority([NotNull] string format, Comparison<TInterface> compareFunc);
@@ -26,10 +26,9 @@ namespace FuwaTea.Lib.DataModel
         string FormatOf(TInput ti);
     }
 
+    /// <inheritdoc />
     /// <summary>
     /// Shorthand version that handles basic ICanHandle&lt;TInput, TOutput&gt; interfaces.
     /// </summary>
-    /// <typeparam name="TInput"></typeparam>
-    /// <typeparam name="TOutput"></typeparam>
-    public interface IImplementationPriorityManager<TInput, TOutput> : IImplementationPriorityManager<ICanHandle<TInput, TOutput>, TInput, TOutput> { }
+    public interface IImplementationPriorityManager<in TInput, out TOutput> : IImplementationPriorityManager<ICanHandle<TInput, TOutput>, TInput, TOutput> { }
 }

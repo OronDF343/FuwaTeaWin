@@ -1,21 +1,56 @@
 ﻿using System;
+using System.ComponentModel;
+using System.ComponentModel.Composition;
 using CSCore;
 using DryIocAttributes;
+using JetBrains.Annotations;
 
 namespace FuwaTea.Audio.Playback
 {
     [Reuse(ReuseType.Transient)]
     public class ApiBasedAudioPlayer : IAudioPlayer
     {
-        protected readonly IAudioApi Api;
-
-        // TODO IMPORTANT ++: Config for which API to use!
-        public ApiBasedAudioPlayer(IAudioApi api)
+        protected readonly ApiSelector ApiSelector;
+        private IAudioApi _api;
+        
+        public ApiBasedAudioPlayer([Import] ApiSelector apiSelector)
         {
-            Api = api;
-            Api.Reinitialized += ApiOnReinitialized;
-            Api.PlaybackError += ApiOnPlaybackError;
-            Api.PlaybackFinished += ApiOnPlaybackFinished;
+            ApiSelector = apiSelector;
+            ApiSelector.PropertyChanged += ApiSelectorOnPropertyChanged;
+            Api = ApiSelector.SelectedImplementation;
+        }
+
+        protected virtual void ApiSelectorOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (!e.PropertyName.Equals(nameof(ApiSelector.SelectedImplementation))) return;
+            Api = ApiSelector.SelectedImplementation;
+        }
+
+        [NotNull]
+        protected IAudioApi Api
+        {
+            get => _api;
+            private set => ChangeApi(value);
+        }
+
+        private void ChangeApi(IAudioApi value)
+        {
+            if (ReferenceEquals(_api, value)) return;
+            if (_api != null)
+            {
+                Reset();
+                _api.Reinitialized -= ApiOnReinitialized;
+                _api.PlaybackFinished -= ApiOnPlaybackFinished;
+                _api.PlaybackError -= ApiOnPlaybackError;
+                _api.Dispose();
+            }
+            _api = value;
+            if (_api != null)
+            {
+                _api.Reinitialized += ApiOnReinitialized;
+                _api.PlaybackFinished += ApiOnPlaybackFinished;
+                _api.PlaybackError += ApiOnPlaybackError;
+            }
         }
 
         protected virtual void ApiOnReinitialized(object sender, EventArgs eventArgs)

@@ -3,7 +3,7 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:fuwa="https://github.com/OronDF343/FuwaTeaWin"
                     xmlns:lex="http://wpflocalizeextension.codeplex.com"
-                    xmlns:playback="clr-namespace:FuwaTea.Playback;assembly=FuwaTea.Playback">
+                    xmlns:playback="clr-namespace:FuwaTea.Audio.Playback;assembly=FuwaTea.Audio">
     <!-- Constants -->
     <sys:Boolean x:Key="True">True</sys:Boolean>
     <sys:Boolean x:Key="False">False</sys:Boolean>
@@ -31,9 +31,9 @@
         <StaticResource ResourceKey="ShuffleOn"/>
     </fuwa:StateCollection>
     <!-- Repeat States -->
-    <fuwa:State x:Key="RepeatOff" StateName="RepeatOff" Value="{x:Static playback:LoopTypes.None}" Tag="{lex:Loc RepeatOffToolTip}"/>
-    <fuwa:State x:Key="RepeatSingle" StateName="RepeatSingle" Value="{x:Static playback:LoopTypes.Single}" Tag="{lex:Loc RepeatSingleToolTip}"/>
-    <fuwa:State x:Key="RepeatAll" StateName="RepeatAll" Value="{x:Static playback:LoopTypes.All}" Tag="{lex:Loc RepeatAllToolTip}"/>
+    <fuwa:State x:Key="RepeatOff" StateName="RepeatOff" Value="{x:Static playback:PlaybackBehavior.Normal}" Tag="{lex:Loc RepeatOffToolTip}"/>
+    <fuwa:State x:Key="RepeatSingle" StateName="RepeatSingle" Value="{x:Static playback:PlaybackBehavior.RepeatTrack}" Tag="{lex:Loc RepeatSingleToolTip}"/>
+    <fuwa:State x:Key="RepeatAll" StateName="RepeatAll" Value="{x:Static playback:PlaybackBehavior.RepeatList}" Tag="{lex:Loc RepeatAllToolTip}"/>
     <fuwa:StateCollection x:Key="RepeatStates">
         <StaticResource ResourceKey="RepeatOff"/>
         <StaticResource ResourceKey="RepeatSingle"/>

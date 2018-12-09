@@ -9,11 +9,8 @@ namespace FuwaTea.Audio.Playback.CSCore
 
         protected override DirectSoundOut CreateSoundOut()
         {
-            var so = new DirectSoundOut(Config.DesiredLatency, Config.PlaybackThreadPriority)
-            {
-                Volume = Config.MasterVolume,
-                Device = Config.Device 
-            };
+            var so = new DirectSoundOut(Config.DesiredLatency, Config.PlaybackThreadPriority);
+            so.Device = Config.Device;
             return so;
         }
     }

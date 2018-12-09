@@ -51,7 +51,7 @@ namespace FuwaTea.Lib.DataModel
                 if (!Equals(to, default(TOutput))) return to;
             }
 
-            return default(TOutput);
+            return default;
         }
 
         protected Dictionary<string, List<TInterface>> ImplementationDictionary { get; } = new Dictionary<string, List<TInterface>>();
@@ -74,7 +74,7 @@ namespace FuwaTea.Lib.DataModel
         public virtual IReadOnlyCollection<TInterface> GetImplementations(TInput ti) => GetImplementations(FormatOf(ti));
 
         public IReadOnlyCollection<TInterface> this[TInput ti] => GetImplementations(ti);
-
+        
         public void ConfigurePriority(string format, Func<TInterface, int> priorityFunc)
         {
             ConfigurePriority(format, (ti1, ti2) => priorityFunc(ti1).CompareTo(priorityFunc(ti2)));

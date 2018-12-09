@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using CSCore.DirectSound;
+using DryIocAttributes;
 using FuwaTea.Config;
 using Newtonsoft.Json;
 
 namespace FuwaTea.Audio.Playback.CSCore
 {
-    [ConfigPage(nameof(DirectSound))]
+    [ConfigPage(nameof(DirectSound)), Export, Reuse(ReuseType.Singleton)]
     public class DirectSoundConfig : CSCoreApiConfigBase
     {
         [JsonIgnore]

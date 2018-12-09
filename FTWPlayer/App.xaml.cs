@@ -33,12 +33,11 @@ using System.Windows.Interop;
 using DryIoc;
 using FTWPlayer.Localization;
 using FTWPlayer.Skins;
+using FuwaTea.Audio.Decoders;
 using FuwaTea.Config;
 using FuwaTea.Extensibility;
 using FuwaTea.Lib;
 using FuwaTea.Lib.FileAssociations;
-using FuwaTea.Playback;
-using FuwaTea.Playlist;
 using FuwaTea.Wpf.Behaviors;
 using FuwaTea.Wpf.Helpers;
 using FuwaTea.Wpf.Keyboard;
@@ -284,9 +283,15 @@ namespace FTWPlayer
                 Logger.Info("Detected argument: Setup File Associations");
                 LoadModules();
                 var l = Assembly.GetExecutingAssembly().Location;
-                var pm = AppScope.Resolve<IPlaybackManager>();
-                var plm = AppScope.Resolve<IPlaylistManager>();
-                var supported = pm.GetExtensionsInfo().Union(StringUtils.GetExtensionsInfo(plm.ReadableFileTypes)).ToDictionary(p => p.Key, p => p.Value);
+                var dm = AppScope.Resolve<IDecoderManager>();
+                var stem = AppScope.Resolve<ISubTrackEnumerationManager>();
+                //var supported = pm.GetExtensionsInfo().Union(StringUtils.GetExtensionsInfo(plm.ReadableFileTypes)).ToDictionary(p => p.Key, p => p.Value);
+                // TODO: Localize descriptions
+                var supported = dm.SupportedFormats.ToDictionary(s => s, s => s.ToUpperInvariant() + " audio file");
+                foreach (var format in stem.SupportedFormats)
+                {
+                    supported.Add(format, format.ToUpperInvariant() + " container file");
+                }
                 try
                 {
                     RegistryUtils.UpdateFuwaAssociations(supported, l, _prod,
@@ -652,7 +657,7 @@ namespace FTWPlayer
 
         private void Dispose(bool disposing)
         {
-            if (!disposing || (_mutex == null)) return;
+            if (!disposing || _mutex == null) return;
             _mutex.ReleaseMutex();
             _mutex.Close();
             _mutex = null;
