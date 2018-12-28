@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -16,7 +15,7 @@ using KeyBinding = FuwaTea.Wpf.Keyboard.KeyBinding;
 namespace FTWPlayer
 {
     // TODO IMPORTANT: Reset setting to default!
-    [ConfigPage(nameof(UISettings)), Export]
+    [ConfigPage(nameof(UISettings))]
     [Reuse(ReuseType.Singleton)]
     public class UISettings : IConfigPage
     {

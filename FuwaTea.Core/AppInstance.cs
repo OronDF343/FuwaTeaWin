@@ -10,11 +10,12 @@ using Serilog.Sinks.RollingFileAlternate;
 
 namespace FuwaTea.Core
 {
-    public class AppInstance
+    public sealed class AppInstance
     {
         public IReadOnlyList<string> Args { get; }
         public bool IsInstalled { get; private set; }
         public ExtensibilityContainer ExtensibilityContainer { get; private set; }
+        public IPlatformSupport PlatformSupport { get; private set; }
 
         public event UnhandledExceptionEventHandler UnhandledException;
 
@@ -46,7 +47,8 @@ namespace FuwaTea.Core
             Log.Information("AppInstance has started. Hello, world!");
         }
 
-        protected virtual void OnUnhandledException(UnhandledExceptionEventArgs e)
+        // If we remove sealed: protected virtual
+        private void OnUnhandledException(UnhandledExceptionEventArgs e)
         {
             UnhandledException?.Invoke(this, e);
         }
@@ -58,7 +60,9 @@ namespace FuwaTea.Core
         public bool Init()
         {
             Log.Debug("Main initialization started");
-            // Process 
+            // Resolve platform support
+
+            // Process command-line arguments
             if (!ProcessClArgs()) return false;
 
             return true;

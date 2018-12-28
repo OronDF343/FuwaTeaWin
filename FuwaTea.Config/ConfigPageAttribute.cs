@@ -1,16 +1,17 @@
 ﻿using System.ComponentModel.Composition;
+using DryIocAttributes;
 using JetBrains.Annotations;
 
 namespace FuwaTea.Config
 {
     [BaseTypeRequired(typeof(IConfigPage))]
     [MetadataAttribute]
-    public class ConfigPageAttribute : ExportAttribute, IConfigPageMetadata
+    public class ConfigPageAttribute : ExportManyAttribute, IConfigPageMetadata
     {
         public ConfigPageAttribute(string key)
-            : base(key, typeof(IConfigPage))
         {
             Key = key;
+            ContractKey = Key;
         }
 
         public string Key { get; }

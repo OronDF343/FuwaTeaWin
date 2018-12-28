@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using CSCore.CoreAudioAPI;
@@ -10,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace FuwaTea.Audio.Playback.CSCore
 {
-    [ConfigPage(nameof(Wasapi)), Export, Reuse(ReuseType.Singleton)]
+    [ConfigPage(nameof(Wasapi)), Reuse(ReuseType.Singleton)]
     public class WasapiConfig : CSCoreApiConfigBase
     {
         [JsonIgnore]

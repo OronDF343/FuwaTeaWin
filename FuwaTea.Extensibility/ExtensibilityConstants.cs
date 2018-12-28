@@ -11,11 +11,5 @@ namespace FuwaTea.Extensibility
         // API versions to never allow loading (even manually!)
         public static readonly int[] ApiVersionBlacklist = { 0 };
         public const string AutoInitKey = "autoinit";
-
-        public static bool CheckApiVersion(int ver, bool overrideWhitelist = false)
-        {
-            return ApiVersionWhitelist.Contains(ver)
-                   || overrideWhitelist && ver <= CurrentApiVersion && !ApiVersionBlacklist.Contains(ver);
-        }
     }
 }
