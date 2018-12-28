@@ -12,7 +12,6 @@ using GalaSoft.MvvmLight.CommandWpf;
 namespace FTWPlayer.ViewModels.SettingsViewModels
 {
     //[UIPart("Key Bindings settings tab")]
-    [Reuse(ReuseType.Singleton)]
     public class KeyBindingsViewModel : ISettingsTab
     {
         public KeyBindingsViewModel([Import] UISettings settings)

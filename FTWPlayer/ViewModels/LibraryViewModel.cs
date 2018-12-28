@@ -20,7 +20,6 @@ using Microsoft.Win32;
 namespace FTWPlayer.ViewModels
 {
     //[UIPart("Library Tab")]
-    [Reuse(ReuseType.Singleton)]
     public class LibraryViewModel : ITab
     {
         private readonly IProtocolManager _pm;

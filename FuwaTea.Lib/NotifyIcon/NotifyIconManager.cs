@@ -10,7 +10,6 @@ namespace FuwaTea.Lib.NotifyIcon
 {
     // Based on https://hianz.wordpress.com/2013/09/03/new-windows-tray-notification-manager-is-here/
     [Export]
-    [Reuse(ReuseType.Singleton)]
     public class NotifyIconManager : IDisposable
     {
         private readonly ITrayManager _trayManager;

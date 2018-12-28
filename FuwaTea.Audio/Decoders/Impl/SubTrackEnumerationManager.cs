@@ -8,7 +8,6 @@ using FuwaTea.Lib.DataModel;
 
 namespace FuwaTea.Audio.Decoders.Impl
 {
-    [Reuse(ReuseType.Singleton)]
     public class SubTrackEnumerationManager : ImplementationPriorityManagerBase<ISubTrackEnumerator, IFileHandle, IEnumerable<ISubTrackInfo>>, ISubTrackEnumerationManager
     {
         public SubTrackEnumerationManager([ImportMany] IList<ISubTrackEnumerator> implementations)

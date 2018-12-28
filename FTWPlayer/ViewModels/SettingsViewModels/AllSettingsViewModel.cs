@@ -7,7 +7,6 @@ using FTWPlayer.Views.SettingsViews;
 namespace FTWPlayer.ViewModels.SettingsViewModels
 {
     //[UIPart("All Settings Tab")]
-    [Reuse(ReuseType.Singleton)]
     public class AllSettingsViewModel : ISettingsTab
     {
         public TabItem GetTabItem()

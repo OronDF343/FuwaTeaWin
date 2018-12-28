@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace FuwaTea.Audio.Playback.CSCore
 {
-    [ConfigPage(nameof(DirectSound)), Reuse(ReuseType.Singleton)]
+    [ConfigPage(nameof(DirectSound))]
     public class DirectSoundConfig : CSCoreApiConfigBase
     {
         [JsonIgnore]

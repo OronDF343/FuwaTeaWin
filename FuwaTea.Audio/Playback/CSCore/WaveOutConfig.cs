@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace FuwaTea.Audio.Playback.CSCore
 {
-    [ConfigPage(nameof(WaveOut)), Reuse(ReuseType.Singleton)]
+    [ConfigPage(nameof(WaveOut))]
     public class WaveOutConfig : CSCoreApiConfigBase
     {
         [JsonIgnore]

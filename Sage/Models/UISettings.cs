@@ -11,7 +11,6 @@ namespace Sage.Models
 {
     // TODO IMPORTANT: Reset setting to default!
     [ConfigPage(nameof(UISettings))]
-    [Reuse(ReuseType.Singleton)]
     public class UISettings : IConfigPage
     {
         [JsonIgnore]

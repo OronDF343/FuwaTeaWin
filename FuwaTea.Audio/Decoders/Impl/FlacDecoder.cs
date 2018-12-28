@@ -11,7 +11,6 @@ using File = TagLib.File;
 
 namespace FuwaTea.Audio.Decoders.Impl
 {
-    [Reuse(ReuseType.Singleton)]
     public class FlacDecoder : ITrackDecoder
     {
         public IEnumerable<string> SupportedFormats => new[] { "flac" };

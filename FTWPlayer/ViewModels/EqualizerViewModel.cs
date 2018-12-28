@@ -10,7 +10,6 @@ using GalaSoft.MvvmLight.CommandWpf;
 namespace FTWPlayer.ViewModels
 {
     //[UIPart("Equalizer Tab")]
-    [Reuse(ReuseType.Singleton)]
     public class EqualizerViewModel : ITab
     {
         

@@ -11,7 +11,6 @@ using File = TagLib.File;
 
 namespace FuwaTea.Audio.Decoders.Impl
 {
-    [Reuse(ReuseType.Singleton)]
     public class AiffDecoder : ITrackDecoder
     {
         public void UpdateMetadata(IFileHandle file)

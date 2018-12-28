@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace FuwaTea.Audio.Playback.CSCore
 {
-    [ConfigPage(nameof(Wasapi)), Reuse(ReuseType.Singleton)]
+    [ConfigPage(nameof(Wasapi))]
     public class WasapiConfig : CSCoreApiConfigBase
     {
         [JsonIgnore]

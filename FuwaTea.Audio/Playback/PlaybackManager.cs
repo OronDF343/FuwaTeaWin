@@ -12,7 +12,6 @@ using JetBrains.Annotations;
 
 namespace FuwaTea.Audio.Playback
 {
-    [Reuse(ReuseType.Singleton)]
     public class PlaybackManager : IPlaybackManager
     {
         public PlaybackManager([Import] IDecoderManager decoderManager, [Import] IAudioPlayer player)

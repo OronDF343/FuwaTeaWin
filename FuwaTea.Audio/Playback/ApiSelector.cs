@@ -6,7 +6,7 @@ using FuwaTea.Lib.DataModel;
 
 namespace FuwaTea.Audio.Playback
 {
-    [ConfigPage(nameof(ApiBasedAudioPlayer)), Reuse(ReuseType.Singleton)]
+    [ConfigPage(nameof(ApiBasedAudioPlayer))]
     public class ApiSelector : ImplementationSelectorBase<IAudioApi>
     {
         public ApiSelector([ImportMany] IList<IAudioApi> implementations)

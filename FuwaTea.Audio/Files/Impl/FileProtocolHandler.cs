@@ -5,7 +5,6 @@ using DryIocAttributes;
 
 namespace FuwaTea.Audio.Files.Impl
 {
-    [Reuse(ReuseType.Singleton)]
     public class FileProtocolHandler : IProtocolHandler
     {
         private const string FileProtocolString = "file";

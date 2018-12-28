@@ -11,7 +11,6 @@ using FuwaTea.Config;
 namespace FTWPlayer.ViewModels
 {
     //[UIPart("Settings Tab")]
-    [Reuse(ReuseType.Singleton)]
     public class SettingsViewModel : ITab
     {
         

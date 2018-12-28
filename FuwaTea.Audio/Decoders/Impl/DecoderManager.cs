@@ -7,7 +7,6 @@ using FuwaTea.Lib.DataModel;
 
 namespace FuwaTea.Audio.Decoders.Impl
 {
-    [Reuse(ReuseType.Singleton)]
     public class DecoderManager : ImplementationPriorityManagerBase<ITrackDecoder, IFileHandle, ISampleSource>, IDecoderManager
     {
         public DecoderManager([ImportMany] IList<ITrackDecoder> implementations)

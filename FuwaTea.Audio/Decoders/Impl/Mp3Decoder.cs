@@ -12,7 +12,6 @@ using File = TagLib.File;
 
 namespace FuwaTea.Audio.Decoders.Impl
 {
-    [Reuse(ReuseType.Singleton)]
     public class Mp3Decoder : ITrackDecoder
     {
         public void UpdateMetadata(IFileHandle file)

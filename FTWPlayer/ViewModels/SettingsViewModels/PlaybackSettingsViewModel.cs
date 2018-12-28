@@ -9,7 +9,6 @@ using FuwaTea.Audio.Playback.CSCore;
 namespace FTWPlayer.ViewModels.SettingsViewModels
 {
     //[UIPart("Playback settings tab")]
-    [Reuse(ReuseType.Singleton)]
     public class PlaybackSettingsViewModel : ISettingsTab
     {
         public PlaybackSettingsViewModel(/*[Import] CSCoreApiConfigBase settings*/)

@@ -16,7 +16,6 @@ using JetBrains.Annotations;
 namespace FTWPlayer.ViewModels
 {
     //[UIPart("Tag editor")]
-    [Reuse(ReuseType.Singleton)]
     public class TagsViewModel : ITab, INotifyPropertyChanged
     {
         

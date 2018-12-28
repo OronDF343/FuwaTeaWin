@@ -19,7 +19,6 @@ using XamlReader = System.Windows.Markup.XamlReader;
 namespace FTWPlayer.Skins
 {
     //[UIPart("Skin Manager")]
-    [Reuse(ReuseType.Singleton)]
     public class SkinManager : ISkinManager
     {
         public ObservableCollection<SkinPackage> LoadedSkins { get; } = new ObservableCollection<SkinPackage>();

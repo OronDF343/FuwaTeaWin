@@ -5,7 +5,6 @@ using FuwaTea.Lib.DataModel;
 
 namespace FuwaTea.Audio.Files.Impl
 {
-    [Reuse(ReuseType.Singleton)]
     public class ProtocolManager : ImplementationPriorityManagerBase<IProtocolHandler, IFileLocationInfo, IFileHandle>, IProtocolManager
     {
         public ProtocolManager([ImportMany] IList<IProtocolHandler> implementations)

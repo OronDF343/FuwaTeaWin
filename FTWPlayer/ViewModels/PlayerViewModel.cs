@@ -12,7 +12,6 @@ using JetBrains.Annotations;
 namespace FTWPlayer.ViewModels
 {
     //[UIPart("Player Tab")]
-    [Reuse(ReuseType.Singleton)]
     public class PlayerViewModel : ITab, INotifyPropertyChanged
     {
         

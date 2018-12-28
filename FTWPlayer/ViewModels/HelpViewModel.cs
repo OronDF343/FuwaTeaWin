@@ -6,7 +6,6 @@ using WPFLocalizeExtension.Extensions;
 namespace FTWPlayer.ViewModels
 {
     //[UIPart("Help Tab")]
-    [Reuse(ReuseType.Singleton)]
     public class HelpViewModel : ITab
     {
         public HelpViewModel()
