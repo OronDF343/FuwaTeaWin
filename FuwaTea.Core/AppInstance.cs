@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using FuwaTea.Config;
 using FuwaTea.Extensibility;
 using Serilog;
 using Serilog.Events;
@@ -60,6 +61,8 @@ namespace FuwaTea.Core
         public bool Init()
         {
             Log.Debug("Main initialization started");
+            // Create container
+            ExtensibilityContainer = new ExtensibilityContainer();
             // Resolve platform support
 
             // Process command-line arguments
@@ -79,16 +82,14 @@ namespace FuwaTea.Core
             return true;
         }
 
-        private void InitExtensibility()
+        private void LoadAssemblies()
         {
-            // TODO
-
-
-            ExtensibilityContainer = new ExtensibilityContainer();
             
-            // Export parameters
+            // Export runtime-only parameters (config directories)
             var persistentConfigDir = MakeAppPath(Environment.SpecialFolder.ApplicationData, AppConstants.ConfigDirName);
             var nonPersistentConfigDir = MakeAppPath(Environment.SpecialFolder.LocalApplicationData, AppConstants.ConfigDirName);
+            ExtensibilityContainer.RegisterInstance(persistentConfigDir, ConfigConstants.PersistentConfigDirKey);
+            ExtensibilityContainer.RegisterInstance(nonPersistentConfigDir, ConfigConstants.NonPersistentConfigDirKey);
             
         }
         

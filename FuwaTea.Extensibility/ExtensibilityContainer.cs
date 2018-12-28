@@ -15,7 +15,7 @@ namespace FuwaTea.Extensibility
     /// </summary>
     public class ExtensibilityContainer : IDisposable
     {
-        internal readonly IContainer IocContainer = new Container(rules => rules.WithoutThrowOnRegisteringDisposableTransient());
+        internal readonly IContainer IocContainer = new Container(rules => rules.WithoutThrowOnRegisteringDisposableTransient()).WithMefAttributedModel();
         [NotNull]
         private readonly Dictionary<string, ExtensionInfo> _extensions = new Dictionary<string, ExtensionInfo>();
 
@@ -121,6 +121,18 @@ namespace FuwaTea.Extensibility
         public void Register<TInterface, TClass>(object serviceKey = null) where TClass : TInterface
         {
             IocContainer.Register<TInterface, TClass>(serviceKey: serviceKey);
+        }
+        
+        /// <summary>
+        /// Add an instance registration.
+        /// </summary>
+        /// <remarks>Useful for constants that are only known at runtime. Should only be used where absolutely required.</remarks>
+        /// <typeparam name="T">The instance type.</typeparam>
+        /// <param name="instance">The instance to register.</param>
+        /// <param name="serviceKey">An optional service key.</param>
+        public void RegisterInstance<T>(T instance, object serviceKey = null)
+        {
+            IocContainer.UseInstance(instance, serviceKey: serviceKey);
         }
         
         /// <summary>
