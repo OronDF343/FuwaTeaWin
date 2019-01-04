@@ -57,7 +57,7 @@ namespace FuwaTea.Core
         /// <summary>
         /// Fully initialize the application to the desired state (in accordance with the command-line arguments).
         /// </summary>
-        /// <returns>A boolean value indicating whether GUI initialization should follow, or the process should terminate.</returns>
+        /// <returns>A boolean value indicating whether GUI initialization should follow, or if the process should terminate.</returns>
         public bool Init()
         {
             Log.Debug("Main initialization started");

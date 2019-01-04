@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -7,8 +8,34 @@ using JetBrains.Annotations;
 
 namespace FuwaTea.Extensibility
 {
-    public static class ExtensionMethods
+    /// <summary>
+    /// Various utility methods and extension methods.
+    /// </summary>
+    public static class Utils
     {
+        public static AssemblyLoadResult TryLoadAssembly(this AssemblyName an, out Assembly a)
+        {
+            a = null;
+            try
+            {
+                a = Assembly.Load(an);
+                return a == null ? AssemblyLoadResult.NullResult : AssemblyLoadResult.OK;
+            }
+            catch (BadImageFormatException) { return AssemblyLoadResult.BadImageFormat; }
+            catch (FileNotFoundException) { return AssemblyLoadResult.FileNotFound; }
+            catch (FileLoadException) { return AssemblyLoadResult.FileLoadFailed; }
+        }
+
+        public static string MakeScopedKey(string module, string area, string name)
+        {
+            return module + "." + area + "." + name;
+        }
+
+        public static bool CheckApiVersion(int ver, bool overrideWhitelist = false)
+        {
+            return ExtensibilityConstants.ApiVersionWhitelist.Contains(ver)
+                   || overrideWhitelist && ver <= ExtensibilityConstants.CurrentApiVersion && !ExtensibilityConstants.ApiVersionBlacklist.Contains(ver);
+        }
         public static OSPlatform ToOSPlatform(this OSKind osKind)
         {
             switch (osKind)
@@ -22,19 +49,19 @@ namespace FuwaTea.Extensibility
 
         public static bool OSVersionMatches([NotNull] this IPlatformFilter filter)
         {
-            var cver = Environment.OSVersion.Version;
-            var fver = new Version(filter.Version);
+            var cVer = Environment.OSVersion.Version;
+            var fVer = new Version(filter.Version);
             switch (filter.Rule)
             {
                 case FilterRule.Any: return true;
-                case FilterRule.Equals: return cver == fver;
-                case FilterRule.LessThan: return cver < fver;
-                case FilterRule.GreaterThan: return cver > fver;
-                case FilterRule.LessThanOrEqualTo: return cver < fver;
-                case FilterRule.GreaterThanOrEqualTo: return cver > fver;
+                case FilterRule.Equals: return cVer == fVer;
+                case FilterRule.LessThan: return cVer < fVer;
+                case FilterRule.GreaterThan: return cVer > fVer;
+                case FilterRule.LessThanOrEqualTo: return cVer <= fVer;
+                case FilterRule.GreaterThanOrEqualTo: return cVer >= fVer;
                 case FilterRule.Between:
-                    var fver2 = new Version(filter.OtherVersion);
-                    return cver > fver && cver < fver2; // TODO: Consider <= >= combinations
+                    var fVer2 = new Version(filter.OtherVersion);
+                    return cVer > fVer && cVer < fVer2; // TODO: Consider <= >= combinations
             }
 
             return false;

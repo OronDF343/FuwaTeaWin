@@ -32,7 +32,8 @@ namespace FuwaTea.Extensibility
         /// <returns>Information about the extension.</returns>
         /// <exception cref="ArgumentNullException">If the <paramref name="dll"/> parameter is null.</exception>
         /// <exception cref="ExtensibilityException">If the <see cref="Assembly"/> has failed to load, or if the library is not supported on the current platform, or if the library is not supported on the current API version.</exception>
-        /// // TODO IMPORTANT: Use 3 different exception types, with correct fields. Potentially avoid exceptions altogether!
+        /// // TODO IMPORTANT: Use 3 different exception types, with correct properties. Potentially avoid exceptions altogether!
+        [Obsolete("Use RegisterExtension")]
         public ExtensionInfo LoadExtension(AssemblyName dll, bool overrideApiVersionWhitelist = false)
         {
             if (dll == null) throw new ArgumentNullException(nameof(dll));
@@ -58,12 +59,13 @@ namespace FuwaTea.Extensibility
         /// <param name="overrideApiVersionWhitelist">Optionally overrides the API version whitelist check.</param>
         /// <returns>Information about the extension.</returns>
         /// <exception cref="ExtensibilityException">If the library is not supported on the current platform, or if the library is not supported on the current API version.</exception>
+        [Obsolete("Use RegisterExtension")]
         public ExtensionInfo LoadExtension(Assembly a, bool overrideApiVersionWhitelist = false)
         {
             var extDef = a.GetCustomAttribute<ExtensionAttribute>();
             if (extDef == null) throw new ExtensibilityException($"The assembly {a.FullName} is not an extension!");
             // Check ApiVersion
-            if (!ExtensibilityUtils.CheckApiVersion(extDef.ApiVersion, overrideApiVersionWhitelist))
+            if (!Utils.CheckApiVersion(extDef.ApiVersion, overrideApiVersionWhitelist))
                 throw new ExtensibilityException($"API version mismatch: Extension {extDef.Key} targets the wrong API version {extDef.ApiVersion}, current version is {ExtensibilityConstants.CurrentApiVersion}!");
 
             // Check platform
@@ -83,22 +85,17 @@ namespace FuwaTea.Extensibility
 
             // Building and registration
             var exports = AttributedModel.Scan(new[] { a }).ToList();
-            // TODO IMPORTANT: Save/load exports - in Core. Split this method right here!
+            // TODO IMPORTANT: Save/load exports. Split this method right here!
             IocContainer.RegisterExports(exports);
             
             // Get extension info
-            IExtensionBasicInfo info;
-            try { info = IocContainer.Resolve<IExtensionBasicInfo>(extDef.Key); }
-            catch
+            var info = IocContainer.Resolve<IExtensionBasicInfo>(extDef.Key, IfUnresolved.ReturnDefault) ?? new ExtensionBasicInfo
             {
-                info = new ExtensionBasicInfo
-                {
-                    Author = a.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company,
-                    Description = a.GetCustomAttribute<AssemblyDescriptionAttribute>()?.Description,
-                    Title = a.GetCustomAttribute<AssemblyTitleAttribute>()?.Title,
-                    Version = a.GetCustomAttribute<AssemblyVersionAttribute>()?.Version
-                };
-            }
+                Author = a.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company,
+                Description = a.GetCustomAttribute<AssemblyDescriptionAttribute>()?.Description,
+                Title = a.GetCustomAttribute<AssemblyTitleAttribute>()?.Title,
+                Version = a.GetCustomAttribute<AssemblyVersionAttribute>()?.Version
+            };
             var extInfo = new ExtensionInfo(a.GetName(), a.Location, extDef.Key, extDef.ApiVersion, info);
 
             // AutoInitialize
@@ -109,6 +106,18 @@ namespace FuwaTea.Extensibility
             // Finishing up
             _extensions.Add(extDef.Key, extInfo);
             return extInfo;
+        }
+
+        /// <summary>
+        /// Register a loaded <see cref="Extension"/>.
+        /// </summary>
+        /// <remarks>Note: You must call <see cref="Extension.Load"/> before calling this method.</remarks>
+        /// <param name="e">The extension to register.</param>
+        /// <exception cref="InvalidOperationException">If the <see cref="Extension"/> hasn't been successfully loaded</exception>
+        public void RegisterExtension(Extension e)
+        {
+            if (!e.IsLoaded) throw new InvalidOperationException("The Extension must be loaded first! Please call Extension.Load() and verify that no error has occurred.");
+
         }
         
         /// <summary>
