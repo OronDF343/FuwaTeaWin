@@ -2,7 +2,7 @@
 using DryIocAttributes;
 using JetBrains.Annotations;
 
-namespace FuwaTea.Config
+namespace FuwaTea.Extensibility.Config
 {
     /// <summary>
     /// Export the attributed class as a configuration page.

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using FuwaTea.Config;
+using FuwaTea.Extensibility.Config;
 using JetBrains.Annotations;
 
 namespace FuwaTea.Audio.Playback.CSCore

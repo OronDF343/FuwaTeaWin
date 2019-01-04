@@ -3,7 +3,6 @@ using System.IO;
 using CSCore;
 using CSCore.Codecs.WAV;
 using CSCore.MediaFoundation;
-using DryIocAttributes;
 using FuwaTea.Audio.Files;
 using FuwaTea.Audio.Metadata.Impl.TagLib;
 using FuwaTea.Lib.Collections;

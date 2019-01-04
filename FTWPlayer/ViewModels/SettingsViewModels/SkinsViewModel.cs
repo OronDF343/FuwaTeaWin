@@ -3,7 +3,6 @@ using System.ComponentModel.Composition;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using System.Windows.Input;
-using DryIocAttributes;
 using FTWPlayer.Skins;
 using FTWPlayer.Views.SettingsViews;
 using FuwaTea.Wpf.Behaviors;

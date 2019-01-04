@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Windows.Controls;
-using DryIocAttributes;
 using FTWPlayer.Views.SettingsViews;
 using FuwaTea.Audio.Playback.CSCore;
 

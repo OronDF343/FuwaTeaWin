@@ -1,4 +1,4 @@
-﻿namespace FuwaTea.Config
+﻿namespace FuwaTea.Extensibility.Config
 {
     public static class ConfigConstants
     {

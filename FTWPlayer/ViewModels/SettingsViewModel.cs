@@ -3,10 +3,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Controls;
-using DryIocAttributes;
 using FTWPlayer.ViewModels.SettingsViewModels;
 using FTWPlayer.Views;
-using FuwaTea.Config;
+using FuwaTea.Extensibility.Config;
 
 namespace FTWPlayer.ViewModels
 {

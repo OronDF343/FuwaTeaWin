@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FuwaTea.Extensibility
+namespace FuwaTea.Extensibility.Attributes
 {
     [Flags]
     public enum FilterRule : byte

@@ -2,8 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using CSCore.SoundOut;
-using DryIocAttributes;
-using FuwaTea.Config;
+using FuwaTea.Extensibility.Config;
 using Newtonsoft.Json;
 
 namespace FuwaTea.Audio.Playback.CSCore

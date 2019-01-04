@@ -16,6 +16,7 @@
 #endregion
 
 using FuwaTea.Extensibility;
+using FuwaTea.Extensibility.Attributes;
 
 // Modular
 [assembly: Extension("Audio", ExtensibilityConstants.CurrentApiVersion)]

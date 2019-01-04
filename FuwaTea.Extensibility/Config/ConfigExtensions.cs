@@ -1,7 +1,7 @@
 ﻿using DryIoc;
 using Newtonsoft.Json;
 
-namespace FuwaTea.Config
+namespace FuwaTea.Extensibility.Config
 {
     public static class ConfigExtensions
     {

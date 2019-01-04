@@ -2,7 +2,6 @@
 using System.IO;
 using CSCore;
 using CSCore.Codecs.FLAC;
-using DryIocAttributes;
 using FuwaTea.Audio.Files;
 using FuwaTea.Audio.Metadata.Impl.TagLib;
 using FuwaTea.Lib.Collections;

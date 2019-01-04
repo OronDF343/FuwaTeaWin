@@ -4,7 +4,6 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
-using DryIocAttributes;
 using FTWPlayer.Views.SettingsViews;
 using FuwaTea.Lib.Collections;
 using GalaSoft.MvvmLight.CommandWpf;

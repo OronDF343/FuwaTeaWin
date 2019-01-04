@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace FuwaTea.Config
+namespace FuwaTea.Extensibility.Config
 {
     public interface IConfigPage : INotifyPropertyChanged
     {

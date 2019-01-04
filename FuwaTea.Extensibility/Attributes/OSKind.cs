@@ -1,4 +1,4 @@
-﻿namespace FuwaTea.Extensibility
+﻿namespace FuwaTea.Extensibility.Attributes
 {
     /// <summary>
     /// Enumeration of operating system kinds.

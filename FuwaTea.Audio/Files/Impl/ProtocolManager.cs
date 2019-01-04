@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using DryIocAttributes;
 using FuwaTea.Lib.DataModel;
 
 namespace FuwaTea.Audio.Files.Impl

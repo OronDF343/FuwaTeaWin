@@ -40,7 +40,6 @@
     <PackageReference Include="Serilog" Version="2.7.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FuwaTea.Config\FuwaTea.Config.csproj" />
     <ProjectReference Include="..\FuwaTea.Core\FuwaTea.Core.csproj" />
   </ItemGroup>
 </Project>

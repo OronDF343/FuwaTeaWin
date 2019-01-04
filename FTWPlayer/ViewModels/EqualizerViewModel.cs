@@ -2,7 +2,6 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using DryIocAttributes;
 using FTWPlayer.Views;
 using FuwaTea.Audio.Playback;
 using GalaSoft.MvvmLight.CommandWpf;

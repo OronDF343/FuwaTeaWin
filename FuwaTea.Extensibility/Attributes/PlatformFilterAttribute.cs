@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 
-namespace FuwaTea.Extensibility
+namespace FuwaTea.Extensibility.Attributes
 {
     [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Class | AttributeTargets.Interface)]
     [MetadataAttribute]

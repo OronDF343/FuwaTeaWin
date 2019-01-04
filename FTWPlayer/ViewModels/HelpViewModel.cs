@@ -1,6 +1,5 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Data;
-using DryIocAttributes;
 using WPFLocalizeExtension.Extensions;
 
 namespace FTWPlayer.ViewModels

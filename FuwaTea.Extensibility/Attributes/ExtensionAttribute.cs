@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FuwaTea.Extensibility
+namespace FuwaTea.Extensibility.Attributes
 {
     [AttributeUsage(AttributeTargets.Assembly)]
     public class ExtensionAttribute : Attribute

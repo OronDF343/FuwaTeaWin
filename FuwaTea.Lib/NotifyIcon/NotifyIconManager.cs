@@ -2,7 +2,6 @@
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Text.RegularExpressions;
-using DryIocAttributes;
 using JetBrains.Annotations;
 using log4net;
 

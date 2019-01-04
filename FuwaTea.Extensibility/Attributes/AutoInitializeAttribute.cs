@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 
-namespace FuwaTea.Extensibility
+namespace FuwaTea.Extensibility.Attributes
 {
     public class AutoInitializeAttribute : ExportAttribute
     {

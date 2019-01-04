@@ -2,8 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using DryIocAttributes;
-using FuwaTea.Config;
+using FuwaTea.Extensibility.Config;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 

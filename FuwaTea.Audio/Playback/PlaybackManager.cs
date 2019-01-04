@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Runtime.CompilerServices;
 using CSCore;
-using DryIocAttributes;
 using FuwaTea.Audio.Decoders;
 using FuwaTea.Audio.Files;
 using JetBrains.Annotations;

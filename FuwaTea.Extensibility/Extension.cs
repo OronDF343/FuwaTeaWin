@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using DryIoc.MefAttributedModel;
+using FuwaTea.Extensibility.Attributes;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 
@@ -44,16 +45,30 @@ namespace FuwaTea.Extensibility
         }
 
         /// <summary>
+        /// Constructor for pre-loaded assemblies.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        public Extension([NotNull] Assembly assembly)
+        {
+            AssemblyName = assembly.GetName();
+            Assembly = assembly;
+            AssemblyLoadResult = AssemblyLoadResult.OK;
+        }
+
+        /// <summary>
         /// Load the extension's assembly and exports, if required. All necessary checks will be performed.
         /// </summary>
         /// <param name="overrideApiVersionWhitelist">Optionally override the API version whitelist check.</param>
         /// <exception cref="NullReferenceException">If <see cref="AssemblyName"/> is null.</exception>
         public void Load(bool overrideApiVersionWhitelist = false)
         {
-            // First, load the assembly - Return immediately if failed
-            AssemblyLoadResult = AssemblyName.TryLoadAssembly(out var a);
-            Assembly = a;
-            if (AssemblyLoadResult != AssemblyLoadResult.OK) return;
+            // First, load the assembly if needed - Return immediately if failed
+            if (Assembly == null)
+            {
+                AssemblyLoadResult = AssemblyName.TryLoadAssembly(out var a);
+                Assembly = a;
+                if (AssemblyLoadResult != AssemblyLoadResult.OK || Assembly == null) return;
+            }
 
             // Check if the file has changed
             // If there is no path, assume it has changed
@@ -70,7 +85,7 @@ namespace FuwaTea.Extensibility
             // Only if file has changed, or they are missing
             if (fileChanged || string.IsNullOrWhiteSpace(Key) || ApiVersion == null)
             {
-                var extDef = a.GetCustomAttribute<ExtensionAttribute>();
+                var extDef = Assembly.GetCustomAttribute<ExtensionAttribute>();
                 if (extDef == null)
                 {
                     ExtensionCheckResult = ExtensionCheckResult.NotAnExtension;
@@ -92,7 +107,7 @@ namespace FuwaTea.Extensibility
             // Check platform
             // Always check, but only get attribute if file changed, or if needed
             if (fileChanged || PlatformFilter == null)
-                PlatformFilter = a.GetCustomAttribute<PlatformFilterAttribute>();
+                PlatformFilter = Assembly.GetCustomAttribute<PlatformFilterAttribute>();
             if (PlatformFilter != null)
             {
                 // First, check the arch
@@ -123,7 +138,7 @@ namespace FuwaTea.Extensibility
             // Read exports
             // Only if file has changed or if needed (null or empty)
             if (fileChanged || Exports == null || Exports.Count < 1)
-                Exports = AttributedModel.Scan(new[] { a }).ToList();
+                Exports = AttributedModel.Scan(new[] { Assembly }).ToList();
 
             // Set IsLoaded
             IsLoaded = true;

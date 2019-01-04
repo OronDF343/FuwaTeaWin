@@ -10,7 +10,6 @@ using System.Windows;
 using System.Windows.Baml2006;
 using System.Windows.Markup;
 using System.Xaml;
-using DryIocAttributes;
 using FuwaTea.Lib;
 using JetBrains.Annotations;
 using log4net;

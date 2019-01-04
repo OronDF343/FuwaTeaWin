@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Windows.Controls;
-using DryIocAttributes;
 using FTWPlayer.Views.SettingsViews;
 
 namespace FTWPlayer.ViewModels.SettingsViewModels

@@ -3,8 +3,6 @@ using System.ComponentModel.Composition;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using DryIocAttributes;
 using FTWPlayer.Views;
 using FuwaTea.Audio.Playback;
 using JetBrains.Annotations;

@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json.Converters;
 
-namespace FuwaTea.Config
+namespace FuwaTea.Extensibility.Config
 {
     internal class ReuseCreationConverter<T> : CustomCreationConverter<T>
     {

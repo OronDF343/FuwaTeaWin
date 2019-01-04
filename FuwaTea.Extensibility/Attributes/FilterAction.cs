@@ -1,4 +1,4 @@
-﻿namespace FuwaTea.Extensibility
+﻿namespace FuwaTea.Extensibility.Attributes
 {
     public enum FilterAction : byte
     {

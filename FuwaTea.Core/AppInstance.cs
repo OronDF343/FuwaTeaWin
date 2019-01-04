@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using FuwaTea.Config;
 using FuwaTea.Extensibility;
+using FuwaTea.Extensibility.Config;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.RollingFileAlternate;
@@ -84,12 +84,11 @@ namespace FuwaTea.Core
 
         private void LoadAssemblies()
         {
-            
-            // Export runtime-only parameters (config directories)
+            // Init config first
             var persistentConfigDir = MakeAppPath(Environment.SpecialFolder.ApplicationData, AppConstants.ConfigDirName);
             var nonPersistentConfigDir = MakeAppPath(Environment.SpecialFolder.LocalApplicationData, AppConstants.ConfigDirName);
-            ExtensibilityContainer.RegisterInstance(persistentConfigDir, ConfigConstants.PersistentConfigDirKey);
-            ExtensibilityContainer.RegisterInstance(nonPersistentConfigDir, ConfigConstants.NonPersistentConfigDirKey);
+            ExtensibilityContainer.SetConfigDirs(persistentConfigDir, nonPersistentConfigDir);
+            
             
         }
         

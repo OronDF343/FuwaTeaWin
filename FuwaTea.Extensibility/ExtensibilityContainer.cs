@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using DryIoc;
 using DryIoc.MefAttributedModel;
 using JetBrains.Annotations;
@@ -11,92 +10,38 @@ using JetBrains.Annotations;
 namespace FuwaTea.Extensibility
 {
     /// <summary>
-    /// IoC container for all extensibility features.
+    /// IoC container for all extensibility features, including configuration.
     /// </summary>
-    public class ExtensibilityContainer : IDisposable
+    public partial class ExtensibilityContainer : IDisposable
     {
         internal readonly IContainer IocContainer = new Container(rules => rules.WithoutThrowOnRegisteringDisposableTransient()).WithMefAttributedModel();
         [NotNull]
-        private readonly Dictionary<string, ExtensionInfo> _extensions = new Dictionary<string, ExtensionInfo>();
-
+        private readonly Dictionary<string, Extension> _extensions = new Dictionary<string, Extension>();
+        
         /// <summary>
         /// Gets information about the loaded libraries.
         /// </summary>
-        public IReadOnlyDictionary<string, ExtensionInfo> LoadedExtensions => new ReadOnlyDictionary<string, ExtensionInfo>(_extensions);
+        public IReadOnlyDictionary<string, Extension> LoadedExtensions => new ReadOnlyDictionary<string, Extension>(_extensions);
 
         /// <summary>
-        /// Loads a specific library into the container.
+        /// Register a loaded <see cref="Extension"/>.
         /// </summary>
-        /// <param name="dll">The library's <see cref="AssemblyName"/>.</param>
-        /// <param name="overrideApiVersionWhitelist">Optionally overrides the API version whitelist check.</param>
-        /// <returns>Information about the extension.</returns>
-        /// <exception cref="ArgumentNullException">If the <paramref name="dll"/> parameter is null.</exception>
-        /// <exception cref="ExtensibilityException">If the <see cref="Assembly"/> has failed to load, or if the library is not supported on the current platform, or if the library is not supported on the current API version.</exception>
-        /// // TODO IMPORTANT: Use 3 different exception types, with correct properties. Potentially avoid exceptions altogether!
-        [Obsolete("Use RegisterExtension")]
-        public ExtensionInfo LoadExtension(AssemblyName dll, bool overrideApiVersionWhitelist = false)
+        /// <remarks>Note: You must call <see cref="Extension.Load"/> before calling this method.</remarks>
+        /// <param name="ext">The extension to register.</param>
+        /// <exception cref="InvalidOperationException">If the <see cref="Extension"/> hasn't been successfully loaded</exception>
+        public void RegisterExtension(Extension ext)
         {
-            if (dll == null) throw new ArgumentNullException(nameof(dll));
-
-            Assembly a;
-            try
-            {
-                a = Assembly.Load(dll);
-            }
-            catch (Exception ex)
-            {
-                throw new ExtensibilityException("Failed to load assembly: See InternalException for details", ex);
-            }
-            if (a == null)
-                throw new ExtensibilityException("Failed to load assembly: Result was null - possible platform error");
-            return LoadExtension(a, overrideApiVersionWhitelist);
-        }
-        
-        /// <summary>
-        /// Loads a specific <see cref="Assembly"/> into the container.
-        /// </summary>
-        /// <param name="a">The <see cref="Assembly"/> to load.</param>
-        /// <param name="overrideApiVersionWhitelist">Optionally overrides the API version whitelist check.</param>
-        /// <returns>Information about the extension.</returns>
-        /// <exception cref="ExtensibilityException">If the library is not supported on the current platform, or if the library is not supported on the current API version.</exception>
-        [Obsolete("Use RegisterExtension")]
-        public ExtensionInfo LoadExtension(Assembly a, bool overrideApiVersionWhitelist = false)
-        {
-            var extDef = a.GetCustomAttribute<ExtensionAttribute>();
-            if (extDef == null) throw new ExtensibilityException($"The assembly {a.FullName} is not an extension!");
-            // Check ApiVersion
-            if (!Utils.CheckApiVersion(extDef.ApiVersion, overrideApiVersionWhitelist))
-                throw new ExtensibilityException($"API version mismatch: Extension {extDef.Key} targets the wrong API version {extDef.ApiVersion}, current version is {ExtensibilityConstants.CurrentApiVersion}!");
-
-            // Check platform
-            var platformFilter = a.GetCustomAttribute<PlatformFilterAttribute>();
-            if (platformFilter != null)
-            {
-                // First, check the arch
-                if (platformFilter.Action == FilterAction.Whitelist ^ platformFilter.ProcessArchitecture.AppliesTo(RuntimeInformation.ProcessArchitecture))
-                    throw new ExtensibilityException($"Process architecture mismatch: Extension {extDef.Key} will {platformFilter.Action} platform {platformFilter.ProcessArchitecture}, but this process runs as {RuntimeInformation.ProcessArchitecture}!");
-                // Next, the OS
-                if (platformFilter.Action == FilterAction.Whitelist ^ RuntimeInformation.IsOSPlatform(platformFilter.OSKind.ToOSPlatform()))
-                    throw new ExtensibilityException($"OS kind mismatch: Extension {extDef.Key} will {platformFilter.Action} OS kind {platformFilter.OSKind}, but the current OS is different!");
-                // Finally, the OS version
-                if (platformFilter.Action == FilterAction.Whitelist ^ platformFilter.OSVersionMatches())
-                    throw new ExtensibilityException($"OS version mismatch: Extension {extDef.Key} will {platformFilter.Action} an OS version that is {platformFilter.Rule} {platformFilter.Version}{(platformFilter.Rule == FilterRule.Between ? " and " + platformFilter.OtherVersion : "")}, but the current OS is of a version outside of this range!");
-            }
-
-            // Building and registration
-            var exports = AttributedModel.Scan(new[] { a }).ToList();
-            // TODO IMPORTANT: Save/load exports. Split this method right here!
-            IocContainer.RegisterExports(exports);
+            if (!ext.IsLoaded) throw new InvalidOperationException("The Extension must be loaded first! Please call Extension.Load() and verify that no error has occurred.");
+            IocContainer.RegisterExports(ext.Exports);
             
             // Get extension info
-            var info = IocContainer.Resolve<IExtensionBasicInfo>(extDef.Key, IfUnresolved.ReturnDefault) ?? new ExtensionBasicInfo
+            var info = IocContainer.Resolve<IExtensionBasicInfo>(ext.Key, IfUnresolved.ReturnDefault) ?? new ExtensionBasicInfo
             {
-                Author = a.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company,
-                Description = a.GetCustomAttribute<AssemblyDescriptionAttribute>()?.Description,
-                Title = a.GetCustomAttribute<AssemblyTitleAttribute>()?.Title,
-                Version = a.GetCustomAttribute<AssemblyVersionAttribute>()?.Version
+                Author = ext.Assembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company,
+                Description = ext.Assembly.GetCustomAttribute<AssemblyDescriptionAttribute>()?.Description,
+                Title = ext.Assembly.GetCustomAttribute<AssemblyTitleAttribute>()?.Title,
+                Version = ext.Assembly.GetCustomAttribute<AssemblyVersionAttribute>()?.Version
             };
-            var extInfo = new ExtensionInfo(a.GetName(), a.Location, extDef.Key, extDef.ApiVersion, info);
 
             // AutoInitialize
             // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
@@ -104,20 +49,7 @@ namespace FuwaTea.Extensibility
             // This should have forced initialization of the objects
 
             // Finishing up
-            _extensions.Add(extDef.Key, extInfo);
-            return extInfo;
-        }
-
-        /// <summary>
-        /// Register a loaded <see cref="Extension"/>.
-        /// </summary>
-        /// <remarks>Note: You must call <see cref="Extension.Load"/> before calling this method.</remarks>
-        /// <param name="e">The extension to register.</param>
-        /// <exception cref="InvalidOperationException">If the <see cref="Extension"/> hasn't been successfully loaded</exception>
-        public void RegisterExtension(Extension e)
-        {
-            if (!e.IsLoaded) throw new InvalidOperationException("The Extension must be loaded first! Please call Extension.Load() and verify that no error has occurred.");
-
+            _extensions.Add(ext.Key, ext);
         }
         
         /// <summary>
@@ -153,6 +85,7 @@ namespace FuwaTea.Extensibility
         {
             return IocContainer.OpenScope(name);
         }
+        
 
         /// <inheritdoc />
         public void Dispose()
