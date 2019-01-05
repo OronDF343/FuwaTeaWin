@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using DryIoc;
 using FuwaTea.Extensibility.Config;
 
@@ -7,7 +10,14 @@ namespace FuwaTea.Extensibility
     // ReSharper disable once MismatchedFileName
     public partial class ExtensibilityContainer
     {
+        /// <summary>
+        /// Directory for persistent configuration (AppData\Roaming).
+        /// </summary>
         public string PersistentConfigDir { get; private set; }
+
+        /// <summary>
+        /// Directory for non-persistent configuration (AppData\Local).
+        /// </summary>
         public string NonPersistentConfigDir { get; private set; }
 
         /// <summary>
@@ -15,12 +25,15 @@ namespace FuwaTea.Extensibility
         /// </summary>
         public bool IsConfigEnabled { get; private set; }
 
+        private readonly HashSet<string> _loadedPages;
+
         /// <summary>
         /// Initialize the extensibility container.
         /// </summary>
         public ExtensibilityContainer()
         {
             IsConfigEnabled = false;
+            _loadedPages = new HashSet<string>();
         }
         
         /// <summary>
@@ -50,6 +63,7 @@ namespace FuwaTea.Extensibility
                                      page.Metadata.Key + ConfigConstants.ConfigFileExtension);
             if (File.Exists(iPath))
                 page.Value.Deserialize(File.ReadAllText(iPath));
+            _loadedPages.Add(key);
             return page.Value;
         }
         
@@ -66,18 +80,22 @@ namespace FuwaTea.Extensibility
             File.WriteAllText(iPath, page.Value.Serialize());
             return page.Value;
         }
-
+        
         /// <summary>
         /// Load all configuration pages.
         /// </summary>
-        public void LoadAllConfigPages()
+        /// <param name="enableReload">Whether to enable reloading pages that have already been loaded.</param>
+        public void LoadAllConfigPages(bool enableReload = false)
         {
+            // TODO: Handle exceptions
             foreach (var item in IocContainer.ResolveMany<Meta<IConfigPage, IConfigPageMetadata>>())
             {
+                if (!enableReload && _loadedPages.Contains(item.Metadata.Key)) continue;
                 var iPath = Path.Combine(item.Metadata.IsPersistent ? PersistentConfigDir : NonPersistentConfigDir,
                                          item.Metadata.Key + ConfigConstants.ConfigFileExtension);
                 if (!File.Exists(iPath)) continue;
                 item.Value.Deserialize(File.ReadAllText(iPath));
+                _loadedPages.Add(item.Metadata.Key);
             }
         }
 
@@ -86,6 +104,7 @@ namespace FuwaTea.Extensibility
         /// </summary>
         public void SaveAllConfigPages()
         {
+            // TODO: Handle exceptions
             foreach (var item in IocContainer.ResolveMany<Meta<IConfigPage, IConfigPageMetadata>>())
             {
                 var iPath = Path.Combine(item.Metadata.IsPersistent ? PersistentConfigDir : NonPersistentConfigDir,
