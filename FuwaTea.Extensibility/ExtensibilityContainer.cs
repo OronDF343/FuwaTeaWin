@@ -15,13 +15,14 @@ namespace FuwaTea.Extensibility
     public partial class ExtensibilityContainer : IDisposable
     {
         internal readonly IContainer IocContainer = new Container(rules => rules.WithoutThrowOnRegisteringDisposableTransient()).WithMefAttributedModel();
+
         [NotNull]
-        private readonly Dictionary<string, Extension> _extensions = new Dictionary<string, Extension>();
+        private readonly Dictionary<string, Extension> _loadedExtensions = new Dictionary<string, Extension>();
         
         /// <summary>
         /// Gets information about the loaded libraries.
         /// </summary>
-        public IReadOnlyDictionary<string, Extension> LoadedExtensions => new ReadOnlyDictionary<string, Extension>(_extensions);
+        public IReadOnlyDictionary<string, Extension> LoadedExtensions => new ReadOnlyDictionary<string, Extension>(_loadedExtensions);
 
         /// <summary>
         /// Register a loaded <see cref="Extension"/>.
@@ -35,7 +36,7 @@ namespace FuwaTea.Extensibility
             IocContainer.RegisterExports(ext.Exports);
             
             // Get extension info
-            var info = IocContainer.Resolve<IExtensionBasicInfo>(ext.Key, IfUnresolved.ReturnDefault) ?? new ExtensionBasicInfo
+            ext.BasicInfo = IocContainer.Resolve<IExtensionBasicInfo>(ext.Key, IfUnresolved.ReturnDefault) ?? new ExtensionBasicInfo
             {
                 Author = ext.Assembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company,
                 Description = ext.Assembly.GetCustomAttribute<AssemblyDescriptionAttribute>()?.Description,
@@ -49,19 +50,36 @@ namespace FuwaTea.Extensibility
             // This should have forced initialization of the objects
 
             // Finishing up
-            _extensions.Add(ext.Key, ext);
+            _loadedExtensions.Add(ext.Key, ext);
         }
-        
+
         /// <summary>
         /// Add a simple service registration.
         /// </summary>
         /// <remarks>Should only be used where absolutely required.</remarks>
         /// <param name="serviceKey">An optional service key.</param>
+        /// <param name="reuse">The optional reuse type.</param>
+        /// <param name="metadata">The optional metadata.</param>
         /// <typeparam name="TInterface">The service type.</typeparam>
         /// <typeparam name="TClass">The implementation type.</typeparam>
-        public void Register<TInterface, TClass>(object serviceKey = null) where TClass : TInterface
+        public void Register<TInterface, TClass>(object serviceKey = null, IReuse reuse = null, object metadata = null) where TClass : TInterface
         {
-            IocContainer.Register<TInterface, TClass>(serviceKey: serviceKey);
+            IocContainer.Register<TInterface, TClass>(serviceKey: serviceKey, reuse: reuse,
+                                                      setup: metadata == null ? null : Setup.With(metadata));
+        }
+
+        /// <summary>
+        /// Add a simple service registration, where the implementation is registered as its own type.
+        /// </summary>
+        /// <remarks>Should only be used where absolutely required.</remarks>
+        /// <param name="serviceKey">An optional service key.</param>
+        /// <param name="reuse">The optional reuse type.</param>
+        /// <param name="metadata">The optional metadata.</param>
+        /// <typeparam name="TClass">The implementation type.</typeparam>
+        public void Register<TClass>(object serviceKey = null, IReuse reuse = null, object metadata = null)
+        {
+            IocContainer.Register<TClass>(serviceKey: serviceKey, reuse: reuse,
+                                          setup: metadata == null ? null : Setup.With(metadata));
         }
         
         /// <summary>

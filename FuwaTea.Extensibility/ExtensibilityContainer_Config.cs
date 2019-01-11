@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using DryIoc;
 using FuwaTea.Extensibility.Config;
 
@@ -52,12 +51,28 @@ namespace FuwaTea.Extensibility
         }
 
         /// <summary>
+        /// Add a config page registration.
+        /// This will register the page as <see cref="IConfigPage"/>, and as itself, as a singleton with the key and with the metadata.
+        /// </summary>
+        /// <remarks>Should only be used where absolutely required.</remarks>
+        /// <param name="metadata">The required metadata.</param>
+        /// <typeparam name="TConfig">The implementation type.</typeparam>
+        public TConfig RegisterConfigPage<TConfig>(IConfigPageMetadata metadata) where TConfig : IConfigPage
+        {
+            Register<IConfigPage, TConfig>(metadata.Key, Reuse.Singleton, metadata);
+            Register<TConfig>(metadata.Key, Reuse.Singleton, metadata);
+            return IocContainer.Resolve<TConfig>();
+        }
+
+        /// <summary>
         /// Load a single config page.
         /// </summary>
         /// <param name="key">The key of the page.</param>
+        /// <exception cref="InvalidOperationException">When calling this method before setting the config directories.</exception>
         /// <returns>The page instance.</returns>
         public IConfigPage LoadConfigPage(string key)
         {
+            if (!IsConfigEnabled) throw new InvalidOperationException("Config not enabled!");
             var page = IocContainer.Resolve<Meta<IConfigPage, IConfigPageMetadata>>(key);
             var iPath = Path.Combine(page.Metadata.IsPersistent ? PersistentConfigDir : NonPersistentConfigDir,
                                      page.Metadata.Key + ConfigConstants.ConfigFileExtension);
@@ -71,9 +86,11 @@ namespace FuwaTea.Extensibility
         /// Save a single config page.
         /// </summary>
         /// <param name="key">The key of the page.</param>
+        /// <exception cref="InvalidOperationException">When calling this method before setting the config directories.</exception>
         /// <returns>The page instance.</returns>
         public IConfigPage SaveConfigPage(string key)
         {
+            if (!IsConfigEnabled) throw new InvalidOperationException("Config not enabled!");
             var page = IocContainer.Resolve<Meta<IConfigPage, IConfigPageMetadata>>(key);
             var iPath = Path.Combine(page.Metadata.IsPersistent ? PersistentConfigDir : NonPersistentConfigDir,
                                      page.Metadata.Key + ConfigConstants.ConfigFileExtension);
@@ -85,8 +102,10 @@ namespace FuwaTea.Extensibility
         /// Load all configuration pages.
         /// </summary>
         /// <param name="enableReload">Whether to enable reloading pages that have already been loaded.</param>
+        /// <exception cref="InvalidOperationException">When calling this method before setting the config directories.</exception>
         public void LoadAllConfigPages(bool enableReload = false)
         {
+            if (!IsConfigEnabled) throw new InvalidOperationException("Config not enabled!");
             // TODO: Handle exceptions
             foreach (var item in IocContainer.ResolveMany<Meta<IConfigPage, IConfigPageMetadata>>())
             {
@@ -102,8 +121,10 @@ namespace FuwaTea.Extensibility
         /// <summary>
         /// Save all configuration pages.
         /// </summary>
+        /// <exception cref="InvalidOperationException">When calling this method before setting the config directories.</exception>
         public void SaveAllConfigPages()
         {
+            if (!IsConfigEnabled) throw new InvalidOperationException("Config not enabled!");
             // TODO: Handle exceptions
             foreach (var item in IocContainer.ResolveMany<Meta<IConfigPage, IConfigPageMetadata>>())
             {

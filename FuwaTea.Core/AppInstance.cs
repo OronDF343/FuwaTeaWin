@@ -11,11 +11,15 @@ using Serilog.Sinks.RollingFileAlternate;
 
 namespace FuwaTea.Core
 {
+    /// <summary>
+    /// The application instance context.
+    /// </summary>
     public sealed class AppInstance
     {
         public IReadOnlyList<string> Args { get; }
         public bool IsInstalled { get; private set; }
         public ExtensibilityContainer ExtensibilityContainer { get; private set; }
+        internal ExtensionCache ExtensionCache { get; private set; }
         public IPlatformSupport PlatformSupport { get; private set; }
 
         public event UnhandledExceptionEventHandler UnhandledException;
@@ -32,7 +36,7 @@ namespace FuwaTea.Core
             // Configure the logger
             // TODO: Get logging switches from args
             var logLevel = LogEventLevel.Debug;
-            var logDir = MakeAppPath(Environment.SpecialFolder.LocalApplicationData, AppConstants.LogsDirName);
+            var logDir = AppConstants.MakeAppPath(Environment.SpecialFolder.LocalApplicationData, AppConstants.LogsDirName);
             Log.Logger = new LoggerConfiguration().WriteTo.Console().MinimumLevel.Is(logLevel)
                                                   .WriteTo.RollingFileAlternate(logDir, retainedFileCountLimit: 20,
                                                                                 fileSizeLimitBytes: 1048576).MinimumLevel.Is(logLevel)
@@ -64,7 +68,7 @@ namespace FuwaTea.Core
             // Create container
             ExtensibilityContainer = new ExtensibilityContainer();
             // Resolve platform support
-
+            InitPlatform();
             // Process command-line arguments
             if (!ProcessClArgs()) return false;
 
@@ -82,19 +86,19 @@ namespace FuwaTea.Core
             return true;
         }
 
-        private void LoadAssemblies()
+        private void InitPlatform()
         {
-            // Init config first
-            var persistentConfigDir = MakeAppPath(Environment.SpecialFolder.ApplicationData, AppConstants.ConfigDirName);
-            var nonPersistentConfigDir = MakeAppPath(Environment.SpecialFolder.LocalApplicationData, AppConstants.ConfigDirName);
-            ExtensibilityContainer.SetConfigDirs(persistentConfigDir, nonPersistentConfigDir);
-            
-            
+            // Load 
         }
-        
-        public static string MakeAppPath(Environment.SpecialFolder sf, string dirName)
+
+        private void InitConfig()
         {
-            return Path.Combine(Environment.GetFolderPath(sf), AppConstants.ProductName, dirName);
+            // Init config directories first
+            var persistentConfigDir = AppConstants.MakeAppPath(Environment.SpecialFolder.ApplicationData, AppConstants.ConfigDirName);
+            var nonPersistentConfigDir = AppConstants.MakeAppPath(Environment.SpecialFolder.LocalApplicationData, AppConstants.ConfigDirName);
+            ExtensibilityContainer.SetConfigDirs(persistentConfigDir, nonPersistentConfigDir);
+            // Add required dynamic pages
+            ExtensionCache = ExtensibilityContainer.RegisterConfigPage<ExtensionCache>(new ConfigPageMetadata(nameof(ExtensionCache), false, false));
         }
     }
 }
