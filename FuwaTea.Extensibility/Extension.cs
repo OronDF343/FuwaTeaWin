@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using DryIoc.MefAttributedModel;
 using FuwaTea.Extensibility.Attributes;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
+using ExtensionAttribute = FuwaTea.Extensibility.Attributes.ExtensionAttribute;
 
 namespace FuwaTea.Extensibility
 {
@@ -75,14 +77,6 @@ namespace FuwaTea.Extensibility
         /// <exception cref="NullReferenceException">If <see cref="AssemblyName"/> is null.</exception>
         public void Load(bool overrideApiVersionWhitelist = false)
         {
-            // First, load the assembly if needed - Return immediately if failed
-            if (Assembly == null)
-            {
-                AssemblyLoadResult = AssemblyName.TryLoadAssembly(out var a);
-                Assembly = a;
-                if (AssemblyLoadResult != AssemblyLoadResult.OK || Assembly == null) return;
-            }
-
             // Check if the file has changed
             // First, expand the relative path if needed, as only the relative path is saved to the cache
             if (RelativeFilePath != null && FilePath == null)
@@ -96,68 +90,143 @@ namespace FuwaTea.Extensibility
                 // Update last write time
                 LastWriteTimeUtc = lastWrite;
             }
-
-            // Load extension attributes
-            // Only if file has changed, or they are missing
-            if (fileChanged || string.IsNullOrWhiteSpace(Key) || ApiVersion == null)
-            {
-                var extDef = Assembly.GetCustomAttribute<ExtensionAttribute>();
-                if (extDef == null)
-                {
-                    ExtensionCheckResult = ExtensionCheckResult.NotAnExtension;
-                    return;
-                }
-
-                Key = extDef.Key;
-                ApiVersion = extDef.ApiVersion;
-            }
             
-            // Check ApiVersion
-            // Always check
-            if (!BaseUtils.CheckApiVersion(ApiVersion.Value, overrideApiVersionWhitelist))
-            {
-                ExtensionCheckResult = ExtensionCheckResult.ApiVersionMismatch;
-                return;
-            }
+            // Different flow for unchanged / never loaded files
+            // Aggressive inlining will be used to reduce number of method calls at runtime
 
-            // Check platform
-            // Always check, but only get attribute if file changed, or if needed
-            if (fileChanged || PlatformFilter == null)
+            // If changed, or the assembly was never loaded, or the assembly loaded successfully but the extension was never checked:
+            if (fileChanged || AssemblyLoadResult == AssemblyLoadResult.NotLoaded
+                            || AssemblyLoadResult == AssemblyLoadResult.OK && ExtensionCheckResult == ExtensionCheckResult.NotLoaded)
+            {
+                // Everything must be reloaded. Let's reset the properties so nobody gets confused:
+                AssemblyLoadResult = AssemblyLoadResult.NotLoaded;
+                Key = null;
+                ApiVersion = null;
+                PlatformFilter = null;
+                ExtensionCheckResult = ExtensionCheckResult.NotLoaded;
+                Exports = null;
+                BasicInfo = null;
+
+                // Load assembly first
+                LoadAssembly(true);
+
+                // Return immediately if failed
+                if (AssemblyLoadResult != AssemblyLoadResult.OK || Assembly == null) return;
+
+                // Load extension attributes
+                if (!LoadExtDef()) return;
+
+                // Check API version
+                if (!CheckApiVersion(overrideApiVersionWhitelist)) return;
+
+                // Check platform
                 PlatformFilter = Assembly.GetCustomAttribute<PlatformFilterAttribute>();
-            if (PlatformFilter != null)
-            {
-                // First, check the arch
-                if (PlatformFilter.Action == FilterAction.Whitelist
-                    ^ PlatformFilter.ProcessArchitecture.AppliesTo(RuntimeInformation.ProcessArchitecture))
-                {
-                    ExtensionCheckResult = ExtensionCheckResult.ProcessArchMismatch;
-                    return;
-                }
+                if (!CheckPlatform()) return;
 
-                // Next, the OS
-                if (PlatformFilter.Action == FilterAction.Whitelist
-                    ^ RuntimeInformation.IsOSPlatform(PlatformFilter.OSKind.ToOSPlatform()))
-                {
-                    ExtensionCheckResult = ExtensionCheckResult.OSKindMismatch;
-                    return;
-                }
+                // Done checking
+                ExtensionCheckResult = ExtensionCheckResult.OK;
 
-                // Finally, the OS version
-                if (PlatformFilter.Action == FilterAction.Whitelist ^ PlatformFilter.OSVersionMatches())
-                {
-                    ExtensionCheckResult = ExtensionCheckResult.OSVersionMismatch;
-                    return;
-                }
             }
-            ExtensionCheckResult = ExtensionCheckResult.OK;
-            
-            // Read exports
-            // Only if file has changed or if needed (null or empty)
-            if (fileChanged || Exports == null || Exports.Count < 1)
-                Exports = AttributedModel.Scan(new[] { Assembly }).ToList();
+            // If not changed, and we can trust the existing data:
+            else
+            {
+                // Do not load the assembly if we are sure that it isn't an extension
+                if (ExtensionCheckResult == ExtensionCheckResult.NotAnExtension) return;
 
+                // Check API version
+                // Must already be present
+                if (!CheckApiVersion(overrideApiVersionWhitelist)) return;
+
+                // Check platform filter only if it exists
+                if (PlatformFilter != null && !CheckPlatform()) return;
+
+                // Load assembly
+                LoadAssembly(false);
+
+                // Return immediately if failed
+                if (AssemblyLoadResult != AssemblyLoadResult.OK || Assembly == null) return;
+
+                // Done checking
+                ExtensionCheckResult = ExtensionCheckResult.OK;
+            }
+            
+            // Load exports if they aren't already:
+            if (Exports == null) LoadExports();
             // Set IsLoaded
             IsLoaded = true;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private bool LoadExtDef()
+        {
+            var extDef = Assembly.GetCustomAttribute<ExtensionAttribute>();
+            if (extDef == null)
+            {
+                ExtensionCheckResult = ExtensionCheckResult.NotAnExtension;
+                return false;
+            }
+
+            Key = extDef.Key;
+            ApiVersion = extDef.ApiVersion;
+            return true;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void LoadAssembly(bool changed)
+        {
+            // Load the assembly if needed - if file has changed, or if loading hasn't been attempted, or if file wasn't found last time
+            if (Assembly == null && (changed || AssemblyLoadResult == AssemblyLoadResult.NotLoaded
+                                             || AssemblyLoadResult == AssemblyLoadResult.FileNotFound))
+            {
+                AssemblyLoadResult = AssemblyName.TryLoadAssembly(out var a);
+                Assembly = a;
+            }
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private bool CheckApiVersion(bool overrideApiVersionWhitelist)
+        {
+            if (BaseUtils.CheckApiVersion(ApiVersion ?? 0, overrideApiVersionWhitelist)) return true;
+            ExtensionCheckResult = ExtensionCheckResult.ApiVersionMismatch;
+            return false;
+
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private bool CheckPlatform()
+        {
+            if (PlatformFilter == null) return true;
+
+            // First, check the arch
+            if (PlatformFilter.Action == FilterAction.Whitelist
+                ^ PlatformFilter.ProcessArchitecture.AppliesTo(RuntimeInformation.ProcessArchitecture))
+            {
+                ExtensionCheckResult = ExtensionCheckResult.ProcessArchMismatch;
+                return false;
+            }
+
+            // Next, the OS
+            if (PlatformFilter.Action == FilterAction.Whitelist
+                ^ RuntimeInformation.IsOSPlatform(PlatformFilter.OSKind.ToOSPlatform()))
+            {
+                ExtensionCheckResult = ExtensionCheckResult.OSKindMismatch;
+                return false;
+            }
+
+            // Finally, the OS version
+            if (PlatformFilter.Action == FilterAction.Whitelist ^ PlatformFilter.OSVersionMatches())
+            {
+                ExtensionCheckResult = ExtensionCheckResult.OSVersionMismatch;
+                return false;
+            }
+
+            return true;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void LoadExports()
+        {
+            Exports = AttributedModel.Scan(new[] { Assembly }).ToList();
         }
 
         // Metadata properties:

@@ -35,14 +35,16 @@ namespace FuwaTea.Extensibility
             if (!ext.IsLoaded) throw new InvalidOperationException("The Extension must be loaded first! Please call Extension.Load() and verify that no error has occurred.");
             IocContainer.RegisterExports(ext.Exports);
             
-            // Get extension info
-            ext.BasicInfo = IocContainer.Resolve<IExtensionBasicInfo>(ext.Key, IfUnresolved.ReturnDefault) ?? new ExtensionBasicInfo
-            {
-                Author = ext.Assembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company,
-                Description = ext.Assembly.GetCustomAttribute<AssemblyDescriptionAttribute>()?.Description,
-                Title = ext.Assembly.GetCustomAttribute<AssemblyTitleAttribute>()?.Title,
-                Version = ext.Assembly.GetCustomAttribute<AssemblyVersionAttribute>()?.Version
-            };
+            // Get extension info if needed
+            if (ext.BasicInfo == null)
+                ext.BasicInfo = IocContainer.Resolve<IExtensionBasicInfo>(ext.Key, IfUnresolved.ReturnDefault)
+                                ?? new ExtensionBasicInfo
+                                {
+                                    Author = ext.Assembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company,
+                                    Description = ext.Assembly.GetCustomAttribute<AssemblyDescriptionAttribute>()?.Description,
+                                    Title = ext.Assembly.GetCustomAttribute<AssemblyTitleAttribute>()?.Title,
+                                    Version = ext.Assembly.GetCustomAttribute<AssemblyVersionAttribute>()?.Version
+                                };
 
             // AutoInitialize
             // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
