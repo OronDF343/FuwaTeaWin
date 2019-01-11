@@ -5,7 +5,7 @@ namespace FuwaTea.Extensibility.Attributes
     public class ScopedImportAttribute : ImportAttribute
     {
         public ScopedImportAttribute(string module, string area, string name)
-            : base(Utils.MakeScopedKey(module, area, name))
+            : base(BaseUtils.MakeScopedKey(module, area, name))
         {
             Module = module;
             Area = area;

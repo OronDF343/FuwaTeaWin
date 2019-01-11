@@ -16,7 +16,8 @@ namespace FuwaTea.Extensibility
     /// </summary>
     public class Extension
     {
-        private static readonly string MyDirPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
+        private static readonly string MyDirPath =
+            Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
 
         /// <summary>
         /// Empty constructor for deserialization.
@@ -29,13 +30,22 @@ namespace FuwaTea.Extensibility
         /// <summary>
         /// Constructor for DLL files.
         /// </summary>
-        /// <param name="dllFile">The absolute path to the DLL file.</param>
-        public Extension([NotNull] string dllFile)
+        /// <param name="dllFile">The path to the DLL file.</param>
+        /// <param name="isRelative">Whether the specified path is relative or absolute.</param>
+        public Extension([NotNull] string dllFile, bool isRelative)
         {
+            if (isRelative)
+            {
+                RelativeFilePath = dllFile;
+                FilePath = BaseUtils.MakeAbsolutePath(MyDirPath, dllFile);
+            }
+            else
+            {
+                FilePath = dllFile;
+                RelativeFilePath = BaseUtils.MakeRelativePath(MyDirPath, dllFile);
+            }
             LastWriteTimeUtc = new FileInfo(dllFile).LastWriteTimeUtc;
-            FilePath = dllFile;
             AssemblyName = AssemblyName.GetAssemblyName(dllFile);
-            RelativeFilePath = Utils.MakeRelativePath(MyDirPath, dllFile);
         }
 
         /// <summary>
@@ -76,7 +86,7 @@ namespace FuwaTea.Extensibility
             // Check if the file has changed
             // First, expand the relative path if needed, as only the relative path is saved to the cache
             if (RelativeFilePath != null && FilePath == null)
-                FilePath = Utils.MakeAbsolutePath(MyDirPath, RelativeFilePath);
+                FilePath = BaseUtils.MakeAbsolutePath(MyDirPath, RelativeFilePath);
             // If there is no path, assume it has changed
             var fileChanged = FilePath != null;
             if (fileChanged)
@@ -104,7 +114,7 @@ namespace FuwaTea.Extensibility
             
             // Check ApiVersion
             // Always check
-            if (!Utils.CheckApiVersion(ApiVersion.Value, overrideApiVersionWhitelist))
+            if (!BaseUtils.CheckApiVersion(ApiVersion.Value, overrideApiVersionWhitelist))
             {
                 ExtensionCheckResult = ExtensionCheckResult.ApiVersionMismatch;
                 return;

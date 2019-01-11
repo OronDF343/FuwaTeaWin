@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using FuwaTea.Extensibility;
 using FuwaTea.Extensibility.Config;
 using Newtonsoft.Json;
@@ -18,7 +19,8 @@ namespace FuwaTea.Core
     /// </summary>
     public sealed class AppInstance
     {
-        private static readonly string MyDirPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
+        private static readonly string MyDirPath =
+            Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
 
         public IReadOnlyList<string> Args { get; }
         public ExtensibilityContainer ExtensibilityContainer { get; private set; }
@@ -71,7 +73,7 @@ namespace FuwaTea.Core
                                                                                 fileSizeLimitBytes: 1048576).MinimumLevel.Is(logLevel)
                                                   .CreateLogger();
             // Now we are ready for Init()
-            Log.Information("AppInstance has started. Hello, world!");
+            Log.Information("\n*************\nHello, world!\n*************");
         }
         
         // If we remove sealed: protected virtual
@@ -86,7 +88,7 @@ namespace FuwaTea.Core
         /// <returns>A boolean value indicating whether GUI initialization should follow, or if the process should terminate.</returns>
         public bool Init()
         {
-            Log.Debug("Main initialization started");
+            Log.Information("Main initialization has started");
             // Create container
             ExtensibilityContainer = new ExtensibilityContainer();
             // Initialize configuration
@@ -95,25 +97,32 @@ namespace FuwaTea.Core
             InitPlatform();
             // Process command-line arguments
             if (!ProcessClArgs()) return false;
-
+            
             return true;
         }
 
         private void InitConfig()
         {
+            Log.Information("Configuration initialization has started");
             // Init config directories first
             var persistentConfigDir = MakeAppPath(AppConstants.ConfigDirName);
+            Log.Debug("Persistent config dir: " + persistentConfigDir);
             var nonPersistentConfigDir = MakeAppPath(AppConstants.ConfigDirName, false);
+            Log.Debug("Non-persistent config dir: " + nonPersistentConfigDir);
             ExtensibilityContainer.SetConfigDirs(persistentConfigDir, nonPersistentConfigDir);
             // Add required dynamic pages
             ExtensionCache = ExtensibilityContainer.RegisterConfigPage<ExtensionCache>(new ConfigPageMetadata(nameof(ExtensionCache), false, false));
             // Load required pages
             ExtensibilityContainer.LoadConfigPage(nameof(ExtensionCache));
+            Log.Information("Configuration and extension cache have been initialized successfully");
         }
 
         private void InitPlatform()
         {
-            // Load 
+            Log.Information("Platform initialization has started");
+            Log.Information($"I am running on {RuntimeInformation.OSDescription} {RuntimeInformation.OSArchitecture}, {RuntimeInformation.FrameworkDescription} {RuntimeInformation.ProcessArchitecture}");
+            // Load platform DLLs
+
         }
 
         private bool ProcessClArgs()

@@ -12,7 +12,7 @@ namespace FuwaTea.Extensibility
     /// <summary>
     /// Various utility methods and extension methods.
     /// </summary>
-    public static class Utils
+    public static class BaseUtils
     {
         public static AssemblyLoadResult TryLoadAssembly(this AssemblyName an, out Assembly a)
         {

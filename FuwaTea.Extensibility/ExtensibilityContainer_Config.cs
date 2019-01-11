@@ -60,7 +60,7 @@ namespace FuwaTea.Extensibility
         public TConfig RegisterConfigPage<TConfig>(IConfigPageMetadata metadata) where TConfig : IConfigPage
         {
             Register<IConfigPage, TConfig>(metadata.Key, Reuse.Singleton, metadata);
-            Register<TConfig>(metadata.Key, Reuse.Singleton, metadata);
+            Register<TConfig>();
             return IocContainer.Resolve<TConfig>();
         }
 
