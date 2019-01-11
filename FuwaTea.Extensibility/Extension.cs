@@ -16,6 +16,8 @@ namespace FuwaTea.Extensibility
     /// </summary>
     public class Extension
     {
+        private static readonly string MyDirPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
+
         /// <summary>
         /// Empty constructor for deserialization.
         /// </summary>
@@ -27,12 +29,13 @@ namespace FuwaTea.Extensibility
         /// <summary>
         /// Constructor for DLL files.
         /// </summary>
-        /// <param name="dllFile">The DLL file.</param>
+        /// <param name="dllFile">The absolute path to the DLL file.</param>
         public Extension([NotNull] string dllFile)
         {
             LastWriteTimeUtc = new FileInfo(dllFile).LastWriteTimeUtc;
             FilePath = dllFile;
             AssemblyName = AssemblyName.GetAssemblyName(dllFile);
+            RelativeFilePath = Utils.MakeRelativePath(MyDirPath, dllFile);
         }
 
         /// <summary>
@@ -71,6 +74,9 @@ namespace FuwaTea.Extensibility
             }
 
             // Check if the file has changed
+            // First, expand the relative path if needed, as only the relative path is saved to the cache
+            if (RelativeFilePath != null && FilePath == null)
+                FilePath = Utils.MakeAbsolutePath(MyDirPath, RelativeFilePath);
             // If there is no path, assume it has changed
             var fileChanged = FilePath != null;
             if (fileChanged)
@@ -145,12 +151,12 @@ namespace FuwaTea.Extensibility
         }
 
         // Metadata properties:
-
+        
         /// <summary>
-        /// The path to the DLL file.
+        /// The relative path to the DLL file.
         /// </summary>
         [CanBeNull]
-        public string FilePath { get; set; }
+        public string RelativeFilePath { get; set; }
 
         /// <summary>
         /// The time at which the DLL file was last modified, in universal coordinated time (UTC).
@@ -206,6 +212,12 @@ namespace FuwaTea.Extensibility
         public IExtensionBasicInfo BasicInfo { get; set; }
 
         // Non-serialized properties:
+        
+        /// <summary>
+        /// The absolute path to the DLL file.
+        /// </summary>
+        [CanBeNull, JsonIgnore]
+        public string FilePath { get; set; }
 
         /// <summary>
         /// The assembly instance. Will be null if loading has failed.

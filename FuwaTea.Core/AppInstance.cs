@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using FuwaTea.Extensibility;
 using FuwaTea.Extensibility.Config;
+using Newtonsoft.Json;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.RollingFileAlternate;
@@ -16,12 +18,14 @@ namespace FuwaTea.Core
     /// </summary>
     public sealed class AppInstance
     {
+        private static readonly string MyDirPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
+
         public IReadOnlyList<string> Args { get; }
-        public bool IsInstalled { get; private set; }
         public ExtensibilityContainer ExtensibilityContainer { get; private set; }
         internal ExtensionCache ExtensionCache { get; private set; }
+        internal AppSettings AppSettings { get; }
         public IPlatformSupport PlatformSupport { get; private set; }
-
+        
         public event UnhandledExceptionEventHandler UnhandledException;
 
         /// <summary>
@@ -30,28 +34,46 @@ namespace FuwaTea.Core
         /// <param name="mainArgs">The supplied command-line arguments.</param>
         public AppInstance(string[] mainArgs)
         {
-            // Save command-line arguments
-            Args = new ReadOnlyCollection<string>(mainArgs);
-
-            // Configure the logger
-            // TODO: Get logging switches from args
-            var logLevel = LogEventLevel.Debug;
-            var logDir = AppConstants.MakeAppPath(Environment.SpecialFolder.LocalApplicationData, AppConstants.LogsDirName);
-            Log.Logger = new LoggerConfiguration().WriteTo.Console().MinimumLevel.Is(logLevel)
-                                                  .WriteTo.RollingFileAlternate(logDir, retainedFileCountLimit: 20,
-                                                                                fileSizeLimitBytes: 1048576).MinimumLevel.Is(logLevel)
-                                                  .CreateLogger();
-            
             // Track unhandled exceptions
             AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
             {
                 Log.Fatal("An unhandled exception occured: ", (Exception)args.ExceptionObject);
                 OnUnhandledException(args);
             };
+
+            // Create temporary console logger
+            // TODO: Get logging switches from command line args
+            Log.Logger = new LoggerConfiguration().WriteTo.Console().MinimumLevel.Is(LogEventLevel.Error).CreateLogger();
+            
+            // Load appsettings.json
+            try
+            {
+                var file = Path.Combine(MyDirPath, AppConstants.SettingsFileName);
+                AppSettings = JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(file));
+            }
+            catch (Exception e)
+            {
+                // TODO: Is using defaults "silently" really the best option?
+                Log.Error(e, "Failed to load AppSettings, defaults will be used!");
+                AppSettings = new AppSettings();
+                // Don't overwrite the file
+            }
+
+            // Save command-line arguments
+            Args = new ReadOnlyCollection<string>(mainArgs);
+
+            // Configure the logger
+            // TODO: Get logging overrides from command line args
+            var logLevel = AppSettings.DefaultLogLevel;
+            var logDir = MakeAppPath(AppConstants.LogsDirName, false);
+            Log.Logger = new LoggerConfiguration().WriteTo.Console().MinimumLevel.Is(logLevel)
+                                                  .WriteTo.RollingFileAlternate(logDir, retainedFileCountLimit: 20,
+                                                                                fileSizeLimitBytes: 1048576).MinimumLevel.Is(logLevel)
+                                                  .CreateLogger();
             // Now we are ready for Init()
             Log.Information("AppInstance has started. Hello, world!");
         }
-
+        
         // If we remove sealed: protected virtual
         private void OnUnhandledException(UnhandledExceptionEventArgs e)
         {
@@ -67,12 +89,31 @@ namespace FuwaTea.Core
             Log.Debug("Main initialization started");
             // Create container
             ExtensibilityContainer = new ExtensibilityContainer();
+            // Initialize configuration
+            InitConfig();
             // Resolve platform support
             InitPlatform();
             // Process command-line arguments
             if (!ProcessClArgs()) return false;
 
             return true;
+        }
+
+        private void InitConfig()
+        {
+            // Init config directories first
+            var persistentConfigDir = MakeAppPath(AppConstants.ConfigDirName);
+            var nonPersistentConfigDir = MakeAppPath(AppConstants.ConfigDirName, false);
+            ExtensibilityContainer.SetConfigDirs(persistentConfigDir, nonPersistentConfigDir);
+            // Add required dynamic pages
+            ExtensionCache = ExtensibilityContainer.RegisterConfigPage<ExtensionCache>(new ConfigPageMetadata(nameof(ExtensionCache), false, false));
+            // Load required pages
+            ExtensibilityContainer.LoadConfigPage(nameof(ExtensionCache));
+        }
+
+        private void InitPlatform()
+        {
+            // Load 
         }
 
         private bool ProcessClArgs()
@@ -86,19 +127,18 @@ namespace FuwaTea.Core
             return true;
         }
 
-        private void InitPlatform()
+        /// <summary>
+        /// Generates a path to an application data directory.
+        /// </summary>
+        /// <param name="dirName">The desired name of the directory.</param>
+        /// <param name="isPersistent">Whether the directory should be in a persistent location.</param>
+        /// <returns></returns>
+        public string MakeAppPath(string dirName, bool isPersistent = true)
         {
-            // Load 
-        }
-
-        private void InitConfig()
-        {
-            // Init config directories first
-            var persistentConfigDir = AppConstants.MakeAppPath(Environment.SpecialFolder.ApplicationData, AppConstants.ConfigDirName);
-            var nonPersistentConfigDir = AppConstants.MakeAppPath(Environment.SpecialFolder.LocalApplicationData, AppConstants.ConfigDirName);
-            ExtensibilityContainer.SetConfigDirs(persistentConfigDir, nonPersistentConfigDir);
-            // Add required dynamic pages
-            ExtensionCache = ExtensibilityContainer.RegisterConfigPage<ExtensionCache>(new ConfigPageMetadata(nameof(ExtensionCache), false, false));
+            return AppSettings.IsInstalled
+                       ? Path.Combine(Environment.GetFolderPath(isPersistent ? Environment.SpecialFolder.ApplicationData : Environment.SpecialFolder.LocalApplicationData),
+                                      AppConstants.ProductName, dirName)
+                       : Path.Combine(MyDirPath, dirName); // TODO: Is this the best idea? Persistent and non-persistent data will share the same directory in portable mode!
         }
     }
 }
