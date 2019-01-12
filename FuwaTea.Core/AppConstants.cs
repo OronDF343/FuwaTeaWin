@@ -18,6 +18,7 @@
             public const string FileAssociationsUi = "--file-associations-ui";
             public const string ShouldBeAdmin = "--admin";
             public const string SetLanguage = "--set-language";
+            public const string Wait = "--wait";
         }
     }
 }

@@ -15,5 +15,6 @@ namespace FuwaTea.Core
         }
         public bool IsInstalled { get; set; }
         public LogEventLevel DefaultLogLevel { get; set; }
+        public int InstanceCreationTimeout { get; set; }
     }
 }

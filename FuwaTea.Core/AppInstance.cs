@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.IO.Pipes;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading;
 using DryIoc;
 using FuwaTea.Extensibility;
 using FuwaTea.Extensibility.Config;
@@ -18,16 +21,21 @@ namespace FuwaTea.Core
     /// <summary>
     /// The application instance context.
     /// </summary>
-    public sealed class AppInstance
+    public sealed class AppInstance : IDisposable
     {
         private static readonly string MyDirPath =
             Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
+
+        private Mutex _mutex;
+        private string _mutexName;
 
         public IReadOnlyList<string> Args { get; }
         public ExtensibilityContainer ExtensibilityContainer { get; private set; }
         internal ExtensionCache ExtensionCache { get; private set; }
         internal AppSettings AppSettings { get; }
         public IPlatformSupport PlatformSupport { get; private set; }
+
+        public NamedPipeServerStream IpcServer { get; private set; }
         
         public event UnhandledExceptionEventHandler UnhandledException;
 
@@ -98,7 +106,10 @@ namespace FuwaTea.Core
             InitPlatform();
             // Process command-line arguments
             if (!ProcessClArgs()) return false;
-            // 
+            // Initialize the mutex (single-instance application)
+            // If we successfully took ownership of the mutex, initialize the IPC server (named pipe)
+            if (InitMutex()) InitIpcServer();
+            else return false;
 
             return true;
         }
@@ -138,9 +149,7 @@ namespace FuwaTea.Core
             PlatformSupport = ExtensibilityContainer.OpenScope().Resolve<IPlatformSupport>(IfUnresolved.ReturnDefaultIfNotRegistered);
             if (PlatformSupport == null)
             {
-                const string msg = "Platform support not available, or has failed to load!";
-                Log.Error(msg);
-                throw new PlatformNotSupportedException(msg);
+                throw new PlatformNotSupportedException("Platform support not available, or has failed to load!");
             }
         }
 
@@ -154,7 +163,61 @@ namespace FuwaTea.Core
                 return false;
             return true;
         }
-        
+
+        private bool InitMutex()
+        {
+            var mutexCreated = false;
+            _mutexName = AppConstants.ProductName + "|" + (AppSettings.IsInstalled ? "Installed" : "Portable");
+            try {
+                _mutex = new Mutex(true, _mutexName, out mutexCreated);
+            }
+            catch (UnauthorizedAccessException uae) {
+                Log.Error("Failed to gain access to the Mutex!", uae);
+            }
+            catch (IOException ie) {
+                Log.Error("Win32 error while opening the Mutex!", ie);
+            }
+            catch (WaitHandleCannotBeOpenedException whe) {
+                Log.Error("Failed to create the Mutex!", whe);
+            }
+            //Message = (int)NativeMethods.RegisterWindowMessage(mutexName);
+
+            if (mutexCreated) return true;
+            if (!Args.Contains(AppConstants.Arguments.Wait))
+            {
+                Log.Information("Another instance is already open - send our arguments to it if needed");
+                _mutex = null;
+                if (Args.Count > 1) SendArgsIpc();
+                return false;
+            }
+            try
+            {
+                if (!_mutex.WaitOne(AppSettings.InstanceCreationTimeout))
+                    throw new TimeoutException("Failed to create an instance: The operation has timed out.");
+            }
+            catch (AbandonedMutexException ame)
+            {
+                Log.Error("Mutex was abandoned!", ame);
+            }
+            if (Mutex.TryOpenExisting(_mutexName, out _mutex)) return true;
+            _mutex = new Mutex(true, _mutexName, out mutexCreated);
+            if (mutexCreated) return true;
+            throw new UnauthorizedAccessException("Failed to create an instance: Cannot open or create the Mutex!");
+        }
+
+        private void SendArgsIpc()
+        {
+            var ipcClient = new NamedPipeClientStream(_mutexName, _mutexName, PipeDirection.Out);
+            var data = Encoding.UTF8.GetBytes(string.Join("\n", Args));
+            ipcClient.Write(data, 0, data.Length);
+            ipcClient.Dispose();
+        }
+
+        private void InitIpcServer()
+        {
+            IpcServer = new NamedPipeServerStream(_mutexName, PipeDirection.In, 1, PipeTransmissionMode.Message);
+        }
+
         /// <summary>
         /// Generates a path to an application data directory.
         /// </summary>
@@ -177,6 +240,13 @@ namespace FuwaTea.Core
         public string MakeAppDirPath(string dirName)
         {
             return Path.Combine(MyDirPath, dirName);
+        }
+
+        public void Dispose()
+        {
+            IpcServer?.Dispose();
+            _mutex?.Dispose();
+            ExtensibilityContainer?.Dispose();
         }
     }
 }
