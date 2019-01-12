@@ -108,7 +108,7 @@ namespace FuwaTea.Extensibility
                 BasicInfo = null;
 
                 // Load assembly first
-                LoadAssembly(true);
+                LoadAssembly();
 
                 // Return immediately if failed
                 if (AssemblyLoadResult != AssemblyLoadResult.OK || Assembly == null) return;
@@ -133,18 +133,29 @@ namespace FuwaTea.Extensibility
                 // Do not load the assembly if we are sure that it isn't an extension
                 if (ExtensionCheckResult == ExtensionCheckResult.NotAnExtension) return;
 
-                // Check API version
-                // Must already be present
-                if (!CheckApiVersion(overrideApiVersionWhitelist)) return;
+                // Check API version if it exists
+                if (ApiVersion != null && !CheckApiVersion(overrideApiVersionWhitelist)) return;
 
                 // Check platform filter only if it exists
                 if (PlatformFilter != null && !CheckPlatform()) return;
 
-                // Load assembly
-                LoadAssembly(false);
+                // Load assembly - if loading hasn't been attempted, or if file wasn't found last time
+                if (AssemblyLoadResult == AssemblyLoadResult.NotLoaded
+                    || AssemblyLoadResult == AssemblyLoadResult.FileNotFound)
+                    LoadAssembly();
 
                 // Return immediately if failed
                 if (AssemblyLoadResult != AssemblyLoadResult.OK || Assembly == null) return;
+                
+                // Get and check API version if we haven't yet
+                if (ApiVersion == null && (!LoadExtDef() || !CheckApiVersion(overrideApiVersionWhitelist))) return;
+
+                // Check platform if we haven't yet
+                if (PlatformFilter == null)
+                {
+                    PlatformFilter = Assembly.GetCustomAttribute<PlatformFilterAttribute>();
+                    if (!CheckPlatform()) return;
+                }
 
                 // Done checking
                 ExtensionCheckResult = ExtensionCheckResult.OK;
@@ -172,15 +183,12 @@ namespace FuwaTea.Extensibility
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void LoadAssembly(bool changed)
+        private void LoadAssembly()
         {
-            // Load the assembly if needed - if file has changed, or if loading hasn't been attempted, or if file wasn't found last time
-            if (Assembly == null && (changed || AssemblyLoadResult == AssemblyLoadResult.NotLoaded
-                                             || AssemblyLoadResult == AssemblyLoadResult.FileNotFound))
-            {
-                AssemblyLoadResult = AssemblyName.TryLoadAssembly(out var a);
-                Assembly = a;
-            }
+            // Load the assembly if needed
+            if (Assembly != null) return;
+            AssemblyLoadResult = AssemblyName.TryLoadAssembly(out var a);
+            Assembly = a;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
