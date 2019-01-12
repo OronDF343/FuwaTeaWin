@@ -150,7 +150,7 @@ namespace FuwaTea.Extensibility
                 // Get and check API version if we haven't yet
                 if (ApiVersion == null && (!LoadExtDef() || !CheckApiVersion(overrideApiVersionWhitelist))) return;
 
-                // Check platform if we haven't yet
+                // Get and check platform if we haven't yet
                 if (PlatformFilter == null)
                 {
                     PlatformFilter = Assembly.GetCustomAttribute<PlatformFilterAttribute>();
@@ -222,6 +222,7 @@ namespace FuwaTea.Extensibility
             }
 
             // Finally, the OS version
+            // TODO: Test this on Linux
             if (PlatformFilter.Action == FilterAction.Whitelist ^ PlatformFilter.OSVersionMatches())
             {
                 ExtensionCheckResult = ExtensionCheckResult.OSVersionMismatch;

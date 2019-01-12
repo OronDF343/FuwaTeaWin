@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using DryIoc;
 using FuwaTea.Extensibility;
 using FuwaTea.Extensibility.Config;
 using Newtonsoft.Json;
@@ -67,7 +68,7 @@ namespace FuwaTea.Core
             // Configure the logger
             // TODO: Get logging overrides from command line args
             var logLevel = AppSettings.DefaultLogLevel;
-            var logDir = MakeAppPath(AppConstants.LogsDirName, false);
+            var logDir = MakeAppDataPath(AppConstants.LogsDirName, false);
             Log.Logger = new LoggerConfiguration().WriteTo.Console().MinimumLevel.Is(logLevel)
                                                   .WriteTo.RollingFileAlternate(logDir, retainedFileCountLimit: 20,
                                                                                 fileSizeLimitBytes: 1048576).MinimumLevel.Is(logLevel)
@@ -97,7 +98,8 @@ namespace FuwaTea.Core
             InitPlatform();
             // Process command-line arguments
             if (!ProcessClArgs()) return false;
-            
+            // 
+
             return true;
         }
 
@@ -105,9 +107,9 @@ namespace FuwaTea.Core
         {
             Log.Information("Configuration initialization has started");
             // Init config directories first
-            var persistentConfigDir = MakeAppPath(AppConstants.ConfigDirName);
+            var persistentConfigDir = MakeAppDataPath(AppConstants.ConfigDirName);
             Log.Debug("Persistent config dir: " + persistentConfigDir);
-            var nonPersistentConfigDir = MakeAppPath(AppConstants.ConfigDirName, false);
+            var nonPersistentConfigDir = MakeAppDataPath(AppConstants.ConfigDirName, false);
             Log.Debug("Non-persistent config dir: " + nonPersistentConfigDir);
             ExtensibilityContainer.SetConfigDirs(persistentConfigDir, nonPersistentConfigDir);
             // Add required dynamic pages
@@ -122,7 +124,24 @@ namespace FuwaTea.Core
             Log.Information("Platform initialization has started");
             Log.Information($"I am running on {RuntimeInformation.OSDescription} {RuntimeInformation.OSArchitecture}, {RuntimeInformation.FrameworkDescription} {RuntimeInformation.ProcessArchitecture}");
             // Load platform DLLs
+            foreach (var f in Directory.EnumerateFiles(MyDirPath,
+                                                       Assembly.GetExecutingAssembly().GetName().Name
+                                                       + ".Platform.*.dll", SearchOption.TopDirectoryOnly))
+            {
+                Log.Debug($"Found platform DLL: {f}");
+                var ext = ExtensionCache.CreateExtension(f);
+                ext.Load();
+                Log.Debug($"IsLoaded: {ext.IsLoaded}");
+                if (ext.IsLoaded) ExtensibilityContainer.RegisterExtension(ext);
+            }
 
+            PlatformSupport = ExtensibilityContainer.OpenScope().Resolve<IPlatformSupport>(IfUnresolved.ReturnDefaultIfNotRegistered);
+            if (PlatformSupport == null)
+            {
+                const string msg = "Platform support not available, or has failed to load!";
+                Log.Error(msg);
+                throw new PlatformNotSupportedException(msg);
+            }
         }
 
         private bool ProcessClArgs()
@@ -135,19 +154,29 @@ namespace FuwaTea.Core
                 return false;
             return true;
         }
-
+        
         /// <summary>
         /// Generates a path to an application data directory.
         /// </summary>
         /// <param name="dirName">The desired name of the directory.</param>
         /// <param name="isPersistent">Whether the directory should be in a persistent location.</param>
         /// <returns></returns>
-        public string MakeAppPath(string dirName, bool isPersistent = true)
+        public string MakeAppDataPath(string dirName, bool isPersistent = true)
         {
             return AppSettings.IsInstalled
                        ? Path.Combine(Environment.GetFolderPath(isPersistent ? Environment.SpecialFolder.ApplicationData : Environment.SpecialFolder.LocalApplicationData),
                                       AppConstants.ProductName, dirName)
-                       : Path.Combine(MyDirPath, dirName); // TODO: Is this the best idea? Persistent and non-persistent data will share the same directory in portable mode!
+                       : MakeAppDirPath(dirName); // TODO: Is this the best idea? Persistent and non-persistent data will share the same directory in portable mode!
+        }
+
+        /// <summary>
+        /// Generates a path to the application's home directory.
+        /// </summary>
+        /// <param name="dirName">The desired name of the directory.</param>
+        /// <returns></returns>
+        public string MakeAppDirPath(string dirName)
+        {
+            return Path.Combine(MyDirPath, dirName);
         }
     }
 }

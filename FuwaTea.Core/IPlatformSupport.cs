@@ -2,7 +2,6 @@
 {
     public interface IPlatformSupport
     {
-        bool IsInstalled { get; }
-
+        
     }
 }

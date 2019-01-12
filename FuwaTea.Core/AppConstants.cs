@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-
-namespace FuwaTea.Core
+﻿namespace FuwaTea.Core
 {
     public static class AppConstants
     {
@@ -10,6 +7,7 @@ namespace FuwaTea.Core
 
         public const string LogsDirName = "Logs";
         public const string ConfigDirName = "Config";
+        public const string ExtensionsDirName = "Extensions";
 
         internal const string SettingsFileName = "appsettings.json";
 
