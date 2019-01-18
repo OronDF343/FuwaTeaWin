@@ -111,9 +111,11 @@ namespace FuwaTea.Core
             if (InitMutex()) InitIpcServer();
             else return false;
             // Load core DLLs (if not loaded yet)
-            InitCore();
+            LoadCore();
             // Load extensions
-            InitExtensions();
+            LoadExtensions();
+            // Load remaining configs
+            LoadConfigs();
             
             Log.Information("Main initialization has finished all tasks");
             return true;
@@ -217,16 +219,22 @@ namespace FuwaTea.Core
             IpcServer = new NamedPipeServerStream(_mutexName, PipeDirection.In, 1, PipeTransmissionMode.Message);
         }
 
-        private void InitCore()
+        private void LoadCore()
         {
-            Log.Information("Core initialization has started");
+            Log.Information("Loading core DLLs");
             EnumerateDlls(MyDirPath, "*.dll", SearchOption.TopDirectoryOnly);
         }
 
-        private void InitExtensions()
+        private void LoadExtensions()
         {
-            Log.Information("Extension initialization has started");
+            Log.Information("Loading extensions");
             EnumerateDlls(MakeAppDirPath(AppConstants.ExtensionsDirName), "*.dll", SearchOption.AllDirectories);
+        }
+
+        private void LoadConfigs()
+        {
+            Log.Information("Loading all configuration pages");
+            ExtensibilityContainer.LoadAllConfigPages();
         }
 
         /// <summary>
