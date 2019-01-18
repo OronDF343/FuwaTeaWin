@@ -5,6 +5,7 @@ using FuwaTea.Extensibility;
 using FuwaTea.Extensibility.Attributes;
 using Sage.ViewModels;
 using Sage.Views;
+using Serilog;
 
 [assembly: Extension("UI", ExtensibilityConstants.CurrentApiVersion)]
 
@@ -17,7 +18,8 @@ namespace Sage
         private static void Main(string[] args)
         {
             AppInstance = new AppInstance(args);
-            if (!AppInstance.Init()) return; // 
+            if (!AppInstance.Init()) return;
+            Log.Information("Building Avalonia app with main window");
             BuildAvaloniaApp().Start<MainWindow>(() => new MainWindowViewModel());
         }
 

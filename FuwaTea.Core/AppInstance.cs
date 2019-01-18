@@ -110,7 +110,12 @@ namespace FuwaTea.Core
             // If we successfully took ownership of the mutex, initialize the IPC server (named pipe)
             if (InitMutex()) InitIpcServer();
             else return false;
-
+            // Load core DLLs (if not loaded yet)
+            InitCore();
+            // Load extensions
+            InitExtensions();
+            
+            Log.Information("Main initialization has finished all tasks");
             return true;
         }
 
@@ -135,16 +140,8 @@ namespace FuwaTea.Core
             Log.Information("Platform initialization has started");
             Log.Information($"I am running on {RuntimeInformation.OSDescription} {RuntimeInformation.OSArchitecture}, {RuntimeInformation.FrameworkDescription} {RuntimeInformation.ProcessArchitecture}");
             // Load platform DLLs
-            foreach (var f in Directory.EnumerateFiles(MyDirPath,
-                                                       Assembly.GetExecutingAssembly().GetName().Name
-                                                       + ".Platform.*.dll", SearchOption.TopDirectoryOnly))
-            {
-                Log.Debug($"Found platform DLL: {f}");
-                var ext = ExtensionCache.CreateExtension(f);
-                ext.Load();
-                Log.Debug($"IsLoaded: {ext.IsLoaded}");
-                if (ext.IsLoaded) ExtensibilityContainer.RegisterExtension(ext);
-            }
+            EnumerateDlls(MyDirPath, Assembly.GetExecutingAssembly().GetName().Name
+                                     + ".Platform.*.dll", SearchOption.TopDirectoryOnly);
 
             PlatformSupport = ExtensibilityContainer.OpenScope().Resolve<IPlatformSupport>(IfUnresolved.ReturnDefaultIfNotRegistered);
             if (PlatformSupport == null)
@@ -155,6 +152,7 @@ namespace FuwaTea.Core
 
         private bool ProcessClArgs()
         {
+            // TODO: Implement
             if (Args.Contains(AppConstants.Arguments.UpdateFileAssociations))
                 return false;
             if (Args.Contains(AppConstants.Arguments.DeleteFileAssociations))
@@ -208,6 +206,7 @@ namespace FuwaTea.Core
         private void SendArgsIpc()
         {
             var ipcClient = new NamedPipeClientStream(_mutexName, _mutexName, PipeDirection.Out);
+            // TODO: This is temporary
             var data = Encoding.UTF8.GetBytes(string.Join("\n", Args));
             ipcClient.Write(data, 0, data.Length);
             ipcClient.Dispose();
@@ -216,6 +215,18 @@ namespace FuwaTea.Core
         private void InitIpcServer()
         {
             IpcServer = new NamedPipeServerStream(_mutexName, PipeDirection.In, 1, PipeTransmissionMode.Message);
+        }
+
+        private void InitCore()
+        {
+            Log.Information("Core initialization has started");
+            EnumerateDlls(MyDirPath, "*.dll", SearchOption.TopDirectoryOnly);
+        }
+
+        private void InitExtensions()
+        {
+            Log.Information("Extension initialization has started");
+            EnumerateDlls(MakeAppDirPath(AppConstants.ExtensionsDirName), "*.dll", SearchOption.AllDirectories);
         }
 
         /// <summary>
@@ -240,6 +251,26 @@ namespace FuwaTea.Core
         public string MakeAppDirPath(string dirName)
         {
             return Path.Combine(MyDirPath, dirName);
+        }
+
+        private void EnumerateDlls(string baseDir, string searchPattern, SearchOption searchOption)
+        {
+            // Load core DLLs
+            foreach (var f in Directory.EnumerateFiles(baseDir, searchPattern, searchOption))
+            {
+                Log.Debug($"Found DLL: {f}");
+                // Find in cache or create new
+                var ext = ExtensionCache.CreateExtension(f);
+                // Don't load extension if already loaded
+                if (!string.IsNullOrEmpty(ext.Key) && ExtensibilityContainer.LoadedExtensions.ContainsKey(ext.Key))
+                {
+                    Log.Debug($"Already loaded key, skipping: {ext.Key}");
+                    continue;
+                }
+                ext.Load();
+                Log.Debug($"IsLoaded: {ext.IsLoaded}");
+                if (ext.IsLoaded) ExtensibilityContainer.RegisterExtension(ext);
+            }
         }
 
         public void Dispose()

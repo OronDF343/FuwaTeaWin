@@ -29,10 +29,11 @@ namespace FuwaTea.Extensibility
         /// </summary>
         /// <remarks>Note: You must call <see cref="Extension.Load"/> before calling this method.</remarks>
         /// <param name="ext">The extension to register.</param>
-        /// <exception cref="InvalidOperationException">If the <see cref="Extension"/> hasn't been successfully loaded</exception>
+        /// <exception cref="InvalidOperationException">If the <see cref="Extension"/> hasn't been successfully loaded -or- an extension with the same key already exists</exception>
         public void RegisterExtension(Extension ext)
         {
             if (!ext.IsLoaded) throw new InvalidOperationException("The Extension must be loaded first! Please call Extension.Load() and verify that no error has occurred.");
+            if (_loadedExtensions.ContainsKey(ext.Key)) throw new InvalidOperationException("An extension with the same key already exists.");
             IocContainer.RegisterExports(ext.Exports);
             
             // Get extension info if needed
