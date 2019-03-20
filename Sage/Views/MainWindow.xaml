@@ -5,11 +5,16 @@
         HasSystemDecorations="False"
         ShowInTaskbar="True"
         Title="Sage">
-  
   <Design.DataContext>
     <vm:MainWindowViewModel/>
   </Design.DataContext>
-  
-  <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-  
+  <Border Background="{DynamicResource ThemeBackgroundBrush}" BorderBrush="{DynamicResource ThemeBorderHighBrush}" BorderThickness="{DynamicResource ThemeBorderThickness}">
+    <!--<TextBlock Text="{Binding Greeting}" Margin="16"/>-->
+    <StackPanel Orientation="Vertical">
+      <Grid></Grid>
+      <UniformGrid Rows="1" Columns="10">
+        <Button Classes="icon prevIcon" Height="32" Width="32"/>
+      </UniformGrid>
+    </StackPanel>
+  </Border>
 </Window>
