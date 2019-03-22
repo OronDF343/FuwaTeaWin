@@ -148,7 +148,7 @@ namespace FuwaTea.Core
             PlatformSupport = ExtensibilityContainer.OpenScope().Resolve<IPlatformSupport>(IfUnresolved.ReturnDefaultIfNotRegistered);
             if (PlatformSupport == null)
             {
-                throw new PlatformNotSupportedException("Platform support not available, or has failed to load!");
+                //TODO IMPORTANT throw new PlatformNotSupportedException("Platform support not available, or has failed to load!");
             }
         }
 
@@ -245,10 +245,12 @@ namespace FuwaTea.Core
         /// <returns></returns>
         public string MakeAppDataPath(string dirName, bool isPersistent = true)
         {
-            return AppSettings.IsInstalled
+            var r = AppSettings.IsInstalled
                        ? Path.Combine(Environment.GetFolderPath(isPersistent ? Environment.SpecialFolder.ApplicationData : Environment.SpecialFolder.LocalApplicationData),
                                       AppConstants.ProductName, dirName)
                        : MakeAppDirPath(dirName); // TODO: Is this the best idea? Persistent and non-persistent data will share the same directory in portable mode!
+            Directory.CreateDirectory(r);
+            return r;
         }
 
         /// <summary>
@@ -258,7 +260,9 @@ namespace FuwaTea.Core
         /// <returns></returns>
         public string MakeAppDirPath(string dirName)
         {
-            return Path.Combine(MyDirPath, dirName);
+            var r = Path.Combine(MyDirPath, dirName);
+            Directory.CreateDirectory(r);
+            return r;
         }
 
         private void EnumerateDlls(string baseDir, string searchPattern, SearchOption searchOption)

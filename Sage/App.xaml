@@ -8,6 +8,7 @@
     <Application.Styles>
         <StyleInclude Source="resm:Avalonia.Themes.Default.DefaultTheme.xaml?assembly=Avalonia.Themes.Default"/>
         <StyleInclude Source="resm:Sage.Themes.Default.xaml?assembly=Sage"/>
+        <StyleInclude Source="resm:Sage.Themes.Icons.Default.xaml?assembly=Sage"/>
         <StyleInclude Source="resm:Sage.Themes.Accents.BaseDark.xaml?assembly=Sage"/>
     </Application.Styles>
 </Application>

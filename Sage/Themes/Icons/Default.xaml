@@ -1,0 +1,17 @@
+﻿<Style xmlns="https://github.com/avaloniaui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <Style.Resources>
+        <Path x:Key="PreviousIcon" Stretch="Uniform" Fill="{DynamicResource ThemeForegroundBrush}"
+              Data="M94.786,369.982V256V142.019H50v227.964H94.786z M278.492,382.991L94.786,256.001l183.706-126.992V382.991z M462,382.991l-183.706-126.99L462,129.009V382.991z" />
+        <Path x:Key="PlayIcon" Stretch="Uniform" Fill="{DynamicResource ThemeForegroundBrush}"
+              Data="M88.008,462V50l335.984,206.002L88.008,462z" />
+        <Path x:Key="PauseIcon" Stretch="Uniform" Fill="{DynamicResource ThemeForegroundBrush}"
+              Data="M217.679,462h-120V50h120V462z M414.321,50h-120v412h120V50z" />
+        <Path x:Key="NextIcon" Stretch="Uniform" Fill="{DynamicResource ThemeForegroundBrush}"
+              Data="M462,369.982V142.019h-44.786V256v113.982H462z M233.508,129.009l183.706,126.992l-183.706,126.99V129.009z  M50,129.009l183.706,126.992L50,382.991V129.009z" />
+        <Border x:Key="StopIcon" BorderThickness="0" Background="Transparent" Padding="6">
+            <Rectangle Fill="{DynamicResource ThemeForegroundBrush}" Width="20" Height="20" Stretch="Uniform"/>
+        </Border>
+    </Style.Resources>
+</Style>
