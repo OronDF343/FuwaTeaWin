@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2026
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28721.148
 MinimumVisualStudioVersion = 12.0.31101.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FTWPlayer", "FTWPlayer\FTWPlayer.csproj", "{D14F368C-AB9B-4DF3-A8F7-CF42B66F7E40}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -26,6 +26,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sage.Audio", "Sage.Audio\Sage.Audio.csproj", "{678E65DB-EA46-4F3D-8105-C864BE36E206}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sage", "Sage\Sage.csproj", "{3ED34D7A-AA08-4404-92D5-ECDFB7721DC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sage.Core.Platform.Windows", "Sage.Core.Platform.Windows\Sage.Core.Platform.Windows.csproj", "{DB5702B2-7824-478D-A5B6-F1BADF98B602}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +67,10 @@ Global
 		{3ED34D7A-AA08-4404-92D5-ECDFB7721DC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3ED34D7A-AA08-4404-92D5-ECDFB7721DC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3ED34D7A-AA08-4404-92D5-ECDFB7721DC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB5702B2-7824-478D-A5B6-F1BADF98B602}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB5702B2-7824-478D-A5B6-F1BADF98B602}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB5702B2-7824-478D-A5B6-F1BADF98B602}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB5702B2-7824-478D-A5B6-F1BADF98B602}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

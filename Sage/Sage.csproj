@@ -9,7 +9,10 @@
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.1|AnyCPU'">
     <DebugType>none</DebugType>
     <DebugSymbols>false</DebugSymbols>
-    <OutputPath />
+    <OutputPath>..\bin\Release\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.1|AnyCPU'">
+    <OutputPath>..\bin\Debug\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Compile Update="**\*.xaml.cs">
@@ -44,7 +47,12 @@
     <PackageReference Include="Serilog" Version="2.8.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FuwaTea.Lib\FuwaTea.Lib.csproj" />
+    <ProjectReference Include="..\Sage.Audio\Sage.Audio.csproj" />
+    <ProjectReference Include="..\Sage.Core.Platform.Windows\Sage.Core.Platform.Windows.csproj" />
     <ProjectReference Include="..\Sage.Core\Sage.Core.csproj" />
+    <ProjectReference Include="..\Sage.Extensibility\Sage.Extensibility.csproj" />
+    <ProjectReference Include="..\WavpackDecoder\WavpackDecoder.csproj" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Themes\Icons\Default.xaml">

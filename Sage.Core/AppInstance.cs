@@ -148,7 +148,7 @@ namespace Sage.Core
             PlatformSupport = ExtensibilityContainer.OpenScope().Resolve<IPlatformSupport>(IfUnresolved.ReturnDefaultIfNotRegistered);
             if (PlatformSupport == null)
             {
-                //TODO IMPORTANT throw new PlatformNotSupportedException("Platform support not available, or has failed to load!");
+                throw new PlatformNotSupportedException("Platform support not available, or has failed to load!");
             }
         }
 
