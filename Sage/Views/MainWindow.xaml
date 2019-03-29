@@ -8,7 +8,7 @@
         HasSystemDecorations="False"
         ShowInTaskbar="True"
         Title="Sage"
-        Height="38" Width="540">
+        Height="34" Width="540">
     <Window.Resources>
         <helpers:MultiplyConverter x:Key="MultiplyConverter" />
         <helpers:ThicknessConverter x:Key="ThicknessConverter" />
@@ -24,39 +24,28 @@
         <helpers:WindowDragBehavior />
     </i:Interaction.Behaviors>
     <Border Background="{DynamicResource ThemeBackgroundBrush}" BorderBrush="{DynamicResource ThemeBorderHighBrush}"
-            BorderThickness="{DynamicResource ThemeBorderThickness}">
+            BorderThickness="{DynamicResource ThemeBorderThickness}" VerticalAlignment="Stretch">
         <!--<TextBlock Text="{Binding Greeting}" Margin="16"/>-->
         <StackPanel Orientation="Vertical">
-            <Grid Height="20">
-                <TextBlock>
-                    <TextBlock.Text>
-                        <MultiBinding Converter="{StaticResource DivideMultiConverter}">
-                            <MultiBinding Converter="{StaticResource AddMultiConverter}">
-                                <Binding Path="#TextBlob.Bounds.Width"/>
-                                <Binding Path="#TextBlobClone.Margin.Left"/>
-                            </MultiBinding>
-                            <Binding Path="ScrollingVelocity"/>
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
-                <TextBlock>
-                    <TextBlock.Text>
-                        <MultiBinding Converter="{StaticResource AddMultiConverter}">
-                            <Binding Path="MinScrollingMargin"/>
-                            <Binding Path="ScrollingVelocity"/>
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
-            </Grid>
+            <Grid />
             <Grid ColumnDefinitions="*,Auto" HorizontalAlignment="Stretch">
                 <Canvas x:Name="ScrollingHost" ClipToBounds="True" Margin="2">
                     <StackPanel Orientation="Horizontal">
                         <StackPanel.Styles>
                             <Style Selector="StackPanel">
                                 <Style.Animations>
-                                    <Animation IterationCount="Infinite">
-                                        <Animation.Duration>0:0:3
+                                    <Animation IterationCount="Infinite" Duration="0:0:3">
+                                        <!-- TODO: Binding as follows:
+                                        <Animation.Duration>
+                                            <MultiBinding Converter="{StaticResource DivideMultiConverter}">
+                                                <MultiBinding Converter="{StaticResource AddMultiConverter}">
+                                                    <Binding Path="#TextBlob.Bounds.Width"/>
+                                                    <Binding Path="#TextBlobClone.Margin.Left"/>
+                                                </MultiBinding>
+                                                <Binding Path="ScrollingVelocity"/>
+                                            </MultiBinding>
                                         </Animation.Duration>
+                                        -->
                                         <KeyFrame Cue="0%">
                                             <Setter Property="Canvas.Right"
                                                     Value="{Binding #TextBlob.Bounds.Width, Converter={StaticResource MultiplyConverter}, ConverterParameter=-1}" />
@@ -84,10 +73,7 @@
                                             <helpers:ConverterWithParameter Converter="{StaticResource ThicknessConverter}" Parameter="Left"/>
                                         </helpers:ConverterChain>
                                     </MultiBinding.Converter>
-                                    <MultiBinding>
-                                        <MultiBinding.Converter>
-                                            <helpers:MultiConverterWithParameter Converter="{StaticResource AddMultiConverter}" Parameter="/2"/>
-                                        </MultiBinding.Converter>
+                                    <MultiBinding Converter="{StaticResource AddMultiConverter}" ConverterParameter="/2">
                                         <Binding Path="#ScrollingHost.Bounds.Width"/>
                                         <Binding Path="#TextBlob.Bounds.Width" Converter="{StaticResource MultiplyConverter}" ConverterParameter="-1"/>
                                     </MultiBinding>

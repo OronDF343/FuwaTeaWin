@@ -57,14 +57,14 @@
     <Reference Include="CSCore, Version=1.2.1.2, Culture=neutral, PublicKeyToken=5a08f2b6f4415dea, processorArchitecture=MSIL">
       <HintPath>..\packages\CSCore.1.2.1.2\lib\net35-client\CSCore.dll</HintPath>
     </Reference>
-    <Reference Include="DryIoc, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DryIoc.dll.3.0.2\lib\netstandard2.0\DryIoc.dll</HintPath>
+    <Reference Include="DryIoc, Version=4.0.1.0, Culture=neutral, PublicKeyToken=dfbf2bd50fcf7768, processorArchitecture=MSIL">
+      <HintPath>..\packages\DryIoc.dll.4.0.1\lib\netstandard2.0\DryIoc.dll</HintPath>
     </Reference>
-    <Reference Include="DryIoc.MefAttributedModel, Version=4.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DryIoc.MefAttributedModel.dll.4.0.4\lib\netstandard2.0\DryIoc.MefAttributedModel.dll</HintPath>
+    <Reference Include="DryIoc.MefAttributedModel, Version=5.0.0.0, Culture=neutral, PublicKeyToken=dfbf2bd50fcf7768, processorArchitecture=MSIL">
+      <HintPath>..\packages\DryIoc.MefAttributedModel.dll.5.0.0\lib\netstandard2.0\DryIoc.MefAttributedModel.dll</HintPath>
     </Reference>
-    <Reference Include="DryIocAttributes, Version=4.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DryIocAttributes.dll.4.0.2\lib\netstandard2.0\DryIocAttributes.dll</HintPath>
+    <Reference Include="DryIocAttributes, Version=5.0.0.0, Culture=neutral, PublicKeyToken=dfbf2bd50fcf7768, processorArchitecture=MSIL">
+      <HintPath>..\packages\DryIocAttributes.dll.5.0.0\lib\netstandard2.0\DryIocAttributes.dll</HintPath>
     </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.4.1.0, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
@@ -78,19 +78,20 @@
     <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.8\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.Annotations, Version=2018.3.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\packages\JetBrains.Annotations.2018.3.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+    <Reference Include="JetBrains.Annotations, Version=2019.1.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.2019.1.1\lib\netstandard2.0\JetBrains.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PropertyChanged, Version=2.6.0.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
       <HintPath>..\packages\PropertyChanged.Fody.2.6.0\lib\net452\PropertyChanged.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -116,8 +117,8 @@
     <Reference Include="WPFLocalizeExtension, Version=3.3.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WPFLocalizeExtension.3.3.1\lib\net452\WPFLocalizeExtension.dll</HintPath>
     </Reference>
-    <Reference Include="XAMLMarkupExtensions, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\XAMLMarkupExtensions.1.5.1\lib\net452\XAMLMarkupExtensions.dll</HintPath>
+    <Reference Include="XAMLMarkupExtensions, Version=1.6.0.0, Culture=neutral, PublicKeyToken=c726e0262981a1eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\XAMLMarkupExtensions.1.6.0\lib\net452\XAMLMarkupExtensions.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -355,9 +356,9 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\PropertyChanged.Fody.2.6.0\build\PropertyChanged.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PropertyChanged.Fody.2.6.0\build\PropertyChanged.Fody.props'))" />
-    <Error Condition="!Exists('..\packages\Fody.4.0.2\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.4.0.2\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\Fody.4.2.1\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.4.2.1\build\Fody.targets'))" />
   </Target>
-  <Import Project="..\packages\Fody.4.0.2\build\Fody.targets" Condition="Exists('..\packages\Fody.4.0.2\build\Fody.targets')" />
+  <Import Project="..\packages\Fody.4.2.1\build\Fody.targets" Condition="Exists('..\packages\Fody.4.2.1\build\Fody.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
