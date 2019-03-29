@@ -20,9 +20,9 @@ using System.IO;
 using System.Reflection;
 using System.Security;
 using JetBrains.Annotations;
-using log4net;
 using Microsoft.Win32;
 using Sage.Extensibility;
+using Serilog;
 
 namespace FuwaTea.Lib
 {
@@ -74,17 +74,17 @@ namespace FuwaTea.Lib
             }
             catch (SecurityException se)
             {
-                LogManager.GetLogger(typeof(AppDirUtils)).Error("I'm missing permissions for the registry key! Unable to determine if this is an installed copy!", se);
+                Log.ForContext(typeof(AppDirUtils)).Error("I'm missing permissions for the registry key! Unable to determine if this is an installed copy!", se);
                 return false;
             }
             catch (IOException ie)
             {
-                LogManager.GetLogger(typeof(AppDirUtils)).Warn("Registry key marked for deletion. Assuming that the installed version was uninstalled", ie);
+                Log.ForContext(typeof(AppDirUtils)).Warning("Registry key marked for deletion. Assuming that the installed version was uninstalled", ie);
                 return false;
             }
             catch (UnauthorizedAccessException uae)
             {
-                LogManager.GetLogger(typeof(AppDirUtils)).Error("I don't have read access rights to the registry key! Unable to determine if this is an installed copy!", uae);
+                Log.ForContext(typeof(AppDirUtils)).Error("I don't have read access rights to the registry key! Unable to determine if this is an installed copy!", uae);
                 return false;
             }
         }

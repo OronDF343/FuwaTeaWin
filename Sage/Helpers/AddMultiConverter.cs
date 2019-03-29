@@ -26,7 +26,6 @@ namespace Sage.Helpers
                 }
                 else r *= double.Parse(m.Groups[0].Value);
             }
-            Console.WriteLine("AddMC: " + r);
             return r;
         }
     }

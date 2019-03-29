@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using log4net;
+using Serilog;
 
 namespace FuwaTea.Lib.FormatUtils
 {
@@ -17,7 +17,7 @@ namespace FuwaTea.Lib.FormatUtils
             }
             catch (Exception e)
             {
-                LogManager.GetLogger(GetType()).Warn("Failed to format object:", e);
+                Log.ForContext(GetType()).Warning("Failed to format object:", e);
                 return "[Format error, please check settings]"; // TODO: Localize
             }
         }

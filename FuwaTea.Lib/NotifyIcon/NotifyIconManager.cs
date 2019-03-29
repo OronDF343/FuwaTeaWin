@@ -3,7 +3,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
-using log4net;
+using Serilog;
 
 namespace FuwaTea.Lib.NotifyIcon
 {
@@ -28,7 +28,7 @@ namespace FuwaTea.Lib.NotifyIcon
         /// <param name="pref">The preference to be set.</param>
         public bool SetPreference([NotNull] string exeFullPath, NOTIFYITEM_PREFERENCE pref)
         {
-            var logger = LogManager.GetLogger(typeof(NotifyIconManager));
+            var logger = Log.ForContext(typeof(NotifyIconManager));
             logger.Debug("Registering callback");
             return _trayManager.GetNotifyItems(notifyitem =>
             {

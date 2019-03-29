@@ -1,6 +1,6 @@
 ﻿using System;
 using JetBrains.Annotations;
-using log4net;
+using Serilog;
 
 namespace FuwaTea.Lib.FormatUtils
 {
@@ -69,7 +69,7 @@ namespace FuwaTea.Lib.FormatUtils
             {
                 if (Content == null)
                 {
-                    LogManager.GetLogger(GetType()).Warn("Format string syntax error detected!");
+                    Log.ForContext(GetType()).Warning("Format string syntax error detected!");
                     return "[Format syntax error, please check settings]"; // TODO: Localize
                 }
                 if (IsLiteral) return Content;
@@ -83,7 +83,7 @@ namespace FuwaTea.Lib.FormatUtils
                     c = dot < c.Length ? c.Substring(dot + 1) : "";
                     if (pdef == null)
                     {
-                        LogManager.GetLogger(GetType()).Warn($"Property not found for type {prop?.GetType().FullName}: {Content}");
+                        Log.ForContext(GetType()).Warning($"Property not found for type {prop?.GetType().FullName}: {Content}");
                         prop = null;
                         break;
                     }
@@ -98,7 +98,7 @@ namespace FuwaTea.Lib.FormatUtils
             }
             catch (Exception e)
             {
-                LogManager.GetLogger(GetType()).Warn("Object formatting error:", e);
+                Log.ForContext(GetType()).Warning("Object formatting error:", e);
                 return Next?.GetValue(source);
             }
         }

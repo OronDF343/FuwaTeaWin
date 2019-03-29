@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using log4net;
+using Serilog;
 
 namespace FuwaTea.Lib.FormatUtils
 {
@@ -80,7 +80,7 @@ namespace FuwaTea.Lib.FormatUtils
                         //	\""					"
                         //	\z					end of string reached
                         m = Regex.Match(seg, @"\A(?'LastFormatRef'\:)?\""(?'Literal'.*)\""\z");
-                        if (!m.Success) LogManager.GetLogger(GetType()).Warn("Syntax error in format string!");
+                        if (!m.Success) Log.ForContext(GetType()).Warning("Syntax error in format string!");
                         curr = new FormatSegment
                         {
                             InheritFormat = m.Groups["LastFormatRef"].Success,
