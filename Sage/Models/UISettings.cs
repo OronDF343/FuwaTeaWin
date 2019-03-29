@@ -2,9 +2,9 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using FuwaTea.Extensibility.Config;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
+using Sage.Extensibility.Config;
 
 namespace Sage.Models
 {

@@ -4,8 +4,8 @@ using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 using System.Windows.Media;
 using FTWPlayer.Views;
-using FuwaTea.Audio.Playback;
 using JetBrains.Annotations;
+using Sage.Audio.Playback;
 
 namespace FTWPlayer.ViewModels
 {

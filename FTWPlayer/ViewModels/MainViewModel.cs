@@ -29,14 +29,14 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using DryIoc;
 using FTWPlayer.Localization;
-using FuwaTea.Audio.Decoders;
-using FuwaTea.Audio.Playback;
-using FuwaTea.Extensibility;
 using FuwaTea.Lib.NotifyIcon;
 using FuwaTea.Wpf.Keyboard;
 using GalaSoft.MvvmLight.CommandWpf;
 using JetBrains.Annotations;
 using log4net;
+using Sage.Audio.Decoders;
+using Sage.Audio.Playback;
+using Sage.Extensibility;
 
 namespace FTWPlayer.ViewModels
 {

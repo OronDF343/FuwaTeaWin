@@ -1,8 +1,8 @@
 ﻿using Avalonia;
 using Avalonia.Logging.Serilog;
-using FuwaTea.Core;
-using FuwaTea.Extensibility;
-using FuwaTea.Extensibility.Attributes;
+using Sage.Core;
+using Sage.Extensibility;
+using Sage.Extensibility.Attributes;
 using Sage.ViewModels;
 using Sage.Views;
 using Serilog;

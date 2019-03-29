@@ -25,13 +25,13 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using DryIoc;
-using FuwaTea.Audio.Decoders;
-using FuwaTea.Audio.Files;
-using FuwaTea.Audio.Playback;
 using FuwaTea.Lib;
 using FuwaTea.Lib.Collections;
 using FuwaTea.Lib.DataModel;
 using log4net;
+using Sage.Audio.Decoders;
+using Sage.Audio.Files;
+using Sage.Audio.Playback;
 
 namespace FTWPlayer
 {

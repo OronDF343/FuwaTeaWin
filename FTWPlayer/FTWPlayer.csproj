@@ -323,13 +323,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FuwaTea.Audio\FuwaTea.Audio.csproj">
+    <ProjectReference Include="..\Sage.Audio\Sage.Audio.csproj">
       <Project>{678e65db-ea46-4f3d-8105-c864be36e206}</Project>
-      <Name>FuwaTea.Audio</Name>
+      <Name>Sage.Audio</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FuwaTea.Extensibility\FuwaTea.Extensibility.csproj">
+    <ProjectReference Include="..\Sage.Extensibility\Sage.Extensibility.csproj">
       <Project>{e4773a23-838d-40ad-8466-58fdb07237e0}</Project>
-      <Name>FuwaTea.Extensibility</Name>
+      <Name>Sage.Extensibility</Name>
     </ProjectReference>
     <ProjectReference Include="..\FuwaTea.Lib\FuwaTea.Lib.csproj">
       <Project>{A9BB4650-68CC-4640-9B5A-65F4AA80C2AB}</Project>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Controls;
 using FTWPlayer.Views.SettingsViews;
-using FuwaTea.Audio.Playback.CSCore;
+using Sage.Audio.Playback.CSCore;
 
 namespace FTWPlayer.ViewModels.SettingsViewModels
 {

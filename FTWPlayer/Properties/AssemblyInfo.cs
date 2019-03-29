@@ -18,8 +18,8 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
-using FuwaTea.Extensibility;
-using FuwaTea.Extensibility.Attributes;
+using Sage.Extensibility;
+using Sage.Extensibility.Attributes;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information

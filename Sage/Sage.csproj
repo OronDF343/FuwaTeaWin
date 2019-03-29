@@ -44,7 +44,7 @@
     <PackageReference Include="Serilog" Version="2.8.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FuwaTea.Core\FuwaTea.Core.csproj" />
+    <ProjectReference Include="..\Sage.Core\Sage.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Themes\Icons\Default.xaml">

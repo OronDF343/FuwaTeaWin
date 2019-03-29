@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows.Controls;
 using FTWPlayer.ViewModels.SettingsViewModels;
 using FTWPlayer.Views;
-using FuwaTea.Extensibility.Config;
 
 namespace FTWPlayer.ViewModels
 {

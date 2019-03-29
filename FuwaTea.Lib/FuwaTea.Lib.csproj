@@ -101,9 +101,9 @@
     <Compile Include="StringUtils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FuwaTea.Extensibility\FuwaTea.Extensibility.csproj">
+    <ProjectReference Include="..\Sage.Extensibility\Sage.Extensibility.csproj">
       <Project>{e4773a23-838d-40ad-8466-58fdb07237e0}</Project>
-      <Name>FuwaTea.Extensibility</Name>
+      <Name>Sage.Extensibility</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -112,9 +112,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FuwaTea.Extensibility\FuwaTea.Extensibility.csproj">
+    <ProjectReference Include="..\Sage.Extensibility\Sage.Extensibility.csproj">
       <Project>{e4773a23-838d-40ad-8466-58fdb07237e0}</Project>
-      <Name>FuwaTea.Extensibility</Name>
+      <Name>Sage.Extensibility</Name>
     </ProjectReference>
     <ProjectReference Include="..\FuwaTea.Lib\FuwaTea.Lib.csproj">
       <Project>{a9bb4650-68cc-4640-9b5a-65f4aa80c2ab}</Project>

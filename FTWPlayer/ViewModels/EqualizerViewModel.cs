@@ -3,8 +3,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using FTWPlayer.Views;
-using FuwaTea.Audio.Playback;
 using GalaSoft.MvvmLight.CommandWpf;
+using Sage.Audio.Playback;
 
 namespace FTWPlayer.ViewModels
 {

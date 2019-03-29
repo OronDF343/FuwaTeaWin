@@ -4,11 +4,11 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using FuwaTea.Extensibility.Config;
 using FuwaTea.Wpf.Helpers;
 using FuwaTea.Wpf.Keyboard;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
+using Sage.Extensibility.Config;
 using KeyBinding = FuwaTea.Wpf.Keyboard.KeyBinding;
 
 namespace FTWPlayer

@@ -33,9 +33,6 @@ using System.Windows.Interop;
 using DryIoc;
 using FTWPlayer.Localization;
 using FTWPlayer.Skins;
-using FuwaTea.Audio.Decoders;
-using FuwaTea.Extensibility;
-using FuwaTea.Extensibility.Config;
 using FuwaTea.Lib;
 using FuwaTea.Lib.FileAssociations;
 using FuwaTea.Wpf.Behaviors;
@@ -45,6 +42,8 @@ using GalaSoft.MvvmLight.Threading;
 using JetBrains.Annotations;
 using log4net;
 using log4net.Config;
+using Sage.Audio.Decoders;
+using Sage.Extensibility;
 using WPFLocalizeExtension.Engine;
 
 namespace FTWPlayer

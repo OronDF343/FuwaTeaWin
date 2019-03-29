@@ -7,12 +7,12 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using FTWPlayer.Localization;
 using FTWPlayer.Views;
-using FuwaTea.Audio.Decoders;
-using FuwaTea.Audio.Files;
-using FuwaTea.Audio.Playback;
 using FuwaTea.Lib.DataModel;
 using GalaSoft.MvvmLight.CommandWpf;
 using Microsoft.Win32;
+using Sage.Audio.Decoders;
+using Sage.Audio.Files;
+using Sage.Audio.Playback;
 
 namespace FTWPlayer.ViewModels
 {

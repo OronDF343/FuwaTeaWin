@@ -5,12 +5,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using FTWPlayer.Views;
-using FuwaTea.Audio.Files;
-using FuwaTea.Audio.Metadata;
-using FuwaTea.Audio.Playback;
 using FuwaTea.Wpf.Helpers;
 using GalaSoft.MvvmLight.CommandWpf;
 using JetBrains.Annotations;
+using Sage.Audio.Files;
+using Sage.Audio.Metadata;
+using Sage.Audio.Playback;
 
 namespace FTWPlayer.ViewModels
 {
