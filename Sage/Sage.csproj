@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>netcoreapp2.1;net461</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.1;net471</TargetFrameworks>
     <ApplicationIcon />
     <StartupObject />
     <LangVersion>latest</LangVersion>
@@ -33,17 +33,17 @@
     <Content Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.7.1-cibuild0001742-beta" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.7.1-cibuild0001742-beta" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.7.1-cibuild0001742-beta" />
-    <PackageReference Include="Avalonia.Xaml.Behaviors" Version="0.7.1-build20190326-01" />
+    <PackageReference Include="Avalonia" Version="0.8.0" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.8.0" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.8.0" />
+    <PackageReference Include="Avalonia.Xaml.Behaviors" Version="0.8.0" />
     <PackageReference Include="DryIocAttributes.dll" Version="5.0.0" />
     <PackageReference Include="Fody" Version="4.2.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="JetBrains.Annotations" Version="2019.1.1" />
-    <PackageReference Include="PropertyChanged.Fody" Version="2.6.0" />
+    <PackageReference Include="PropertyChanged.Fody" Version="2.6.1" />
     <PackageReference Include="Serilog" Version="2.8.0" />
   </ItemGroup>
   <ItemGroup>

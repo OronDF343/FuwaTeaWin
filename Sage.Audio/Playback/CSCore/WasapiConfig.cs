@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using CSCore.CoreAudioAPI;
@@ -8,7 +9,7 @@ using Sage.Extensibility.Config;
 
 namespace Sage.Audio.Playback.CSCore
 {
-    [ConfigPage(nameof(Wasapi))]
+    [ConfigPage(nameof(Wasapi)), Export]
     public class WasapiConfig : CSCoreApiConfigBase
     {
         [JsonIgnore]

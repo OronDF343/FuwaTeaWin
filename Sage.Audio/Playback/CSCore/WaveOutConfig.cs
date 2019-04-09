@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.Linq;
 using CSCore.SoundOut;
 using Newtonsoft.Json;
@@ -7,7 +8,7 @@ using Sage.Extensibility.Config;
 
 namespace Sage.Audio.Playback.CSCore
 {
-    [ConfigPage(nameof(WaveOut))]
+    [ConfigPage(nameof(WaveOut)), Export]
     public class WaveOutConfig : CSCoreApiConfigBase
     {
         [JsonIgnore]

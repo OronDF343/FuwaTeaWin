@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using CSCore.DirectSound;
@@ -9,7 +10,7 @@ using Sage.Extensibility.Config;
 
 namespace Sage.Audio.Playback.CSCore
 {
-    [ConfigPage(nameof(DirectSound))]
+    [ConfigPage(nameof(DirectSound)), Export]
     public class DirectSoundConfig : CSCoreApiConfigBase
     {
         [JsonIgnore]

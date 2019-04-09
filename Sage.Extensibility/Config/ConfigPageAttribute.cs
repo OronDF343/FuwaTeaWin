@@ -7,7 +7,12 @@ namespace Sage.Extensibility.Config
     /// <summary>
     /// Export the attributed class as a configuration page.
     /// </summary>
-    /// <remarks>This is the only attribute that you need for the exporting, as long as the class implements <see cref="IConfigPage"/>, as it inherits from <see cref="T:DryIocAttributes.ExportManyAttribute" />.</remarks>
+    /// <remarks>
+    /// For importing to work, the following conditions must be met:
+    /// * This attribute must be present
+    /// * The class must implement <see cref="IConfigPage"/>
+    /// * The [Export] attribute should be present
+    /// </remarks>
     [BaseTypeRequired(typeof(IConfigPage))]
     [MetadataAttribute]
     public class ConfigPageAttribute : ExportManyAttribute, IConfigPageMetadata

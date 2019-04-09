@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading;
 using DryIoc;
 using Newtonsoft.Json;
+using Sage.Audio.Playback;
+using Sage.Audio.Playback.CSCore;
 using Sage.Extensibility;
 using Sage.Extensibility.Config;
 using Serilog;
