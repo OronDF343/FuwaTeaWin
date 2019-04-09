@@ -20,7 +20,7 @@ namespace Sage.Audio.Files.Impl
         public string Fragment => _fli.Extension;
         public Uri Uri => _fli.Uri;
         public IDictionary<MetadataSource, IMetadata> Metadata => _fli.Metadata;
-        public abstract Stream OpenStream(FileAccess fa);
+        public abstract Stream OpenStream(FileAccess fa, FileShare fs = FileShare.Read);
         public abstract DateTime LastWrite { get; }
     }
 }

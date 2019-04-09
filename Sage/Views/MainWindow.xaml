@@ -85,7 +85,13 @@
                 </Canvas>
                 <UniformGrid Grid.Column="1" Rows="1" Columns="10" HorizontalAlignment="Left">
                     <Button Classes="icon prevIcon" />
-                    <Button Classes="icon playIcon" />
+                    <Button Classes="icon playIcon">
+                      <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="Click">
+                          <ia:InvokeCommandAction Command="{Binding PlayCommand}" />
+                        </ia:EventTriggerBehavior>
+                      </i:Interaction.Behaviors>
+                    </Button>
                     <Button Classes="icon nextIcon" />
                     <Button Classes="icon stopIcon" />
                 </UniformGrid>

@@ -19,10 +19,10 @@ namespace Sage.Audio.Playback.CSCore
         public IReadOnlyDictionary<string, string> WasapiDevices =>
             new ReadOnlyDictionary<string, string>(MMDeviceEnumerator
                                                    .EnumerateDevices(DataFlow.Render, DeviceState.Active)
-                                                   .ToDictionary(mmd => mmd.DevicePath,
+                                                   .ToDictionary(mmd => mmd.DeviceID,
                                                                  mmd => mmd.FriendlyName));
 
-        public string Device { get; set; } = MMDeviceEnumerator.DefaultAudioEndpoint(DataFlow.Render, Role.Multimedia).DevicePath;
+        public string Device { get; set; } = MMDeviceEnumerator.DefaultAudioEndpoint(DataFlow.Render, Role.Multimedia).DeviceID;
 
         public bool UseEventSync { get; set; } = false;
         public bool UseExclusiveMode { get; set; } = false;

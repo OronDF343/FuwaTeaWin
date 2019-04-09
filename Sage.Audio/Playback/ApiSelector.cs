@@ -5,7 +5,7 @@ using Sage.Extensibility.Config;
 
 namespace Sage.Audio.Playback
 {
-    [ConfigPage(nameof(ApiBasedAudioPlayer))]
+    [ConfigPage(nameof(ApiBasedAudioPlayer)), Export]
     public class ApiSelector : ImplementationSelectorBase<IAudioApi>
     {
         public ApiSelector([ImportMany] IList<IAudioApi> implementations)

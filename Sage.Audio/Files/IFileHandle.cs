@@ -12,7 +12,7 @@ namespace Sage.Audio.Files
         /// Must return a new stream wrapper on every call!
         /// Disposal should be handled by the caller.
         /// </remarks>
-        Stream OpenStream(FileAccess fa);
+        Stream OpenStream(FileAccess fa, FileShare fs = FileShare.Read);
         /// <summary>
         /// Date when the file was last modified (if available).
         /// </summary>

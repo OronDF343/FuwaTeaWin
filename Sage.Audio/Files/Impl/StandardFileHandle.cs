@@ -8,9 +8,9 @@ namespace Sage.Audio.Files.Impl
         public StandardFileHandle(IFileLocationInfo fli)
             : base(fli) { }
 
-        public override Stream OpenStream(FileAccess fa)
+        public override Stream OpenStream(FileAccess fa, FileShare fs = FileShare.Read)
         {
-            return File.Open(LocalPath, FileMode.Open, fa);
+            return File.Open(LocalPath, FileMode.Open, fa, fs);
         }
 
         public override DateTime LastWrite => File.GetLastWriteTime(LocalPath);

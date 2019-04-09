@@ -24,7 +24,7 @@ namespace Sage.Audio.Playback.CSCore
                 UseChannelMixingMatrices = Config.UseChannelMixingMatrices
             };
             var dev = MMDeviceEnumerator.EnumerateDevices(DataFlow.Render, DeviceState.Active)
-                                        .FirstOrDefault(mmd => mmd.DevicePath == Config.Device);
+                                        .FirstOrDefault(mmd => mmd.DeviceID == Config.Device);
             so.Device = dev ?? throw new AudioDeviceNotReadyException(Config.Device);
             return so;
         }
