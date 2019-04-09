@@ -48,11 +48,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FuwaTea.Lib\FuwaTea.Lib.csproj" />
+    <ProjectReference Include="..\Sage.Audio.Decoders.Wavpack\Sage.Audio.Decoders.Wavpack.csproj" />
     <ProjectReference Include="..\Sage.Audio\Sage.Audio.csproj" />
     <ProjectReference Include="..\Sage.Core.Platform.Windows\Sage.Core.Platform.Windows.csproj" />
     <ProjectReference Include="..\Sage.Core\Sage.Core.csproj" />
     <ProjectReference Include="..\Sage.Extensibility\Sage.Extensibility.csproj" />
-    <ProjectReference Include="..\WavpackDecoder\WavpackDecoder.csproj" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Themes\Icons\Default.xaml">

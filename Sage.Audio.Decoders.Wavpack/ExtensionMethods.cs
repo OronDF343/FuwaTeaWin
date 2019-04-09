@@ -9,7 +9,7 @@
 // the architecture of the resulting solution may differ somewhat.
 //
 
-namespace WavpackDecoder
+namespace Sage.Audio.Decoders.Wavpack
 {
     /// <summary>
     ///     Contains conversion support elements such as classes, interfaces and static methods.

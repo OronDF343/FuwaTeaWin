@@ -11,7 +11,7 @@
 using System;
 using System.IO;
 
-namespace WavpackDecoder
+namespace Sage.Audio.Decoders.Wavpack
 {
     public class WavpackContext
     {

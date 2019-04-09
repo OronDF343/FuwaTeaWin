@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28721.148
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 12.0.31101.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FTWPlayer", "FTWPlayer\FTWPlayer.csproj", "{D14F368C-AB9B-4DF3-A8F7-CF42B66F7E40}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -11,8 +11,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Wpf", "FuwaTea.Wpf\FuwaTea.Wpf.csproj", "{09BB648A-DCAA-4A8D-9FB6-FC4A82E17820}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuwaTea.Lib", "FuwaTea.Lib\FuwaTea.Lib.csproj", "{A9BB4650-68CC-4640-9B5A-65F4AA80C2AB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WavpackDecoder", "WavpackDecoder\WavpackDecoder.csproj", "{1CF67E61-3DAE-41A1-BE0A-904A35E04AAF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sage.Extensibility", "Sage.Extensibility\Sage.Extensibility.csproj", "{E4773A23-838D-40AD-8466-58FDB07237E0}"
 EndProject
@@ -27,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sage.Audio", "Sage.Audio\Sa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sage", "Sage\Sage.csproj", "{3ED34D7A-AA08-4404-92D5-ECDFB7721DC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sage.Core.Platform.Windows", "Sage.Core.Platform.Windows\Sage.Core.Platform.Windows.csproj", "{DB5702B2-7824-478D-A5B6-F1BADF98B602}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sage.Core.Platform.Windows", "Sage.Core.Platform.Windows\Sage.Core.Platform.Windows.csproj", "{DB5702B2-7824-478D-A5B6-F1BADF98B602}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sage.Audio.Decoders.Wavpack", "Sage.Audio.Decoders.Wavpack\Sage.Audio.Decoders.Wavpack.csproj", "{F874C369-E501-45FE-A88D-2E4EC86F027D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,10 +47,6 @@ Global
 		{A9BB4650-68CC-4640-9B5A-65F4AA80C2AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9BB4650-68CC-4640-9B5A-65F4AA80C2AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9BB4650-68CC-4640-9B5A-65F4AA80C2AB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1CF67E61-3DAE-41A1-BE0A-904A35E04AAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1CF67E61-3DAE-41A1-BE0A-904A35E04AAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1CF67E61-3DAE-41A1-BE0A-904A35E04AAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1CF67E61-3DAE-41A1-BE0A-904A35E04AAF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E4773A23-838D-40AD-8466-58FDB07237E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E4773A23-838D-40AD-8466-58FDB07237E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4773A23-838D-40AD-8466-58FDB07237E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -71,6 +67,10 @@ Global
 		{DB5702B2-7824-478D-A5B6-F1BADF98B602}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB5702B2-7824-478D-A5B6-F1BADF98B602}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB5702B2-7824-478D-A5B6-F1BADF98B602}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F874C369-E501-45FE-A88D-2E4EC86F027D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F874C369-E501-45FE-A88D-2E4EC86F027D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F874C369-E501-45FE-A88D-2E4EC86F027D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F874C369-E501-45FE-A88D-2E4EC86F027D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

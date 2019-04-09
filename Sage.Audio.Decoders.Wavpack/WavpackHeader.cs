@@ -8,7 +8,7 @@
 ** Distributed under the BSD Software License (see license.txt)  
 ***/
 
-namespace WavpackDecoder
+namespace Sage.Audio.Decoders.Wavpack
 {
     internal class WavpackHeader
     {

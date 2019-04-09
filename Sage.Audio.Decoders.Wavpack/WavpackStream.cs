@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace WavpackDecoder
+namespace Sage.Audio.Decoders.Wavpack
 {
     internal class WavpackStream
     {

@@ -10,7 +10,7 @@
 
 using System;
 
-namespace WavpackDecoder
+namespace Sage.Audio.Decoders.Wavpack
 {
     internal class DecorrPass
     {

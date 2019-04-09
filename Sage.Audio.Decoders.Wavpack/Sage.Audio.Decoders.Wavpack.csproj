@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <OutputPath>..\bin\Release\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\bin\Debug\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="FodyWeavers.xml" />
+    <None Remove="license.txt" />
+    <None Remove="readme.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="FodyWeavers.xml" />
+    <Content Include="license.txt" />
+    <Content Include="readme.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sage.Audio\Sage.Audio.csproj" />
+    <ProjectReference Include="..\Sage.Extensibility\Sage.Extensibility.csproj" />
+  </ItemGroup>
+
+</Project>

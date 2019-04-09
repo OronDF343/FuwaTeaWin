@@ -10,7 +10,7 @@
 
 // ReSharper disable InconsistentNaming
 
-namespace WavpackDecoder
+namespace Sage.Audio.Decoders.Wavpack
 {
     public static class Defines
     {
