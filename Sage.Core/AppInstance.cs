@@ -29,7 +29,7 @@ namespace Sage.Core
         private Mutex _mutex;
         private string _mutexName;
 
-        public IReadOnlyList<string> Args { get; }
+        public ReadOnlyDictionary<Argument, IReadOnlyList<string>> Args { get; }
         public ExtensibilityContainer ExtensibilityContainer { get; private set; }
         internal ExtensionCache ExtensionCache { get; private set; }
         internal AppSettings AppSettings { get; }
@@ -52,9 +52,12 @@ namespace Sage.Core
                 OnUnhandledException(args);
             };
 
+            // Get console logging level from arguments
+            var sc = TryParseLogLevel(mainArgs, AppConstants.Arguments.LogLevel, out var clLog, out var clLogLevel);
             // Create temporary console logger
-            // TODO: Get logging switches from command line args
-            Log.Logger = new LoggerConfiguration().WriteTo.Console().MinimumLevel.Is(LogEventLevel.Error).CreateLogger();
+            Log.Logger = clLog ? new LoggerConfiguration().WriteTo.Console().MinimumLevel.Is(clLogLevel).CreateLogger() : new LoggerConfiguration().CreateLogger();
+            // Warn if there was a parsing error
+            if (sc == false) Log.Warning("Invalid console log level specified, falling back to defaults");
             
             // Load appsettings.json
             try
@@ -62,29 +65,129 @@ namespace Sage.Core
                 var file = Path.Combine(MyDirPath, AppConstants.SettingsFileName);
                 AppSettings = JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(file));
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                // TODO: Is using defaults "silently" really the best option?
-                Log.Error(e, "Failed to load AppSettings, defaults will be used!");
+                // TODO: Is using defaults "silently" without fixing the file really the best option?
+                Log.Error(ex, "Failed to load AppSettings, defaults will be used!");
                 AppSettings = new AppSettings();
                 // Don't overwrite the file
             }
 
-            // Save command-line arguments
-            Args = new ReadOnlyCollection<string>(mainArgs);
+            // Save command-line arguments to a read-only dictionary
+            Args = new ReadOnlyDictionary<Argument, IReadOnlyList<string>>((from a in ParseArgs(mainArgs)
+                                                                            group a.Value by a.Arg into g
+                                                                            select (Arg: g.Key,
+                                                                                    Values: new ReadOnlyCollection<string>(g.ToList())))
+                                                                           .ToDictionary(g => g.Arg,
+                                                                                         g => (IReadOnlyList<string>)g.Values));
 
-            // Configure the logger
-            // TODO: Get logging overrides from command line args
-            var logLevel = AppSettings.DefaultLogLevel;
+            // Get file logging level from arguments
+            var sf = TryParseLogLevel(mainArgs, AppConstants.Arguments.FileLogLevel, out var fLog, out var fLogLevel);
+            // Create log directory
             var logDir = MakeAppDataPath(AppConstants.LogsDirName, false);
-            Log.Logger = new LoggerConfiguration().WriteTo.Console().MinimumLevel.Is(logLevel)
-                                                  .WriteTo.RollingFileAlternate(logDir, retainedFileCountLimit: 20,
-                                                                                fileSizeLimitBytes: 1048576).MinimumLevel.Is(logLevel)
-                                                  .CreateLogger();
+            // Configure the logger
+            var logCfg = new LoggerConfiguration();
+            // If not specified, respect AppSettings for configuring level
+            if (clLog)
+                logCfg = logCfg.WriteTo.Console()
+                               .MinimumLevel.Is(sc == true ? clLogLevel : AppSettings.ConsoleLogLevel);
+            // If not specified, respect AppSettings for both enabling and configuring level
+            if (sf == true ? fLog : AppSettings.FileLogEnabled)
+                logCfg = logCfg.WriteTo.RollingFileAlternate(logDir, retainedFileCountLimit: 20, fileSizeLimitBytes: 1048576)
+                               .MinimumLevel.Is(sf == true ? fLogLevel : AppSettings.FileLogLevel);
+            // Create logger
+            Log.Logger = logCfg.CreateLogger();
             // Now we are ready for Init()
             Log.Information("\n*************\nHello, world!\n*************");
         }
-        
+
+        private static bool? TryParseLogLevel(string[] args, Argument arg, out bool clLog, out LogEventLevel clLogLevel)
+        {
+            clLog = true;
+            clLogLevel = LogEventLevel.Warning;
+            var shl = AppConstants.Arguments.SwitchCharShort + arg.ShortName + AppConstants.Arguments.SwitchValueSeparator;
+            var lnl = AppConstants.Arguments.SwitchCharLong + arg.FullName + AppConstants.Arguments.SwitchValueSeparator;
+            var ll = args.FirstOrDefault(a => a.StartsWith(lnl) || a.StartsWith(shl));
+            if (ll == null) return null;
+            ll = ll.Substring(ll.StartsWith(lnl) ? lnl.Length : shl.Length);
+            switch (ll.ToLowerInvariant())
+            {
+                case "n":
+                case "none":
+                case "6":
+                    clLog = false;
+                    return true;
+                case "f":
+                case "fatal":
+                case "5":
+                    clLogLevel = LogEventLevel.Fatal;
+                    return true;
+                case "e":
+                case "err":
+                case "error":
+                case "4":
+                    clLogLevel = LogEventLevel.Error;
+                    return true;
+                case "w":
+                case "warn":
+                case "warning":
+                case "3":
+                    clLogLevel = LogEventLevel.Warning;
+                    return true;
+                case "i":
+                case "info":
+                case "information":
+                case "2":
+                    clLogLevel = LogEventLevel.Information;
+                    return true;
+                case "d":
+                case "dbg":
+                case "debug":
+                case "1":
+                    clLogLevel = LogEventLevel.Debug;
+                    return true;
+                case "v":
+                case "verbose":
+                case "0":
+                    clLogLevel = LogEventLevel.Verbose;
+                    return true;
+                default:
+                    Log.Warning("Invalid log level, ignoring: " + ll);
+                    return false;
+            }
+        }
+
+        private static IEnumerable<(Argument Arg, string Value)> ParseArgs(string[] args)
+        {
+            foreach (var ar in args)
+            {
+                var name = ar;
+                var vsIndex = name.IndexOf(AppConstants.Arguments.SwitchValueSeparator, StringComparison.Ordinal);
+                var value = vsIndex < 0 ? null : vsIndex == name.Length - 1 ? "" : name.Substring(vsIndex + 1);
+                if (vsIndex > -1) name = name.Substring(0, vsIndex);
+                Argument k;
+                if (name.StartsWith(AppConstants.Arguments.SwitchCharLong))
+                {
+                    name = name.Substring(AppConstants.Arguments.SwitchCharLong.Length);
+                    k = AppConstants.Arguments.All.FirstOrDefault(a => name == a.FullName && (value == null || a.HasValue)); // TODO: Use XOR instead of OR when a value is required
+                }
+                else if (name.StartsWith(AppConstants.Arguments.SwitchCharShort))
+                {
+                    name = name.Substring(AppConstants.Arguments.SwitchCharShort.Length);
+                    k = AppConstants.Arguments.All.FirstOrDefault(a => name == a.ShortName && (value == null || a.HasValue)); // TODO: As above
+                }
+                else continue;
+
+                if (k == null)
+                {
+                    Log.Warning("Invalid argument, ignoring: " + name);
+                    continue;
+                }
+
+                yield return (k, value);
+            }
+        }
+
         // If we remove sealed: protected virtual
         private void OnUnhandledException(UnhandledExceptionEventArgs e)
         {
@@ -155,11 +258,11 @@ namespace Sage.Core
         private bool ProcessClArgs()
         {
             // TODO: Implement
-            if (Args.Contains(AppConstants.Arguments.UpdateFileAssociations))
+            if (Args.ContainsKey(AppConstants.Arguments.UpdateFileAssociations))
                 return false;
-            if (Args.Contains(AppConstants.Arguments.DeleteFileAssociations))
+            if (Args.ContainsKey(AppConstants.Arguments.DeleteFileAssociations))
                 return false;
-            if (Args.Contains(AppConstants.Arguments.FileAssociationsUi))
+            if (Args.ContainsKey(AppConstants.Arguments.FileAssociationsUi))
                 return false;
             return true;
         }
@@ -183,7 +286,7 @@ namespace Sage.Core
             //Message = (int)NativeMethods.RegisterWindowMessage(mutexName);
 
             if (mutexCreated) return true;
-            if (!Args.Contains(AppConstants.Arguments.Wait))
+            if (!Args.ContainsKey(AppConstants.Arguments.Wait))
             {
                 Log.Information("Another instance is already open - send our arguments to it if needed");
                 _mutex = null;

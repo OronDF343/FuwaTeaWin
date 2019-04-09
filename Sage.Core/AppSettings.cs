@@ -7,14 +7,19 @@ namespace Sage.Core
         public AppSettings()
         {
             IsInstalled = false;
+            FileLogEnabled = true;
 #if DEBUG
-            DefaultLogLevel = LogEventLevel.Debug;
+            FileLogLevel = LogEventLevel.Debug;
+            ConsoleLogLevel = LogEventLevel.Debug;
 #else
-            DefaultLogLevel = LogEventLevel.Information;
+            FileLogLevel = LogEventLevel.Information;
+            ConsoleLogLevel = LogEventLevel.Warning;
 #endif
         }
         public bool IsInstalled { get; set; }
-        public LogEventLevel DefaultLogLevel { get; set; }
+        public LogEventLevel FileLogLevel { get; set; }
+        public LogEventLevel ConsoleLogLevel { get; set; }
         public int InstanceCreationTimeout { get; set; }
+        public bool FileLogEnabled { get; set; }
     }
 }
