@@ -85,16 +85,16 @@ namespace Sage.Core
             var sf = TryParseLogLevel(mainArgs, AppConstants.Arguments.FileLogLevel, out var fLog, out var fLogLevel);
             // Create log directory
             var logDir = MakeAppDataPath(AppConstants.LogsDirName, false);
-            // Configure the logger
-            var logCfg = new LoggerConfiguration();
+            // Set default log levels if necessary
+            if (sc != true) clLogLevel = AppSettings.ConsoleLogLevel;
+            if (sf != true) fLogLevel = AppSettings.FileLogLevel;
+            // Configure the logger, using minimum log level for overall
+            var logCfg = new LoggerConfiguration().MinimumLevel.Is((LogEventLevel)Math.Min((int)clLogLevel, (int)fLogLevel));
             // If not specified, respect AppSettings for configuring level
-            if (clLog)
-                logCfg = logCfg.WriteTo.Console()
-                               .MinimumLevel.Is(sc == true ? clLogLevel : AppSettings.ConsoleLogLevel);
+            if (clLog) logCfg = logCfg.WriteTo.Console(clLogLevel);
             // If not specified, respect AppSettings for both enabling and configuring level
             if (sf == true ? fLog : AppSettings.FileLogEnabled)
-                logCfg = logCfg.WriteTo.RollingFileAlternate(logDir, retainedFileCountLimit: 20, fileSizeLimitBytes: 1048576)
-                               .MinimumLevel.Is(sf == true ? fLogLevel : AppSettings.FileLogLevel);
+                logCfg = logCfg.WriteTo.RollingFileAlternate(logDir, retainedFileCountLimit: 20, fileSizeLimitBytes: 1048576, minimumLevel: fLogLevel);
             // Create logger
             Log.Logger = logCfg.CreateLogger();
             // Now we are ready for Init()
