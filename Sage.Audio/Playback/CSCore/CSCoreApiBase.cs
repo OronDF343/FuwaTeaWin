@@ -78,6 +78,8 @@ namespace Sage.Audio.Playback.CSCore
         public virtual void Stop()
         {
             SoundOut.Stop();
+            // The follwing line is actually required
+            if (CanSeek) Position = TimeSpan.Zero;
         }
 
         public virtual void Pause()

@@ -57,8 +57,8 @@
     <Reference Include="CSCore, Version=1.2.1.2, Culture=neutral, PublicKeyToken=5a08f2b6f4415dea, processorArchitecture=MSIL">
       <HintPath>..\packages\CSCore.1.2.1.2\lib\net35-client\CSCore.dll</HintPath>
     </Reference>
-    <Reference Include="DryIoc, Version=4.0.2.0, Culture=neutral, PublicKeyToken=dfbf2bd50fcf7768, processorArchitecture=MSIL">
-      <HintPath>..\packages\DryIoc.dll.4.0.2\lib\net45\DryIoc.dll</HintPath>
+    <Reference Include="DryIoc, Version=4.0.3.0, Culture=neutral, PublicKeyToken=dfbf2bd50fcf7768, processorArchitecture=MSIL">
+      <HintPath>..\packages\DryIoc.dll.4.0.3\lib\net45\DryIoc.dll</HintPath>
     </Reference>
     <Reference Include="DryIoc.MefAttributedModel, Version=5.0.0.0, Culture=neutral, PublicKeyToken=dfbf2bd50fcf7768, processorArchitecture=MSIL">
       <HintPath>..\packages\DryIoc.MefAttributedModel.dll.5.0.0\lib\netstandard2.0\DryIoc.MefAttributedModel.dll</HintPath>

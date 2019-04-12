@@ -93,7 +93,13 @@
                       </i:Interaction.Behaviors>
                     </Button>
                     <Button Classes="icon nextIcon" />
-                    <Button Classes="icon stopIcon" />
+                    <Button Classes="icon stopIcon">
+                      <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="Click">
+                          <ia:InvokeCommandAction Command="{Binding StopCommand}" />
+                        </ia:EventTriggerBehavior>
+                      </i:Interaction.Behaviors>
+                    </Button>
                 </UniformGrid>
             </Grid>
         </StackPanel>
