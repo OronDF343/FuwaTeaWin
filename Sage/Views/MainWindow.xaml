@@ -100,6 +100,11 @@
                         </ia:EventTriggerBehavior>
                       </i:Interaction.Behaviors>
                     </Button>
+                    <Button Classes="icon volumeIcon" />
+                    <Button Classes="icon shuffleIcon" />
+                    <Button Classes="icon repeatIcon" />
+                    <Button Classes="icon resizeIcon" />
+                    <Button Classes="icon minimizeIcon" />
                     <Button Classes="icon exitIcon">
                       <i:Interaction.Behaviors>
                         <ia:EventTriggerBehavior EventName="Click">

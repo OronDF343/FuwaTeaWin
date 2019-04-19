@@ -8,12 +8,19 @@
         <Setter Property="FontSize" Value="{DynamicResource FontSizeLarge}" />
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
+        <Style Selector="Path.icon">
+          <Setter Property="Stretch" Value="Uniform"/>
+          <Setter Property="Fill" Value="{DynamicResource ThemeForegroundBrush}"/>
+          <Setter Property="Margin" Value="2,0"/>
+        </Style>
       <Style Selector="Button.icon">
           <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}"/>
           <Setter Property="BorderThickness" Value="0"/>
           <Setter Property="Padding" Value="2,4"/>
           <Setter Property="Height" Value="32"/>
           <Setter Property="Width" Value="32"/>
+          <Setter Property="VerticalContentAlignment" Value="Center"/>
+          <Setter Property="HorizontalContentAlignment" Value="Center"/>
       </Style>
     <Style Selector="Button:pointerover /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource ThemeControlMidBrush}"/>
@@ -35,6 +42,27 @@
       </Style>
       <Style Selector="Button.stopIcon">
           <Setter Property="Content" Value="{DynamicResource StopIcon}" />
+      </Style>
+      <Style Selector="Button.volumeIcon">
+          <Setter Property="Content" Value="{DynamicResource VolumeIcon}" />
+      </Style>
+      <Style Selector="Button.muteIcon">
+          <Setter Property="Content" Value="{DynamicResource MuteIcon}" />
+      </Style>
+      <Style Selector="Button.shuffleIcon">
+          <Setter Property="Content" Value="{DynamicResource ShuffleIcon}" />
+      </Style>
+      <Style Selector="Button.repeatIcon">
+          <Setter Property="Content" Value="{DynamicResource RepeatIcon}" />
+      </Style>
+      <Style Selector="Button.singleRepeatIcon">
+          <Setter Property="Content" Value="{DynamicResource SingleRepeatIcon}" />
+      </Style>
+      <Style Selector="Button.resizeIcon">
+          <Setter Property="Content" Value="{DynamicResource ResizeIcon}" />
+      </Style>
+      <Style Selector="Button.minimizeIcon">
+          <Setter Property="Content" Value="{DynamicResource MinimizeIcon}" />
       </Style>
       <Style Selector="Button.exitIcon">
           <Setter Property="Content" Value="{DynamicResource ExitIcon}" />
