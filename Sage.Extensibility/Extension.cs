@@ -9,6 +9,7 @@ using DryIoc.MefAttributedModel;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Sage.Extensibility.Attributes;
+using Serilog;
 using ExtensionAttribute = Sage.Extensibility.Attributes.ExtensionAttribute;
 
 namespace Sage.Extensibility
@@ -77,20 +78,28 @@ namespace Sage.Extensibility
         /// <exception cref="NullReferenceException">If <see cref="AssemblyName"/> is null.</exception>
         public void Load(bool overrideApiVersionWhitelist = false)
         {
+            var log = Log.ForContext(typeof(Extension));
+            log.Debug($"Beginning loading, override = {overrideApiVersionWhitelist}");
             // Check if the file has changed
             // First, expand the relative path if needed, as only the relative path is saved to the cache
             if (RelativeFilePath != null && FilePath == null)
-                FilePath = BaseUtils.MakeAbsolutePath(MyDirPath, RelativeFilePath);
-            // If there is no path, assume it has changed
-            var fileChanged = FilePath != null;
-            if (fileChanged)
             {
+                FilePath = BaseUtils.MakeAbsolutePath(MyDirPath, RelativeFilePath);
+                log.Debug($"Expanded relative path \"{RelativeFilePath}\" to \"{FilePath}\"");
+            }
+            // If there is no path, assume it has changed
+            var fileChanged = FilePath == null;
+            if (!fileChanged)
+            {
+                log.Debug("Extension has file path, checking LastWriteTimeUtc");
                 var lastWrite = new FileInfo(FilePath).LastWriteTimeUtc;
                 fileChanged = lastWrite != LastWriteTimeUtc;
+                log.Debug($"File changed: {fileChanged}");
                 // Update last write time
                 LastWriteTimeUtc = lastWrite;
             }
-            
+            else log.Debug("Extension has no file path");
+
             // Different flow for unchanged / never loaded files
             // Aggressive inlining will be used to reduce number of method calls at runtime
 
@@ -98,6 +107,7 @@ namespace Sage.Extensibility
             if (fileChanged || AssemblyLoadResult == AssemblyLoadResult.NotLoaded
                             || AssemblyLoadResult == AssemblyLoadResult.OK && ExtensionCheckResult == ExtensionCheckResult.NotLoaded)
             {
+                log.Debug("Full reload required");
                 // Everything must be reloaded. Let's reset the properties so nobody gets confused:
                 AssemblyLoadResult = AssemblyLoadResult.NotLoaded;
                 Key = null;
@@ -108,20 +118,40 @@ namespace Sage.Extensibility
                 BasicInfo = null;
 
                 // Load assembly first
-                LoadAssembly();
+                if (Assembly == null)
+                {
+                    log.Debug("Assembly load required");
+                    LoadAssembly();
+                }
 
                 // Return immediately if failed
-                if (AssemblyLoadResult != AssemblyLoadResult.OK || Assembly == null) return;
+                if (AssemblyLoadResult != AssemblyLoadResult.OK || Assembly == null)
+                {
+                    log.Debug("Failed to load assembly");
+                    return;
+                }
 
                 // Load extension attributes
-                if (!LoadExtDef()) return;
+                if (!LoadExtDef())
+                {
+                    log.Debug("Not an extension");
+                    return;
+                }
 
                 // Check API version
-                if (!CheckApiVersion(overrideApiVersionWhitelist)) return;
+                if (!CheckApiVersion(overrideApiVersionWhitelist))
+                {
+                    log.Debug("API version mismatch");
+                    return;
+                }
 
                 // Check platform
                 PlatformFilter = Assembly.GetCustomAttribute<PlatformFilterAttribute>();
-                if (!CheckPlatform()) return;
+                if (!CheckPlatform())
+                {
+                    log.Debug("Platform mismatch");
+                    return;
+                }
 
                 // Done checking
                 ExtensionCheckResult = ExtensionCheckResult.OK;
@@ -131,36 +161,64 @@ namespace Sage.Extensibility
             else
             {
                 // Do not load the assembly if we are sure that it isn't an extension
-                if (ExtensionCheckResult == ExtensionCheckResult.NotAnExtension) return;
+                if (ExtensionCheckResult == ExtensionCheckResult.NotAnExtension)
+                {
+                    log.Debug("Cache says: Not an extension");
+                    return;
+                }
 
                 // Check API version if it exists
-                if (ApiVersion != null && !CheckApiVersion(overrideApiVersionWhitelist)) return;
+                if (ApiVersion != null && !CheckApiVersion(overrideApiVersionWhitelist))
+                {
+                    log.Debug("Cache says: API version mismatch");
+                    return;
+                }
 
                 // Check platform filter only if it exists
-                if (PlatformFilter != null && !CheckPlatform()) return;
+                if (PlatformFilter != null && !CheckPlatform())
+                {
+                    log.Debug("Cache says: Platform mismatch");
+                    return;
+                }
 
-                // Load assembly - if loading hasn't been attempted, or if file wasn't found last time
-                if (AssemblyLoadResult == AssemblyLoadResult.NotLoaded
-                    || AssemblyLoadResult == AssemblyLoadResult.FileNotFound)
+                // ~Load assembly - if loading hasn't been attempted, or if file wasn't found last time~
+                // EDIT: Why did I do this? It should be loaded always if it hasn't been loaded yet...
+                if (Assembly == null)
+                {
+                    log.Debug("Assembly load required");
                     LoadAssembly();
+                }
 
                 // Return immediately if failed
-                if (AssemblyLoadResult != AssemblyLoadResult.OK || Assembly == null) return;
+                if (AssemblyLoadResult != AssemblyLoadResult.OK || Assembly == null)
+                {
+                    log.Debug("Failed to load assembly");
+                    return;
+                }
                 
                 // Get and check API version if we haven't yet
-                if (ApiVersion == null && (!LoadExtDef() || !CheckApiVersion(overrideApiVersionWhitelist))) return;
+                if (ApiVersion == null && (!LoadExtDef() || !CheckApiVersion(overrideApiVersionWhitelist)))
+                {
+                    log.Debug("API version mismatch");
+                    return;
+                }
 
                 // Get and check platform if we haven't yet
                 if (PlatformFilter == null)
                 {
                     PlatformFilter = Assembly.GetCustomAttribute<PlatformFilterAttribute>();
-                    if (!CheckPlatform()) return;
+                    if (!CheckPlatform())
+                    {
+                        log.Debug("Platform mismatch");
+                        return;
+                    }
                 }
 
                 // Done checking
                 ExtensionCheckResult = ExtensionCheckResult.OK;
             }
-            
+
+            log.Debug("All checks passed, loading exports");
             // Load exports if they aren't already:
             if (Exports == null) LoadExports();
             // Set IsLoaded
