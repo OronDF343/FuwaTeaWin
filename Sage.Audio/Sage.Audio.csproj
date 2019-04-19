@@ -37,7 +37,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sage.Extensibility\Sage.Extensibility.csproj" />
-    <ProjectReference Include="..\FuwaTea.Lib\FuwaTea.Lib.csproj" />
+    <ProjectReference Include="..\Sage.Lib\Sage.Lib.csproj" />
   </ItemGroup>
 
   <ItemGroup>

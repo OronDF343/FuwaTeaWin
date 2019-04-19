@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace FuwaTea.Lib.DataModel
+namespace Sage.Lib.Models
 {
     public static class ExtensionMethods
     {

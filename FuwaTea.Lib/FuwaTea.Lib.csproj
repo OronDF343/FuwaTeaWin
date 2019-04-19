@@ -63,16 +63,8 @@
   <ItemGroup>
     <Compile Include="AppDirUtils.cs" />
     <Compile Include="Collections\ObservableHashSet.cs" />
-    <Compile Include="DataModel\ExtensionMethods.cs" />
-    <Compile Include="DataModel\ICanHandle.cs" />
-    <Compile Include="DataModel\IImplementationPriorityManager.cs" />
-    <Compile Include="DataModel\IImplementationSelector.cs" />
     <Compile Include="DataModel\IKeyedElement.cs" />
-    <Compile Include="DataModel\ImplementationPriorityManagerBase.cs" />
-    <Compile Include="DataModel\ImplementationSelectorBase.cs" />
-    <Compile Include="DataModel\ISupportFormats.cs" />
     <Compile Include="DataModel\SugoiObject.cs" />
-    <Compile Include="EnumUtils.cs" />
     <Compile Include="FileAssociations\AppCapabilities.cs" />
     <Compile Include="FileAssociations\ApplicationAssociationRegistrationUI.cs" />
     <Compile Include="Collections\ExtensionMethods.cs" />
@@ -96,7 +88,6 @@
     <Compile Include="PathUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadFullyStream.cs" />
-    <Compile Include="StringUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sage.Extensibility\Sage.Extensibility.csproj">

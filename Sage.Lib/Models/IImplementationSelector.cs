@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace FuwaTea.Lib.DataModel
+namespace Sage.Lib.Models
 {
     public interface IImplementationSelector<TInterface> : INotifyPropertyChanged where TInterface : class
     {

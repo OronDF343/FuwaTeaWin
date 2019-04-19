@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Sage.Extensibility.Config;
 
-namespace FuwaTea.Lib.DataModel
+namespace Sage.Lib.Models
 {
     public abstract class ImplementationSelectorBase<TInterface> : IImplementationSelector<TInterface>, IConfigPage where TInterface : class
     {

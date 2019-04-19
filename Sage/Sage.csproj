@@ -47,7 +47,6 @@
     <PackageReference Include="Serilog" Version="2.8.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FuwaTea.Lib\FuwaTea.Lib.csproj" />
     <ProjectReference Include="..\Sage.Audio.Decoders.Wavpack\Sage.Audio.Decoders.Wavpack.csproj" />
     <ProjectReference Include="..\Sage.Audio\Sage.Audio.csproj" />
     <ProjectReference Include="..\Sage.Core.Platform.Windows\Sage.Core.Platform.Windows.csproj" />

@@ -338,6 +338,10 @@
       <Project>{09bb648a-dcaa-4a8d-9fb6-fc4a82e17820}</Project>
       <Name>FuwaTea.Wpf</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Sage.Lib\Sage.Lib.csproj">
+      <Project>{0F14419E-A8BE-4030-8D15-7E3030DCF189}</Project>
+      <Name>Sage.Lib</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />

@@ -3,9 +3,9 @@ using System.IO;
 using CSCore;
 using CSCore.Codecs.WAV;
 using CSCore.MediaFoundation;
-using FuwaTea.Lib.Collections;
 using Sage.Audio.Files;
 using Sage.Audio.Metadata.Impl.TagLib;
+using Sage.Lib.Collections;
 using TagLib;
 using File = TagLib.File;
 

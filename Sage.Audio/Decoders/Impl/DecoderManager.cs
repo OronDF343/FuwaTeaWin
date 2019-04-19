@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using CSCore;
-using FuwaTea.Lib.DataModel;
 using Sage.Audio.Files;
+using Sage.Lib.Models;
 
 namespace Sage.Audio.Decoders.Impl
 {

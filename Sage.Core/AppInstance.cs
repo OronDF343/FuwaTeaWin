@@ -388,8 +388,15 @@ namespace Sage.Core
             }
         }
 
+        private void SaveConfigs()
+        {
+            Log.Information("Saving all configuration pages");
+            ExtensibilityContainer.SaveAllConfigPages();
+        }
+
         public void Dispose()
         {
+            SaveConfigs();
             IpcServer?.Dispose();
             _mutex?.Dispose();
             ExtensibilityContainer?.Dispose();

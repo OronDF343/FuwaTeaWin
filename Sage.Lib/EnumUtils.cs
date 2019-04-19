@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FuwaTea.Lib
+namespace Sage.Lib
 {
     public static class EnumUtils
     {

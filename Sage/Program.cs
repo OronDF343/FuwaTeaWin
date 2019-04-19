@@ -21,6 +21,8 @@ namespace Sage
             if (!AppInstance.Init()) return;
             Log.Information("Building Avalonia app with main window");
             BuildAvaloniaApp().Start<MainWindow>(() => new MainWindowViewModel());
+            Log.Information("Main window exited; Shutting down");
+            AppInstance.Dispose();
         }
 
         public static AppBuilder BuildAvaloniaApp()

@@ -13,6 +13,7 @@ using System.Xaml;
 using FuwaTea.Lib;
 using JetBrains.Annotations;
 using log4net;
+using Sage.Lib;
 using XamlReader = System.Windows.Markup.XamlReader;
 
 namespace FTWPlayer.Skins

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace FuwaTea.Lib
+namespace Sage.Lib
 {
     public static class StringUtils
     {

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.572
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28809.33
 MinimumVisualStudioVersion = 12.0.31101.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FTWPlayer", "FTWPlayer\FTWPlayer.csproj", "{D14F368C-AB9B-4DF3-A8F7-CF42B66F7E40}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -27,7 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sage", "Sage\Sage.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sage.Core.Platform.Windows", "Sage.Core.Platform.Windows\Sage.Core.Platform.Windows.csproj", "{DB5702B2-7824-478D-A5B6-F1BADF98B602}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sage.Audio.Decoders.Wavpack", "Sage.Audio.Decoders.Wavpack\Sage.Audio.Decoders.Wavpack.csproj", "{F874C369-E501-45FE-A88D-2E4EC86F027D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sage.Audio.Decoders.Wavpack", "Sage.Audio.Decoders.Wavpack\Sage.Audio.Decoders.Wavpack.csproj", "{F874C369-E501-45FE-A88D-2E4EC86F027D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sage.Lib", "Sage.Lib\Sage.Lib.csproj", "{0F14419E-A8BE-4030-8D15-7E3030DCF189}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,10 @@ Global
 		{F874C369-E501-45FE-A88D-2E4EC86F027D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F874C369-E501-45FE-A88D-2E4EC86F027D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F874C369-E501-45FE-A88D-2E4EC86F027D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F14419E-A8BE-4030-8D15-7E3030DCF189}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F14419E-A8BE-4030-8D15-7E3030DCF189}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F14419E-A8BE-4030-8D15-7E3030DCF189}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F14419E-A8BE-4030-8D15-7E3030DCF189}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace FuwaTea.Lib.DataModel
+namespace Sage.Lib.Models
 {
     /// <summary>
     /// Interface for providing a method of customizable implementation priority and fallback.

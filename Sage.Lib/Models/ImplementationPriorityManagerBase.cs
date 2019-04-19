@@ -4,12 +4,12 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using FuwaTea.Lib.Collections;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Sage.Extensibility.Config;
+using Sage.Lib.Collections;
 
-namespace FuwaTea.Lib.DataModel
+namespace Sage.Lib.Models
 {
     public abstract class ImplementationPriorityManagerBase<TInterface, TInput, TOutput> : IImplementationPriorityManager<TInterface, TInput, TOutput>, IConfigPage
         where TInterface : ICanHandle<TInput, TOutput>

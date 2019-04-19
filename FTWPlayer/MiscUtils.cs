@@ -27,11 +27,11 @@ using System.Windows.Threading;
 using DryIoc;
 using FuwaTea.Lib;
 using FuwaTea.Lib.Collections;
-using FuwaTea.Lib.DataModel;
 using log4net;
 using Sage.Audio.Decoders;
 using Sage.Audio.Files;
 using Sage.Audio.Playback;
+using Sage.Lib.Models;
 
 namespace FTWPlayer
 {
