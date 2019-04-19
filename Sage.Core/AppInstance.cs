@@ -12,6 +12,7 @@ using DryIoc;
 using Newtonsoft.Json;
 using Sage.Extensibility;
 using Sage.Extensibility.Config;
+using Sage.Lib;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.RollingFileAlternate;
@@ -234,9 +235,9 @@ namespace Sage.Core
             Log.Debug("Non-persistent config dir: " + nonPersistentConfigDir);
             ExtensibilityContainer.SetConfigDirs(persistentConfigDir, nonPersistentConfigDir);
             // Add required dynamic pages
-            ExtensionCache = ExtensibilityContainer.RegisterConfigPage<ExtensionCache>(new ConfigPageMetadata(nameof(ExtensionCache), false, false));
+            ExtensibilityContainer.RegisterConfigPage<ExtensionCache>(new ConfigPageMetadata(nameof(ExtensionCache), false, false));
             // Load required pages
-            ExtensibilityContainer.LoadConfigPage(nameof(ExtensionCache));
+            ExtensionCache = (ExtensionCache)ExtensibilityContainer.LoadConfigPage(nameof(ExtensionCache));
             Log.Information("Configuration and extension cache have been initialized successfully");
         }
 
@@ -374,8 +375,10 @@ namespace Sage.Core
             foreach (var f in Directory.EnumerateFiles(baseDir, searchPattern, searchOption))
             {
                 Log.Debug($"Found DLL: {f}");
+                var rel = BaseUtils.MakeRelativePath(MyDirPath, f);
+                Log.Debug($"Relative path: {rel}");
                 // Find in cache or create new
-                var ext = ExtensionCache.CreateExtension(f);
+                var ext = ExtensionCache.CreateExtension(rel);
                 // Don't load extension if already loaded
                 if (!string.IsNullOrEmpty(ext.Key) && ExtensibilityContainer.LoadedExtensions.ContainsKey(ext.Key))
                 {

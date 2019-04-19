@@ -57,11 +57,10 @@ namespace Sage.Extensibility
         /// <remarks>Should only be used where absolutely required.</remarks>
         /// <param name="metadata">The required metadata.</param>
         /// <typeparam name="TConfig">The implementation type.</typeparam>
-        public TConfig RegisterConfigPage<TConfig>(IConfigPageMetadata metadata) where TConfig : IConfigPage
+        public void RegisterConfigPage<TConfig>(IConfigPageMetadata metadata) where TConfig : IConfigPage
         {
             Register<IConfigPage, TConfig>(metadata.Key, Reuse.Singleton, metadata);
             Register<TConfig>();
-            return IocContainer.Resolve<TConfig>();
         }
 
         /// <summary>

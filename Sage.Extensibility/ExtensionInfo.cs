@@ -4,7 +4,7 @@ namespace Sage.Extensibility
 {
     public class ExtensionInfo
     {
-        public ExtensionInfo(AssemblyName assemblyName, string dllPath, string key, int apiVersion, IExtensionBasicInfo basicInfo)
+        public ExtensionInfo(AssemblyName assemblyName, string dllPath, string key, int apiVersion, ExtensionBasicInfo basicInfo)
         {
             AssemblyName = assemblyName;
             DllPath = dllPath;
@@ -20,7 +20,7 @@ namespace Sage.Extensibility
         public int ApiVersion { get; }
 
         // imported via IoC - because it allows localization!
-        public IExtensionBasicInfo BasicInfo { get; }
+        public ExtensionBasicInfo BasicInfo { get; }
 
         public override string ToString()
         {

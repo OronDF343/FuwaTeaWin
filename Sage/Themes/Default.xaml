@@ -36,4 +36,7 @@
       <Style Selector="Button.stopIcon">
           <Setter Property="Content" Value="{DynamicResource StopIcon}" />
       </Style>
+      <Style Selector="Button.exitIcon">
+          <Setter Property="Content" Value="{DynamicResource ExitIcon}" />
+      </Style>
 </Styles>

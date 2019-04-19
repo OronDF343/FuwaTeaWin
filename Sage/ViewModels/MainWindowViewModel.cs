@@ -2,6 +2,8 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using Avalonia;
+using Avalonia.Controls;
 using DryIoc;
 using Sage.Audio.Files;
 using Sage.Audio.Files.Impl;
@@ -21,6 +23,9 @@ namespace Sage.ViewModels
         {
             PlayCommand = new RelayCommand(Play);
             StopCommand = new RelayCommand(Stop);
+            ExitCommand = new RelayCommand(Exit);
+            
+            if (Design.IsDesignMode) return;
             
             _container = Program.AppInstance.ExtensibilityContainer.OpenScope(nameof(MainWindowViewModel));
             // Configure
@@ -45,6 +50,11 @@ namespace Sage.ViewModels
             _playMgr.Player.Stop();
         }
 
+        private void Exit()
+        {
+            Application.Current.Exit();
+        }
+
         public string Message => "Hello World!";
         public double MinScrollingMargin => 50;
         public double ScrollingVelocity => 50;
@@ -52,5 +62,6 @@ namespace Sage.ViewModels
 
         public ICommand PlayCommand { get; }
         public ICommand StopCommand { get; }
+        public ICommand ExitCommand { get; }
     }
 }

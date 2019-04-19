@@ -1,6 +1,6 @@
 namespace Sage.Extensibility
 {
-    public class ExtensionBasicInfo : IExtensionBasicInfo
+    public class ExtensionBasicInfo
     {
         public string Title { get; set; }
         public string Description { get; set; }

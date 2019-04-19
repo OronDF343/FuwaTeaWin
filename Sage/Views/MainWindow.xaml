@@ -100,6 +100,13 @@
                         </ia:EventTriggerBehavior>
                       </i:Interaction.Behaviors>
                     </Button>
+                    <Button Classes="icon exitIcon">
+                      <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="Click">
+                          <ia:InvokeCommandAction Command="{Binding ExitCommand}" />
+                        </ia:EventTriggerBehavior>
+                      </i:Interaction.Behaviors>
+                    </Button>
                 </UniformGrid>
             </Grid>
         </StackPanel>

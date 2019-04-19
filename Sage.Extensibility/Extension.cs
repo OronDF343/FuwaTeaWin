@@ -280,7 +280,7 @@ namespace Sage.Extensibility
         /// The platform filter requested by the extension (if specified).
         /// </summary>
         [CanBeNull]
-        public IPlatformFilter PlatformFilter { get; set; }
+        public PlatformFilterAttribute PlatformFilter { get; set; }
 
         /// <summary>
         /// The result of checking the extension metadata.
@@ -297,7 +297,7 @@ namespace Sage.Extensibility
         /// The basic information exported by the extension.
         /// </summary>
         [CanBeNull]
-        public IExtensionBasicInfo BasicInfo { get; set; }
+        public ExtensionBasicInfo BasicInfo { get; set; }
 
         // Non-serialized properties:
         

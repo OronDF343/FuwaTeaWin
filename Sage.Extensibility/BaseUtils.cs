@@ -112,14 +112,26 @@ namespace Sage.Extensibility
             if (string.IsNullOrEmpty(toPath)) throw new ArgumentNullException(nameof(toPath));
             //if (toPath.StartsWith("file:")) return toPath.Remove(0, 5); // changed
 
-            var fromUri = new Uri(fromPath);
             var toUri = new Uri(toPath);
+
+            // Fix directory paths that do not end with slash
+            // Check for missing slash (forward on all platforms, also backslash on Windows)
+            if (!fromPath.EndsWith(Path.DirectorySeparatorChar.ToString()) && !fromPath.EndsWith("/"))
+            {
+                // If it would be a file scheme, add platform slash
+                if (new Uri(fromPath).Scheme.ToLowerInvariant() == "file")
+                    fromPath += Path.DirectorySeparatorChar;
+                // If not, add forward slash
+                else fromPath += "/";
+            }
+
+            var fromUri = new Uri(fromPath);
 
             if (fromUri.Scheme != toUri.Scheme) { return toPath; } // Mismatched scheme: Path can't be made relative.
 
             var relativeUri = fromUri.MakeRelativeUri(toUri);
             var relativePath = Uri.UnescapeDataString(relativeUri.ToString());
-            return relativeUri.Scheme.ToLowerInvariant() == "file"
+            return toUri.Scheme.ToLowerInvariant() == "file"
                        ? relativePath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar)
                        : relativePath;
         }

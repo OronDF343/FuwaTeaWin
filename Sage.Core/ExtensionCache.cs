@@ -16,7 +16,7 @@ namespace Sage.Core
         /// <summary>
         /// The list of known extensions.
         /// </summary>
-        public List<Extension> Extensions { get; } = new List<Extension>();
+        public List<Extension> Extensions { get; set; } = new List<Extension>();
 
         /// <summary>
         /// Create or find an extension instance in the extension cache.

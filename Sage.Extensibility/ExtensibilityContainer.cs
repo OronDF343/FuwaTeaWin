@@ -38,7 +38,7 @@ namespace Sage.Extensibility
             
             // Get extension info if needed
             if (ext.BasicInfo == null)
-                ext.BasicInfo = IocContainer.Resolve<IExtensionBasicInfo>(ext.Key, IfUnresolved.ReturnDefault)
+                ext.BasicInfo = IocContainer.Resolve<ExtensionBasicInfo>(ext.Key, IfUnresolved.ReturnDefault)
                                 ?? new ExtensionBasicInfo
                                 {
                                     Author = ext.Assembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company,
