@@ -26,6 +26,7 @@ namespace FuwaTea.Lib.DataModel
 
         [JsonIgnore]
         public IReadOnlyCollection<TInterface> Implementations { get; private set; }
+
         [JsonIgnore]
         public TInterface DefaultImplementation { get; private set; }
         
@@ -36,13 +37,14 @@ namespace FuwaTea.Lib.DataModel
         {
             SelectedImplementation = ti ?? Implementations.First();
         }
-
+        
+        [UsedImplicitly]
         public string SerializedClassName
         {
             get => SelectedImplementation.GetType().AssemblyQualifiedName;
-            set => SelectImplementation(Implementations.FirstOrDefault(i => i.GetType().AssemblyQualifiedName
-                                                                             .Equals(value, StringComparison.Ordinal)))
-            ;
+            set => SelectImplementation(Implementations.FirstOrDefault(i => i.GetType().AssemblyQualifiedName?
+                                                                                .Equals(value, StringComparison.Ordinal)
+                                                                            ?? false));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

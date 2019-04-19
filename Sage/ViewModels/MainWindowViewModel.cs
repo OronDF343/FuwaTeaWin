@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using CSCore;
 using DryIoc;
-using Sage.Audio.Decoders;
 using Sage.Audio.Files;
 using Sage.Audio.Files.Impl;
 using Sage.Audio.Playback;
@@ -14,37 +13,36 @@ namespace Sage.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private IResolverContext _container;
-        private IAudioPlayer _player;
-        private IDecoderManager _decoderMgr;
-        private StandardFileHandle _file;
+        private readonly IResolverContext _container;
+        private readonly IPlaybackManager _playMgr;
+        private readonly StandardFileHandle _file;
 
         public MainWindowViewModel()
         {
             PlayCommand = new RelayCommand(Play);
             StopCommand = new RelayCommand(Stop);
-
+            
             _container = Program.AppInstance.ExtensibilityContainer.OpenScope(nameof(MainWindowViewModel));
-            _player = _container.Resolve<IAudioPlayer>();
-            _decoderMgr = _container.Resolve<IDecoderManager>();
-            _file = new StandardFileHandle(new FileLocationInfo(new Uri(@"D:\01. Dangerous Sunshine.wv")));
-            var ss = _decoderMgr.Handle(_file);
+            // Configure
             var apiSel = _container.Resolve<ApiSelector>();
             apiSel.SelectImplementation(apiSel.Implementations.First(i => i.GetType().Name.Contains("Wasapi")));
             var wCfg = _container.Resolve<WasapiConfig>();
             wCfg.MasterVolume = 0.7f;
-            _player.Load(ss.ToWaveSource());
+            // Load
+            _playMgr = _container.Resolve<IPlaybackManager>();
+            _file = new StandardFileHandle(new FileLocationInfo(new Uri(@"D:\01. Dangerous Sunshine.wv")));
+            _playMgr.List = new ObservableCollection<IFileHandle> { _file };
         }
 
         private void Play()
         {
-            if (_player.State == AudioPlayerState.Playing) _player.Pause();
-            else _player.Play();
+            if (_playMgr.Player.State == AudioPlayerState.Playing) _playMgr.Player.Pause();
+            else _playMgr.Player.Play();
         }
 
         private void Stop()
         {
-            _player.Stop();
+            _playMgr.Player.Stop();
         }
 
         public string Message => "Hello World!";

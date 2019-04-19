@@ -18,11 +18,25 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace FuwaTea.Lib.Collections
 {
     public static class ExtensionMethods
     {
+        public static void SortBySequence<T, TId>(this List<T> source, IList<TId> order,
+                                                             Func<T, TId> idSelector)
+        {
+            var lookup = source.ToDictionary(t => t, t => order.IndexOf(idSelector(t)).WithCondition(i => i < 0, int.MaxValue));
+            source.Sort((t1, t2) => lookup[t1].CompareTo(lookup[t2]));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T WithCondition<T>(this T value, Func<T, bool> condition, T valueIfTrue)
+        {
+            return condition(value) ? valueIfTrue : value;
+        }
+        
         public static OneToManyDictionary<TKey, TValue> ToOneToManyDictionary<TKey, TValue, TCollection>(
             this IEnumerable<KeyValuePair<TKey, TCollection>> dictionary) where TCollection : IEnumerable<TValue>
         {
