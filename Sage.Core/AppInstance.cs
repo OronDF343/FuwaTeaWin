@@ -166,7 +166,7 @@ namespace Sage.Core
                 var vsIndex = name.IndexOf(AppConstants.Arguments.SwitchValueSeparator, StringComparison.Ordinal);
                 var value = vsIndex < 0 ? null : vsIndex == name.Length - 1 ? "" : name.Substring(vsIndex + 1);
                 if (vsIndex > -1) name = name.Substring(0, vsIndex);
-                Argument k;
+                Argument k = null;
                 if (name.StartsWith(AppConstants.Arguments.SwitchCharLong))
                 {
                     name = name.Substring(AppConstants.Arguments.SwitchCharLong.Length);
@@ -177,7 +177,7 @@ namespace Sage.Core
                     name = name.Substring(AppConstants.Arguments.SwitchCharShort.Length);
                     k = AppConstants.Arguments.All.FirstOrDefault(a => name == a.ShortName && (value == null || a.HasValue)); // TODO: As above
                 }
-                else continue;
+                else yield return (AppConstants.Arguments.Files, ar);
 
                 if (k == null)
                 {

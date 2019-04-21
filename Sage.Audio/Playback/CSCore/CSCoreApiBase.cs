@@ -60,9 +60,9 @@ namespace Sage.Audio.Playback.CSCore
         }
 
         public virtual bool CanResume => true;
-        public bool CanSeek => WavSrc.CanSeek;
-        public TimeSpan Duration => WavSrc.GetLength();
-        public TimeSpan Position { get => WavSrc.GetPosition(); set => WavSrc.SetPosition(value); }
+        public bool CanSeek => WavSrc?.CanSeek ?? false;
+        public TimeSpan Duration => WavSrc?.GetLength() ?? TimeSpan.Zero;
+        public TimeSpan Position { get => WavSrc?.GetPosition() ?? TimeSpan.Zero; set => WavSrc?.SetPosition(value); }
         public virtual void Unload()
         {
             SoundOut?.Dispose();

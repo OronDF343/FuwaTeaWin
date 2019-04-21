@@ -7,6 +7,7 @@
         Icon="resm:Sage.Assets.avalonia-logo.ico"
         HasSystemDecorations="False"
         ShowInTaskbar="True"
+        Topmost="True"
         Title="Sage"
         Height="34" Width="540">
     <Window.Resources>
@@ -34,7 +35,7 @@
                         <StackPanel.Styles>
                             <Style Selector="StackPanel">
                                 <Style.Animations>
-                                    <Animation IterationCount="Infinite" Duration="0:0:3">
+                                    <Animation IterationCount="Infinite" Duration="0:0:7">
                                         <!-- TODO: Binding as follows:
                                         <Animation.Duration>
                                             <MultiBinding Converter="{StaticResource DivideMultiConverter}">

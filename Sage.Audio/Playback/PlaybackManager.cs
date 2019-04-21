@@ -139,12 +139,12 @@ namespace Sage.Audio.Playback
              * Solution: On index change always call reload. On error or finished, respect. On select, use override manually from UI.
              */
             // TODO ISSUE: Behavior is not self-contained!
-            if (Behavior == PlaybackBehavior.RepeatTrack)
+            if (Behavior == PlaybackBehavior.RepeatTrack && List.Count > 0)
             {
                 Player?.Play();
                 return;
             }
-            if (SneakyUpdateIndex((Index + 1) % List.Count))
+            if (List.Count > 0 && SneakyUpdateIndex((Index + 1) % List.Count))
                 Load();
         }
 

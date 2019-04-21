@@ -18,6 +18,7 @@ namespace Sage.Core
             public const string SwitchCharShort = "-";
             public const string SwitchCharLong = "--";
             public const string SwitchValueSeparator = ":";
+            public static readonly Argument Files = new Argument("", "", true);
             public static readonly Argument LogLevel = new Argument("log-level", "l", true);
             public static readonly Argument FileLogLevel = new Argument("file-log-level", "L", true);
             public static readonly Argument UpdateFileAssociations = new Argument("update-file-associations");

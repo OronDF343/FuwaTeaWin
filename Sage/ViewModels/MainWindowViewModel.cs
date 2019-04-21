@@ -10,8 +10,10 @@ using Sage.Audio.Files;
 using Sage.Audio.Files.Impl;
 using Sage.Audio.Playback;
 using Sage.Audio.Playback.CSCore;
+using Sage.Core;
 using Sage.Helpers;
 using Sage.Lib.Collections;
+using Serilog;
 
 namespace Sage.ViewModels
 {
@@ -19,7 +21,6 @@ namespace Sage.ViewModels
     {
         private readonly IResolverContext _container;
         private readonly IPlaybackManager _playMgr;
-        private readonly StandardFileHandle _file, _file2;
 
         public MainWindowViewModel()
         {
@@ -29,11 +30,14 @@ namespace Sage.ViewModels
             NextCommand = new RelayCommand(Next);
             ShuffleCommand = new RelayCommand(Shuffle);
             RepeatCommand = new RelayCommand(Repeat);
+            MinimizeCommand = new RelayCommand(Minimize);
             ExitCommand = new RelayCommand(Exit);
             
             if (Design.IsDesignMode) return;
             
             _container = Program.AppInstance.ExtensibilityContainer.OpenScope(nameof(MainWindowViewModel));
+            
+            // Testing:
             // Configure
             var apiSel = _container.Resolve<ApiSelector>();
             apiSel.SelectImplementation(apiSel.Implementations.First(i => i.GetType().Name.Contains("Wasapi")));
@@ -41,10 +45,16 @@ namespace Sage.ViewModels
             wCfg.MasterVolume = 0.7f;
             // Load
             _playMgr = _container.Resolve<IPlaybackManager>();
-            _file = new StandardFileHandle(new FileLocationInfo(new Uri(@"D:\01. Dangerous Sunshine.wv")));
-            _file2 = new StandardFileHandle(new FileLocationInfo(new Uri(@"D:\01. Enter Enter MISSION! 最終章ver..flac")));
-            _playMgr.List = new ObservableCollection<IFileHandle> { _file, _file2 };
+            _playMgr.List = new ObservableCollection<IFileHandle>();
+            if (Program.AppInstance.Args.ContainsKey(AppConstants.Arguments.Files))
+            foreach (var file in Program.AppInstance.Args[AppConstants.Arguments.Files])
+            {
+                try { _playMgr.List.Add(new StandardFileHandle(new FileLocationInfo(new Uri(file)))); }
+                catch (Exception e) { Log.Error(e, $"Failed to load file \"{file}\"");}
+            }
 
+
+            // Required:
             _playMgr.Player.StateChanged += Player_StateChanged;
         }
 
@@ -86,13 +96,18 @@ namespace Sage.ViewModels
             this.RaisePropertyChanged(nameof(RepeatMode));
         }
 
+        private void Minimize()
+        {
+            Application.Current.MainWindow.WindowState = WindowState.Minimized;
+        }
+
         private void Exit()
         {
             Application.Current.Exit();
         }
 
-        public string Message => "Hello World!";
-        public double MinScrollingMargin => 50;
+        public string Message => "Sage: Music Player (Development Version)";
+        public double MinScrollingMargin => 64;
         public double ScrollingVelocity => 50;
         public TimeSpan Duration => TimeSpan.FromSeconds(3);
 
@@ -100,12 +115,13 @@ namespace Sage.ViewModels
         public bool IsShuffleEnabled { get; private set; } // TODO: Implement shuffle
         public bool? RepeatMode => _playMgr.Behavior == PlaybackBehavior.Normal ? false : _playMgr.Behavior == PlaybackBehavior.RepeatList ? true : (bool?)null;
         
-        public ICommand PreviousCommand { get; set; }
+        public ICommand PreviousCommand { get; }
         public ICommand PlayCommand { get; }
         public ICommand StopCommand { get; }
-        public ICommand NextCommand { get; set; }
+        public ICommand NextCommand { get; }
         public ICommand ShuffleCommand { get; }
         public ICommand RepeatCommand { get; }
+        public ICommand MinimizeCommand { get; }
         public ICommand ExitCommand { get; }
     }
 }
