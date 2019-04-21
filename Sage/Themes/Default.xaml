@@ -8,12 +8,15 @@
         <Setter Property="FontSize" Value="{DynamicResource FontSizeLarge}" />
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
-        <Style Selector="Path.icon">
+        <Style Selector=":is(Shape).icon">
           <Setter Property="Stretch" Value="Uniform"/>
           <Setter Property="Fill" Value="{DynamicResource ThemeForegroundBrush}"/>
           <Setter Property="Margin" Value="2,0"/>
         </Style>
-      <Style Selector="Button.icon">
+  <Style Selector=":is(Shape).iconDisabled">
+    <Setter Property="Fill" Value="{DynamicResource ThemeForegroundLowBrush}"/>
+  </Style>
+      <Style Selector=":is(Button).icon">
           <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}"/>
           <Setter Property="BorderThickness" Value="0"/>
           <Setter Property="Padding" Value="2,4"/>
@@ -22,17 +25,24 @@
           <Setter Property="VerticalContentAlignment" Value="Center"/>
           <Setter Property="HorizontalContentAlignment" Value="Center"/>
       </Style>
-    <Style Selector="Button:pointerover /template/ ContentPresenter">
+  <!-- Order is important - pointerover and pressed must be below checked! -->
+  <Style Selector=":is(ToggleButton).noCheck:checked /template/ ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}"/>
+  </Style>
+    <Style Selector=":is(Button):pointerover /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource ThemeControlMidBrush}"/>
     </Style>
-    <Style Selector="Button:pressed  /template/ ContentPresenter">
+    <Style Selector=":is(Button):pressed /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource ThemeControlHighBrush}"/>
     </Style>
       <Style Selector="Button.prevIcon">
         <Setter Property="Content" Value="{DynamicResource PreviousIcon}" />
       </Style>
-      <Style Selector="Button.playIcon">
+      <Style Selector="ToggleButton.playIcon:unchecked">
           <Setter Property="Content" Value="{DynamicResource PlayIcon}" />
+      </Style>
+      <Style Selector="ToggleButton.playIcon:checked">
+          <Setter Property="Content" Value="{DynamicResource PauseIcon}" />
       </Style>
       <Style Selector="Button.pauseIcon">
           <Setter Property="Content" Value="{DynamicResource PauseIcon}" />
@@ -49,14 +59,20 @@
       <Style Selector="Button.muteIcon">
           <Setter Property="Content" Value="{DynamicResource MuteIcon}" />
       </Style>
-      <Style Selector="Button.shuffleIcon">
+      <Style Selector="ToggleButton.shuffleIcon">
+          <Setter Property="Content" Value="{DynamicResource ShuffleDisabledIcon}" />
+      </Style>
+      <Style Selector="ToggleButton.shuffleIcon:checked">
           <Setter Property="Content" Value="{DynamicResource ShuffleIcon}" />
       </Style>
-      <Style Selector="Button.repeatIcon">
-          <Setter Property="Content" Value="{DynamicResource RepeatIcon}" />
+      <Style Selector="ToggleButton.repeatIcon">
+          <Setter Property="Content" Value="{DynamicResource RepeatDisabledIcon}" />
       </Style>
-      <Style Selector="Button.singleRepeatIcon">
-          <Setter Property="Content" Value="{DynamicResource SingleRepeatIcon}" />
+      <Style Selector="ToggleButton.repeatIcon:indeterminate">
+          <Setter Property="Content" Value="{DynamicResource RepeatSingleIcon}" />
+      </Style>
+      <Style Selector="ToggleButton.repeatIcon:checked">
+          <Setter Property="Content" Value="{DynamicResource RepeatIcon}" />
       </Style>
       <Style Selector="Button.resizeIcon">
           <Setter Property="Content" Value="{DynamicResource ResizeIcon}" />

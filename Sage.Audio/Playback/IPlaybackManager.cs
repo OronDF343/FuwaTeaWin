@@ -54,7 +54,7 @@ namespace Sage.Audio.Playback
     public enum PlaybackBehavior
     {
         Normal,
-        RepeatList,
-        RepeatTrack
+        RepeatTrack,
+        RepeatList
     }
 }

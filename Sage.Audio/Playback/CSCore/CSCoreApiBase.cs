@@ -34,7 +34,8 @@ namespace Sage.Audio.Playback.CSCore
         protected virtual void SoundOutOnStopped(object sender, PlaybackStoppedEventArgs args)
         {
             if (args.HasError) OnPlaybackError(new PlaybackErrorEventArgs(args.Exception));
-            else OnPlaybackFinished();
+            // The condition here is required, since this event will be fired LATE when moving to another track, which could cause skipping of tracks if the state isn't checked...
+            else if (SoundOut.PlaybackState == PlaybackState.Stopped) OnPlaybackFinished();
         }
         
         [SuppressMessage("ReSharper", "EmptyGeneralCatchClause", Justification = "There is no way to know easily if the output is already initialized")]

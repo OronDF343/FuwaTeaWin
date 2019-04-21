@@ -84,15 +84,27 @@
                     </StackPanel>
                 </Canvas>
                 <UniformGrid Grid.Column="1" Rows="1" Columns="10" HorizontalAlignment="Left">
-                    <Button Classes="icon prevIcon" />
-                    <Button Classes="icon playIcon">
+                    <Button Classes="icon prevIcon">
+                      <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="Click">
+                          <ia:InvokeCommandAction Command="{Binding PreviousCommand}" />
+                        </ia:EventTriggerBehavior>
+                      </i:Interaction.Behaviors>
+                    </Button>
+                    <ToggleButton Classes="icon playIcon noCheck" IsChecked="{Binding IsPlaying, Mode=OneWay}">
                       <i:Interaction.Behaviors>
                         <ia:EventTriggerBehavior EventName="Click">
                           <ia:InvokeCommandAction Command="{Binding PlayCommand}" />
                         </ia:EventTriggerBehavior>
                       </i:Interaction.Behaviors>
+                    </ToggleButton>
+                    <Button Classes="icon nextIcon">
+                      <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="Click">
+                          <ia:InvokeCommandAction Command="{Binding NextCommand}" />
+                        </ia:EventTriggerBehavior>
+                      </i:Interaction.Behaviors>
                     </Button>
-                    <Button Classes="icon nextIcon" />
                     <Button Classes="icon stopIcon">
                       <i:Interaction.Behaviors>
                         <ia:EventTriggerBehavior EventName="Click">
@@ -100,11 +112,41 @@
                         </ia:EventTriggerBehavior>
                       </i:Interaction.Behaviors>
                     </Button>
-                    <Button Classes="icon volumeIcon" />
-                    <Button Classes="icon shuffleIcon" />
-                    <Button Classes="icon repeatIcon" />
-                    <Button Classes="icon resizeIcon" />
-                    <Button Classes="icon minimizeIcon" />
+                    <Button Classes="icon volumeIcon">
+                      <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="Click">
+                          <ia:InvokeCommandAction Command="{Binding VolumeCommand}" />
+                        </ia:EventTriggerBehavior>
+                      </i:Interaction.Behaviors>
+                    </Button>
+                    <ToggleButton Classes="icon shuffleIcon noCheck" IsChecked="{Binding IsShuffleEnabled, Mode=OneWay}">
+                      <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="Click">
+                          <ia:InvokeCommandAction Command="{Binding ShuffleCommand}" />
+                        </ia:EventTriggerBehavior>
+                      </i:Interaction.Behaviors>
+                    </ToggleButton>
+                    <ToggleButton Classes="icon repeatIcon noCheck" IsThreeState="True" IsChecked="{Binding RepeatMode, Mode=OneWay}">
+                      <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="Click">
+                          <ia:InvokeCommandAction Command="{Binding RepeatCommand}" />
+                        </ia:EventTriggerBehavior>
+                      </i:Interaction.Behaviors>
+                    </ToggleButton>
+                    <Button Classes="icon resizeIcon">
+                      <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="Click">
+                          <ia:InvokeCommandAction Command="{Binding ResizeCommand}" />
+                        </ia:EventTriggerBehavior>
+                      </i:Interaction.Behaviors>
+                    </Button>
+                    <Button Classes="icon minimizeIcon">
+                      <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="Click">
+                          <ia:InvokeCommandAction Command="{Binding MinimizeCommand}" />
+                        </ia:EventTriggerBehavior>
+                      </i:Interaction.Behaviors>
+                    </Button>
                     <Button Classes="icon exitIcon">
                       <i:Interaction.Behaviors>
                         <ia:EventTriggerBehavior EventName="Click">
