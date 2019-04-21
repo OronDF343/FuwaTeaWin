@@ -28,11 +28,12 @@ namespace Sage.Core
             public static readonly Argument SetLanguage = new Argument("set-language", hasValue: true);
             public static readonly Argument Wait = new Argument("wait", "w");
             public static readonly Argument Parameter = new Argument("parameter", "p", true);
+            public static readonly Argument AddOnly = new Argument("add-only", "a", true);
 
             public static readonly HashSet<Argument> All = new HashSet<Argument>
             {
                 LogLevel, FileLogLevel, UpdateFileAssociations, DeleteFileAssociations, FileAssociationsUi, AsAdmin,
-                SetLanguage, Wait, Parameter
+                SetLanguage, Wait, Parameter, AddOnly
             };
         }
     }

@@ -32,13 +32,12 @@ namespace Sage.ViewModels
             RepeatCommand = new RelayCommand(Repeat);
             MinimizeCommand = new RelayCommand(Minimize);
             ExitCommand = new RelayCommand(Exit);
-            
+
             if (Design.IsDesignMode) return;
-            
+
             _container = Program.AppInstance.ExtensibilityContainer.OpenScope(nameof(MainWindowViewModel));
-            
-            // Testing:
-            // Configure
+
+            // Configure for testing
             var apiSel = _container.Resolve<ApiSelector>();
             apiSel.SelectImplementation(apiSel.Implementations.First(i => i.GetType().Name.Contains("Wasapi")));
             var wCfg = _container.Resolve<WasapiConfig>();
@@ -47,15 +46,16 @@ namespace Sage.ViewModels
             _playMgr = _container.Resolve<IPlaybackManager>();
             _playMgr.List = new ObservableCollection<IFileHandle>();
             if (Program.AppInstance.Args.ContainsKey(AppConstants.Arguments.Files))
-            foreach (var file in Program.AppInstance.Args[AppConstants.Arguments.Files])
-            {
-                try { _playMgr.List.Add(new StandardFileHandle(new FileLocationInfo(new Uri(file)))); }
-                catch (Exception e) { Log.Error(e, $"Failed to load file \"{file}\"");}
-            }
-
-
+                foreach (var file in Program.AppInstance.Args[AppConstants.Arguments.Files])
+                {
+                    try { _playMgr.List.Add(new StandardFileHandle(new FileLocationInfo(new Uri(file)))); }
+                    catch (Exception e) { Log.Error(e, $"Failed to load file \"{file}\""); }
+                }
             // Required:
             _playMgr.Player.StateChanged += Player_StateChanged;
+            // Auto-play
+            if (!Program.AppInstance.Args.ContainsKey(AppConstants.Arguments.AddOnly))
+                Play();
         }
 
         private void Player_StateChanged(object sender, AudioPlayerStateChangedEventArgs args)
@@ -113,8 +113,10 @@ namespace Sage.ViewModels
 
         public bool IsPlaying => _playMgr.Player.State == AudioPlayerState.Playing;
         public bool IsShuffleEnabled { get; private set; } // TODO: Implement shuffle
-        public bool? RepeatMode => _playMgr.Behavior == PlaybackBehavior.Normal ? false : _playMgr.Behavior == PlaybackBehavior.RepeatList ? true : (bool?)null;
-        
+
+        public bool? RepeatMode => _playMgr.Behavior == PlaybackBehavior.Normal ? false :
+                                   _playMgr.Behavior == PlaybackBehavior.RepeatList ? true : (bool?)null;
+
         public ICommand PreviousCommand { get; }
         public ICommand PlayCommand { get; }
         public ICommand StopCommand { get; }
