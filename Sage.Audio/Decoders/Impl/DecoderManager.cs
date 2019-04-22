@@ -6,7 +6,7 @@ using Sage.Lib.Models;
 
 namespace Sage.Audio.Decoders.Impl
 {
-    public class DecoderManager : ImplementationPriorityManagerBase<ITrackDecoder, IFileHandle, ISampleSource>, IDecoderManager
+    public class DecoderManager : ImplementationPriorityManagerBase<ITrackDecoder, IFileHandle, IWaveSource>, IDecoderManager
     {
         public DecoderManager([ImportMany] IList<ITrackDecoder> implementations)
             : base(implementations) { }

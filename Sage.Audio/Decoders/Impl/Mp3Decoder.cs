@@ -35,7 +35,7 @@ namespace Sage.Audio.Decoders.Impl
             return r;
         }
 
-        public ISampleSource Handle(IFileHandle ti)
+        public IWaveSource Handle(IFileHandle ti)
         {
             IWaveSource ws;
             var s = ti.OpenStream(FileAccess.Read);
@@ -53,7 +53,7 @@ namespace Sage.Audio.Decoders.Impl
                     throw;
                 }
             }
-            return ws.ToSampleSource();
+            return ws;
         }
     }
 }

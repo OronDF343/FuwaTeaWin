@@ -35,7 +35,7 @@ namespace Sage.Audio.Decoders.Impl
             return r;
         }
 
-        public ISampleSource Handle(IFileHandle ti)
+        public IWaveSource Handle(IFileHandle ti)
         {
             var s = ti.OpenStream(FileAccess.Read);
             IWaveSource res = new WaveFileReader(s);
@@ -46,7 +46,7 @@ namespace Sage.Audio.Decoders.Impl
                 res.Dispose();
                 res = new MediaFoundationDecoder(s);
             }
-            return res.ToSampleSource();
+            return res;
         }
     }
 }

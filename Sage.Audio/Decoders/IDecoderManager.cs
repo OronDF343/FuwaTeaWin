@@ -6,7 +6,7 @@ using Sage.Lib.Models;
 namespace Sage.Audio.Decoders
 {
     [InheritedExport]
-    public interface IDecoderManager : IImplementationPriorityManager<ITrackDecoder, IFileHandle, ISampleSource>
+    public interface IDecoderManager : IImplementationPriorityManager<ITrackDecoder, IFileHandle, IWaveSource>
     {
     }
 }

@@ -20,9 +20,9 @@ namespace Sage.Audio.Decoders.Wavpack
             return r;
         }
 
-        public ISampleSource Handle(IFileHandle ti)
+        public IWaveSource Handle(IFileHandle ti)
         {
-            return new WavpackWaveSource(ti.OpenStream(FileAccess.Read)).ToSampleSource();
+            return new WavpackWaveSource(ti.OpenStream(FileAccess.Read));
         }
 
         public void UpdateMetadata(IFileHandle file)

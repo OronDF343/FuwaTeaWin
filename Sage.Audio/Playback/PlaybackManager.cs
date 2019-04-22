@@ -119,7 +119,7 @@ namespace Sage.Audio.Playback
             // TODO: Where to handle effects? SampleSource vs WaveSource? Where to handle errors?
             Player?.Unload();
             if (NowPlaying == null) return;
-            Player?.Load(_decoderManager.Handle(NowPlaying).ToWaveSource());
+            Player?.Load(_decoderManager.Handle(NowPlaying));
         }
 
         private void FileEnd()

@@ -6,7 +6,7 @@ using Sage.Lib.Models;
 namespace Sage.Audio.Decoders
 {
     [InheritedExport]
-    public interface ITrackDecoder : IUpdateMetadata, ICanHandle<IFileHandle, ISampleSource>
+    public interface ITrackDecoder : IUpdateMetadata, ICanHandle<IFileHandle, IWaveSource>
     {
     }
 }

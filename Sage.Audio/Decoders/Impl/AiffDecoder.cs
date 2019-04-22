@@ -33,11 +33,10 @@ namespace Sage.Audio.Decoders.Impl
             return r;
         }
 
-        public ISampleSource Handle(IFileHandle ti)
+        public IWaveSource Handle(IFileHandle ti)
         {
             var s = ti.OpenStream(FileAccess.Read);
-            var res = new AiffReader(s);
-            return res.ToSampleSource();
+            return new AiffReader(s);
         }
     }
 }

@@ -21,9 +21,9 @@ namespace Sage.Audio.Decoders.Impl
             return r;
         }
 
-        public ISampleSource Handle(IFileHandle file)
+        public IWaveSource Handle(IFileHandle file)
         {
-            return new FlacFile(file.OpenStream(FileAccess.Read), FlacPreScanMode.Sync).ToSampleSource();
+            return new FlacFile(file.OpenStream(FileAccess.Read), FlacPreScanMode.Sync);
         }
 
         public void UpdateMetadata(IFileHandle file)
