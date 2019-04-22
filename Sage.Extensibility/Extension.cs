@@ -155,6 +155,9 @@ namespace Sage.Extensibility
 
                 // Done checking
                 ExtensionCheckResult = ExtensionCheckResult.OK;
+                log.Debug("All checks passed, loading exports");
+                // Load exports:
+                LoadExports();
 
             }
             // If not changed, and we can trust the existing data:
@@ -190,7 +193,7 @@ namespace Sage.Extensibility
                 }
 
                 // Return immediately if failed
-                if (AssemblyLoadResult != AssemblyLoadResult.OK || Assembly == null)
+                if (Assembly == null || AssemblyLoadResult != AssemblyLoadResult.OK)
                 {
                     log.Debug("Failed to load assembly");
                     return;
@@ -216,11 +219,10 @@ namespace Sage.Extensibility
 
                 // Done checking
                 ExtensionCheckResult = ExtensionCheckResult.OK;
+                log.Debug("All checks passed, loading exports");
+                // Load exports ~if they aren't already:~ EDIT: Can't do that
+                /*if (Exports == null)*/ LoadExports();
             }
-
-            log.Debug("All checks passed, loading exports");
-            // Load exports if they aren't already:
-            if (Exports == null) LoadExports();
             // Set IsLoaded
             IsLoaded = true;
         }
@@ -348,7 +350,7 @@ namespace Sage.Extensibility
         /// <summary>
         /// The exported registrations from the extension.
         /// </summary>
-        [CanBeNull]
+        [CanBeNull, JsonIgnore] // Serializing this won't work sadly
         public IList<ExportedRegistrationInfo> Exports { get; set; }
 
         /// <summary>

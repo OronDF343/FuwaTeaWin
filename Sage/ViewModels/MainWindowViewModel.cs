@@ -8,6 +8,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using DryIoc;
 using ReactiveUI;
+using Sage.Audio.Effects;
 using Sage.Audio.Effects.Impl;
 using Sage.Audio.Files;
 using Sage.Audio.Files.Impl;
@@ -25,6 +26,7 @@ namespace Sage.ViewModels
         private readonly IResolverContext _container;
         private readonly IPlaybackManager _playMgr;
         private readonly VolumeEffect _volume;
+        private readonly IEffectManager _effectManager;
 
         public MainWindowViewModel()
         {
@@ -50,7 +52,8 @@ namespace Sage.ViewModels
             _playMgr = _container.Resolve<IPlaybackManager>();
             _volume = _container.Resolve<VolumeEffect>();
             _volume.Volume = 0.7f;
-            if (!_playMgr.Effects.Contains(_volume)) _playMgr.Effects.Add(_volume);
+            _effectManager = _container.Resolve<IEffectManager>();
+            _effectManager.AppendImplementation(_volume);
             _playMgr.List = new ObservableCollection<IFileHandle>();
             if (Program.AppInstance.Args.ContainsKey(AppConstants.Arguments.Files))
                 foreach (var file in Program.AppInstance.Args[AppConstants.Arguments.Files])

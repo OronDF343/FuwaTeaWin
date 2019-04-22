@@ -2,8 +2,10 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
+using Newtonsoft.Json;
 using Sage.Audio.Effects;
 using Sage.Audio.Files;
+using Sage.Extensibility.Config;
 
 namespace Sage.Audio.Playback
 {
@@ -11,20 +13,24 @@ namespace Sage.Audio.Playback
     /// 
     /// </summary>
     [InheritedExport]
-    public interface IPlaybackManager : INotifyPropertyChanged, IDisposable
+    public interface IPlaybackManager : IConfigPage, IDisposable
     {
         // if [< Playing || !AllowPlayOnReload] then BehaviorOnLoadOverrideOnce = false; else BehaviorOnLoadOverrideOnce = true; Load
         void Reload();
 
         // OnChanged => Reload
+        [JsonIgnore]
         IAudioPlayer Player { get; set; }
         
         // TODO: These should leverage the IPlaylist type
         // OnChanged => _index = 0, Reload
+        [JsonIgnore]
         ObservableCollection<IFileHandle> List { get; set; }
+        [JsonIgnore]
         IFileHandle NowPlaying { get; }
         // Core of user functions
         // OnChanged => Reload
+        [JsonIgnore]
         int Index { get; set; }
         
         // Behavior settings
@@ -47,14 +53,10 @@ namespace Sage.Audio.Playback
         /// <summary>
         /// Set to true or false to override *once* whether playback should begin immediately or not. A value of null will respect the current Behavior.
         /// </summary>
+        [JsonIgnore]
         bool? BehaviorOnLoadOverrideOnce { get; set; }
 
         event EventHandler<PlaybackErrorEventArgs> Error;
-
-        /// <summary>
-        /// List of effects, applied in list order
-        /// </summary>
-        ObservableCollection<IEffect> Effects { get; set; }
     }
 
     public enum PlaybackBehavior

@@ -9,16 +9,18 @@ using JetBrains.Annotations;
 using Sage.Audio.Decoders;
 using Sage.Audio.Effects;
 using Sage.Audio.Files;
+using Sage.Extensibility.Config;
 
 namespace Sage.Audio.Playback
 {
+    [ConfigPage(nameof(PlaybackManager))]
     public class PlaybackManager : IPlaybackManager
     {
-        public PlaybackManager([Import] IDecoderManager decoderManager, [Import] IAudioPlayer player)
+        public PlaybackManager([Import] IDecoderManager decoderManager, [Import] IEffectManager effectManager, [Import] IAudioPlayer player)
         {
             _decoderManager = decoderManager;
+            _effectManager = effectManager;
             Player = player;
-            Effects = new ObservableCollection<IEffect>();
             List = new ObservableCollection<IFileHandle>();
         }
 
@@ -26,10 +28,11 @@ namespace Sage.Audio.Playback
         private IAudioPlayer _player;
         private ObservableCollection<IFileHandle> _list;
         private readonly IDecoderManager _decoderManager;
-        private ObservableCollection<IEffect> _effects;
+        private readonly IEffectManager _effectManager;
 
         public void Reload()
         {
+            if (Player == null || NowPlaying == null) return;
             if (BehaviorOnLoadOverrideOnce == null)
             {
                 if ((int)Player.State < (int)AudioPlayerState.Playing || !AllowPlayOnReload)
@@ -69,7 +72,7 @@ namespace Sage.Audio.Playback
         }
 
         [CanBeNull]
-        public IFileHandle NowPlaying =>  List != null && List.Count > 0 ? List[Index] : null;
+        public IFileHandle NowPlaying =>  List?.Count > 0 ? List[Index] : null;
         public int Index
         {
             get => _index;
@@ -84,19 +87,6 @@ namespace Sage.Audio.Playback
         public PlaybackBehavior Behavior { get; set; }
         public bool? BehaviorOnLoadOverrideOnce { get; set; }
         public event EventHandler<PlaybackErrorEventArgs> Error;
-        // TODO: Save effects config
-        public ObservableCollection<IEffect> Effects
-        {
-            get => _effects;
-            set
-            {
-                if (_effects != null) _effects.CollectionChanged -= EffectsOnCollectionChanged;
-                _effects = value;
-                if (_effects != null) _effects.CollectionChanged += EffectsOnCollectionChanged;
-                OnPropertyChanged();
-                Reload();
-            }
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -136,13 +126,12 @@ namespace Sage.Audio.Playback
         {
             // TODO: Where to handle errors?
             Player?.Unload();
-            if (NowPlaying == null) return;
+            if (Player == null || NowPlaying == null) return;
             var wavSrc = _decoderManager.Handle(NowPlaying);
-            if (_effects != null && _effects.Count > 0)
+            if (_effectManager.SelectedImplementations.Count > 0)
             {
                 var sampleSrc = wavSrc.ToSampleSource();
-                // TODO: Handle duplicate effects...
-                foreach (var effect in _effects)
+                foreach (var effect in _effectManager.SelectedImplementations)
                 {
                     effect.BaseSource = sampleSrc;
                     sampleSrc = effect;
@@ -169,12 +158,12 @@ namespace Sage.Audio.Playback
              * Solution: On index change always call reload. On error or finished, respect. On select, use override manually from UI.
              */
             // TODO ISSUE: Behavior is not self-contained!
-            if (Behavior == PlaybackBehavior.RepeatTrack && List.Count > 0)
+            if (Behavior == PlaybackBehavior.RepeatTrack && List?.Count > 0)
             {
                 Player?.Play();
                 return;
             }
-            if (List.Count > 0 && SneakyUpdateIndex((Index + 1) % List.Count))
+            if (List?.Count > 0 && SneakyUpdateIndex((Index + 1) % List.Count))
                 Load();
         }
 
@@ -309,7 +298,7 @@ namespace Sage.Audio.Playback
                     // If the change is beyond us, ignore the change
                     if (e.NewStartingIndex > Index) return;
                     // If the list used to be empty, load the first item
-                    if (List.Count == e.NewItems.Count) Reload();
+                    if (List?.Count == e.NewItems.Count) Reload();
                     // Otherwise, correct our index quietly
                     else SneakyUpdateIndex(Index + e.NewItems.Count);
                     break;
@@ -359,11 +348,6 @@ namespace Sage.Audio.Playback
                     ForceReset();
                     break;
             }
-        }
-
-        private void EffectsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            Reload();
         }
 
         public void Dispose()
