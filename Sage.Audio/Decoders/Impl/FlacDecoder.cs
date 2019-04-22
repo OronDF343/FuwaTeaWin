@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using CSCore;
 using CSCore.Codecs.FLAC;
 using Sage.Audio.Files;
@@ -13,6 +14,11 @@ namespace Sage.Audio.Decoders.Impl
     public class FlacDecoder : ITrackDecoder
     {
         public IEnumerable<string> SupportedFormats => new[] { "flac" };
+        public bool IsSupported(string format)
+        {
+            return SupportedFormats.Contains(format.ToLowerInvariant());
+        }
+
         public bool CanHandle(IFileHandle file)
         {
             bool r;

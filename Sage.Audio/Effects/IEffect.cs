@@ -4,9 +4,8 @@ using CSCore;
 namespace Sage.Audio.Effects
 {
     [InheritedExport]
-    public interface IEffect
+    public interface IEffect : ISampleAggregator
     {
-        bool CanProcess(WaveFormat wf);
-        ISampleAggregator Begin(ISampleSource ss);
+        new ISampleSource BaseSource { get; set; }
     }
 }

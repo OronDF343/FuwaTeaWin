@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using CSCore;
 using CSCore.Codecs.WAV;
 using CSCore.MediaFoundation;
@@ -23,6 +24,11 @@ namespace Sage.Audio.Decoders.Impl
         }
 
         public IEnumerable<string> SupportedFormats => new[] { "wav", "wave" };
+        public bool IsSupported(string format)
+        {
+            return SupportedFormats.Contains(format.ToLowerInvariant());
+        }
+
         public bool CanHandle(IFileHandle ti)
         {
             bool r;

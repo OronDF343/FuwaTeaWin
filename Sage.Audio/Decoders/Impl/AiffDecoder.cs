@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using CSCore;
 using CSCore.Codecs.AIFF;
 using Sage.Audio.Files;
@@ -22,6 +23,11 @@ namespace Sage.Audio.Decoders.Impl
         }
 
         public IEnumerable<string> SupportedFormats => new[] { "aiff", "aif", "aifc" };
+        public bool IsSupported(string format)
+        {
+            return SupportedFormats.Contains(format.ToLowerInvariant());
+        }
+
         public bool CanHandle(IFileHandle ti)
         {
             bool r;

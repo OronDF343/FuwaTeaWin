@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using CSCore;
 using CSCore.Codecs.MP3;
 using Sage.Audio.Files;
@@ -23,6 +24,11 @@ namespace Sage.Audio.Decoders.Impl
         }
 
         public IEnumerable<string> SupportedFormats => new[] { "mp3" };
+        public bool IsSupported(string format)
+        {
+            return SupportedFormats.Contains(format.ToLowerInvariant());
+        }
+
         public bool CanHandle(IFileHandle ti)
         {
             bool r;

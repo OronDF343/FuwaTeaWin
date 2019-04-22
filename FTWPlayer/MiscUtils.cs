@@ -92,7 +92,7 @@ namespace FTWPlayer
                 var locationInfo = new FileLocationInfo(new Uri(file));
                 var ext = locationInfo.Extension;
                 var handle = pm.Handle(locationInfo);
-                if (stem.SupportedFormats.Contains(ext))
+                if (stem.IsSupported(ext))
                 {
                     var impl = stem.FirstCanHandleOrDefault(handle);
                     var list = impl.Handle(handle).Select(l => impl.Handle(l));
@@ -109,7 +109,7 @@ namespace FTWPlayer
                         return true;
                     }
                 }
-                else if (dm.SupportedFormats.Contains(ext))
+                else if (dm.IsSupported(ext))
                 {
                     if (plm.List == null) plm.List = new ObservableCollection<IFileHandle>();
                     plm.List.Add(handle);
@@ -186,11 +186,11 @@ namespace FTWPlayer
                 IEnumerable<string> stuff;
                 if (subfolders)
                     stuff = from f in dir.EnumerateFilesEx()
-                            where dm.SupportedFormats.Contains(f.Extension)
+                            where dm.IsSupported(f.Extension)
                             select f.FullName;
                 else
                     stuff = from f in dir.GetFiles()
-                            where dm.SupportedFormats.Contains(f.Extension)
+                            where dm.IsSupported(f.Extension)
                             select f.FullName;
                 foreach (var s in stuff)
                 {

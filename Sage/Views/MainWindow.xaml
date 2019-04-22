@@ -3,12 +3,14 @@
         xmlns:vm="clr-namespace:Sage.ViewModels;assembly=Sage"
         xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
         xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
-        xmlns:helpers="clr-namespace:Sage.Helpers"
+        xmlns:helpers="clr-namespace:Sage.Helpers;assembly=Sage"
         Icon="resm:Sage.Assets.avalonia-logo.ico"
         HasSystemDecorations="False"
         ShowInTaskbar="True"
         Topmost="True"
+        DragDrop.AllowDrop="True"
         Title="Sage"
+        helpers:DropBehavior.IsEnabled="True"
         Height="34" Width="540">
     <Window.Resources>
         <helpers:MultiplyConverter x:Key="MultiplyConverter" />
@@ -23,6 +25,7 @@
     </Design.DataContext>
     <i:Interaction.Behaviors>
         <helpers:WindowDragBehavior />
+        <helpers:DropBehavior Handler="{Binding DropHandler}" />
     </i:Interaction.Behaviors>
     <Border Background="{DynamicResource ThemeBackgroundBrush}" BorderBrush="{DynamicResource ThemeBorderHighBrush}"
             BorderThickness="{DynamicResource ThemeBorderThickness}" VerticalAlignment="Stretch">

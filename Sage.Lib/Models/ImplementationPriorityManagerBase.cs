@@ -42,6 +42,11 @@ namespace Sage.Lib.Models
         
         [JsonIgnore]
         public IEnumerable<string> SupportedFormats => Implementations.SelectMany(i => i.SupportedFormats).Distinct();
+        
+        public bool IsSupported(string format)
+        {
+            return Implementations.Any(i => i.SupportedFormats.Contains(format.ToLowerInvariant()));
+        }
 
         public bool CanHandle(TInput ti) => !Equals(GetImplementations(ti).FirstOrDefault(it => it.CanHandle(ti)), default(TInterface));
 

@@ -4,8 +4,11 @@ using System.Linq;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using DryIoc;
 using ReactiveUI;
+using Sage.Audio.Effects.Impl;
 using Sage.Audio.Files;
 using Sage.Audio.Files.Impl;
 using Sage.Audio.Playback;
@@ -21,6 +24,7 @@ namespace Sage.ViewModels
     {
         private readonly IResolverContext _container;
         private readonly IPlaybackManager _playMgr;
+        private readonly VolumeEffect _volume;
 
         public MainWindowViewModel()
         {
@@ -41,21 +45,34 @@ namespace Sage.ViewModels
             var apiSel = _container.Resolve<ApiSelector>();
             apiSel.SelectImplementation(apiSel.Implementations.First(i => i.GetType().Name.Contains("Wasapi")));
             var wCfg = _container.Resolve<WasapiConfig>();
-            wCfg.MasterVolume = 0.7f;
+            wCfg.MasterVolume = 1.0f;
             // Load
             _playMgr = _container.Resolve<IPlaybackManager>();
+            _volume = _container.Resolve<VolumeEffect>();
+            _volume.Volume = 0.7f;
+            if (!_playMgr.Effects.Contains(_volume)) _playMgr.Effects.Add(_volume);
             _playMgr.List = new ObservableCollection<IFileHandle>();
             if (Program.AppInstance.Args.ContainsKey(AppConstants.Arguments.Files))
                 foreach (var file in Program.AppInstance.Args[AppConstants.Arguments.Files])
-                {
-                    try { _playMgr.List.Add(new StandardFileHandle(new FileLocationInfo(new Uri(file)))); }
-                    catch (Exception e) { Log.Error(e, $"Failed to load file \"{file}\""); }
-                }
+                    AddFile(file);
             // Required:
             _playMgr.Player.StateChanged += Player_StateChanged;
             // Auto-play
             if (!Program.AppInstance.Args.ContainsKey(AppConstants.Arguments.AddOnly))
                 Play();
+
+            // Drag/Drop
+            DropHandler = new FileDropHandler(AddFile);
+        }
+
+        private void AddFile(string file)
+        {
+            try { _playMgr.List.Add(new StandardFileHandle(new FileLocationInfo(new Uri(file)))); }
+            catch (Exception e)
+            {
+                Log.Error(e, $"Failed to load file \"{file}\"");
+                // TODO: Notify user
+            }
         }
 
         private void Player_StateChanged(object sender, AudioPlayerStateChangedEventArgs args)
@@ -125,5 +142,47 @@ namespace Sage.ViewModels
         public ICommand RepeatCommand { get; }
         public ICommand MinimizeCommand { get; }
         public ICommand ExitCommand { get; }
+
+        public IDropHandler DropHandler { get; }
+
+        private class FileDropHandler : IDropHandler
+        {
+            public FileDropHandler(Action<string> onDrop)
+            {
+                OnDrop = onDrop;
+            }
+
+            public Action<string> OnDrop { get; }
+
+            public void Enter(object sender, DragEventArgs e)
+            {
+
+            }
+
+            public void Leave(object sender, RoutedEventArgs e)
+            {
+
+            }
+
+            public void Over(object sender, DragEventArgs e)
+            {
+                // Only allow Copy or Link as Drop Operations.
+                e.DragEffects |= DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link;
+
+                // Only allow if the dragged data contains text or filenames.
+                if (!e.Data.Contains(DataFormats.FileNames) || !e.Data.Contains(DataFormats.Text))
+                    e.DragEffects = DragDropEffects.None;
+
+                e.Handled = true;
+            }
+
+            public void Drop(object sender, DragEventArgs e)
+            {
+                if (e.Data.Contains(DataFormats.FileNames))
+                    foreach (var fileName in e.Data.GetFileNames())
+                        OnDrop?.Invoke(fileName);
+                e.Handled = true;
+            }
+        }
     }
 }

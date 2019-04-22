@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using CSCore;
 using Sage.Audio.Files;
 using Sage.Audio.Metadata.Impl.TagLib;
@@ -12,6 +13,11 @@ namespace Sage.Audio.Decoders.Wavpack
     public class WavpackDecoder : ITrackDecoder
     {
         public IEnumerable<string> SupportedFormats => new[] { "wv" };
+        public bool IsSupported(string format)
+        {
+            return SupportedFormats.Contains(format.ToLowerInvariant());
+        }
+
         public bool CanHandle(IFileHandle ti)
         {
             bool r;

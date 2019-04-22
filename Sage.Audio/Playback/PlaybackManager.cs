@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using CSCore;
 using JetBrains.Annotations;
 using Sage.Audio.Decoders;
+using Sage.Audio.Effects;
 using Sage.Audio.Files;
 
 namespace Sage.Audio.Playback
@@ -17,13 +18,16 @@ namespace Sage.Audio.Playback
         {
             _decoderManager = decoderManager;
             Player = player;
+            Effects = new ObservableCollection<IEffect>();
+            List = new ObservableCollection<IFileHandle>();
         }
 
         private int _index;
         private IAudioPlayer _player;
         private ObservableCollection<IFileHandle> _list;
         private readonly IDecoderManager _decoderManager;
-        
+        private ObservableCollection<IEffect> _effects;
+
         public void Reload()
         {
             if (BehaviorOnLoadOverrideOnce == null)
@@ -80,6 +84,20 @@ namespace Sage.Audio.Playback
         public PlaybackBehavior Behavior { get; set; }
         public bool? BehaviorOnLoadOverrideOnce { get; set; }
         public event EventHandler<PlaybackErrorEventArgs> Error;
+        // TODO: Save effects config
+        public ObservableCollection<IEffect> Effects
+        {
+            get => _effects;
+            set
+            {
+                if (_effects != null) _effects.CollectionChanged -= EffectsOnCollectionChanged;
+                _effects = value;
+                if (_effects != null) _effects.CollectionChanged += EffectsOnCollectionChanged;
+                OnPropertyChanged();
+                Reload();
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
@@ -116,10 +134,22 @@ namespace Sage.Audio.Playback
 
         private void Load()
         {
-            // TODO: Where to handle effects? SampleSource vs WaveSource? Where to handle errors?
+            // TODO: Where to handle errors?
             Player?.Unload();
             if (NowPlaying == null) return;
-            Player?.Load(_decoderManager.Handle(NowPlaying));
+            var wavSrc = _decoderManager.Handle(NowPlaying);
+            if (_effects != null && _effects.Count > 0)
+            {
+                var sampleSrc = wavSrc.ToSampleSource();
+                // TODO: Handle duplicate effects...
+                foreach (var effect in _effects)
+                {
+                    effect.BaseSource = sampleSrc;
+                    sampleSrc = effect;
+                }
+                wavSrc = sampleSrc.ToWaveSource();
+            }
+            Player?.Load(wavSrc);
         }
 
         private void FileEnd()
@@ -329,6 +359,11 @@ namespace Sage.Audio.Playback
                     ForceReset();
                     break;
             }
+        }
+
+        private void EffectsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            Reload();
         }
 
         public void Dispose()

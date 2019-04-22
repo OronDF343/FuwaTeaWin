@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
+using Sage.Audio.Effects;
 using Sage.Audio.Files;
 
 namespace Sage.Audio.Playback
@@ -49,6 +50,11 @@ namespace Sage.Audio.Playback
         bool? BehaviorOnLoadOverrideOnce { get; set; }
 
         event EventHandler<PlaybackErrorEventArgs> Error;
+
+        /// <summary>
+        /// List of effects, applied in list order
+        /// </summary>
+        ObservableCollection<IEffect> Effects { get; set; }
     }
 
     public enum PlaybackBehavior

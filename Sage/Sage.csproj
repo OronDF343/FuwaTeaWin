@@ -38,7 +38,7 @@
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.8.0" />
     <PackageReference Include="Avalonia.Xaml.Behaviors" Version="0.8.0" />
     <PackageReference Include="DryIocAttributes.dll" Version="5.0.0" />
-    <PackageReference Include="Fody" Version="4.2.1">
+    <PackageReference Include="Fody" Version="5.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>

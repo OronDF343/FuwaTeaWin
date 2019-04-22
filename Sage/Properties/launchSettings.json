@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Sage": {
+      "commandName": "Project",
+      "commandLineArgs": "\"D:\\01. Dangerous Sunshine.wv\" -a"
+    }
+  }
+}
