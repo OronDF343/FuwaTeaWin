@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
@@ -202,6 +203,7 @@ namespace Sage.Core
         public bool Init()
         {
             Log.Information("Main initialization has started");
+            var s = Stopwatch.StartNew();
             // Create container
             ExtensibilityContainer = new ExtensibilityContainer();
             // Initialize configuration
@@ -220,8 +222,9 @@ namespace Sage.Core
             LoadExtensions();
             // Load remaining configs
             LoadConfigs();
-            
             Log.Information("Main initialization has finished all tasks");
+            s.Stop();
+            Log.Debug($"Initialization complete in {s.Elapsed:c}");
             return true;
         }
 

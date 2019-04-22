@@ -220,7 +220,7 @@ namespace Sage.Extensibility
                 // Done checking
                 ExtensionCheckResult = ExtensionCheckResult.OK;
                 log.Debug("All checks passed, loading exports");
-                // Load exports ~if they aren't already:~ EDIT: Can't do that
+                // Load exports ~if they aren't already:~ EDIT: Can't do that. TODO: Compile-time optimizations
                 /*if (Exports == null)*/ LoadExports();
             }
             // Set IsLoaded
