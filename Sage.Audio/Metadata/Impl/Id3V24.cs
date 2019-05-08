@@ -1,4 +1,6 @@
-﻿namespace Sage.Audio.Metadata.Impl
+﻿using Sage.Audio.Metadata.Impl.Fields;
+
+namespace Sage.Audio.Metadata.Impl
 {
     public class Id3V24 : Id3V23
     {

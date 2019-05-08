@@ -74,9 +74,6 @@
     <Compile Include="FileAssociations\AppRegistryClasses.cs" />
     <Compile Include="FileAssociations\RegistryClass.cs" />
     <Compile Include="FileAssociations\RegistryUtils.cs" />
-    <Compile Include="FormatUtils\FormatParser.cs" />
-    <Compile Include="FormatUtils\FormatSegment.cs" />
-    <Compile Include="FormatUtils\FormatStructure.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="NotifyIcon\INotificationCB.cs" />
     <Compile Include="NotifyIcon\InteropUtils.cs" />

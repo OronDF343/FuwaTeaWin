@@ -2,7 +2,7 @@
 using System.Linq;
 using TagLib;
 
-namespace Sage.Audio.Metadata.Impl
+namespace Sage.Audio.Metadata.Impl.Fields
 {
     public class Id3V1GenreField : BasicListField
     {
@@ -11,7 +11,7 @@ namespace Sage.Audio.Metadata.Impl
         public byte Index
         {
             get => Genres.AudioToIndex(Value.FirstOrDefault());
-            set => Value = new List<string>(new[] { Genres.IndexToAudio(value) });
+            set => Value = new List<string> { Genres.IndexToAudio(value) };
         }
     }
 }

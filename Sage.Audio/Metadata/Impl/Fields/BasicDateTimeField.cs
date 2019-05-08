@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Sage.Audio.Metadata.Impl
+namespace Sage.Audio.Metadata.Impl.Fields
 {
     public class BasicDateTimeField : IDateTimeField
     {
@@ -23,6 +23,11 @@ namespace Sage.Audio.Metadata.Impl
                 if (MaxResolution > 4) Minute = (byte?)v.Minute;
                 if (MaxResolution > 5) Second = (byte?)v.Second;
             }
+        }
+
+        public virtual void ParseFrom(string s)
+        {
+            Value = DateTime.Parse(s);
         }
 
         public ushort? Year { get; set; }

@@ -1,4 +1,4 @@
-﻿namespace Sage.Audio.Metadata.Impl
+﻿namespace Sage.Audio.Metadata.Impl.Fields
 {
     public class BasicNumericField : INumericField 
     {
@@ -8,6 +8,10 @@
         }
         public uint MaxValue { get; }
         public uint? Value { get; set; }
+        public virtual void ParseFrom(string s)
+        {
+            Value = uint.Parse(s);
+        }
 
         public override string ToString()
         {

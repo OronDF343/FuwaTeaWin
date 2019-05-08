@@ -3,11 +3,11 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Serilog;
 
-namespace FuwaTea.Lib.FormatUtils
+namespace Sage.Lib.MetaText
 {
-    // TODO: Consider saving to cache (serialization)
     public class FormatParser
     {
+        // TODO: Serialize cache to config (not so simple)
         private readonly Dictionary<string, FormatStructure> _cache = new Dictionary<string, FormatStructure>();
 
         public string FormatObject(string format, object source)

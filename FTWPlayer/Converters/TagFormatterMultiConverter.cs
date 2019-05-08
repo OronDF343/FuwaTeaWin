@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using FuwaTea.Lib.FormatUtils;
 using JetBrains.Annotations;
 using Sage.Audio.Metadata;
+using Sage.Lib.MetaText;
 
 namespace FTWPlayer.Converters
 {

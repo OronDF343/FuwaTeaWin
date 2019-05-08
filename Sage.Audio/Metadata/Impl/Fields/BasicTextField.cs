@@ -1,4 +1,4 @@
-﻿namespace Sage.Audio.Metadata.Impl
+﻿namespace Sage.Audio.Metadata.Impl.Fields
 {
     public class BasicTextField : ITextField
     {
@@ -8,5 +8,9 @@
         }
         public virtual uint MaxLength { get; }
         public string Value { get; set; }
+        public virtual void ParseFrom(string s)
+        {
+            Value = s;
+        }
     }
 }

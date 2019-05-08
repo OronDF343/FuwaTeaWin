@@ -7,7 +7,7 @@ namespace Sage.Audio.Metadata
     {
         // Used mostly for streams
         bool IsReadOnly { get; }
-        // 
+        // Used for old kinds of tags
         bool SupportsUnicode { get; }
 
         // ID3v2.3 TXXX
@@ -312,7 +312,7 @@ namespace Sage.Audio.Metadata
         // COMR: Sales info. Not supported
         // GRID: Frame grouping. Not supported
         // PRIV: Application-specific. Not supported
-        // TFLT: File type. Not supported (useless)
+        // TFLT: File type. Not supported (useless?)
 
         /* The timestamp fields are based on a subset of ISO 8601. When being as
            precise as possible the format of a time string is

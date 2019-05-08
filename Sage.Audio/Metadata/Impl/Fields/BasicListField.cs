@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Sage.Audio.Metadata.Impl
+namespace Sage.Audio.Metadata.Impl.Fields
 {
     public class BasicListField : IListField
     {
@@ -20,5 +20,11 @@ namespace Sage.Audio.Metadata.Impl
         public virtual uint MaxLength { get; }
         
         public IList<string> Value { get; set; }
+
+        void IMetadataField.ParseFrom(string s)
+        {
+            if (Value == null) Value = new List<string> { s };
+            else Value.Add(s);
+        }
     }
 }

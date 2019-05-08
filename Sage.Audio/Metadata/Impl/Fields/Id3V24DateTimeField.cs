@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace Sage.Audio.Metadata.Impl
+namespace Sage.Audio.Metadata.Impl.Fields
 {
     /// <summary>
     /// ISO 8601 subset used by ID3v2.4: yyyy[-MM[-dd[THH[:mm[:ss]]]]]
@@ -10,19 +10,17 @@ namespace Sage.Audio.Metadata.Impl
     {
         public override byte MaxResolution => 6;
 
-        public static Id3V24DateTimeField Parse(string str)
+        public override void ParseFrom(string str)
         {
-            var r = new Id3V24DateTimeField();
             // I love regex
             var m = Regex.Match(str, @"^(?<y>[0-9]{4})(?:-(?<M>[0-9]{2})(?:-(?<d>[0-9]{2})(?:T(?<H>[0-9]{2})(?::(?<m>[0-9]{2})(?::(?<s>[0-9]{2}))?)?)?)?)?$");
             if (!m.Success) throw new FormatException();
-            if (m.Groups["y"].Success) r.Year = ushort.Parse(m.Groups["y"].Value);
-            if (m.Groups["M"].Success) r.Month = byte.Parse(m.Groups["M"].Value);
-            if (m.Groups["d"].Success) r.Day = byte.Parse(m.Groups["d"].Value);
-            if (m.Groups["H"].Success) r.Hour = byte.Parse(m.Groups["H"].Value);
-            if (m.Groups["m"].Success) r.Minute = byte.Parse(m.Groups["m"].Value);
-            if (m.Groups["s"].Success) r.Second = byte.Parse(m.Groups["s"].Value);
-            return r;
+            if (m.Groups["y"].Success) Year = ushort.Parse(m.Groups["y"].Value);
+            if (m.Groups["M"].Success) Month = byte.Parse(m.Groups["M"].Value);
+            if (m.Groups["d"].Success) Day = byte.Parse(m.Groups["d"].Value);
+            if (m.Groups["H"].Success) Hour = byte.Parse(m.Groups["H"].Value);
+            if (m.Groups["m"].Success) Minute = byte.Parse(m.Groups["m"].Value);
+            if (m.Groups["s"].Success) Second = byte.Parse(m.Groups["s"].Value);
         }
 
         public override string ToString()

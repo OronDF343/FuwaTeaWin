@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Serilog;
 
-namespace FuwaTea.Lib.FormatUtils
+namespace Sage.Lib.MetaText
 {
     public class FormatStructure
     {
@@ -18,7 +18,7 @@ namespace FuwaTea.Lib.FormatUtils
             catch (Exception e)
             {
                 Log.ForContext(GetType()).Warning("Failed to format object:", e);
-                return "[Format error, please check settings]"; // TODO: Localize
+                return null;
             }
         }
     }

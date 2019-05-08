@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace Sage.Audio.Metadata.Impl
+namespace Sage.Audio.Metadata.Impl.Fields
 {
-    public class JoinedListField : BasicListField
+    public class JoinedListField : BasicListField, IMetadataField
     {
         private readonly uint _maxLength;
 
@@ -18,6 +19,11 @@ namespace Sage.Audio.Metadata.Impl
         public override uint MaxCount => (uint)(_maxLength / (Separator.Length + 1)) + 1;
 
         public override uint MaxLength => _maxLength - (uint)(Separator.Length * Math.Max(0, Value.Count - 1));
+
+        public void ParseFrom(string s)
+        {
+            JoinedValue = s;
+        }
 
         public string JoinedValue
         {

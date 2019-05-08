@@ -1,10 +1,15 @@
 ﻿using System;
 
-namespace Sage.Audio.Metadata.Impl
+namespace Sage.Audio.Metadata.Impl.Fields
 {
     public class FileTimeField : BasicDateTimeField
     {
         public override byte MaxResolution => 6;
+
+        public override void ParseFrom(string s)
+        {
+            FileTimeValue = long.Parse(s);
+        }
 
         public long? FileTimeValue
         {

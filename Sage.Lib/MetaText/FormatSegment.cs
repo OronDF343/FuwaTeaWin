@@ -2,10 +2,10 @@
 using JetBrains.Annotations;
 using Serilog;
 
-namespace FuwaTea.Lib.FormatUtils
+namespace Sage.Lib.MetaText
 {
     /// <summary>
-    /// Bi-directional linked-list :P LOL
+    /// Bi-directional linked-list :P
     /// </summary>
     public class FormatSegment
     {

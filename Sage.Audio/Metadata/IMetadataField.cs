@@ -40,8 +40,13 @@ namespace Sage.Audio.Metadata
         string StringValue { get; set; }
     }
 
-    public interface IMetadataField<T>
+    public interface IMetadataField<T> : IMetadataField
     {
         T Value { get; set; }
+    }
+
+    public interface IMetadataField
+    {
+        void ParseFrom(string s);
     }
 }

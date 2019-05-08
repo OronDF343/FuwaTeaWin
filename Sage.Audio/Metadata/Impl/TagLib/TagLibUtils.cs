@@ -53,8 +53,10 @@ namespace Sage.Audio.Metadata.Impl.TagLib
         public static IMetadata ReadFrom(XiphComment src)
         {
             if (src == null) return null;
-            // TODO: Implement
-            return null;
+            var tag = new StringBasedMetadata();
+            foreach (var key in src)
+                tag.ExtendedFields.Add(key.ToUpperInvariant(), src.GetField(key).ToList());
+            return tag;
         }
 
         public static IMetadata ReadFrom(global::TagLib.Id3v1.Tag src)
