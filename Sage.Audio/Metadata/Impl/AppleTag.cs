@@ -12,7 +12,7 @@ namespace Sage.Audio.Metadata.Impl
 
         public override ITextField Album { get; } = new BasicTextField(255);
         public override IListField Artist { get; } = new JoinedListField("; ", 255);
-        public override ITextField AlbumArtist { get; } = new BasicTextField(255);
+        public override IListField AlbumArtist { get; } = new JoinedListField("; ", 255);
         public override IListField Comment { get; } = new BasicListField(1, 255);
         public override IDateTimeField Year { get; } = new BasicDateTimeField(); // No strict format
         public override ITextField Title { get; } = new BasicTextField(255);

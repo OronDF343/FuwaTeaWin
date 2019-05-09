@@ -34,7 +34,7 @@ namespace Sage.Audio.Metadata.Impl
 
         public override IListField Comment { get; } = new BasicListField(); // TODO: Content descriptors?
 
-        public override ITextField AlbumArtist { get; } = new BasicTextField();
+        public override IListField AlbumArtist { get; } = new BasicListField();
 
         public override ITextField AlbumArtistSort { get; } = new BasicTextField();
 

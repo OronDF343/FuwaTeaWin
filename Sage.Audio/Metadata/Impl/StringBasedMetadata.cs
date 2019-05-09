@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Sage.Audio.Metadata.Impl.Fields;
 
 namespace Sage.Audio.Metadata.Impl
@@ -62,7 +63,7 @@ namespace Sage.Audio.Metadata.Impl
             ComposerSort = new ExtendedListField(this, nameof(ComposerSort).ToUpperInvariant());
             Composer = new ExtendedListField(this, nameof(Composer).ToUpperInvariant());
             AlbumArtistSort = new ExtendedTextField(this, nameof(AlbumArtistSort).ToUpperInvariant());
-            AlbumArtist = new ExtendedTextField(this, nameof(AlbumArtist).ToUpperInvariant());
+            AlbumArtist = new ExtendedListField(this, nameof(AlbumArtist).ToUpperInvariant());
             Comment = new ExtendedListField(this, nameof(Comment).ToUpperInvariant());
             Genre = new ExtendedListField(this, nameof(Genre).ToUpperInvariant());
             TrackCount = new ExtendedNumericField(this, nameof(TrackCount).ToUpperInvariant());
@@ -75,7 +76,10 @@ namespace Sage.Audio.Metadata.Impl
             TitleSort = new ExtendedTextField(this, nameof(TitleSort).ToUpperInvariant());
             Title = new ExtendedTextField(this, nameof(Title).ToUpperInvariant());
         }
-        
+
+        public override IDictionary<string, IMetadataField> FieldsByInternalId =>
+            ExtendedFields.ToDictionary(g => g.Key, g => (IMetadataField)new BasicListField { Value = g.Value });
+
         public override IDictionary<string, IList<string>> ExtendedFields { get; } = new Dictionary<string, IList<string>>();
 
         public override IList<IPicture> Picture { get; } = new List<IPicture>();
@@ -102,7 +106,7 @@ namespace Sage.Audio.Metadata.Impl
 
         public override IListField Comment { get; }
 
-        public override ITextField AlbumArtist { get; }
+        public override IListField AlbumArtist { get; }
 
         public override ITextField AlbumArtistSort { get; }
 

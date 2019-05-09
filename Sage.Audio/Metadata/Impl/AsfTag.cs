@@ -19,7 +19,7 @@ namespace Sage.Audio.Metadata.Impl
         public override IListField Comment { get; } = new BasicListField(1);
         public override INumericField Length { get; } = new BasicNumericField();
         public override ITextField Title { get; } = new BasicTextField();
-        public override ITextField AlbumArtist { get; } = new BasicTextField(); // Can have multiple values!
+        public override IListField AlbumArtist { get; } = new BasicListField(); // Can have multiple values!
         public override ITextField AlbumSort { get; } = new BasicTextField();
         public override ITextField Album { get; } = new BasicTextField();
         public override IListField ArtistSort { get; } = new BasicListField(1);

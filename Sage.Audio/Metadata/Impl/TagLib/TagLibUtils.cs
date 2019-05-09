@@ -50,6 +50,8 @@ namespace Sage.Audio.Metadata.Impl.TagLib
             }
         }
 
+        // TODO: WriteTo
+
         public static IMetadata ReadFrom(XiphComment src)
         {
             if (src == null) return null;
@@ -83,7 +85,9 @@ namespace Sage.Audio.Metadata.Impl.TagLib
         public static IMetadata ReadFrom(global::TagLib.Ape.Tag src)
         {
             if (src == null) return null;
-            // TODO: Implement
+            var tag = new StringBasedMetadata();
+            foreach (var key in src)
+                tag.ExtendedFields.Add(key.ToUpperInvariant(), src.GetItem(key).ToStringArray().ToList());
             return null;
         }
 
@@ -104,8 +108,19 @@ namespace Sage.Audio.Metadata.Impl.TagLib
         public static IMetadata ReadFrom(InfoTag src)
         {
             if (src == null) return null;
-            // TODO: Implement
-            return null;
+            var tag = new RiffInfo();
+            tag.Title.Value = src.Title;
+            tag.Artist.Value = src.Performers.ToList();
+            tag.AlbumArtist.Value = src.AlbumArtists.ToList();
+            tag.Year.Year = (ushort)src.Year;
+            tag.Track.Value = src.Track;
+            tag.TrackCount.Value = src.TrackCount;
+            tag.Genre.Value = src.Genres.ToList();
+            tag.Comment.Value = new[] { src.Comment };
+            tag.Composer.Value = src.Composers.ToList();
+            tag.Copyright.Value = src.Copyright;
+            // TODO: By ID
+            return tag;
         }
 
         public static IMetadata ReadFrom(global::TagLib.Flac.Metadata src)

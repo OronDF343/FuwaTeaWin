@@ -10,8 +10,23 @@ namespace Sage.Audio.Metadata
         // Used for old kinds of tags
         bool SupportsUnicode { get; }
 
+        /// <summary>
+        /// If supported, gets a dictionary of all standard fields by their internal ID, in their original format.
+        /// </summary>
+        /// <remarks>
+        /// In ID3v2.3+, RIFF INFO and Apple tags, the internal ID is the four-character code of the field.
+        /// </remarks>
+        IDictionary<string, IMetadataField> FieldsByInternalId { get; }
+
         // ID3v2.3 TXXX
         // ID3v2.3 WXXX (ISO-8859-1 only)
+        /// <summary>
+        /// If supported, gets a dictionary of "extended" fields, where arbitrary custom fields can be added.
+        /// </summary>
+        /// <remarks>
+        /// In Xiph Comment and APE, all of the tags are stored here.
+        /// In ID3v2.3+, all TXXX fields are stored here.
+        /// </remarks>
         IDictionary<string, IList<string>> ExtendedFields { get; }
         // Special field / not part of tags
         // ID3v2.3 APIC
@@ -70,8 +85,8 @@ namespace Sage.Audio.Metadata
          * than one comment frame in each tag, but only one with the same language and content descriptor. 
          */
         IListField Comment { get; }
-        // ID3v2.3 TPE2
-        ITextField AlbumArtist { get; }
+        // ID3v2.3 TPE2 (separator / (unofficially))
+        IListField AlbumArtist { get; }
         // [UNOFFICIAL] ID3v2.3/4 TSO2
         ITextField AlbumArtistSort { get; }
         // ID3v2.3 TCOM (separator /)

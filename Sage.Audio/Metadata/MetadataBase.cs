@@ -12,6 +12,7 @@ namespace Sage.Audio.Metadata
 
         public bool IsReadOnly { get; }
         public bool SupportsUnicode { get; }
+        public virtual IDictionary<string, IMetadataField> FieldsByInternalId { get; } = null;
         public virtual IDictionary<string, IList<string>> ExtendedFields { get; } = null;
         public virtual IList<IPicture> Picture { get; } = null;
         public virtual ITextField Title { get; } = null;
@@ -25,7 +26,7 @@ namespace Sage.Audio.Metadata
         public virtual INumericField TrackCount { get; } = null;
         public virtual IListField Genre { get; } = null;
         public virtual IListField Comment { get; } = null;
-        public virtual ITextField AlbumArtist { get; } = null;
+        public virtual IListField AlbumArtist { get; } = null;
         public virtual ITextField AlbumArtistSort { get; } = null;
         public virtual IListField Composer { get; } = null;
         public virtual IListField ComposerSort { get; } = null;
