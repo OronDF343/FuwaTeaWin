@@ -6,44 +6,49 @@ namespace Sage.Audio.Metadata.Impl
     public class AppleTag : MetadataBase
     {
         public AppleTag(bool isReadOnly = false)
-            : base(isReadOnly) { } // Forced UTF-8 without BOM
+            : base(isReadOnly, supportsCustomTags: false) // Forced UTF-8 without BOM
+        {
+            const string separator = "; ";
+            FieldsById = new Dictionary<string, IMetadataField>
+            {
+                // From http://atomicparsley.sourceforge.net/mpeg-4files.html
+                { CommonFieldIds.Album, new BasicTextField(255) },
+                { CommonFieldIds.Artist, new JoinedListField(separator, 255) },
+                { CommonFieldIds.AlbumArtist, new JoinedListField(separator, 255) },
+                { CommonFieldIds.Comment, new BasicTextField(255) },
+                { CommonFieldIds.Year, new BasicTextField(255) },
+                { CommonFieldIds.Title, new BasicTextField(255) },
+                // TODO: AppleGenreTag - Supports either single ID or text
+                { CommonFieldIds.Genre, new JoinedListField(separator, 255) },
+                { CommonFieldIds.Track, new BasicNumericField(255) },
+                { CommonFieldIds.Disc, new BasicNumericField(255) },
+                { CommonFieldIds.Composer, new JoinedListField(separator, 255) },
+                { CommonFieldIds.EncodedBy, new BasicTextField(255) },
+                { CommonFieldIds.Bpm, new BasicNumericField(255) },
+                { CommonFieldIds.Copyright, new BasicTextField(255) },
+                { CommonFieldIds.Grouping, new BasicTextField(255) },
+                { CommonFieldIds.Subtitle, new BasicTextField(255) },
+                // Only text field that allows more than 255 characters
+                { CommonFieldIds.UnsyncedLyrics, new BasicTextField() },
 
-        // From http://atomicparsley.sourceforge.net/mpeg-4files.html
+                // Supported by TagLib
+                { CommonFieldIds.TrackCount, new BasicNumericField(255) },
+                { CommonFieldIds.DiscCount, new BasicNumericField(255) },
 
-        public override ITextField Album { get; } = new BasicTextField(255);
-        public override IListField Artist { get; } = new JoinedListField("; ", 255);
-        public override IListField AlbumArtist { get; } = new JoinedListField("; ", 255);
-        public override IListField Comment { get; } = new BasicListField(1, 255);
-        public override IDateTimeField Year { get; } = new BasicDateTimeField(); // No strict format
-        public override ITextField Title { get; } = new BasicTextField(255);
-        public override IListField Genre { get; } = new JoinedListField("; ", 255); // Supports either single ID or text
-        public override INumericField Track { get; } = new BasicNumericField(255);
-        public override INumericField Disc { get; } = new BasicNumericField(255);
-        public override IListField Composer { get; } = new JoinedListField("; ", 255);
-        public override ITextField EncodedBy { get; } = new BasicTextField(255);
-        public override INumericField Bpm { get; } = new BasicNumericField(255);
-        public override ITextField Copyright { get; } = new BasicTextField(255);
+                // Additional fields http://help.mp3tag.de/main_tags.html
+                { CommonFieldIds.AlbumSort, new BasicTextField(255) },
+                { CommonFieldIds.AlbumArtistSort, new BasicTextField(255) },
+                { CommonFieldIds.ArtistSort, new JoinedListField(separator, 255) },
+                { CommonFieldIds.ComposerSort, new JoinedListField(separator, 255) },
+                { CommonFieldIds.Conductor, new BasicTextField(255) },
+                { CommonFieldIds.ContentGroup, new BasicTextField(255) },
+                { CommonFieldIds.MovementName, new BasicTextField(255) },
+                { CommonFieldIds.Movement, new BasicNumericField(255) },
+                { CommonFieldIds.MovementTotal, new BasicNumericField(255) },
+                { CommonFieldIds.TitleSort, new BasicTextField(255) }
+            };
+        }
+
         public override IList<IPicture> Picture { get; } = new List<IPicture>(); // Only field that supports more than 1 value. JPEG or PNG. No description or type.
-        public override ITextField Grouping { get; } = new BasicTextField(255);
-        public override ITextField Subtitle { get; } = new BasicTextField(255); // Description
-        public override IListField UnSyncedLyrics { get; } = new BasicListField(1); // Only text field that allows more than 255 characters
-
-        // Supported by TagLib
-
-        public override INumericField TrackCount { get; } = new BasicNumericField(255);
-        public override INumericField DiscCount { get; } = new BasicNumericField(255);
-
-        // Additional fields http://help.mp3tag.de/main_tags.html
-
-        public override ITextField AlbumSort { get; } = new BasicTextField(255);
-        public override ITextField AlbumArtistSort { get; } = new BasicTextField(255);
-        public override IListField ArtistSort { get; } = new JoinedListField("; ", 255);
-        public override IListField ComposerSort { get; } = new JoinedListField("; ", 255);
-        public override ITextField Conductor { get; } = new BasicTextField(255);
-        public override ITextField ContentGroup { get; } = new BasicTextField(255);
-        public override ITextField MovementName { get; } = new BasicTextField(255);
-        public override INumericField Movement { get; } = new BasicNumericField(255);
-        public override INumericField MovementTotal { get; } = new BasicNumericField(255);
-        public override ITextField TitleSort { get; } = new BasicTextField(255);
     }
 }

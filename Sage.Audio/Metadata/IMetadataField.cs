@@ -40,6 +40,37 @@ namespace Sage.Audio.Metadata
         string StringValue { get; set; }
     }
 
+    public interface IListWithDescriptorsField : IMetadataField<IList<EntryWithDescriptors>>
+    {
+        uint MaxCount { get; }
+        uint MaxLength { get; }
+        
+        bool DescriptionSupported { get; }
+        bool DescriptionRequired { get; }
+        bool LanguageSupported { get; }
+        bool LanguageRequired { get; }
+    }
+
+    public class EntryWithDescriptors
+    {
+        public EntryWithDescriptors(string value)
+        {
+            Value = value;
+        }
+        public EntryWithDescriptors(string lang, string desc, string value = null)
+        {
+            Language = lang;
+            Description = desc;
+            Value = value;
+        }
+
+        public string Language { get; set; }
+        public string Description { get; set; }
+        public string Value { get; set; }
+
+        // TODO: Text encoding
+    }
+
     public interface IMetadataField<T> : IMetadataField
     {
         T Value { get; set; }
@@ -47,6 +78,8 @@ namespace Sage.Audio.Metadata
 
     public interface IMetadataField
     {
-        void ParseFrom(string s);
+        void SetFrom(string s);
+        void SetFrom(uint s);
+        void SetFrom(IEnumerable<string> s);
     }
 }

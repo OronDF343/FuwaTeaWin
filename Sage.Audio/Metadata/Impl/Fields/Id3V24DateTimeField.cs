@@ -10,7 +10,7 @@ namespace Sage.Audio.Metadata.Impl.Fields
     {
         public override byte MaxResolution => 6;
 
-        public override void ParseFrom(string str)
+        public override void SetFrom(string str)
         {
             // I love regex
             var m = Regex.Match(str, @"^(?<y>[0-9]{4})(?:-(?<M>[0-9]{2})(?:-(?<d>[0-9]{2})(?:T(?<H>[0-9]{2})(?::(?<m>[0-9]{2})(?::(?<s>[0-9]{2}))?)?)?)?)?$");

@@ -1,0 +1,106 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+<# var fields = new Dictionary<string, string>
+{
+	// ID3v2.4
+	{ "TIT2", "Title" },
+	{ "TSOT", "TitleSort" },
+	{ "TPE1", "Artist" },
+	{ "TSOP", "ArtistSort" },
+	{ "TALB", "Album" },
+	{ "TSOA", "AlbumSort" },
+	{ "TDRC", "Year" },
+	{ "TRCK", "Track" },
+	{ "TRCK:2", "TrackCount" },
+	{ "TCON", "Genre" },
+	{ "COMM", "Comment" },
+	{ "TPE2", "AlbumArtist" },
+	{ "TSO2", "AlbumArtistSort" },
+	{ "TCOM", "Composer" },
+	{ "TSOC", "ComposerSort" },
+	{ "TPOS", "Disc" },
+	{ "TPOS:2", "DiscCount" },
+	{ "TBPM", "Bpm" },
+	{ "TPE3", "Conductor" },
+	{ "TIT1", "ContentGroup" },
+	{ "TCOP", "Copyright" },
+	{ "TENC", "EncodedBy" },
+	{ "TSSE", "EncoderSettings" },
+	{ "TDEN", "EncodingTime" },
+	{ "TOWN", "FileOwner" },
+	{ "GRP1", "Grouping" },
+	{ "TKEY", "InitialKey" },
+	{ "TIPL", "InvolvedPeople" },
+	{ "TSRC", "Isrc" },
+	{ "TLAN", "Language" },
+	{ "TLEN", "Length" },
+	{ "TEXT", "Lyricist" },
+	{ "TMED", "MediaType" },
+	{ "TPE4", "MixArtist" },
+	{ "TMOO", "Mood" },
+	{ "MVNM", "MovementName" },
+	{ "MVIN", "Movement" },
+	{ "MVIN:2", "MovementTotal" },
+	{ "TMCL", "MusicianCredits" },
+	{ "TRSO", "NetRadioOwner" },
+	{ "TRSN", "NetRadioStation" },
+	{ "TOAL", "OrigAlbum" },
+	{ "TOPE", "OrigArtist" },
+	{ "TOFN", "OrigFileName" },
+	{ "TOLY", "OrigLyricist" },
+	{ "TDOR", "OrigReleaseTime" },
+	{ "TPUB", "Publisher" },
+	{ "POPM:1", "Rating_Mm" },
+	{ "POPM:2", "Rating_WinAmp" },
+	{ "POPM:3", "Rating_Wmp" },
+	{ "TDRL", "ReleaseTime" },
+	{ "TSST", "SetSubtitle" },
+	{ "TIT3", "Subtitle" },
+	{ "TDTG", "TaggingTime" },
+	{ "USLT", "UnsyncedLyrics" },
+	{ "WOAR", "WwwArtist" },
+	{ "WOAF", "WwwAudioFile" },
+	{ "WOAS", "WwwAudioSource" },
+	{ "WCOM", "WwwCommercialInfo" },
+	{ "WCOP", "WwwCopyright" },
+	{ "WPAY", "WwwPayment" },
+	{ "WPUB", "WwwPublisher" },
+	{ "WORS", "WwwRadioPage" },
+
+	// ID3v2.3
+	{ "TYER", "Year" },
+	{ "TDAT", "Year" },
+	{ "TIME", "Year" },
+	{ "IPLS", "InvolvedPeople" },
+	{ "TORY", "OrigReleaseTime" },
+}; #>
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+
+namespace Sage.Audio.Metadata
+{
+    public static class CommonFieldIds
+    {
+<# foreach (var f in fields.Values.Distinct()) {#>
+		public static string <#= f #> { get; } = nameof(<#= f #>).ToUpperInvariant();
+<# } #>
+		
+		public static IReadOnlyList<string> All { get; } = new ReadOnlyCollection<string>(new List<string>
+		{
+<# foreach (var f in fields.Values.Distinct()) {#>
+			<#= f #>,
+<# } #>
+		});
+
+		public static IReadOnlyDictionary<string, string> Id3V2ToFieldId { get; } = new ReadOnlyDictionary<string, string>(new Dictionary<string, string>
+		{
+<# foreach (var f in fields.Where(g => g.Key.Length == 4)) {#>
+			{ "<#= f.Key #>" , <#= f.Value #> },
+<# } #>
+		});
+    }
+}

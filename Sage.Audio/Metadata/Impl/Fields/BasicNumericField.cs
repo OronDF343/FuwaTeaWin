@@ -1,4 +1,7 @@
-﻿namespace Sage.Audio.Metadata.Impl.Fields
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Sage.Audio.Metadata.Impl.Fields
 {
     public class BasicNumericField : INumericField 
     {
@@ -8,9 +11,19 @@
         }
         public uint MaxValue { get; }
         public uint? Value { get; set; }
-        public virtual void ParseFrom(string s)
+        public virtual void SetFrom(string s)
         {
-            Value = uint.Parse(s);
+            Value = string.IsNullOrWhiteSpace(s) ? (uint?)null : uint.Parse(s);
+        }
+
+        public void SetFrom(uint s)
+        {
+            Value = s;
+        }
+
+        void IMetadataField.SetFrom(IEnumerable<string> s)
+        {
+            SetFrom(s.FirstOrDefault());
         }
 
         public override string ToString()

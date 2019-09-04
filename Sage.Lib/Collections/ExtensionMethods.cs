@@ -25,5 +25,27 @@ namespace Sage.Lib.Collections
             if (dict.ContainsKey(key)) dict[key] = value;
             else dict.Add(key, value);
         }
+
+        public static void AddToValue<TKey, TValue>(this IDictionary<TKey, IList<TValue>> dict, TKey key, TValue value)
+        {
+            if (dict.ContainsKey(key)) dict[key].Add(value);
+            else dict.Add(key, new List<TValue> { value });
+        }
+
+        public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> values)
+        {
+            foreach (var value in values) collection.Add(value);
+        }
+
+        public static void AddRangeToValue<TKey, TValue>(this IDictionary<TKey, IList<TValue>> dict, TKey key, IEnumerable<TValue> values)
+        {
+            if (dict.ContainsKey(key)) dict[key].AddRange(values);
+            else dict.Add(key, values.ToList());
+        }
+
+        public static TValue GetOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key)
+        {
+            return dict.TryGetValue(key, out var v) ? v : default;
+        }
     }
 }

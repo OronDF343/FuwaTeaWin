@@ -6,7 +6,7 @@ namespace Sage.Audio.Metadata.Impl.Fields
     {
         public override byte MaxResolution => 6;
 
-        public override void ParseFrom(string s)
+        public override void SetFrom(string s)
         {
             FileTimeValue = long.Parse(s);
         }

@@ -8,9 +8,19 @@ namespace Sage.Audio.Metadata.Impl.Fields
     public class MusicalKeyField : IEnumField<MusicalKey>
     {
         public MusicalKey? Value { get; set; }
-        public void ParseFrom(string s)
+        public void SetFrom(string s)
         {
             StringValue = s;
+        }
+
+        void IMetadataField.SetFrom(uint s)
+        {
+            Value = s.ConvertToEnum<MusicalKey>();
+        }
+
+        void IMetadataField.SetFrom(IEnumerable<string> s)
+        {
+            SetFrom(s.FirstOrDefault());
         }
 
         public string StringValue

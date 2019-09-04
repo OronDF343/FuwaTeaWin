@@ -1,24 +1,29 @@
-﻿using Sage.Audio.Metadata.Impl.Fields;
+﻿using System.Collections.Generic;
+using Sage.Audio.Metadata.Impl.Fields;
 
 namespace Sage.Audio.Metadata.Impl
 {
     public class RiffInfo : MetadataBase
     {
         public RiffInfo(bool isReadOnly = false, bool supportsUnicode = true)
-            : base(isReadOnly, supportsUnicode) { }
-
-        // TODO: These are supported by TagLib#. Determine if there are others we can add support for.
-        // TODO: Custom tags technically supported, but only with 4-character alphanumeric IDs
-
-        public override ITextField Title { get; } = new BasicTextField();
-        public override IListField Artist { get; } = new BasicListField();
-        public override IListField AlbumArtist { get; } = new BasicListField();
-        public override IDateTimeField Year { get; } = new BasicDateTimeField(1);
-        public override INumericField Track { get; } = new BasicNumericField();
-        public override INumericField TrackCount { get; } = new BasicNumericField();
-        public override IListField Genre { get; } = new BasicListField();
-        public override IListField Comment { get; } = new BasicListField(1);
-        public override IListField Composer { get; } = new BasicListField();
-        public override ITextField Copyright { get; } = new BasicTextField();
+            : base(isReadOnly, supportsUnicode, false)
+        {
+            // TODO: These are supported by TagLib#. Determine if there are others we can add support for.
+            // TODO: Custom tags technically supported, but only with 4-character alphanumeric IDs
+            // TODO: Pictures?
+            FieldsById = new Dictionary<string, IMetadataField>
+            {
+                { CommonFieldIds.Title, new BasicTextField() },
+                { CommonFieldIds.Artist, new BasicListField() },
+                { CommonFieldIds.AlbumArtist, new BasicListField() },
+                { CommonFieldIds.Year, new BasicDateTimeField(1) },
+                { CommonFieldIds.Track, new BasicNumericField() },
+                { CommonFieldIds.TrackCount, new BasicNumericField() },
+                { CommonFieldIds.Genre, new BasicListField() },
+                { CommonFieldIds.Comment, new BasicTextField() },
+                { CommonFieldIds.Composer, new BasicListField() },
+                { CommonFieldIds.Copyright, new BasicTextField() }
+            };
+        }
     }
 }

@@ -20,7 +20,7 @@ namespace Sage.Audio.Metadata.Impl.Fields
 
         public override uint MaxLength => _maxLength - (uint)(Separator.Length * Math.Max(0, Value.Count - 1));
 
-        public void ParseFrom(string s)
+        public void SetFrom(string s)
         {
             JoinedValue = s;
         }

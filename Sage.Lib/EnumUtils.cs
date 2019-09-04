@@ -12,6 +12,12 @@ namespace Sage.Lib
             var b = Enum.TryParse(str, ignoreCase, out T v);
             return b ? v : (T?)null;
         }
+
+        public static T? ConvertToEnum<T>(this uint val) where T : struct, Enum
+        {
+            return (T)Enum.ToObject(typeof(T), val);
+        }
+
         public static bool HasFlags<T>(this T val, params T[] flags) where T : struct, Enum, IConvertible
         {
             var mask = flags.Aggregate(0UL, (s, e) => s | e.ToUInt64(null));

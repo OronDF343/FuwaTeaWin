@@ -6,55 +6,57 @@ namespace Sage.Audio.Metadata.Impl
     public class AsfTag : MetadataBase
     {
         public AsfTag(bool isReadOnly = false, bool supportsUnicode = true)
-            : base(isReadOnly, supportsUnicode) { }
-
-        public override IDictionary<string, IList<string>> ExtendedFields { get; } = new Dictionary<string, IList<string>>();
-
-        // https://docs.microsoft.com/en-us/windows/desktop/wmformat/id3-tag-support
-        // https://docs.microsoft.com/en-us/windows/desktop/wmformat/attributes-with-multiple-values
-
-        public override IListField Artist { get; } = new BasicListField();
-        public override ITextField Copyright { get; } = new BasicTextField();
-        public override ITextField WwwCopyright { get; } = new BasicTextField();
-        public override IListField Comment { get; } = new BasicListField(1);
-        public override INumericField Length { get; } = new BasicNumericField();
-        public override ITextField Title { get; } = new BasicTextField();
-        public override IListField AlbumArtist { get; } = new BasicListField(); // Can have multiple values!
-        public override ITextField AlbumSort { get; } = new BasicTextField();
-        public override ITextField Album { get; } = new BasicTextField();
-        public override IListField ArtistSort { get; } = new BasicListField(1);
-        public override ITextField WwwAudioFile { get; } = new BasicTextField();
-        public override ITextField WwwAudioSource { get; } = new BasicTextField();
-        public override IListField WwwArtist { get; } = new BasicListField(1);
-        public override INumericField Bpm { get; } = new BasicNumericField();
-        public override IListField Composer { get; } = new BasicListField();
-        public override ITextField Conductor { get; } = new BasicTextField(); // Can have multiple values!
-        public override ITextField ContentGroup { get; } = new BasicTextField();
-        public override ITextField EncodedBy { get; } = new BasicTextField();
-        public override ITextField EncoderSettings { get; } = new BasicTextField();
-        public override IDateTimeField EncodingTime { get; } = new FileTimeField();
-        public override IListField Genre { get; } = new BasicListField();
-        public override IEnumField<MusicalKey> InitialKey { get; } = new MusicalKeyField();
-        public override ITextField Isrc { get; } = new BasicTextField();
-        public override ITextField Language { get; } = new BasicTextField(); // Can have multiple values!
-        public override ITextField MixArtist { get; } = new BasicTextField();
-        public override ITextField Mood { get; } = new BasicTextField(); // Can have multiple values!
-        public override ITextField OrigAlbum { get; } = new BasicTextField();
-        public override ITextField OrigArtist { get; } = new BasicTextField();
-        public override ITextField OrigFileName { get; } = new BasicTextField();
-        public override ITextField OrigLyricist { get; } = new BasicTextField();
-        public override IDateTimeField OrigReleaseTime { get; } = new BasicDateTimeField(); // No strict format
-        public override INumericField Disc { get; } = new BasicNumericField();
-        public override INumericField DiscCount { get; } = new BasicNumericField();
+            : base(isReadOnly, supportsUnicode, false)
+        {
+            // https://docs.microsoft.com/en-us/windows/desktop/wmformat/id3-tag-support
+            // https://docs.microsoft.com/en-us/windows/desktop/wmformat/attributes-with-multiple-values
+            FieldsById = new Dictionary<string, IMetadataField>
+            {
+                { CommonFieldIds.Artist, new BasicListField() },
+                { CommonFieldIds.Copyright, new BasicTextField() },
+                { CommonFieldIds.WwwCopyright, new BasicTextField() },
+                { CommonFieldIds.Comment, new BasicTextField() },
+                { CommonFieldIds.Length, new BasicNumericField() },
+                { CommonFieldIds.Title, new BasicTextField() },
+                { CommonFieldIds.AlbumArtist, new BasicListField() },
+                { CommonFieldIds.AlbumSort, new BasicTextField() },
+                { CommonFieldIds.Album, new BasicTextField() },
+                { CommonFieldIds.ArtistSort, new BasicTextField() },
+                { CommonFieldIds.WwwAudioFile, new BasicTextField() },
+                { CommonFieldIds.WwwAudioSource, new BasicTextField() },
+                { CommonFieldIds.WwwArtist, new BasicTextField() },
+                { CommonFieldIds.Bpm, new BasicNumericField() },
+                { CommonFieldIds.Composer, new BasicListField() },
+                { CommonFieldIds.Conductor, new BasicListField() },
+                { CommonFieldIds.ContentGroup, new BasicTextField() },
+                { CommonFieldIds.EncodedBy, new BasicTextField() },
+                { CommonFieldIds.EncoderSettings, new BasicTextField() },
+                { CommonFieldIds.EncodingTime, new FileTimeField() },
+                { CommonFieldIds.Genre, new BasicListField() },
+                { CommonFieldIds.InitialKey, new MusicalKeyField() },
+                { CommonFieldIds.Isrc, new BasicTextField() },
+                { CommonFieldIds.Language, new BasicListField() },
+                { CommonFieldIds.MixArtist, new BasicTextField() },
+                { CommonFieldIds.Mood, new BasicListField() },
+                { CommonFieldIds.OrigAlbum, new BasicTextField() },
+                { CommonFieldIds.OrigArtist, new BasicTextField() },
+                { CommonFieldIds.OrigFileName, new BasicTextField() },
+                { CommonFieldIds.OrigLyricist, new BasicTextField() },
+                { CommonFieldIds.OrigReleaseTime, new BasicTextField() },
+                { CommonFieldIds.Disc, new BasicNumericField() },
+                { CommonFieldIds.DiscCount, new BasicNumericField() },
+                { CommonFieldIds.Publisher, new BasicTextField() },
+                { CommonFieldIds.NetRadioStation, new BasicTextField() },
+                { CommonFieldIds.NetRadioOwner, new BasicTextField() },
+                { CommonFieldIds.SetSubtitle, new BasicTextField() },
+                { CommonFieldIds.Subtitle, new BasicTextField() },
+                { CommonFieldIds.TitleSort, new BasicTextField() },
+                { CommonFieldIds.Track, new BasicNumericField() },
+                { CommonFieldIds.Lyricist, new BasicListField() },
+                { CommonFieldIds.Year, new BasicTextField() }
+            };
+        }
+        
         public override IList<IPicture> Picture { get; } = new List<IPicture>();
-        public override ITextField Publisher { get; } = new BasicTextField();
-        public override ITextField NetRadioStation { get; } = new BasicTextField();
-        public override ITextField NetRadioOwner { get; } = new BasicTextField();
-        public override ITextField SetSubtitle { get; } = new BasicTextField();
-        public override ITextField Subtitle { get; } = new BasicTextField();
-        public override ITextField TitleSort { get; } = new BasicTextField();
-        public override INumericField Track { get; } = new BasicNumericField();
-        public override IListField Lyricist { get; } = new BasicListField();
-        public override IDateTimeField Year { get; } = new BasicDateTimeField(); // No strict format
     }
 }

@@ -1,11 +1,15 @@
 ﻿using System.Collections.Generic;
+using Sage.Lib.Collections;
 
 namespace Sage.Audio.Metadata.Impl.Fields
 {
     public class BasicListField : IListField
     {
-        public BasicListField() { }
-        public BasicListField(uint maxCount = 0, uint maxLength = 0)
+        public BasicListField()
+        {
+            Value = new List<string>();
+        }
+        public BasicListField(uint maxCount = 0, uint maxLength = 0) : this()
         {
             MaxCount = maxCount;
             MaxLength = maxLength;
@@ -21,10 +25,20 @@ namespace Sage.Audio.Metadata.Impl.Fields
         
         public IList<string> Value { get; set; }
 
-        void IMetadataField.ParseFrom(string s)
+        void IMetadataField.SetFrom(string s)
         {
             if (Value == null) Value = new List<string> { s };
             else Value.Add(s);
+        }
+
+        void IMetadataField.SetFrom(uint s)
+        {
+            ((IMetadataField)this).SetFrom(s.ToString());
+        }
+
+        void IMetadataField.SetFrom(IEnumerable<string> s)
+        {
+            Value.AddRange(s);
         }
     }
 }
