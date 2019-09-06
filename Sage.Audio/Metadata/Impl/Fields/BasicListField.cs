@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Sage.Lib.Collections;
 
 namespace Sage.Audio.Metadata.Impl.Fields
 {
-    public class BasicListField : IListField
+    public class BasicListField : MetadataField, IListField
     {
         public BasicListField()
         {
@@ -25,20 +26,30 @@ namespace Sage.Audio.Metadata.Impl.Fields
         
         public IList<string> Value { get; set; }
 
-        void IMetadataField.SetFrom(string s)
+        public override void SetFrom(string s)
         {
             if (Value == null) Value = new List<string> { s };
             else Value.Add(s);
         }
 
-        void IMetadataField.SetFrom(uint s)
+        public override void SetFrom(uint s)
         {
             ((IMetadataField)this).SetFrom(s.ToString());
         }
 
-        void IMetadataField.SetFrom(IEnumerable<string> s)
+        public override void SetFrom(IEnumerable<string> s)
         {
             Value.AddRange(s);
+        }
+
+        public override string ToString()
+        {
+            return Value?.FirstOrDefault() ?? "";
+        }
+
+        public override IEnumerable<string> ToStringEnumerable()
+        {
+            return Value ?? new string[] { };
         }
     }
 }

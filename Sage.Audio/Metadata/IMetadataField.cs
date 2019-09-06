@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace Sage.Audio.Metadata
 {
@@ -73,6 +74,7 @@ namespace Sage.Audio.Metadata
 
     public interface IMetadataField<T> : IMetadataField
     {
+        [CanBeNull]
         T Value { get; set; }
     }
 
@@ -81,5 +83,19 @@ namespace Sage.Audio.Metadata
         void SetFrom(string s);
         void SetFrom(uint s);
         void SetFrom(IEnumerable<string> s);
+        [NotNull]
+        IEnumerable<string> ToStringEnumerable();
+    }
+
+    public abstract class MetadataField : IMetadataField
+    {
+        public abstract void SetFrom(string s);
+        public abstract void SetFrom(uint s);
+        public abstract void SetFrom(IEnumerable<string> s);
+        public virtual IEnumerable<string> ToStringEnumerable()
+        {
+            yield return ToString();
+        }
+        public abstract override string ToString();
     }
 }

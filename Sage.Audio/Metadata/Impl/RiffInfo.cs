@@ -11,7 +11,7 @@ namespace Sage.Audio.Metadata.Impl
             // TODO: These are supported by TagLib#. Determine if there are others we can add support for.
             // TODO: Custom tags technically supported, but only with 4-character alphanumeric IDs
             // TODO: Pictures?
-            FieldsById = new Dictionary<string, IMetadataField>
+            FieldsById = new Dictionary<string, MetadataField>
             {
                 { CommonFieldIds.Title, new BasicTextField() },
                 { CommonFieldIds.Artist, new BasicListField() },

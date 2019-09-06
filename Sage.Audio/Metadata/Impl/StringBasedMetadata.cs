@@ -15,7 +15,7 @@ namespace Sage.Audio.Metadata.Impl
                 FieldsById.Add(field, new BasicListField());
         }
 
-        public override IMetadataField AddCustomField(string key)
+        public override MetadataField AddCustomField(string key)
         {
             var f = new BasicListField();
             FieldsById.Add(key, f);

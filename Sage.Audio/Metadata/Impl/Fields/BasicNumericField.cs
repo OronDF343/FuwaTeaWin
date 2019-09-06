@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Sage.Audio.Metadata.Impl.Fields
 {
-    public class BasicNumericField : INumericField 
+    public class BasicNumericField : MetadataField, INumericField 
     {
         public BasicNumericField(uint maxValue = 0)
         {
@@ -11,24 +11,24 @@ namespace Sage.Audio.Metadata.Impl.Fields
         }
         public uint MaxValue { get; }
         public uint? Value { get; set; }
-        public virtual void SetFrom(string s)
+        public override void SetFrom(string s)
         {
             Value = string.IsNullOrWhiteSpace(s) ? (uint?)null : uint.Parse(s);
         }
 
-        public void SetFrom(uint s)
+        public override void SetFrom(uint s)
         {
             Value = s;
         }
 
-        void IMetadataField.SetFrom(IEnumerable<string> s)
+        public override void SetFrom(IEnumerable<string> s)
         {
             SetFrom(s.FirstOrDefault());
         }
 
         public override string ToString()
         {
-            return Value.ToString();
+            return Value?.ToString() ?? "";
         }
     }
 }

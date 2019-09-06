@@ -5,20 +5,20 @@ using Sage.Lib;
 
 namespace Sage.Audio.Metadata.Impl.Fields
 {
-    public class BasicEnumField<T> : IEnumField<T> where T : struct, Enum, IConvertible
+    public class BasicEnumField<T> : MetadataField, IEnumField<T> where T : struct, Enum, IConvertible
     {
         public T? Value { get; set; }
-        public virtual void SetFrom(string s)
+        public override void SetFrom(string s)
         {
             StringValue = s;
         }
 
-        public void SetFrom(uint s)
+        public override void SetFrom(uint s)
         {
             Value = s.ConvertToEnum<T>();
         }
 
-        void IMetadataField.SetFrom(IEnumerable<string> s)
+        public override void SetFrom(IEnumerable<string> s)
         {
             SetFrom(s.FirstOrDefault());
         }

@@ -5,20 +5,20 @@ using Sage.Lib;
 
 namespace Sage.Audio.Metadata.Impl.Fields
 {
-    public class MusicalKeyField : IEnumField<MusicalKey>
+    public class MusicalKeyField : MetadataField, IEnumField<MusicalKey>
     {
         public MusicalKey? Value { get; set; }
-        public void SetFrom(string s)
+        public override void SetFrom(string s)
         {
             StringValue = s;
         }
 
-        void IMetadataField.SetFrom(uint s)
+        public override void SetFrom(uint s)
         {
             Value = s.ConvertToEnum<MusicalKey>();
         }
 
-        void IMetadataField.SetFrom(IEnumerable<string> s)
+        public override void SetFrom(IEnumerable<string> s)
         {
             SetFrom(s.FirstOrDefault());
         }
@@ -86,7 +86,7 @@ namespace Sage.Audio.Metadata.Impl.Fields
 
         public override string ToString()
         {
-            return FormatMusicalKey(Value) ?? "null";
+            return FormatMusicalKey(Value) ?? "";
         }
     }
 }

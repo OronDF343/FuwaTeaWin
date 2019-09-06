@@ -10,7 +10,7 @@ namespace Sage.Audio.Metadata.Impl
         {
             // https://docs.microsoft.com/en-us/windows/desktop/wmformat/id3-tag-support
             // https://docs.microsoft.com/en-us/windows/desktop/wmformat/attributes-with-multiple-values
-            FieldsById = new Dictionary<string, IMetadataField>
+            FieldsById = new Dictionary<string, MetadataField>
             {
                 { CommonFieldIds.Artist, new BasicListField() },
                 { CommonFieldIds.Copyright, new BasicTextField() },

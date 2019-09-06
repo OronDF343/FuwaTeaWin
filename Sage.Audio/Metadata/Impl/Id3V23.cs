@@ -9,7 +9,7 @@ namespace Sage.Audio.Metadata.Impl
         public Id3V23(bool isReadOnly = false, bool supportsUnicode = true)
             : base(isReadOnly, supportsUnicode)
         {
-            FieldsById = new Dictionary<string, IMetadataField>
+            FieldsById = new Dictionary<string, MetadataField>
             {
                 { CommonFieldIds.Title, new BasicTextField() },
                 { CommonFieldIds.TitleSort, new BasicTextField() },
@@ -72,7 +72,7 @@ namespace Sage.Audio.Metadata.Impl
             };
         }
 
-        public override IMetadataField AddCustomField(string key)
+        public override MetadataField AddCustomField(string key)
         {
             var f = new BasicTextField();
             FieldsById.Add(key, f);

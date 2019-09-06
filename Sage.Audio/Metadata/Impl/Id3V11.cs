@@ -8,7 +8,7 @@ namespace Sage.Audio.Metadata.Impl
         public Id3V11(bool isReadOnly = false)
             : base(isReadOnly, false, false)
         {
-            FieldsById = new Dictionary<string, IMetadataField>
+            FieldsById = new Dictionary<string, MetadataField>
             {
                 { CommonFieldIds.Title, new BasicTextField(30) },
                 { CommonFieldIds.Artist, new JoinedListField(";", 30) },

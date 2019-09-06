@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Sage.Audio.Metadata.Impl.Fields;
 using Sage.Lib;
-using Sage.Lib.Collections;
 using Serilog;
 using TagLib;
 using TagLib.Id3v2;

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Sage.Audio.Metadata.Impl.Fields
 {
-    public class BasicDateTimeField : IDateTimeField
+    public class BasicDateTimeField : MetadataField, IDateTimeField
     {
         public BasicDateTimeField(byte resolution = 6)
         {
@@ -25,19 +25,24 @@ namespace Sage.Audio.Metadata.Impl.Fields
             }
         }
 
-        public virtual void SetFrom(string s)
+        public override void SetFrom(string s)
         {
             Value = string.IsNullOrWhiteSpace(s) ? (DateTime?)null : DateTime.Parse(s);
         }
 
-        void IMetadataField.SetFrom(uint s)
+        public override void SetFrom(uint s)
         {
             Value = new DateTime((int)s, 1, 1);
         }
 
-        void IMetadataField.SetFrom(IEnumerable<string> s)
+        public override void SetFrom(IEnumerable<string> s)
         {
             SetFrom(s.FirstOrDefault());
+        }
+
+        public override string ToString()
+        {
+            return Value?.ToString("s") ?? "";
         }
 
         public ushort? Year { get; set; }

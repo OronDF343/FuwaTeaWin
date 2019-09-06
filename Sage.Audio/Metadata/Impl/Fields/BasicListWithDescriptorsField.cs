@@ -4,7 +4,7 @@ using Sage.Lib.Collections;
 
 namespace Sage.Audio.Metadata.Impl.Fields
 {
-    public class BasicListWithDescriptorsField : IListWithDescriptorsField
+    public class BasicListWithDescriptorsField : MetadataField, IListWithDescriptorsField
     {
         public BasicListWithDescriptorsField()
         {
@@ -36,7 +36,7 @@ namespace Sage.Audio.Metadata.Impl.Fields
 
         public IList<EntryWithDescriptors> Value { get; set; }
 
-        void IMetadataField.SetFrom(string s)
+        public override void SetFrom(string s)
         {
             // Not supported
             var e = new EntryWithDescriptors(s);
@@ -44,14 +44,24 @@ namespace Sage.Audio.Metadata.Impl.Fields
             else Value.Add(e);
         }
 
-        void IMetadataField.SetFrom(uint s)
+        public override void SetFrom(uint s)
         {
             ((IMetadataField)this).SetFrom(s.ToString());
         }
 
-        void IMetadataField.SetFrom(IEnumerable<string> s)
+        public override void SetFrom(IEnumerable<string> s)
         {
             Value.AddRange(s.Select(i => new EntryWithDescriptors(i)));
+        }
+
+        public override string ToString()
+        {
+            return Value?.FirstOrDefault()?.Value ?? "";
+        }
+
+        public override IEnumerable<string> ToStringEnumerable()
+        {
+            return Value?.Select(v => v.Value) ?? new string[] { };
         }
     }
 }

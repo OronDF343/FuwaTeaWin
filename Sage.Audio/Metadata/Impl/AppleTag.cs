@@ -9,7 +9,7 @@ namespace Sage.Audio.Metadata.Impl
             : base(isReadOnly, supportsCustomTags: false) // Forced UTF-8 without BOM
         {
             const string separator = "; ";
-            FieldsById = new Dictionary<string, IMetadataField>
+            FieldsById = new Dictionary<string, MetadataField>
             {
                 // From http://atomicparsley.sourceforge.net/mpeg-4files.html
                 { CommonFieldIds.Album, new BasicTextField(255) },
