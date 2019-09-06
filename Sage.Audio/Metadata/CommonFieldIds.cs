@@ -68,6 +68,7 @@ namespace Sage.Audio.Metadata
 		public static string WwwPayment { get; } = nameof(WwwPayment).ToUpperInvariant();
 		public static string WwwPublisher { get; } = nameof(WwwPublisher).ToUpperInvariant();
 		public static string WwwRadioPage { get; } = nameof(WwwRadioPage).ToUpperInvariant();
+		public static string Encoder { get; } = nameof(Encoder).ToUpperInvariant();
 		
 		public static IReadOnlyList<string> All { get; } = new ReadOnlyCollection<string>(new List<string>
 		{
@@ -134,6 +135,7 @@ namespace Sage.Audio.Metadata
 			WwwPayment,
 			WwwPublisher,
 			WwwRadioPage,
+			Encoder,
 		});
 
 		public static IReadOnlyDictionary<string, string> Id3V2ToFieldId { get; } = new ReadOnlyDictionary<string, string>(new Dictionary<string, string>
@@ -200,6 +202,35 @@ namespace Sage.Audio.Metadata
 			{ "TIME" , Year },
 			{ "IPLS" , InvolvedPeople },
 			{ "TORY" , OrigReleaseTime },
+		});
+
+		public static IReadOnlyDictionary<string, string> AppleToFieldId { get; } = new ReadOnlyDictionary<string, string>(new Dictionary<string, string>
+		{
+			{ "\u00A9alb" , Album },
+			{ "\u00A9art" , Artist },
+			{ "aART" , AlbumArtist },
+			{ "\u00A9cmt" , Comment },
+			{ "\u00A9day" , Year },
+			{ "\u00A9nam" , Title },
+			{ "\u00A9gen" , Genre },
+			{ "gnre" , Genre },
+			{ "trkn" , Track },
+			{ "disk" , Disc },
+			{ "\u00A9wrt" , Composer },
+			{ "\u00A9too" , Encoder },
+			{ "tmpo" , Bpm },
+			{ "cprt" , Copyright },
+			{ "\u00A9grp" , ContentGroup },
+			{ "\u00A9lyr" , UnsyncedLyrics },
+			{ "soal" , AlbumSort },
+			{ "soaa" , AlbumArtistSort },
+			{ "soar" , ArtistSort },
+			{ "soco" , ComposerSort },
+			{ "\u00A9con" , Conductor },
+			{ "\u00A9mvn" , MovementName },
+			{ "\u00A9mvi" , Movement },
+			{ "\u00A9mvc" , MovementTotal },
+			{ "sonm" , TitleSort },
 		});
     }
 }

@@ -8,7 +8,7 @@ namespace Sage.Audio.Metadata.Impl
         public AppleTag(bool isReadOnly = false)
             : base(isReadOnly, supportsCustomTags: false) // Forced UTF-8 without BOM
         {
-            const string separator = "; ";
+            const string separator = ";";
             FieldsById = new Dictionary<string, MetadataField>
             {
                 // From http://atomicparsley.sourceforge.net/mpeg-4files.html
@@ -26,7 +26,6 @@ namespace Sage.Audio.Metadata.Impl
                 { CommonFieldIds.EncodedBy, new BasicTextField(255) },
                 { CommonFieldIds.Bpm, new BasicNumericField(255) },
                 { CommonFieldIds.Copyright, new BasicTextField(255) },
-                { CommonFieldIds.Grouping, new BasicTextField(255) },
                 { CommonFieldIds.Subtitle, new BasicTextField(255) },
                 // Only text field that allows more than 255 characters
                 { CommonFieldIds.UnsyncedLyrics, new BasicTextField() },

@@ -188,8 +188,10 @@ namespace Sage.Audio.Metadata.Impl.TagLib
         public static IMetadata ReadFrom(global::TagLib.Mpeg4.AppleTag src)
         {
             if (src == null) return null;
-            // TODO: Implement
-            return null;
+            var tag = new AppleTag();
+            foreach (var f in CommonFieldIds.AppleToFieldId)
+                tag.Fields[f.Value].SetFrom(src.GetText(f.Key));
+            return tag;
         }
 
         public static IMetadata ReadFrom(global::TagLib.Asf.Tag src)

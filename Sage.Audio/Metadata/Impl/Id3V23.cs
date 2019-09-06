@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Sage.Audio.Metadata.Impl.Fields;
-using Sage.Lib.Collections;
 
 namespace Sage.Audio.Metadata.Impl
 {
