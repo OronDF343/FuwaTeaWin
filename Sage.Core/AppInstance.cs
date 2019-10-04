@@ -315,6 +315,7 @@ namespace Sage.Core
         private void SendArgsIpc()
         {
             using var ipcClient = new NamedPipeClientStream(_mutexName, _mutexName, PipeDirection.Out);
+            // TODO: This is temporary
             var data = Encoding.UTF8.GetBytes(string.Join("\n", Args));
             ipcClient.Write(data, 0, data.Length);
         }
