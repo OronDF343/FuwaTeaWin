@@ -10,7 +10,7 @@ using Sage.Extensibility.Config;
 namespace Sage.Audio.Playback
 {
     /// <summary>
-    /// 
+    /// Provides all core playback functions
     /// </summary>
     [InheritedExport]
     public interface IPlaybackManager : IConfigPage, IDisposable

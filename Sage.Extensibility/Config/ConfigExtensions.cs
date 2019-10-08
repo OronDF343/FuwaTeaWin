@@ -17,7 +17,7 @@ namespace Sage.Extensibility.Config
 
         public static T Deserialize<T>(this T page, string data) where T : IConfigPage
         {
-            return JsonConvert.DeserializeObject<T>(data, 
+            return JsonConvert.DeserializeObject<T>(data,
                                                     new JsonSerializerSettings
                                                     {
                                                         Converters =
