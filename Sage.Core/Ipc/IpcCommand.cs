@@ -13,8 +13,10 @@ namespace Sage.Core.Ipc
     {
         Close = 0,
         Nop = 1,
-        Open = 2,
+        OpenFile = 2,
         PlaybackControl = 3,
+        PlaybackQuery = 4,
+        MetadataQuery = 5
     }
 
     public sealed class IpcCloseCommand : IpcCommand
@@ -29,9 +31,9 @@ namespace Sage.Core.Ipc
         public int Delay { get; set; }
     }
 
-    public sealed class IpcOpenCommand : IpcCommand
+    public sealed class IpcOpenFileCommand : IpcCommand
     {
-        public override IpcCommandId CommandId => IpcCommandId.Open;
+        public override IpcCommandId CommandId => IpcCommandId.OpenFile;
 
         public List<string> Files { get; set; }
     }
@@ -59,5 +61,31 @@ namespace Sage.Core.Ipc
         ListSetPos = 9,
         BehaviorToggle = 10,
         BehaviorSet = 11
+    }
+
+    public sealed class IpcPlaybackQueryCommand : IpcCommand
+    {
+        public override IpcCommandId CommandId => IpcCommandId.PlaybackQuery;
+
+        public IpcPlaybackProperty Property { get; set; }
+    }
+
+    public enum IpcPlaybackProperty
+    {
+        Invalid = 0,
+        PlaybackState = 1,
+        Behavior = 2,
+        TrackPosition = 3,
+        TrackDuration = 4,
+        ListPos = 5,
+        ListLen = 6,
+        TrackId = 7
+    }
+
+    public sealed class IpcMetadataQueryCommand : IpcCommand
+    {
+        public override IpcCommandId CommandId => IpcCommandId.MetadataQuery;
+
+        public string FieldName { get; set; }
     }
 }

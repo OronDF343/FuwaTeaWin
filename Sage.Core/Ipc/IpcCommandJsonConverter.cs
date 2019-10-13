@@ -19,8 +19,10 @@ namespace Sage.Core.Ipc
             return jo["CommandId"].Value<IpcCommandId>() switch
             {
                 IpcCommandId.Nop => jo.ToObject<IpcNopCommand>(serializer),
-                IpcCommandId.Open => jo.ToObject<IpcOpenCommand>(serializer),
+                IpcCommandId.OpenFile => jo.ToObject<IpcOpenFileCommand>(serializer),
                 IpcCommandId.PlaybackControl => jo.ToObject<IpcPlaybackControlCommand>(serializer),
+                IpcCommandId.PlaybackQuery => jo.ToObject<IpcPlaybackQueryCommand>(serializer),
+                IpcCommandId.MetadataQuery => jo.ToObject<IpcMetadataQueryCommand>(serializer),
                 _ => (IpcCommand)null
             };
         }

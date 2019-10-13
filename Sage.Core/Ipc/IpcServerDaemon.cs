@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Buffers.Binary;
 using System.Collections.Generic;
-using System.IO;
 using System.IO.Pipes;
 using System.Linq;
 using System.Text;
@@ -21,6 +20,8 @@ namespace Sage.Core.Ipc
         public string Name { get; }
 
         public int MaxThreads { get; }
+
+        public event EventHandler<IpcCommandEventArgs> Command;
 
         public IpcServerDaemon(string name, int maxThreads)
         {
@@ -53,6 +54,7 @@ namespace Sage.Core.Ipc
                     _log.Information("Creating new server instance");
                     var newInstance = new IpcServerInstance(Name, instanceCancel.Token);
                     newInstance.Connected += (s, _) => AddNewInstanceIfRequired();
+                    newInstance.Command += OnCommand;
                     instances.Add(newInstance);
                     newInstance.Start();
                 }
@@ -69,6 +71,11 @@ namespace Sage.Core.Ipc
                 var t = GetTasks();
                 _log.Information("Waiting for all instances to exit...");
                 if (t.Length > 0) Task.WaitAll(t);
+            }
+
+            void OnCommand(object sender, IpcCommandEventArgs args)
+            {
+                Command?.Invoke(this, args);
             }
 
             while (true)
@@ -108,6 +115,8 @@ namespace Sage.Core.Ipc
             public bool IsConnected { get; private set; }
 
             public event EventHandler<EventArgs> Connected;
+
+            public event EventHandler<IpcCommandEventArgs> Command;
 
             public IpcServerInstance(string name, CancellationToken cancel)
             {
@@ -163,12 +172,46 @@ namespace Sage.Core.Ipc
                                 {
                                     foreach (var command in packet.Commands)
                                     {
+                                        if (cancel.IsCancellationRequested)
+                                        {
+                                            namedPipeServer.Disconnect();
+                                            break;
+                                        }
                                         switch (command)
                                         {
                                             case IpcCloseCommand _:
                                                 namedPipeServer.Disconnect();
                                                 break;
-                                            // TODO: Implement other commands handling
+                                            case IpcNopCommand n:
+                                                Thread.Sleep(n.Delay);
+                                                responsePacket.Responses.Add(new IpcResponse());
+                                                break;
+                                            case IpcOpenFileCommand _: 
+                                            case IpcPlaybackControlCommand _:
+                                                var args = OnCommand(command, false);
+                                                var resp = args.Handled switch
+                                                {
+                                                    true => ResponseCode.Success,
+                                                    false => ResponseCode.HandlingFailed,
+                                                    null => ResponseCode.NotHandled
+                                                };
+                                                responsePacket.Responses.Add(new IpcResponse(resp, args.Result));
+                                                break;
+                                            case IpcPlaybackQueryCommand _: 
+                                            case IpcMetadataQueryCommand _:
+                                                var argsQ = OnCommand(command, true);
+                                                var respQ = argsQ.Handled switch
+                                                {
+                                                    true => ResponseCode.Success,
+                                                    false => ResponseCode.HandlingFailed,
+                                                    null => ResponseCode.NotHandled
+                                                };
+                                                responsePacket.Responses.Add(new IpcResponse(respQ, argsQ.Result));
+                                                break;
+                                            default:
+                                                _log.Error($"{tIdStr}: Command deserialization resulted in invalid or null command");
+                                                responsePacket.Responses.Add(new IpcResponse(ResponseCode.InvalidCommand));
+                                                break;
                                         }
                                     }
                                 }
@@ -177,12 +220,15 @@ namespace Sage.Core.Ipc
                         }
                         else _log.Error($"{tIdStr}: Invalid packet header magic or read failed");
 
+                        // Deal with cancellation
+                        if (cancel.IsCancellationRequested) break;
+
                         // Required for close command to work
                         if (!namedPipeServer.IsConnected) break;
 
                         // Add invalid packet response
                         if (responsePacket.Responses.Count < 1)
-                            responsePacket.Responses.Add(new IpcResponse { IsSuccess = false, Data = "Invalid Packet" });
+                            responsePacket.Responses.Add(new IpcResponse(ResponseCode.InvalidPacket));
 
                         // Send response packet
                         var json = JsonConvert.SerializeObject(responsePacket);
@@ -220,6 +266,13 @@ namespace Sage.Core.Ipc
                 Connected?.Invoke(this, EventArgs.Empty);
             }
 
+            private IpcCommandEventArgs OnCommand(IpcCommand cmd, bool resultRequired)
+            {
+                var args = new IpcCommandEventArgs(cmd, resultRequired);
+                Command?.Invoke(this, args);
+                return args;
+            }
+
             public override bool Equals(object obj)
             {
                 return obj is IpcServerInstance s && Equals(s);
@@ -244,6 +297,26 @@ namespace Sage.Core.Ipc
             _cancel.Cancel();
             _thread.Join();
             _cancel.Dispose();
+        }
+    }
+
+    public class IpcCommandEventArgs : EventArgs
+    {
+        public IpcCommandEventArgs(IpcCommand command, bool resultRequired)
+        {
+            Command = command;
+            ResultRequired = resultRequired;
+        }
+
+        public IpcCommand Command { get; }
+        public bool ResultRequired { get; }
+        public bool? Handled { get; private set; }
+        public string Result { get; private set; }
+
+        public void SetHandled(bool success = true, string result = null)
+        {
+            Handled = success;
+            Result = result;
         }
     }
 }

@@ -21,8 +21,31 @@ namespace Sage.Core.Ipc
 {
     public class IpcResponse
     {
-        public bool IsSuccess { get; set; }
+        /// <summary>
+        /// ResponseCode will be set to Success by default in this constructor.
+        /// </summary>
+        public IpcResponse()
+        {
+            Code = ResponseCode.Success;
+        }
+
+        public IpcResponse(ResponseCode rc, string data = null)
+        {
+            Code = rc;
+            Data = data;
+        }
+
+        public ResponseCode Code { get; set; }
 
         public string Data { get; set; }
+    }
+
+    public enum ResponseCode
+    {
+        Success = 0,
+        InvalidPacket = 1,
+        InvalidCommand = 2,
+        NotHandled = 3,
+        HandlingFailed = 4
     }
 }

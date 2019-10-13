@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -11,6 +12,7 @@ using System.Text;
 using System.Threading;
 using DryIoc;
 using Newtonsoft.Json;
+using Sage.Core.Ipc;
 using Sage.Extensibility;
 using Sage.Extensibility.Config;
 using Sage.Lib;
@@ -37,7 +39,7 @@ namespace Sage.Core
         internal AppSettings AppSettings { get; }
         public IPlatformSupport PlatformSupport { get; private set; }
 
-        public NamedPipeServerStream IpcServer { get; private set; }
+        public IpcServerDaemon IpcServerDaemon { get; private set; }
         
         public event UnhandledExceptionEventHandler UnhandledException;
 
@@ -314,15 +316,42 @@ namespace Sage.Core
 
         private void SendArgsIpc()
         {
-            using var ipcClient = new NamedPipeClientStream(_mutexName, _mutexName, PipeDirection.Out);
-            // TODO: This is temporary
-            var data = Encoding.UTF8.GetBytes(string.Join("\n", Args));
-            ipcClient.Write(data, 0, data.Length);
+            var hasFiles = Args.TryGetValue(AppConstants.Arguments.Files, out var filesList);
+            var hasAddOnly = Args.TryGetValue(AppConstants.Arguments.Files, out _);
+            if (!hasFiles) return;
+
+            // Connect to server
+            using var ipcClient = new NamedPipeClientStream(_mutexName, _mutexName, PipeDirection.InOut);
+            // Create packet
+            var packet = new IpcCommandsPacket();
+            // Add open command
+            packet.Commands.Add(new IpcOpenFileCommand { Files = filesList.ToList() });
+            // If not disabled, add play command
+            if (!hasAddOnly)
+                packet.Commands.Add(new IpcPlaybackControlCommand { OpCode = IpcPlaybackOpCode.PlayerPlay });
+            // Add connection close command
+            packet.Commands.Add(new IpcCloseCommand());
+            // Serialize packet to JSON string
+            var json = JsonConvert.SerializeObject(packet);
+            // Get JSON length in bytes
+            var jsonByteCount = Encoding.UTF8.GetByteCount(json);
+            // Create packet bytes array with length header (8 bytes) + JSON length in bytes
+            var packetBytes = new byte[8 + jsonByteCount];
+            // Write "Sage" to first 4 bytes
+            Encoding.ASCII.GetBytes("Sage", packetBytes.AsSpan(0, 4));
+            // Write the JSON length in bytes to the next 4 bytes
+            BinaryPrimitives.WriteInt32LittleEndian(packetBytes.AsSpan(4, 4), jsonByteCount);
+            // Write the JSON bytes after the header
+            Encoding.UTF8.GetBytes(json, packetBytes.AsSpan(8));
+            // Send the binary packet to the IPC server
+            ipcClient.Write(packetBytes);
+            // Since we sent a close command, the server will close the connection automatically. We will just need to wait for it to read our packet.
+            ipcClient.WaitForPipeDrain();
         }
 
         private void InitIpcServer()
         {
-            IpcServer = new NamedPipeServerStream(_mutexName, PipeDirection.In, 1, PipeTransmissionMode.Message);
+            IpcServerDaemon = new IpcServerDaemon(_mutexName, AppSettings.IpcMaxThreads ?? 16); // TODO: Think about this default value
         }
 
         private void LoadCore()
@@ -402,7 +431,7 @@ namespace Sage.Core
         public void Dispose()
         {
             SaveConfigs();
-            IpcServer?.Dispose();
+            IpcServerDaemon?.Dispose();
             _mutex?.Dispose();
             ExtensibilityContainer?.Dispose();
         }

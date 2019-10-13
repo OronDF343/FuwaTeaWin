@@ -21,5 +21,6 @@ namespace Sage.Core
         public LogEventLevel ConsoleLogLevel { get; set; }
         public int InstanceCreationTimeout { get; set; }
         public bool FileLogEnabled { get; set; }
+        public int? IpcMaxThreads { get; set; }
     }
 }
