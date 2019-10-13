@@ -352,6 +352,7 @@ namespace Sage.Core
         private void InitIpcServer()
         {
             IpcServerDaemon = new IpcServerDaemon(_mutexName, AppSettings.IpcMaxThreads ?? 16); // TODO: Think about this default value
+            IpcServerDaemon.Start();
         }
 
         private void LoadCore()

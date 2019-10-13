@@ -56,7 +56,6 @@ namespace Sage.Core.Ipc
                     newInstance.Connected += (s, _) => AddNewInstanceIfRequired();
                     newInstance.Command += OnCommand;
                     instances.Add(newInstance);
-                    newInstance.Start();
                 }
             }
 
@@ -82,17 +81,16 @@ namespace Sage.Core.Ipc
             {
                 try
                 {
-                    if (cancel.IsCancellationRequested)
-                    {
-                        _log.Information("Server daemon was cancelled, instances will now be cancelled");
-                        CancelAndWaitAll();
-                        break;
-                    }
-
                     AddNewInstanceIfRequired();
                     var tasks = GetTasks();
-                    Task.WaitAny(tasks);
+                    Task.WaitAny(tasks, cancel);
                     lock (instances) { instances.RemoveAll(t => t.Task.IsCompleted); }
+                }
+                catch (OperationCanceledException)
+                {
+                    _log.Information("Server daemon was cancelled, instances will now be cancelled");
+                    CancelAndWaitAll();
+                    break;
                 }
                 catch (Exception ex)
                 {
@@ -109,7 +107,7 @@ namespace Sage.Core.Ipc
         {
             private readonly ILogger _log;
             private readonly string _name;
-            
+
             public Task Task { get; }
 
             public bool IsConnected { get; private set; }
@@ -122,15 +120,10 @@ namespace Sage.Core.Ipc
             {
                 _log = Log.ForContext<IpcServerInstance>();
                 _name = name;
-                Task = new Task(() => Instance(cancel), cancel);
+                Task = Task.Run(() => Instance(cancel), cancel);
             }
 
-            public void Start()
-            {
-                Task.Start();
-            }
-
-            private async void Instance(CancellationToken cancel)
+            private async Task Instance(CancellationToken cancel)
             {
                 const string magic = "Sage";
 
@@ -287,7 +280,8 @@ namespace Sage.Core.Ipc
 
             public override int GetHashCode()
             {
-                return (Task != null ? Task.GetHashCode() : 0);
+                // ReSharper disable once NonReadonlyMemberInGetHashCode
+                return Task?.GetHashCode() ?? 0;
             }
         }
 

@@ -33,9 +33,9 @@
     <Content Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.8.2" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.8.2" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.8.2" />
+    <PackageReference Include="Avalonia" Version="0.8.3" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.8.3" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.8.3" />
     <PackageReference Include="Avalonia.Xaml.Behaviors" Version="0.8.2" />
     <PackageReference Include="DryIocAttributes.dll" Version="5.0.0" />
     <PackageReference Include="Fody" Version="6.0.0">
