@@ -4,6 +4,7 @@
         xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
         xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
         xmlns:helpers="clr-namespace:Sage.Helpers;assembly=Sage"
+        x:Class="Sage.Views.MainWindow"
         Icon="resm:Sage.Assets.avalonia-logo.ico"
         HasSystemDecorations="False"
         ShowInTaskbar="True"

@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Logging.Serilog;
+using Avalonia.ReactiveUI;
 using Sage.Core;
 using Sage.Extensibility;
 using Sage.Extensibility.Attributes;
@@ -20,7 +21,7 @@ namespace Sage
             AppInstance = new AppInstance(args);
             if (!AppInstance.Init()) return;
             Log.Information("Building Avalonia app with main window");
-            BuildAvaloniaApp().Start<MainWindow>(() => new MainWindowViewModel());
+            BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
             Log.Information("Main window exited; Shutting down");
             AppInstance.Dispose();
         }

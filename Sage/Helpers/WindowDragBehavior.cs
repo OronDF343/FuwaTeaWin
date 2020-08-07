@@ -39,12 +39,14 @@ namespace Sage.Helpers
         private Point _startPoint;
         //private ResizeMode _previous;
         private bool _dragConfirmed;
+        private PointerPressedEventArgs _args;
 
         private void PointerPressed(object sender, PointerPressedEventArgs e)
         {
             if (ExcludedElements.Any(el => el.Binding != null && el.Binding.IsPointerOver)) return;
             _dragConfirmed = true;
             _startPoint = e.GetPosition(AssociatedObject);
+            _args = e;
             //_previous = AssociatedObject.ResizeMode;
             //AssociatedObject.ResizeMode = ResizeMode.NoResize;
         }
@@ -53,11 +55,11 @@ namespace Sage.Helpers
         {
             if (!_dragConfirmed) return;
             var newPoint = e.GetPosition(AssociatedObject);
-            if (e.InputModifiers.HasFlag(InputModifiers.LeftMouseButton) //&& Enabled
+            if (e.GetCurrentPoint(null).Properties.IsLeftButtonPressed //&& Enabled
                 && (Math.Abs(newPoint.X - _startPoint.X) > MinimumHorizontalDragDistance
                     || Math.Abs(newPoint.Y - _startPoint.Y) > MinimumVerticalDragDistance))
             {
-                AssociatedObject.BeginMoveDrag();
+                AssociatedObject.BeginMoveDrag(_args);
             }
         }
 
@@ -66,6 +68,7 @@ namespace Sage.Helpers
             if (!_dragConfirmed) return;
             //AssociatedObject.ResizeMode = _previous;
             _dragConfirmed = false;
+            _args = null;
         }
     }
 

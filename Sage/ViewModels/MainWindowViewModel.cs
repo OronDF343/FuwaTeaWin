@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using DryIoc;
@@ -17,6 +19,7 @@ using Sage.Audio.Playback.CSCore;
 using Sage.Core;
 using Sage.Helpers;
 using Sage.Lib.Collections;
+using Sage.Views;
 using Serilog;
 
 namespace Sage.ViewModels
@@ -30,6 +33,14 @@ namespace Sage.ViewModels
 
         public MainWindowViewModel()
         {
+            this.WhenActivated((CompositeDisposable disposables) =>
+            {
+                /* handle activation */
+                Disposable
+                    .Create(() => { /* handle deactivation */ })
+                    .DisposeWith(disposables);
+            });
+
             PreviousCommand = new RelayCommand(Previous);
             PlayCommand = new RelayCommand(Play);
             StopCommand = new RelayCommand(Stop);
@@ -118,12 +129,14 @@ namespace Sage.ViewModels
 
         private void Minimize()
         {
-            Application.Current.MainWindow.WindowState = WindowState.Minimized;
+            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                desktop.MainWindow.WindowState = WindowState.Minimized;
         }
 
         private void Exit()
         {
-            Application.Current.Exit();
+            if (Application.Current.ApplicationLifetime is IControlledApplicationLifetime ctl)
+                ctl.Shutdown();
         }
 
         public string Message => "Sage: Music Player (Development Version)";

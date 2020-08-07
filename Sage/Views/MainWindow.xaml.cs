@@ -1,12 +1,15 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.ReactiveUI;
 using PropertyChanged;
+using ReactiveUI;
+using Sage.ViewModels;
 
 namespace Sage.Views
 {
     [DoNotNotify]
-    public class MainWindow : Window
+    public class MainWindow : ReactiveWindow<MainWindowViewModel>
     {
         public MainWindow()
         {
@@ -18,6 +21,7 @@ namespace Sage.Views
 
         private void InitializeComponent()
         {
+            this.WhenActivated(disposables => { /* Handle view activation etc. */ });
             AvaloniaXamlLoader.Load(this);
         }
     }
