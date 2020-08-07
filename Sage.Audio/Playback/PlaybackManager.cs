@@ -127,7 +127,7 @@ namespace Sage.Audio.Playback
             // TODO: Where to handle errors?
             Player?.Unload();
             if (Player == null || NowPlaying == null) return;
-            var wavSrc = _decoderManager.Handle(NowPlaying);
+            var wavSrc = _decoderManager.Handle(NowPlaying, out var decoder);
             if (_effectManager.SelectedImplementations.Count > 0)
             {
                 var sampleSrc = wavSrc.ToSampleSource();
@@ -138,6 +138,7 @@ namespace Sage.Audio.Playback
                 }
                 wavSrc = sampleSrc.ToWaveSource();
             }
+            decoder.UpdateMetadata(NowPlaying);
             Player?.Load(wavSrc);
         }
 

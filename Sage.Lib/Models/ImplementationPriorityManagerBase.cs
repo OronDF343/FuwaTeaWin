@@ -50,7 +50,12 @@ namespace Sage.Lib.Models
 
         public bool CanHandle(TInput ti) => !Equals(GetImplementations(ti).FirstOrDefault(it => it.CanHandle(ti)), default(TInterface));
 
-        public virtual TOutput Handle(TInput ti)
+        TOutput ICanHandle<TInput, TOutput, string>.Handle(TInput ti)
+        {
+            return Handle(ti, out _);
+        }
+
+        public virtual TOutput Handle(TInput ti, out TInterface implementation)
         {
             foreach (var impl in GetImplementations(ti).Where(it => it.CanHandle(ti)))
             {
@@ -66,9 +71,14 @@ namespace Sage.Lib.Models
                     continue;
                 }
 
-                if (!Equals(to, default(TOutput))) return to;
+                if (!Equals(to, default(TOutput)))
+                {
+                    implementation = impl;
+                    return to;
+                }
             }
 
+            implementation = default;
             return default;
         }
 

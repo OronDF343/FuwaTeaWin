@@ -27,7 +27,14 @@ namespace Sage.Audio.Metadata.Impl.Fields
 
         public override void SetFrom(string s)
         {
-            Value = string.IsNullOrWhiteSpace(s) ? (DateTime?)null : DateTime.Parse(s);
+            if (string.IsNullOrWhiteSpace(s))
+                Value = null;
+            else if (DateTime.TryParse(s, out var dt))
+                Value = dt;
+            else if (s.Length == 4 && uint.TryParse(s, out var y))
+                SetFrom(y);
+            else
+                Value = null;
         }
 
         public override void SetFrom(uint s)

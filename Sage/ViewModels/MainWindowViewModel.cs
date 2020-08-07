@@ -59,6 +59,10 @@ namespace Sage.ViewModels
 
             _container = Program.AppInstance.ExtensibilityContainer.OpenScope(nameof(MainWindowViewModel));
 
+            // Progress
+            _progressTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(100), DispatcherPriority.ApplicationIdle, ProgressTick);
+            _progressTimer.Stop();
+
             // Configure for testing
             var apiSel = _container.Resolve<ApiSelector>();
             apiSel.SelectImplementation(apiSel.Implementations.First(i => i.GetType().Name.Contains("Wasapi")));
@@ -66,6 +70,7 @@ namespace Sage.ViewModels
             wCfg.MasterVolume = 1.0f;
             // Load
             _playMgr = _container.Resolve<IPlaybackManager>();
+            _playMgr.Player.StateChanged += Player_StateChanged;
             _volume = _container.Resolve<VolumeEffect>();
             _volume.Volume = 0.4f;
             _effectManager = _container.Resolve<IEffectManager>();
@@ -74,18 +79,12 @@ namespace Sage.ViewModels
             if (Program.AppInstance.Args.ContainsKey(AppConstants.Arguments.Files))
                 foreach (var file in Program.AppInstance.Args[AppConstants.Arguments.Files])
                     AddFile(file);
-            // Required:
-            _playMgr.Player.StateChanged += Player_StateChanged;
             // Auto-play
             if (!Program.AppInstance.Args.ContainsKey(AppConstants.Arguments.AddOnly))
                 Play();
 
             // Drag/Drop
             DropHandler = new FileDropHandler(AddFile);
-
-            // Progress
-            _progressTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(100), DispatcherPriority.ApplicationIdle, ProgressTick);
-            _progressTimer.Stop();
         }
 
         private void ProgressTick(object sender, EventArgs args)
@@ -115,6 +114,14 @@ namespace Sage.ViewModels
             //}
             //else
             if (!_progressTimer.IsEnabled) _progressTimer.Start();
+
+            if (args.NewState == AudioPlayerState.Loaded)
+            {
+                if (_playMgr.NowPlaying.Metadata.TryGetValue(MetadataSource.Decoder, out var decMeta))
+                {
+                    Message = decMeta.Artist + " - " + decMeta.Title;
+                }
+            }
         }
 
         private void Previous()
@@ -194,6 +201,7 @@ namespace Sage.ViewModels
             var x = e.GetCurrentPoint(pb).Position.X;
             var w = pb.Bounds.Width;
             _playMgr.Player.Position = Duration * (x / w);
+            this.RaisePropertyChanged(nameof(PercentProgress));
         }
 
         public IDropHandler DropHandler { get; }
