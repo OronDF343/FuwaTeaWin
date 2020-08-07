@@ -24,18 +24,10 @@
     <EmbeddedResource Include="Assets\*" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Remove="App.xaml" />
-    <EmbeddedResource Remove="Views\MainWindow.xaml" />
-  </ItemGroup>
-  <ItemGroup>
     <None Remove="FodyWeavers.xml" />
     <None Remove="Themes\Accents\BaseDark.xaml" />
     <None Remove="Themes\Default.xaml" />
     <None Remove="Themes\Icons\Default.xaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AvaloniaXaml Include="App.xaml" />
-    <AvaloniaXaml Include="Views\MainWindow.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
@@ -66,5 +58,19 @@
     <EmbeddedResource Update="Themes\Icons\Default.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\MainWindow.axaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="App.xaml.cs">
+      <DependentUpon>App.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="App.axaml" />
   </ItemGroup>
 </Project>
