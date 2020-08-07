@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Logging.Serilog;
 using Avalonia.ReactiveUI;
 using Sage.Core;
@@ -16,6 +17,7 @@ namespace Sage
     {
         public static AppInstance AppInstance { get; set; }
 
+        [STAThread]
         private static void Main(string[] args)
         {
             AppInstance = new AppInstance(args);

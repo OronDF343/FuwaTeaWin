@@ -62,7 +62,7 @@ namespace Sage.ViewModels
             // Load
             _playMgr = _container.Resolve<IPlaybackManager>();
             _volume = _container.Resolve<VolumeEffect>();
-            _volume.Volume = 0.7f;
+            _volume.Volume = 0.4f;
             _effectManager = _container.Resolve<IEffectManager>();
             _effectManager.AppendImplementation(_volume);
             _playMgr.List = new ObservableCollection<IFileHandle>();
@@ -139,7 +139,7 @@ namespace Sage.ViewModels
                 ctl.Shutdown();
         }
 
-        public string Message => "Sage: Music Player (Development Version)";
+        public string Message { get; set; } = "Sage: Music Player (Development Version)";
         public double MinScrollingMargin => 64;
         public double ScrollingVelocity => 50;
         public TimeSpan Duration => TimeSpan.FromSeconds(3);
@@ -186,10 +186,10 @@ namespace Sage.ViewModels
                 e.DragEffects |= DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link;
 
                 // Only allow if the dragged data contains text or filenames.
-                if (!e.Data.Contains(DataFormats.FileNames) || !e.Data.Contains(DataFormats.Text))
+                if (!e.Data.Contains(DataFormats.FileNames) && !e.Data.Contains(DataFormats.Text))
                     e.DragEffects = DragDropEffects.None;
 
-                e.Handled = true;
+                //e.Handled = true;
             }
 
             public void Drop(object sender, DragEventArgs e)

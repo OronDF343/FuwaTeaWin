@@ -27,31 +27,37 @@ namespace Sage.Helpers
         protected override void OnAttached()
         {
             AssociatedObject.PointerPressed += PointerPressed;
-            AssociatedObject.PointerMoved += PointerMoved;
-            AssociatedObject.PointerReleased += PointerReleased;
+            //AssociatedObject.PointerMoved += PointerMoved;
+            //AssociatedObject.PointerReleased += PointerReleased;
             base.OnAttached();
         }
 
-        public double MinimumVerticalDragDistance { get; set; } = 10.0;
+        //public double MinimumVerticalDragDistance { get; set; } = 10.0;
 
-        public double MinimumHorizontalDragDistance { get; set; } = 10.0;
+        //public double MinimumHorizontalDragDistance { get; set; } = 10.0;
 
-        private Point _startPoint;
+        //private Point _startPoint;
         //private ResizeMode _previous;
-        private bool _dragConfirmed;
-        private PointerPressedEventArgs _args;
+        //private bool _dragConfirmed;
+        //private PointerPressedEventArgs _args;
 
         private void PointerPressed(object sender, PointerPressedEventArgs e)
         {
-            if (ExcludedElements.Any(el => el.Binding != null && el.Binding.IsPointerOver)) return;
-            _dragConfirmed = true;
-            _startPoint = e.GetPosition(AssociatedObject);
-            _args = e;
+            if (ExcludedElements.Any(el => el.Binding != null && el.Binding.IsPointerOver))
+            {
+                //_dragConfirmed = false;
+                return;
+            }
+
+            AssociatedObject.BeginMoveDrag(e);
+            //_dragConfirmed = true;
+            //_startPoint = e.GetPosition(AssociatedObject);
+            //_args = e;
             //_previous = AssociatedObject.ResizeMode;
             //AssociatedObject.ResizeMode = ResizeMode.NoResize;
         }
 
-        private void PointerMoved(object sender, PointerEventArgs e)
+        /*private void PointerMoved(object sender, PointerEventArgs e)
         {
             if (!_dragConfirmed) return;
             var newPoint = e.GetPosition(AssociatedObject);
@@ -59,7 +65,7 @@ namespace Sage.Helpers
                 && (Math.Abs(newPoint.X - _startPoint.X) > MinimumHorizontalDragDistance
                     || Math.Abs(newPoint.Y - _startPoint.Y) > MinimumVerticalDragDistance))
             {
-                AssociatedObject.BeginMoveDrag(_args);
+                AssociatedObject.BeginMoveDrag(new PointerPressedEventArgs(e.Source, e.Pointer, AssociatedObject, e.GetCurrentPoint(null).Position, e.Timestamp, e.GetCurrentPoint(null).Properties, e.KeyModifiers, 1));
             }
         }
 
@@ -69,7 +75,7 @@ namespace Sage.Helpers
             //AssociatedObject.ResizeMode = _previous;
             _dragConfirmed = false;
             _args = null;
-        }
+        }*/
     }
 
     [DoNotNotify]

@@ -9,9 +9,7 @@
         HasSystemDecorations="False"
         ShowInTaskbar="True"
         Topmost="True"
-        DragDrop.AllowDrop="True"
         Title="Sage"
-        helpers:DropBehavior.IsEnabled="True"
         Height="34" Width="540">
     <Window.Resources>
         <helpers:MultiplyConverter x:Key="MultiplyConverter" />
@@ -20,17 +18,21 @@
         <helpers:DivideMultiConverter x:Key="DivideMultiConverter" />
         <helpers:MinMaxMultiConverter x:Key="MinMaxMultiConverter" />
         <helpers:ConcatMultiConverter x:Key="ConcatMultiConverter" />
+        <helpers:DurationConverter x:Key="DurationConverter" />
     </Window.Resources>
     <Design.DataContext>
         <vm:MainWindowViewModel />
     </Design.DataContext>
     <i:Interaction.Behaviors>
-        <helpers:WindowDragBehavior />
+        <helpers:WindowDragBehavior>
+          <helpers:WindowDragBehavior.ExcludedElements>
+            <helpers:ElementReference Binding="{Binding #ButtonsGrid}" />
+          </helpers:WindowDragBehavior.ExcludedElements>
+        </helpers:WindowDragBehavior>
         <helpers:DropBehavior Handler="{Binding DropHandler}" />
     </i:Interaction.Behaviors>
     <Border Background="{DynamicResource ThemeBackgroundBrush}" BorderBrush="{DynamicResource ThemeBorderHighBrush}"
             BorderThickness="{DynamicResource ThemeBorderThickness}" VerticalAlignment="Stretch">
-        <!--<TextBlock Text="{Binding Greeting}" Margin="16"/>-->
         <StackPanel Orientation="Vertical">
             <Grid />
             <Grid ColumnDefinitions="*,Auto" HorizontalAlignment="Stretch">
@@ -39,10 +41,17 @@
                         <StackPanel.Styles>
                             <Style Selector="StackPanel">
                                 <Style.Animations>
-                                    <Animation IterationCount="Infinite" Duration="0:0:7">
-                                        <!-- TODO: Binding as follows:
+                                    <Animation IterationCount="Infinite">
                                         <Animation.Duration>
                                             <MultiBinding Converter="{StaticResource DivideMultiConverter}">
+                                                <MultiBinding.Converter>
+                                                    <helpers:ConverterChain>
+                                                        <helpers:ConverterChain.MultiValueConverter>
+                                                            <helpers:MultiConverterWithParameter Converter="{StaticResource DivideMultiConverter}" />
+                                                        </helpers:ConverterChain.MultiValueConverter>
+                                                        <helpers:ConverterWithParameter Converter="{StaticResource DurationConverter}" Parameter="1" />
+                                                    </helpers:ConverterChain>
+                                                </MultiBinding.Converter>
                                                 <MultiBinding Converter="{StaticResource AddMultiConverter}">
                                                     <Binding Path="#TextBlob.Bounds.Width"/>
                                                     <Binding Path="#TextBlobClone.Margin.Left"/>
@@ -50,7 +59,6 @@
                                                 <Binding Path="ScrollingVelocity"/>
                                             </MultiBinding>
                                         </Animation.Duration>
-                                        -->
                                         <KeyFrame Cue="0%">
                                             <Setter Property="Canvas.Right"
                                                     Value="{Binding #TextBlob.Bounds.Width, Converter={StaticResource MultiplyConverter}, ConverterParameter=-1}" />
@@ -88,7 +96,7 @@
                         </TextBlock>
                     </StackPanel>
                 </Canvas>
-                <UniformGrid Grid.Column="1" Rows="1" Columns="10" HorizontalAlignment="Left">
+                <UniformGrid x:Name="ButtonsGrid" Grid.Column="1" Rows="1" Columns="10" HorizontalAlignment="Left">
                     <Button Classes="icon prevIcon">
                       <i:Interaction.Behaviors>
                         <ia:EventTriggerBehavior EventName="Click">
