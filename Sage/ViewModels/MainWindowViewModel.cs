@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Windows.Input;
@@ -8,6 +9,8 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
+using Avalonia.VisualTree;
 using DryIoc;
 using ReactiveUI;
 using Sage.Audio.Effects;
@@ -30,6 +33,7 @@ namespace Sage.ViewModels
         private readonly IPlaybackManager _playMgr;
         private readonly VolumeEffect _volume;
         private readonly IEffectManager _effectManager;
+        private readonly DispatcherTimer _progressTimer;
 
         public MainWindowViewModel()
         {
@@ -49,6 +53,7 @@ namespace Sage.ViewModels
             RepeatCommand = new RelayCommand(Repeat);
             MinimizeCommand = new RelayCommand(Minimize);
             ExitCommand = new RelayCommand(Exit);
+            SeekCommand = new RelayCommand<PointerReleasedEventArgs>(Seek);
 
             if (Design.IsDesignMode) return;
 
@@ -77,6 +82,15 @@ namespace Sage.ViewModels
 
             // Drag/Drop
             DropHandler = new FileDropHandler(AddFile);
+
+            // Progress
+            _progressTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(100), DispatcherPriority.ApplicationIdle, ProgressTick);
+            _progressTimer.Stop();
+        }
+
+        private void ProgressTick(object sender, EventArgs args)
+        {
+            this.RaisePropertyChanged(nameof(PercentProgress));
         }
 
         private void AddFile(string file)
@@ -92,6 +106,15 @@ namespace Sage.ViewModels
         private void Player_StateChanged(object sender, AudioPlayerStateChangedEventArgs args)
         {
             this.RaisePropertyChanged(nameof(IsPlaying));
+            Log.Debug(args.NewState.ToString());
+            // BUG: PlaybackManager.PlayerOnStateChanged causes incorrect event firing order
+            //if (args.NewState == AudioPlayerState.Stopped)
+            //{
+            //    _progressTimer.Stop();
+            //    this.RaisePropertyChanged(nameof(PercentProgress));
+            //}
+            //else
+            if (!_progressTimer.IsEnabled) _progressTimer.Start();
         }
 
         private void Previous()
@@ -142,13 +165,16 @@ namespace Sage.ViewModels
         public string Message { get; set; } = "Sage: Music Player (Development Version)";
         public double MinScrollingMargin => 64;
         public double ScrollingVelocity => 50;
-        public TimeSpan Duration => TimeSpan.FromSeconds(3);
 
         public bool IsPlaying => _playMgr.Player.State == AudioPlayerState.Playing;
         public bool IsShuffleEnabled { get; private set; } // TODO: Implement shuffle
 
         public bool? RepeatMode => _playMgr.Behavior == PlaybackBehavior.Normal ? false :
                                    _playMgr.Behavior == PlaybackBehavior.RepeatList ? true : (bool?)null;
+
+        public TimeSpan Position => _playMgr.Player.Position;
+        public double PercentProgress => Position / Duration;
+        public TimeSpan Duration => _playMgr.Player.Duration;
 
         public ICommand PreviousCommand { get; }
         public ICommand PlayCommand { get; }
@@ -158,6 +184,17 @@ namespace Sage.ViewModels
         public ICommand RepeatCommand { get; }
         public ICommand MinimizeCommand { get; }
         public ICommand ExitCommand { get; }
+        
+        public ICommand SeekCommand { get; }
+
+        private void Seek(PointerReleasedEventArgs e)
+        {
+            var src = (Control)e.Source;
+            var pb = src.Parent;
+            var x = e.GetCurrentPoint(pb).Position.X;
+            var w = pb.Bounds.Width;
+            _playMgr.Player.Position = Duration * (x / w);
+        }
 
         public IDropHandler DropHandler { get; }
 

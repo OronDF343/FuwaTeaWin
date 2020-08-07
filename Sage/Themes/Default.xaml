@@ -17,7 +17,7 @@
     <Setter Property="Fill" Value="{DynamicResource ThemeForegroundLowBrush}"/>
   </Style>
       <Style Selector=":is(Button).icon">
-          <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}"/>
+          <Setter Property="Background" Value="Transparent"/>
           <Setter Property="BorderThickness" Value="0"/>
           <Setter Property="Padding" Value="2,4"/>
           <Setter Property="Height" Value="32"/>
@@ -27,7 +27,7 @@
       </Style>
   <!-- Order is important - pointerover and pressed must be below checked! -->
   <Style Selector=":is(ToggleButton).noCheck:checked /template/ ContentPresenter">
-    <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}"/>
+    <Setter Property="Background" Value="Transparent"/>
   </Style>
     <Style Selector=":is(Button):pointerover /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource ThemeControlMidBrush}"/>

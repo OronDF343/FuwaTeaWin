@@ -161,10 +161,11 @@ namespace Sage.Audio.Playback
             if (Behavior == PlaybackBehavior.RepeatTrack && List?.Count > 0)
             {
                 Player?.Play();
-                return;
             }
-            if (List?.Count > 0 && SneakyUpdateIndex((Index + 1) % List.Count))
+            else if (List?.Count > 0 && SneakyUpdateIndex((Index + 1) % List.Count))
+            {
                 Load();
+            }
         }
 
         private void PlayerOnStateChanged(object sender, AudioPlayerStateChangedEventArgs args)

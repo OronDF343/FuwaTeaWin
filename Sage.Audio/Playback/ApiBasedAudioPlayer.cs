@@ -75,7 +75,7 @@ namespace Sage.Audio.Playback
 
         public virtual void Load(IWaveSource dec)
         {
-            try 
+            try
             {
                 // TODO IMPORTANT: SampleSource + Effects
                 // TODO IMPORTANT: Create interface wrapper so we don't have to depend on CSCore
@@ -96,7 +96,7 @@ namespace Sage.Audio.Playback
 
         public virtual void Play()
         {
-            try 
+            try
             {
                 Api.Play();
                 StateTransition(AudioPlayerState.Playing, TransitionInitiator.Manual);

@@ -114,6 +114,8 @@ namespace Sage.Audio.Playback.CSCore
 
         protected virtual void OnPlaybackFinished()
         {
+            // The follwing line is actually required
+            if (CanSeek) Position = TimeSpan.Zero;
             PlaybackFinished?.Invoke(this, EventArgs.Empty);
         }
 

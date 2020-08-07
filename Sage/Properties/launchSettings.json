@@ -2,7 +2,7 @@
   "profiles": {
     "Sage": {
       "commandName": "Project",
-      "commandLineArgs": "\"V:\\ProjectsTemp\\01. Real World.flac\" -a"
+      "commandLineArgs": "\"V:\\ProjectsTemp\\01. Real World.flac\" -a -l:v"
     }
   }
 }

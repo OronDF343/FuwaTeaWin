@@ -59,7 +59,8 @@ namespace Sage.Core
             // Get console logging level from arguments
             var sc = TryParseLogLevel(mainArgs, AppConstants.Arguments.LogLevel, out var clLog, out var clLogLevel);
             // Create temporary console logger
-            Log.Logger = clLog ? new LoggerConfiguration().WriteTo.Console().MinimumLevel.Is(clLogLevel).CreateLogger() : new LoggerConfiguration().CreateLogger();
+            var lb = new LoggerConfiguration().WriteTo.Debug(LogEventLevel.Verbose);
+            Log.Logger = clLog ? lb.WriteTo.Console(clLogLevel).CreateLogger() : lb.CreateLogger();
             // Warn if there was a parsing error
             if (sc == false) Log.Warning("Invalid console log level specified, falling back to defaults");
             
@@ -94,6 +95,7 @@ namespace Sage.Core
             if (sf != true) fLogLevel = AppSettings.FileLogLevel;
             // Configure the logger, using minimum log level for overall
             var logCfg = new LoggerConfiguration().MinimumLevel.Is((LogEventLevel)Math.Min((int)clLogLevel, (int)fLogLevel));
+            logCfg.WriteTo.Debug(LogEventLevel.Verbose);
             // If not specified, respect AppSettings for configuring level
             if (clLog) logCfg = logCfg.WriteTo.Console(clLogLevel);
             // If not specified, respect AppSettings for both enabling and configuring level

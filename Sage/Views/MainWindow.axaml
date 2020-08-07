@@ -5,6 +5,7 @@
         xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
         xmlns:helpers="clr-namespace:Sage.Helpers;assembly=Sage"
         x:Class="Sage.Views.MainWindow"
+        x:Name="MainWin"
         Icon="resm:Sage.Assets.avalonia-logo.ico"
         HasSystemDecorations="False"
         ShowInTaskbar="True"
@@ -19,6 +20,7 @@
         <helpers:MinMaxMultiConverter x:Key="MinMaxMultiConverter" />
         <helpers:ConcatMultiConverter x:Key="ConcatMultiConverter" />
         <helpers:DurationConverter x:Key="DurationConverter" />
+        <helpers:GridLengthConverter x:Key="GridLengthConverter" />
     </Window.Resources>
     <Design.DataContext>
         <vm:MainWindowViewModel />
@@ -27,6 +29,7 @@
         <helpers:WindowDragBehavior>
           <helpers:WindowDragBehavior.ExcludedElements>
             <helpers:ElementReference Binding="{Binding #ButtonsGrid}" />
+            <helpers:ElementReference Binding="{Binding #ProgressBar}" />
           </helpers:WindowDragBehavior.ExcludedElements>
         </helpers:WindowDragBehavior>
         <helpers:DropBehavior Handler="{Binding DropHandler}" />
@@ -168,6 +171,21 @@
                       </i:Interaction.Behaviors>
                     </Button>
                 </UniformGrid>
+              <!-- Progress control -->
+              <Grid x:Name="ProgressBar" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="{Binding PercentProgress, Mode=OneWay, Converter={StaticResource GridLengthConverter}}" />
+                  <ColumnDefinition Width="{Binding PercentProgress, Mode=OneWay, Converter={StaticResource GridLengthConverter}, ConverterParameter=-}" />
+                </Grid.ColumnDefinitions>
+                <i:Interaction.Behaviors>
+                  <helpers:OverlayOnKeyBehavior FocusRoot="{Binding #MainWin}" />
+                  <ia:EventTriggerBehavior EventName="PointerReleased">
+                    <ia:InvokeCommandAction Command="{Binding SeekCommand}" />
+                  </ia:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+                <Rectangle Grid.Column="0" Fill="{DynamicResource ThemeAccentBrush3}" Stretch="Fill" />
+                <Rectangle Grid.Column="1" Fill="Transparent" Stretch="Fill" />
+              </Grid>
             </Grid>
         </StackPanel>
     </Border>
