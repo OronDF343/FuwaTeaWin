@@ -138,6 +138,8 @@ namespace Sage.Audio.Playback
         public virtual bool CanResume => Api.CanResume;
         public virtual bool CanSeek => Api.CanSeek;
         public virtual AudioPlayerState State { get; private set; }
+        
+        public event AudioPlayerStateChangedEventHandler StateChanging;
 
         public event AudioPlayerStateChangedEventHandler StateChanged;
 
@@ -145,7 +147,9 @@ namespace Sage.Audio.Playback
         {
             var oldState = State;
             State = newState;
-            StateChanged?.Invoke(this, new AudioPlayerStateChangedEventArgs(oldState, newState, ti, errorInfo));
+            var args = new AudioPlayerStateChangedEventArgs(oldState, newState, ti, errorInfo);
+            StateChanging?.Invoke(this, args);
+            StateChanged?.Invoke(this, args);
         }
 
         protected virtual void Dispose(bool disposing)

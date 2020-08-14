@@ -65,7 +65,12 @@ namespace Sage.Audio.Playback
         AudioPlayerState State { get; }
 
         /// <summary>
-        /// Fires when the playback state changes
+        /// Fires when the playback state changes. Do not cause further transitions in handlers of the event!
+        /// </summary>
+        event AudioPlayerStateChangedEventHandler StateChanging;
+
+        /// <summary>
+        /// Fires after the playback state changes. Safe to cause additional transitions in handlers of this event.
         /// </summary>
         event AudioPlayerStateChangedEventHandler StateChanged;
     }

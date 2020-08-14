@@ -70,7 +70,7 @@ namespace Sage.ViewModels
             wCfg.MasterVolume = 1.0f;
             // Load
             _playMgr = _container.Resolve<IPlaybackManager>();
-            _playMgr.Player.StateChanged += Player_StateChanged;
+            _playMgr.Player.StateChanging += Player_StateChanging;
             _volume = _container.Resolve<VolumeEffect>();
             _volume.Volume = 0.4f;
             _effectManager = _container.Resolve<IEffectManager>();
@@ -102,18 +102,19 @@ namespace Sage.ViewModels
             }
         }
 
-        private void Player_StateChanged(object sender, AudioPlayerStateChangedEventArgs args)
+        private void Player_StateChanging(object sender, AudioPlayerStateChangedEventArgs args)
         {
             this.RaisePropertyChanged(nameof(IsPlaying));
             Log.Debug(args.NewState.ToString());
-            // BUG: PlaybackManager.PlayerOnStateChanged causes incorrect event firing order
-            //if (args.NewState == AudioPlayerState.Stopped)
-            //{
-            //    _progressTimer.Stop();
-            //    this.RaisePropertyChanged(nameof(PercentProgress));
-            //}
-            //else
-            if (!_progressTimer.IsEnabled) _progressTimer.Start();
+            if (args.NewState == AudioPlayerState.Stopped)
+            {
+                _progressTimer.Stop();
+                this.RaisePropertyChanged(nameof(PercentProgress));
+            }
+            else if (!_progressTimer.IsEnabled)
+            {
+                _progressTimer.Start();
+            }
 
             if (args.NewState == AudioPlayerState.Loaded)
             {
