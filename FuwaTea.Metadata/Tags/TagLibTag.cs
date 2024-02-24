@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using log4net;
-using TagLib;
 using File = TagLib.File;
 
 namespace FuwaTea.Metadata.Tags
@@ -14,20 +13,16 @@ namespace FuwaTea.Metadata.Tags
         public TagLibTag(string path)
         {
             _path = path;
-            using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            File tagFile = null;
+            try { tagFile = File.Create(path); }
+            catch (Exception e)
             {
-                File tagFile = null;
-                try { tagFile = File.Create(new StreamFileAbstraction(path, stream, stream)); }
-                catch (Exception e)
-                {
-                    LogManager.GetLogger(GetType()).Error("Failed to load tag!", e);
-                }
-                Bitrate = tagFile?.Properties.AudioBitrate ?? 0;
-                Duration = tagFile?.Properties.Duration ?? TimeSpan.Zero;
-                _tag = tagFile?.Tag ?? new TagLib.Id3v2.Tag(); // TODO: Create correct tag type
-                tagFile?.Dispose();
-                stream.Close();
+                LogManager.GetLogger(GetType()).Error("Failed to load tag!", e);
             }
+            Bitrate = tagFile?.Properties.AudioBitrate ?? 0;
+            Duration = tagFile?.Properties.Duration ?? TimeSpan.Zero;
+            _tag = tagFile?.Tag ?? new TagLib.Id3v2.Tag(); // TODO: Create correct tag type
+            tagFile?.Dispose();
         }
 
         public override void Clear()
@@ -39,21 +34,17 @@ namespace FuwaTea.Metadata.Tags
 
         public override void SaveTags()
         {
-            using (var stream = new FileStream(_path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            File tagFile = null;
+            try { tagFile = File.Create(_path); }
+            catch (Exception e)
             {
-                File tagFile = null;
-                try { tagFile = File.Create(new StreamFileAbstraction(_path, stream, stream)); }
-                catch (Exception e)
-                {
-                    LogManager.GetLogger(GetType()).Error("Failed to load tag!", e);
-                }
-                if (tagFile != null) _tag.CopyTo(tagFile.Tag, true);
-                tagFile?.Save();
-                tagFile?.Dispose();
-                stream.Close();
+                LogManager.GetLogger(GetType()).Error("Failed to load tag!", e);
             }
+            if (tagFile != null) _tag.CopyTo(tagFile.Tag, true);
+            tagFile?.Save();
+            tagFile?.Dispose();
         }
-        
+
         public override string Album => _tag.Album;
         public override string[] AlbumArtists => _tag.AlbumArtists;
         public override string[] AlbumArtistsSort => _tag.AlbumArtistsSort;
