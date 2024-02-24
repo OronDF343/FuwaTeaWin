@@ -40,7 +40,6 @@ using FuwaTea.Playlist;
 using FuwaTea.Wpf.Behaviors;
 using FuwaTea.Wpf.Helpers;
 using FuwaTea.Wpf.Keyboard;
-using GalaSoft.MvvmLight.Threading;
 using log4net;
 using log4net.Config;
 using ModularFramework;

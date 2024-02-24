@@ -15,8 +15,8 @@
 //     along with FuwaTeaWin.  If not, see <http://www.gnu.org/licenses/>.
 #endregion
 
+using Microsoft.Xaml.Behaviors;
 using System.Windows;
-using System.Windows.Interactivity;
 
 namespace FuwaTea.Wpf.Behaviors
 {

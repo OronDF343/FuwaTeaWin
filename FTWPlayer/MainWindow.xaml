@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:command="http://www.galasoft.ch/mvvmlight"
         xmlns:lex="http://wpflocalizeextension.codeplex.com"
         xmlns:converters="clr-namespace:FTWPlayer.Converters"
@@ -53,16 +53,16 @@
     </ftwPlayer:WindowSizeParameters.TotalCompactHeight>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="KeyDown">
-            <command:EventToCommand Command="{Binding KeyDownCommand}" PassEventArgsToCommand="True" />
+            <i:InvokeCommandAction Command="{Binding KeyDownCommand}" PassEventArgsToCommand="True" />
         </i:EventTrigger>
         <i:EventTrigger EventName="KeyUp">
-            <command:EventToCommand Command="{Binding KeyUpCommand}" PassEventArgsToCommand="True" />
+            <i:InvokeCommandAction Command="{Binding KeyUpCommand}" PassEventArgsToCommand="True" />
         </i:EventTrigger>
         <i:EventTrigger EventName="DragEnter">
-            <command:EventToCommand Command="{Binding DragEnterCommand}" PassEventArgsToCommand="True" />
+            <i:InvokeCommandAction Command="{Binding DragEnterCommand}" PassEventArgsToCommand="True" />
         </i:EventTrigger>
         <i:EventTrigger EventName="Drop">
-            <command:EventToCommand Command="{Binding DropCommand}" PassEventArgsToCommand="True" />
+            <i:InvokeCommandAction Command="{Binding DropCommand}" PassEventArgsToCommand="True" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <i:Interaction.Behaviors>
@@ -195,7 +195,7 @@
                             fuwa:OptionalToolTip.ToolTipContent="{lex:Loc PreviousToolTip}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
-                                <command:EventToCommand Command="{Binding PreviousCommand}" PassEventArgsToCommand="True" />
+                                <i:InvokeCommandAction Command="{Binding PreviousCommand}" PassEventArgsToCommand="True" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </Button>
@@ -203,7 +203,7 @@
                             fuwa:OptionalToolTip.ToolTipEnabled="{fuwa:Cfg ShowToolTips}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
-                                <command:EventToCommand Command="{Binding PlayPauseResumeCommand}"
+                                <i:InvokeCommandAction Command="{Binding PlayPauseResumeCommand}"
                                                         PassEventArgsToCommand="True" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
@@ -230,7 +230,7 @@
                             fuwa:OptionalToolTip.ToolTipContent="{lex:Loc NextToolTip}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
-                                <command:EventToCommand Command="{Binding NextCommand}" PassEventArgsToCommand="True" />
+                                <i:InvokeCommandAction Command="{Binding NextCommand}" PassEventArgsToCommand="True" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </Button>
@@ -239,7 +239,7 @@
                             fuwa:OptionalToolTip.ToolTipContent="{lex:Loc StopToolTip}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
-                                <command:EventToCommand Command="{Binding StopCommand}" PassEventArgsToCommand="True" />
+                                <i:InvokeCommandAction Command="{Binding StopCommand}" PassEventArgsToCommand="True" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </Button>
@@ -250,7 +250,7 @@
                             fuwa:DataStatesHelper.States="{StaticResource VolumeStates}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
-                                <command:EventToCommand Command="{Binding MuteCommand}" PassEventArgsToCommand="True" />
+                                <i:InvokeCommandAction Command="{Binding MuteCommand}" PassEventArgsToCommand="True" />
                             </i:EventTrigger>
                             <i:EventTrigger EventName="MouseRightButtonDown">
                                 <i:InvokeCommandAction Command="{Binding VolumeClickCommand}" />
@@ -283,7 +283,7 @@
                             fuwa:DataStatesHelper.States="{StaticResource ShuffleStates}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
-                                <command:EventToCommand Command="{Binding ShuffleCommand}" PassEventArgsToCommand="True" />
+                                <i:InvokeCommandAction Command="{Binding ShuffleCommand}" PassEventArgsToCommand="True" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </Button>
@@ -294,7 +294,7 @@
                             fuwa:DataStatesHelper.States="{StaticResource RepeatStates}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
-                                <command:EventToCommand Command="{Binding RepeatCommand}" PassEventArgsToCommand="True" />
+                                <i:InvokeCommandAction Command="{Binding RepeatCommand}" PassEventArgsToCommand="True" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </Button>
@@ -305,7 +305,7 @@
                             fuwa:DataStatesHelper.States="{StaticResource WindowStates}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
-                                <command:EventToCommand Command="{Binding ExpandCommand}" PassEventArgsToCommand="True" />
+                                <i:InvokeCommandAction Command="{Binding ExpandCommand}" PassEventArgsToCommand="True" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </Button>
@@ -336,7 +336,7 @@
                         </Grid.Style>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseMove">
-                                <command:EventToCommand Command="{Binding ToolTipUpdateCommand}"
+                                <i:InvokeCommandAction Command="{Binding ToolTipUpdateCommand}"
                                                         PassEventArgsToCommand="True" />
                             </i:EventTrigger>
                             <i:EventTrigger EventName="MouseLeftButtonUp">
@@ -344,11 +344,11 @@
                                                        CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}}" />
                             </i:EventTrigger>
                             <i:EventTrigger EventName="MouseEnter">
-                                <command:EventToCommand Command="{Binding MouseEnterSeekAreaCommand}"
+                                <i:InvokeCommandAction Command="{Binding MouseEnterSeekAreaCommand}"
                                                         PassEventArgsToCommand="True" />
                             </i:EventTrigger>
                             <i:EventTrigger EventName="MouseLeave">
-                                <command:EventToCommand Command="{Binding MouseLeaveSeekAreaCommand}"
+                                <i:InvokeCommandAction Command="{Binding MouseLeaveSeekAreaCommand}"
                                                         PassEventArgsToCommand="True" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
@@ -414,7 +414,7 @@
                     <MenuItem Header="{lex:BLoc PreviousToolTip}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
-                                <command:EventToCommand Command="{Binding PreviousCommand}"
+                                <i:InvokeCommandAction Command="{Binding PreviousCommand}"
                                                         PassEventArgsToCommand="True"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
@@ -422,7 +422,7 @@
                     <MenuItem>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
-                                <command:EventToCommand Command="{Binding PlayPauseResumeCommand}"
+                                <i:InvokeCommandAction Command="{Binding PlayPauseResumeCommand}"
                                                         PassEventArgsToCommand="True"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
@@ -443,7 +443,7 @@
                     <MenuItem Header="{lex:BLoc NextToolTip}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
-                                <command:EventToCommand Command="{Binding NextCommand}"
+                                <i:InvokeCommandAction Command="{Binding NextCommand}"
                                                         PassEventArgsToCommand="True"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
@@ -451,7 +451,7 @@
                     <MenuItem Header="{lex:BLoc StopToolTip}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
-                                <command:EventToCommand Command="{Binding StopCommand}"
+                                <i:InvokeCommandAction Command="{Binding StopCommand}"
                                                         PassEventArgsToCommand="True"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>

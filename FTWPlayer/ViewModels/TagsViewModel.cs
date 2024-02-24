@@ -7,7 +7,7 @@ using FTWPlayer.Views;
 using FuwaTea.Metadata.Tags;
 using FuwaTea.Playback;
 using FuwaTea.Wpf.Helpers;
-using GalaSoft.MvvmLight.CommandWpf;
+using CommunityToolkit.Mvvm.Input;
 using ModularFramework;
 
 namespace FTWPlayer.ViewModels

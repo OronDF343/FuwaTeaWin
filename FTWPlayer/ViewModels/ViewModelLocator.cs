@@ -16,8 +16,8 @@
 #endregion
 
 using System.Diagnostics.CodeAnalysis;
-using CommonServiceLocator;
-using GalaSoft.MvvmLight.Ioc;
+using CommunityToolkit.Mvvm.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FTWPlayer.ViewModels
 {
@@ -32,9 +32,7 @@ namespace FTWPlayer.ViewModels
     {
         static ViewModelLocator()
         {
-            ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
-
-            SimpleIoc.Default.Register<MainViewModel>();
+            Ioc.Default.ConfigureServices(new ServiceCollection().AddSingleton<MainViewModel>().BuildServiceProvider());
         }
 
         /// <summary>
@@ -43,14 +41,14 @@ namespace FTWPlayer.ViewModels
         [SuppressMessage("Microsoft.Performance",
             "CA1822:MarkMembersAsStatic",
             Justification = "This non-static member is needed for data binding purposes.")]
-        public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
+        public MainViewModel Main => Ioc.Default.GetService<MainViewModel>();
 
         /// <summary>
         /// Cleans up all the resources.
         /// </summary>
         public static void Cleanup()
         {
-            ServiceLocator.Current.GetInstance<MainViewModel>().Dispose();
+            Ioc.Default.GetService<MainViewModel>().Dispose();
         }
     }
 }

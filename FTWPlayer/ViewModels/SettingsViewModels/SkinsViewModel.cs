@@ -7,7 +7,7 @@ using System.Windows.Input;
 using FTWPlayer.Skins;
 using FTWPlayer.Views.SettingsViews;
 using FuwaTea.Wpf.Behaviors;
-using GalaSoft.MvvmLight.CommandWpf;
+using CommunityToolkit.Mvvm.Input;
 using ModularFramework;
 using ModularFramework.Configuration;
 

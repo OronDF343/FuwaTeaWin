@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Microsoft.Xaml.Behaviors;
+using System;
 using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Interactivity;
 using System.Windows.Markup;
 using log4net;
 

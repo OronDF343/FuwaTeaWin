@@ -7,7 +7,7 @@ using FTWPlayer.Localization;
 using FTWPlayer.Views;
 using FuwaTea.Lib;
 using FuwaTea.Playlist;
-using GalaSoft.MvvmLight.CommandWpf;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using ModularFramework;
 

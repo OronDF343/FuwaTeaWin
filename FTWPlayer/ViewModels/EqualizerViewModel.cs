@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using FTWPlayer.Views;
 using FuwaTea.Playback;
-using GalaSoft.MvvmLight.CommandWpf;
+using CommunityToolkit.Mvvm.Input;
 using ModularFramework;
 
 namespace FTWPlayer.ViewModels

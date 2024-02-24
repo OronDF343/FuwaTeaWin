@@ -65,6 +65,7 @@
     <Compile Include="Extensions\CfgExtension.cs" />
     <Compile Include="Helpers\ConfigSource.cs" />
     <Compile Include="Helpers\CopyToToolTipTag.cs" />
+    <Compile Include="Helpers\DispatcherHelper.cs" />
     <Compile Include="Helpers\DynamicStyle.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
     <Compile Include="Helpers\FlowDirectionUpdater.cs" />
@@ -98,14 +99,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CommonServiceLocator">
-      <Version>2.0.7</Version>
+    <PackageReference Include="CommunityToolkit.Mvvm">
+      <Version>8.2.2</Version>
     </PackageReference>
     <PackageReference Include="log4net">
       <Version>2.0.15</Version>
     </PackageReference>
-    <PackageReference Include="MvvmLightLibs">
-      <Version>5.4.1.1</Version>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf">
+      <Version>1.1.77</Version>
     </PackageReference>
     <PackageReference Include="XAMLMarkupExtensions">
       <Version>2.1.3</Version>

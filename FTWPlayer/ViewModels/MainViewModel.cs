@@ -33,7 +33,7 @@ using FuwaTea.Lib.NotifyIconHax;
 using FuwaTea.Playback;
 using FuwaTea.Playlist;
 using FuwaTea.Wpf.Keyboard;
-using GalaSoft.MvvmLight.CommandWpf;
+using CommunityToolkit.Mvvm.Input;
 using log4net;
 using ModularFramework;
 

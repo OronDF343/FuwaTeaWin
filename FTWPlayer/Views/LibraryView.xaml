@@ -3,7 +3,7 @@
          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
          xmlns:lex="http://wpflocalizeextension.codeplex.com"
          xmlns:fuwa="https://github.com/OronDF343/FuwaTeaWin"
          xmlns:command="http://www.galasoft.ch/mvvmlight"
@@ -23,21 +23,21 @@
         <Button Grid.Row="1" Content="Open Playlist" FontWeight="Bold" HorizontalAlignment="Left">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Click">
-                    <command:EventToCommand Command="{Binding OpenPlaylistCommand}" PassEventArgsToCommand="True" />
+                    <i:InvokeCommandAction Command="{Binding OpenPlaylistCommand}" PassEventArgsToCommand="True" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Button>
         <Button Grid.Row="1" Content="Save Playlist" FontWeight="Bold" HorizontalAlignment="Center" IsEnabled="{Binding PlaylistManager.SelectedPlaylist.UnsavedChanges}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Click">
-                    <command:EventToCommand Command="{Binding SavePlaylistCommand}" PassEventArgsToCommand="True" />
+                    <i:InvokeCommandAction Command="{Binding SavePlaylistCommand}" PassEventArgsToCommand="True" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Button>
         <Button Grid.Row="1" Content="Save As..." FontWeight="Bold" HorizontalAlignment="Right">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Click">
-                    <command:EventToCommand Command="{Binding SaveAsCommand}" PassEventArgsToCommand="True" />
+                    <i:InvokeCommandAction Command="{Binding SaveAsCommand}" PassEventArgsToCommand="True" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Button>

@@ -5,9 +5,9 @@ using System.Configuration;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 using FTWPlayer.Views.SettingsViews;
 using FuwaTea.Lib.Collections;
-using GalaSoft.MvvmLight.CommandWpf;
 using ModularFramework.Configuration;
 
 namespace FTWPlayer.ViewModels.SettingsViewModels

@@ -3,7 +3,7 @@
          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
          xmlns:command="http://www.galasoft.ch/mvvmlight"
          xmlns:prop="clr-namespace:FTWPlayer.Properties"
          xmlns:converters1="clr-namespace:FTWPlayer.Converters"
@@ -30,7 +30,7 @@
         <Button Grid.Row="0" Content="Reset Sliders" FontWeight="Bold" HorizontalAlignment="Right">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Click">
-                    <command:EventToCommand Command="{Binding ResetEqCommand}" PassEventArgsToCommand="True" />
+                    <i:InvokeCommandAction Command="{Binding ResetEqCommand}" PassEventArgsToCommand="True" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Button>
