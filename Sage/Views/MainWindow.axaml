@@ -12,181 +12,181 @@
         Topmost="True"
         Title="Sage"
         Height="34" Width="540">
-    <Window.Resources>
-        <helpers:MultiplyConverter x:Key="MultiplyConverter" />
-        <helpers:ThicknessConverter x:Key="ThicknessConverter" />
-        <helpers:AddMultiConverter x:Key="AddMultiConverter" />
-        <helpers:DivideMultiConverter x:Key="DivideMultiConverter" />
-        <helpers:MinMaxMultiConverter x:Key="MinMaxMultiConverter" />
-        <helpers:ConcatMultiConverter x:Key="ConcatMultiConverter" />
-        <helpers:DurationConverter x:Key="DurationConverter" />
-        <helpers:GridLengthConverter x:Key="GridLengthConverter" />
-    </Window.Resources>
-    <Design.DataContext>
-        <vm:MainWindowViewModel />
-    </Design.DataContext>
-    <i:Interaction.Behaviors>
-        <helpers:WindowDragBehavior>
-          <helpers:WindowDragBehavior.ExcludedElements>
-            <helpers:ElementReference Binding="{Binding #ButtonsGrid}" />
-            <helpers:ElementReference Binding="{Binding #ProgressBar}" />
-          </helpers:WindowDragBehavior.ExcludedElements>
-        </helpers:WindowDragBehavior>
-        <helpers:DropBehavior Handler="{Binding DropHandler}" />
-    </i:Interaction.Behaviors>
-    <Border Background="{DynamicResource ThemeBackgroundBrush}" BorderBrush="{DynamicResource ThemeBorderHighBrush}"
-            BorderThickness="{DynamicResource ThemeBorderThickness}" VerticalAlignment="Stretch">
-        <StackPanel Orientation="Vertical">
-            <Grid />
-            <Grid ColumnDefinitions="*,Auto" HorizontalAlignment="Stretch">
-                <Canvas x:Name="ScrollingHost" ClipToBounds="True" Margin="2">
-                    <StackPanel Orientation="Horizontal">
-                        <StackPanel.Styles>
-                            <Style Selector="StackPanel">
-                                <Style.Animations>
-                                    <Animation IterationCount="Infinite">
-                                        <Animation.Duration>
-                                            <MultiBinding Converter="{StaticResource DivideMultiConverter}">
-                                                <MultiBinding.Converter>
-                                                    <helpers:ConverterChain>
-                                                        <helpers:ConverterChain.MultiValueConverter>
-                                                            <helpers:MultiConverterWithParameter Converter="{StaticResource DivideMultiConverter}" />
-                                                        </helpers:ConverterChain.MultiValueConverter>
-                                                        <helpers:ConverterWithParameter Converter="{StaticResource DurationConverter}" Parameter="1" />
-                                                    </helpers:ConverterChain>
-                                                </MultiBinding.Converter>
-                                                <MultiBinding Converter="{StaticResource AddMultiConverter}">
-                                                    <Binding Path="#TextBlob.Bounds.Width"/>
-                                                    <Binding Path="#TextBlobClone.Margin.Left"/>
-                                                </MultiBinding>
-                                                <Binding Path="ScrollingVelocity"/>
-                                            </MultiBinding>
-                                        </Animation.Duration>
-                                        <KeyFrame Cue="0%">
-                                            <Setter Property="Canvas.Right"
-                                                    Value="{Binding #TextBlob.Bounds.Width, Converter={StaticResource MultiplyConverter}, ConverterParameter=-1}" />
-                                        </KeyFrame>
-                                        <KeyFrame Cue="100%">
-                                            <Setter Property="Canvas.Right" Value="{Binding #TextBlobClone.Margin.Left}" />
-                                        </KeyFrame>
-                                    </Animation>
-                                </Style.Animations>
-                            </Style>
-                        </StackPanel.Styles>
-                        <TextBlock Classes="scrolling"
-                                   x:Name="TextBlob"
-                                   Text="{Binding Message}" />
-                        <TextBlock Classes="scrolling"
-                                   x:Name="TextBlobClone"
-                                   Text="{Binding Message}">
-                            <TextBlock.Margin>
-                                <MultiBinding>
-                                    <MultiBinding.Converter>
-                                        <helpers:ConverterChain>
-                                            <helpers:ConverterChain.MultiValueConverter>
-                                                <helpers:MultiConverterWithParameter Converter="{StaticResource MinMaxMultiConverter}" Parameter="Max"/>
-                                            </helpers:ConverterChain.MultiValueConverter>
-                                            <helpers:ConverterWithParameter Converter="{StaticResource ThicknessConverter}" Parameter="Left"/>
-                                        </helpers:ConverterChain>
-                                    </MultiBinding.Converter>
-                                    <MultiBinding Converter="{StaticResource AddMultiConverter}" ConverterParameter="/2">
-                                        <Binding Path="#ScrollingHost.Bounds.Width"/>
-                                        <Binding Path="#TextBlob.Bounds.Width" Converter="{StaticResource MultiplyConverter}" ConverterParameter="-1"/>
-                                    </MultiBinding>
-                                    <Binding Path="MinScrollingMargin"/>
-                                </MultiBinding>
-                            </TextBlock.Margin>
-                        </TextBlock>
-                    </StackPanel>
-                </Canvas>
-                <UniformGrid x:Name="ButtonsGrid" Grid.Column="1" Rows="1" Columns="10" HorizontalAlignment="Left">
-                    <Button Classes="icon prevIcon">
-                      <i:Interaction.Behaviors>
-                        <ia:EventTriggerBehavior EventName="Click">
-                          <ia:InvokeCommandAction Command="{Binding PreviousCommand}" />
-                        </ia:EventTriggerBehavior>
-                      </i:Interaction.Behaviors>
-                    </Button>
-                    <ToggleButton Classes="icon playIcon noCheck" IsChecked="{Binding IsPlaying, Mode=OneWay}">
-                      <i:Interaction.Behaviors>
-                        <ia:EventTriggerBehavior EventName="Click">
-                          <ia:InvokeCommandAction Command="{Binding PlayCommand}" />
-                        </ia:EventTriggerBehavior>
-                      </i:Interaction.Behaviors>
-                    </ToggleButton>
-                    <Button Classes="icon nextIcon">
-                      <i:Interaction.Behaviors>
-                        <ia:EventTriggerBehavior EventName="Click">
-                          <ia:InvokeCommandAction Command="{Binding NextCommand}" />
-                        </ia:EventTriggerBehavior>
-                      </i:Interaction.Behaviors>
-                    </Button>
-                    <Button Classes="icon stopIcon">
-                      <i:Interaction.Behaviors>
-                        <ia:EventTriggerBehavior EventName="Click">
-                          <ia:InvokeCommandAction Command="{Binding StopCommand}" />
-                        </ia:EventTriggerBehavior>
-                      </i:Interaction.Behaviors>
-                    </Button>
-                    <Button Classes="icon volumeIcon">
-                      <i:Interaction.Behaviors>
-                        <ia:EventTriggerBehavior EventName="Click">
-                          <ia:InvokeCommandAction Command="{Binding VolumeCommand}" />
-                        </ia:EventTriggerBehavior>
-                      </i:Interaction.Behaviors>
-                    </Button>
-                    <ToggleButton Classes="icon shuffleIcon noCheck" IsChecked="{Binding IsShuffleEnabled, Mode=OneWay}">
-                      <i:Interaction.Behaviors>
-                        <ia:EventTriggerBehavior EventName="Click">
-                          <ia:InvokeCommandAction Command="{Binding ShuffleCommand}" />
-                        </ia:EventTriggerBehavior>
-                      </i:Interaction.Behaviors>
-                    </ToggleButton>
-                    <ToggleButton Classes="icon repeatIcon noCheck" IsThreeState="True" IsChecked="{Binding RepeatMode, Mode=OneWay}">
-                      <i:Interaction.Behaviors>
-                        <ia:EventTriggerBehavior EventName="Click">
-                          <ia:InvokeCommandAction Command="{Binding RepeatCommand}" />
-                        </ia:EventTriggerBehavior>
-                      </i:Interaction.Behaviors>
-                    </ToggleButton>
-                    <Button Classes="icon resizeIcon">
-                      <i:Interaction.Behaviors>
-                        <ia:EventTriggerBehavior EventName="Click">
-                          <ia:InvokeCommandAction Command="{Binding ResizeCommand}" />
-                        </ia:EventTriggerBehavior>
-                      </i:Interaction.Behaviors>
-                    </Button>
-                    <Button Classes="icon minimizeIcon">
-                      <i:Interaction.Behaviors>
-                        <ia:EventTriggerBehavior EventName="Click">
-                          <ia:InvokeCommandAction Command="{Binding MinimizeCommand}" />
-                        </ia:EventTriggerBehavior>
-                      </i:Interaction.Behaviors>
-                    </Button>
-                    <Button Classes="icon exitIcon">
-                      <i:Interaction.Behaviors>
-                        <ia:EventTriggerBehavior EventName="Click">
-                          <ia:InvokeCommandAction Command="{Binding ExitCommand}" />
-                        </ia:EventTriggerBehavior>
-                      </i:Interaction.Behaviors>
-                    </Button>
-                </UniformGrid>
-              <!-- Progress control -->
-              <Grid x:Name="ProgressBar" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch">
-                <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="{Binding PercentProgress, Mode=OneWay, Converter={StaticResource GridLengthConverter}}" />
-                  <ColumnDefinition Width="{Binding PercentProgress, Mode=OneWay, Converter={StaticResource GridLengthConverter}, ConverterParameter=-}" />
-                </Grid.ColumnDefinitions>
-                <i:Interaction.Behaviors>
-                  <helpers:OverlayOnKeyBehavior FocusRoot="{Binding #MainWin}" />
-                  <ia:EventTriggerBehavior EventName="PointerReleased">
-                    <ia:InvokeCommandAction Command="{Binding SeekCommand}" />
-                  </ia:EventTriggerBehavior>
-                </i:Interaction.Behaviors>
-                <Rectangle Grid.Column="0" Fill="{DynamicResource ThemeAccentBrush3}" Stretch="Fill" />
-                <Rectangle Grid.Column="1" Fill="Transparent" Stretch="Fill" />
-              </Grid>
-            </Grid>
-        </StackPanel>
-    </Border>
+  <Window.Resources>
+    <helpers:MultiplyConverter x:Key="MultiplyConverter" />
+    <helpers:ThicknessConverter x:Key="ThicknessConverter" />
+    <helpers:AddMultiConverter x:Key="AddMultiConverter" />
+    <helpers:DivideMultiConverter x:Key="DivideMultiConverter" />
+    <helpers:MinMaxMultiConverter x:Key="MinMaxMultiConverter" />
+    <helpers:ConcatMultiConverter x:Key="ConcatMultiConverter" />
+    <helpers:DurationConverter x:Key="DurationConverter" />
+    <helpers:GridLengthConverter x:Key="GridLengthConverter" />
+  </Window.Resources>
+  <Design.DataContext>
+    <vm:MainWindowViewModel />
+  </Design.DataContext>
+  <i:Interaction.Behaviors>
+    <helpers:WindowDragBehavior>
+      <helpers:WindowDragBehavior.ExcludedElements>
+        <helpers:ElementReference Binding="{Binding #ButtonsGrid}" />
+        <helpers:ElementReference Binding="{Binding #ProgressBar}" />
+      </helpers:WindowDragBehavior.ExcludedElements>
+    </helpers:WindowDragBehavior>
+    <helpers:DropBehavior Handler="{Binding DropHandler}" />
+  </i:Interaction.Behaviors>
+  <Border Background="{DynamicResource ThemeBackgroundBrush}" BorderBrush="{DynamicResource ThemeBorderHighBrush}"
+          BorderThickness="{DynamicResource ThemeBorderThickness}" VerticalAlignment="Stretch">
+    <StackPanel Orientation="Vertical">
+      <Grid />
+      <Grid ColumnDefinitions="*,Auto" HorizontalAlignment="Stretch">
+        <Canvas x:Name="ScrollingHost" ClipToBounds="True" Margin="2">
+          <StackPanel Orientation="Horizontal">
+            <StackPanel.Styles>
+              <Style Selector="StackPanel">
+                <Style.Animations>
+                  <Animation IterationCount="Infinite">
+                    <Animation.Duration>
+                      <MultiBinding Converter="{StaticResource DivideMultiConverter}">
+                        <MultiBinding.Converter>
+                          <helpers:ConverterChain>
+                            <helpers:ConverterChain.MultiValueConverter>
+                              <helpers:MultiConverterWithParameter Converter="{StaticResource DivideMultiConverter}" />
+                            </helpers:ConverterChain.MultiValueConverter>
+                            <helpers:ConverterWithParameter Converter="{StaticResource DurationConverter}" Parameter="1" />
+                          </helpers:ConverterChain>
+                        </MultiBinding.Converter>
+                        <MultiBinding Converter="{StaticResource AddMultiConverter}">
+                          <Binding Path="#TextBlob.Bounds.Width"/>
+                          <Binding Path="#TextBlobClone.Margin.Left"/>
+                        </MultiBinding>
+                        <Binding Path="ScrollingVelocity"/>
+                      </MultiBinding>
+                    </Animation.Duration>
+                    <KeyFrame Cue="0%">
+                      <Setter Property="Canvas.Right"
+                              Value="{Binding #TextBlob.Bounds.Width, Converter={StaticResource MultiplyConverter}, ConverterParameter=-1}" />
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                      <Setter Property="Canvas.Right" Value="{Binding #TextBlobClone.Margin.Left}" />
+                    </KeyFrame>
+                  </Animation>
+                </Style.Animations>
+              </Style>
+            </StackPanel.Styles>
+            <TextBlock Classes="scrolling"
+                       x:Name="TextBlob"
+                       Text="{Binding Message}" />
+            <TextBlock Classes="scrolling"
+                       x:Name="TextBlobClone"
+                       Text="{Binding Message}">
+              <TextBlock.Margin>
+                <MultiBinding>
+                  <MultiBinding.Converter>
+                    <helpers:ConverterChain>
+                      <helpers:ConverterChain.MultiValueConverter>
+                        <helpers:MultiConverterWithParameter Converter="{StaticResource MinMaxMultiConverter}" Parameter="Max"/>
+                      </helpers:ConverterChain.MultiValueConverter>
+                      <helpers:ConverterWithParameter Converter="{StaticResource ThicknessConverter}" Parameter="Left"/>
+                    </helpers:ConverterChain>
+                  </MultiBinding.Converter>
+                  <MultiBinding Converter="{StaticResource AddMultiConverter}" ConverterParameter="/2">
+                    <Binding Path="#ScrollingHost.Bounds.Width"/>
+                    <Binding Path="#TextBlob.Bounds.Width" Converter="{StaticResource MultiplyConverter}" ConverterParameter="-1"/>
+                  </MultiBinding>
+                  <Binding Path="MinScrollingMargin"/>
+                </MultiBinding>
+              </TextBlock.Margin>
+            </TextBlock>
+          </StackPanel>
+        </Canvas>
+        <UniformGrid x:Name="ButtonsGrid" Grid.Column="1" Rows="1" Columns="10" HorizontalAlignment="Left">
+          <Button Classes="icon prevIcon">
+            <i:Interaction.Behaviors>
+              <ia:EventTriggerBehavior EventName="Click">
+                <ia:InvokeCommandAction Command="{Binding PreviousCommand}" />
+              </ia:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+          </Button>
+          <ToggleButton Classes="icon playIcon noCheck" IsChecked="{Binding IsPlaying, Mode=OneWay}">
+            <i:Interaction.Behaviors>
+              <ia:EventTriggerBehavior EventName="Click">
+                <ia:InvokeCommandAction Command="{Binding PlayCommand}" />
+              </ia:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+          </ToggleButton>
+          <Button Classes="icon nextIcon">
+            <i:Interaction.Behaviors>
+              <ia:EventTriggerBehavior EventName="Click">
+                <ia:InvokeCommandAction Command="{Binding NextCommand}" />
+              </ia:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+          </Button>
+          <Button Classes="icon stopIcon">
+            <i:Interaction.Behaviors>
+              <ia:EventTriggerBehavior EventName="Click">
+                <ia:InvokeCommandAction Command="{Binding StopCommand}" />
+              </ia:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+          </Button>
+          <Button Classes="icon volumeIcon">
+            <i:Interaction.Behaviors>
+              <ia:EventTriggerBehavior EventName="Click">
+                <ia:InvokeCommandAction Command="{Binding VolumeCommand}" />
+              </ia:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+          </Button>
+          <ToggleButton Classes="icon shuffleIcon noCheck" IsChecked="{Binding IsShuffleEnabled, Mode=OneWay}">
+            <i:Interaction.Behaviors>
+              <ia:EventTriggerBehavior EventName="Click">
+                <ia:InvokeCommandAction Command="{Binding ShuffleCommand}" />
+              </ia:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+          </ToggleButton>
+          <ToggleButton Classes="icon repeatIcon noCheck" IsThreeState="True" IsChecked="{Binding RepeatMode, Mode=OneWay}">
+            <i:Interaction.Behaviors>
+              <ia:EventTriggerBehavior EventName="Click">
+                <ia:InvokeCommandAction Command="{Binding RepeatCommand}" />
+              </ia:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+          </ToggleButton>
+          <Button Classes="icon resizeIcon">
+            <i:Interaction.Behaviors>
+              <ia:EventTriggerBehavior EventName="Click">
+                <ia:InvokeCommandAction Command="{Binding ResizeCommand}" />
+              </ia:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+          </Button>
+          <Button Classes="icon minimizeIcon">
+            <i:Interaction.Behaviors>
+              <ia:EventTriggerBehavior EventName="Click">
+                <ia:InvokeCommandAction Command="{Binding MinimizeCommand}" />
+              </ia:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+          </Button>
+          <Button Classes="icon exitIcon">
+            <i:Interaction.Behaviors>
+              <ia:EventTriggerBehavior EventName="Click">
+                <ia:InvokeCommandAction Command="{Binding ExitCommand}" />
+              </ia:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+          </Button>
+        </UniformGrid>
+        <!-- Progress control -->
+        <Grid x:Name="ProgressBar" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="{Binding PercentProgress, Mode=OneWay, Converter={StaticResource GridLengthConverter}}" />
+            <ColumnDefinition Width="{Binding PercentProgress, Mode=OneWay, Converter={StaticResource GridLengthConverter}, ConverterParameter=-}" />
+          </Grid.ColumnDefinitions>
+          <i:Interaction.Behaviors>
+            <helpers:OverlayOnKeyBehavior FocusRoot="{Binding #MainWin}" />
+            <ia:EventTriggerBehavior EventName="PointerReleased">
+              <ia:InvokeCommandAction Command="{Binding SeekCommand}" />
+            </ia:EventTriggerBehavior>
+          </i:Interaction.Behaviors>
+          <Rectangle Grid.Column="0" Fill="{DynamicResource ThemeAccentBrush3}" Stretch="Fill" />
+          <Rectangle Grid.Column="1" Fill="Transparent" Stretch="Fill" />
+        </Grid>
+      </Grid>
+    </StackPanel>
+  </Border>
 </Window>
