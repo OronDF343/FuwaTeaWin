@@ -1,86 +1,19 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FCC6C9C3-58CF-4C29-BC8F-8468DE31AD93}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FuwaTea.Playback</RootNamespace>
-    <AssemblyName>FuwaTea.Playback</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\bin\$(Configuration)\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\bin\$(Configuration)\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <TargetFrameworks>netstandard2.1;net48</TargetFrameworks>
+    <AssemblyTitle>FuwaTea.Playback</AssemblyTitle>
+    <Product>FuwaTea.Playback</Product>
+    <Copyright>Copyright © 2015 OronDF343</Copyright>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <FileVersion>0.1.0.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <ProjectReference Include="..\FuwaTea.Lib\FuwaTea.Lib.csproj" />
+    <ProjectReference Include="..\FuwaTea.Metadata\FuwaTea.Metadata.csproj" />
+    <ProjectReference Include="..\FuwaTea.Playlist\FuwaTea.Playlist.csproj" />
+    <ProjectReference Include="..\ModularFramework\ModularFramework.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EqualizerBand.cs" />
-    <Compile Include="IAudioPlayer.cs" />
-    <Compile Include="IPlaybackElement.cs" />
-    <Compile Include="IPlaybackManager.cs" />
-    <Compile Include="IStreamingAudioPlayer.cs" />
-    <Compile Include="PlaybackElementAttribute.cs" />
-    <Compile Include="PlaybackManager.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <PackageReference Include="log4net" Version="2.0.15" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\FuwaTea.Lib\FuwaTea.Lib.csproj">
-      <Project>{A9BB4650-68CC-4640-9B5A-65F4AA80C2AB}</Project>
-      <Name>FuwaTea.Lib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FuwaTea.Metadata\FuwaTea.Metadata.csproj">
-      <Project>{17853F95-1A56-448C-825E-5662E1FC1426}</Project>
-      <Name>FuwaTea.Metadata</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FuwaTea.Playlist\FuwaTea.Playlist.csproj">
-      <Project>{1606973f-7cae-4e42-bcc8-5282fc775070}</Project>
-      <Name>FuwaTea.Playlist</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ModularFramework\ModularFramework.csproj">
-      <Project>{8517e03e-dc80-419d-bfad-78d80354192b}</Project>
-      <Name>ModularFramework</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="log4net">
-      <Version>2.0.15</Version>
-    </PackageReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
