@@ -1,302 +1,32 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D14F368C-AB9B-4DF3-A8F7-CF42B66F7E40}</ProjectGuid>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FTWPlayer</RootNamespace>
-    <AssemblyName>FTWPlayer</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\bin\$(Configuration)\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\bin\$(Configuration)\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <UseWPF>true</UseWPF>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <AssemblyTitle>FTW Player</AssemblyTitle>
+    <Company>OronDF343</Company>
+    <Product>FuwaTeaWin</Product>
+    <Copyright>Copyright © 2015 OronDF343</Copyright>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <FileVersion>0.1.0.0</FileVersion>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-  </ItemGroup>
-  <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="Converters\BooleanResizeSpecialConverter.cs" />
-    <Compile Include="Converters\BooleanToZIndexConverter.cs" />
-    <Compile Include="Converters\DivisionMultiConverter.cs" />
-    <Compile Include="Converters\DoubleAddMultiConverter.cs" />
-    <Compile Include="Converters\DoubleMaxMultiConverter.cs" />
-    <Compile Include="Converters\DoubleMinMultiConverter.cs" />
-    <Compile Include="Converters\DoubleSubtractMultiConverter.cs" />
-    <Compile Include="Converters\FindByKeyMultiConverter.cs" />
-    <Compile Include="Converters\ItemsContextMultiConverter.cs" />
-    <Compile Include="Converters\ScaleMultiConverter.cs" />
-    <Compile Include="Converters\TagFormatterMultiConverter.cs" />
-    <Compile Include="Converters\UIntParseConverter.cs" />
-    <Compile Include="Converters\NullCheckConverter.cs" />
-    <Compile Include="Converters\FloatToDoubleConverter.cs" />
-    <Compile Include="Converters\DoubleNegateConverter.cs" />
-    <Compile Include="Converters\PositionTimeSpanStringMultiConverter.cs" />
-    <Compile Include="Converters\StringFormatterMultiConverter.cs" />
-    <Compile Include="Converters\TimeSpanDifferenceToGridLengthMultiConverter.cs" />
-    <Compile Include="Converters\TimeSpanFormatterConverter.cs" />
-    <Compile Include="Converters\UnitsConverter.cs" />
-    <Compile Include="Converters\VolumeConverter.cs" />
-    <Compile Include="Converters\FindByKeyMultiConverterStringWrapper.cs" />
-    <Compile Include="IUIPart.cs" />
-    <Compile Include="Localization\LocalizationProvider.cs" />
-    <Compile Include="Localization\Strings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Strings.resx</DependentUpon>
-    </Compile>
-    <Compile Include="MiscUtils.cs" />
-    <Compile Include="NativeMethods.cs" />
-    <Compile Include="Skins\ISkinManager.cs" />
-    <Compile Include="Skins\ResourceDictionaryIdentifier.cs" />
-    <Compile Include="Skins\SkinLoadException.cs" />
-    <Compile Include="Skins\SkinManager.cs" />
-    <Compile Include="Skins\SkinPackage.cs" />
-    <Compile Include="ViewModels\SettingsViewModels\ISettingsTab.cs" />
-    <Compile Include="ViewModels\SettingsViewModels\AllSettingsViewModel.cs" />
-    <Compile Include="ViewModels\SettingsViewModels\KeyBindingsViewModel.cs" />
-    <Compile Include="ViewModels\SettingsViewModels\PlaybackSettingsViewModel.cs" />
-    <Compile Include="ViewModels\SettingsViewModels\SkinsViewModel.cs" />
-    <Compile Include="ViewModels\TagsViewModel.cs" />
-    <Compile Include="Views\AlbumArtView.xaml.cs">
-      <DependentUpon>AlbumArtView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\EqualizerControl.xaml.cs">
-      <DependentUpon>EqualizerControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\EqualizerViewModel.cs" />
-    <Compile Include="ViewModels\HelpViewModel.cs" />
-    <Compile Include="ViewModels\ITab.cs" />
-    <Compile Include="ViewModels\LibraryViewModel.cs" />
-    <Compile Include="Views\LibraryView.xaml.cs">
-      <DependentUpon>LibraryView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\PlayerViewModel.cs" />
-    <Compile Include="ViewModels\SettingsViewModel.cs" />
-    <Compile Include="ViewModels\Utils\SettingsEditingTemplateSelector.cs" />
-    <Compile Include="ViewModels\Utils\SettingsTemplateSelector.cs" />
-    <Compile Include="Views\SettingsView.xaml.cs">
-      <DependentUpon>SettingsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UIPartAttribute.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\ViewModelLocator.cs" />
-    <Compile Include="Views\SettingsViews\AllSettingsView.xaml.cs">
-      <DependentUpon>AllSettingsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\KeyBindingsView.xaml.cs">
-      <DependentUpon>KeyBindingsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\PlaybackSettingsView.xaml.cs">
-      <DependentUpon>PlaybackSettingsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SettingsViews\SkinsView.xaml.cs">
-      <DependentUpon>SkinsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TagsView.xaml.cs">
-      <DependentUpon>TagsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WindowSizeParameters.cs" />
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="Skins\Default\CommonStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Skins\Default\EqualizerStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Skins\Default\Layer0.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Skins\Default\Layer1.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Skins\Default\Layer2.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Skins\Default\MainTabControlStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Skins\Default\MainWindowStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Skins\Default\SettingsTabStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Skins\Glacier\CommonStyle.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Skins\Glacier\Layer0.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Skins\Glacier\Layer1.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Skins\Glacier\Layer2.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="States.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AlbumArtView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\EqualizerControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\LibraryView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\SettingsViews\AllSettingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\KeyBindingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\PlaybackSettingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SettingsViews\SkinsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TagsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <EmbeddedResource Include="Localization\Strings.he.resx" />
-    <EmbeddedResource Include="Localization\Strings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <None Include="app.manifest" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\FuwaTea.Lib\FuwaTea.Lib.csproj">
-      <Project>{A9BB4650-68CC-4640-9B5A-65F4AA80C2AB}</Project>
-      <Name>FuwaTea.Lib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FuwaTea.Metadata\FuwaTea.Metadata.csproj">
-      <Project>{17853f95-1a56-448c-825e-5662e1fc1426}</Project>
-      <Name>FuwaTea.Metadata</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FuwaTea.Playback\FuwaTea.Playback.csproj">
-      <Project>{fcc6c9c3-58cf-4c29-bc8f-8468de31ad93}</Project>
-      <Name>FuwaTea.Playback</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FuwaTea.Playlist\FuwaTea.Playlist.csproj">
-      <Project>{1606973f-7cae-4e42-bcc8-5282fc775070}</Project>
-      <Name>FuwaTea.Playlist</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FuwaTea.Wpf\FuwaTea.Wpf.csproj">
-      <Project>{09bb648a-dcaa-4a8d-9fb6-fc4a82e17820}</Project>
-      <Name>FuwaTea.Wpf</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ModularFramework\ModularFramework.csproj">
-      <Project>{8517e03e-dc80-419d-bfad-78d80354192b}</Project>
-      <Name>ModularFramework</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\FuwaTea.Lib\FuwaTea.Lib.csproj" />
+    <ProjectReference Include="..\FuwaTea.Metadata\FuwaTea.Metadata.csproj" />
+    <ProjectReference Include="..\FuwaTea.Playback\FuwaTea.Playback.csproj" />
+    <ProjectReference Include="..\FuwaTea.Playback.NAudio\FuwaTea.Playback.NAudio.csproj" />
+    <ProjectReference Include="..\FuwaTea.Playlist\FuwaTea.Playlist.csproj" />
+    <ProjectReference Include="..\FuwaTea.Wpf\FuwaTea.Wpf.csproj" />
+    <ProjectReference Include="..\ModularFramework\ModularFramework.csproj" />
+    <ProjectReference Include="..\WavpackDecoder\WavpackDecoder.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="logconfig-debug.xml">
@@ -307,31 +37,24 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm">
-      <Version>8.2.2</Version>
-    </PackageReference>
-    <PackageReference Include="Hardcodet.NotifyIcon.Wpf">
-      <Version>1.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="log4net">
-      <Version>2.0.15</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection">
-      <Version>8.0.0</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf">
-      <Version>1.1.77</Version>
-    </PackageReference>
-    <PackageReference Include="WPFLocalizeExtension">
-      <Version>3.10.0</Version>
-    </PackageReference>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
+    <PackageReference Include="log4net" Version="2.0.15" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
+    <PackageReference Include="WPFLocalizeExtension" Version="3.10.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
 </Project>

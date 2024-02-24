@@ -39,7 +39,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="EnableKeyboardHook" Provider="FuwaTea.Lib.PortableSettingsProvider" Roaming="true" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Skin" Provider="FuwaTea.Lib.PortableSettingsProvider" Roaming="true" Type="System.String" Scope="User">
       <Value Profile="(Default)">pack://application:,,,/Skins/Glacier</Value>

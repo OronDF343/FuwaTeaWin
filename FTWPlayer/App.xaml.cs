@@ -86,9 +86,12 @@ namespace FTWPlayer
                 Logger.Fatal("An unhandled exception occured:", (Exception)args.ExceptionObject);
                 try
                 {
-                    MessageBox.Show(MainWindow,
-                                    LocalizationProvider.GetLocalizedValue<string>("UnhandledExceptionMessage"),
-                                    string.Format(LocalizationProvider.GetLocalizedValue<string>("AppCrash"), _prod), MessageBoxButton.OK, MessageBoxImage.Error);
+                    var message = LocalizationProvider.GetLocalizedValue<string>("UnhandledExceptionMessage");
+                    var caption = string.Format(LocalizationProvider.GetLocalizedValue<string>("AppCrash"), _prod);
+                    if (MainWindow == null)
+                        MessageBox.Show(message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
+                    else
+                        MessageBox.Show(MainWindow, message, caption, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 catch (Exception ex)
                 {
@@ -227,6 +230,7 @@ namespace FTWPlayer
 
         private void UpgradeSettings()
         {
+            AppContext.SetSwitch("System.Configuration.ConfigurationManager.EnableUnsafeBinaryFormatterInPropertyValueSerialization", true);
             var ver = Settings.Default.LastVersion;
             var cver = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             if (string.Equals(ver, cver, StringComparison.OrdinalIgnoreCase)) return;
@@ -383,7 +387,7 @@ namespace FTWPlayer
             {
                 Logger.Error("Mutex was abandoned!", ame);
             }
-            if (Mutex.TryOpenExisting(mutexName, MutexRights.FullControl, out _mutex)) return true;
+            if (Mutex.TryOpenExisting(mutexName, out _mutex)) return true;
             _mutex = new Mutex(true, mutexName, out mutexCreated);
             if (mutexCreated) return true;
             Logger
@@ -427,9 +431,7 @@ namespace FTWPlayer
         public void LoadModules(bool loadExtensions = true)
         {
             Func<string, bool> sel =
-                f =>
-                f.ToLowerInvariant().EndsWith(".dll")
-                || (!f.ToLowerInvariant().EndsWith("unins000.exe") && f.ToLowerInvariant().EndsWith(".exe"));
+                f => f.EndsWith(".dll", StringComparison.OrdinalIgnoreCase);
             var ef = Assembly.GetEntryAssembly().GetExeFolder();
             if (ef == null)
             {
