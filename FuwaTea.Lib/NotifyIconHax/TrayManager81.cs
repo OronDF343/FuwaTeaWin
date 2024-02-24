@@ -6,6 +6,7 @@ using ModularFramework.Attributes;
 namespace FuwaTea.Lib.NotifyIconHax
 {
     [LibComponent("Windows 8.1+ Tray Manager")]
+    [OSFilter(FilterActions.Blacklist, PlatformID.Win32NT, FilterRules.GreaterThan, "10.0.16299.0")]
     [OSFilter(FilterActions.Whitelist, PlatformID.Win32NT, FilterRules.GreaterThan, "6.3.0.0")]
     public class TrayManager81 : ITrayManager
     {
