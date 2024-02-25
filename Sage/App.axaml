@@ -1,15 +1,15 @@
 ﻿<Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Sage"
-             x:Class="Sage.App">
+             x:Class="Sage.App"
+			 RequestedThemeVariant="Default">
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>
 
     <Application.Styles>
-        <StyleInclude Source="resm:Avalonia.Themes.Default.DefaultTheme.xaml?assembly=Avalonia.Themes.Default"/>
-        <StyleInclude Source="resm:Sage.Themes.Default.xaml?assembly=Sage"/>
-        <StyleInclude Source="resm:Sage.Themes.Icons.Default.xaml?assembly=Sage"/>
-        <StyleInclude Source="resm:Avalonia.Themes.Default.Accents.BaseDark.xaml?assembly=Avalonia.Themes.Default"/>
+		<SimpleTheme />
+        <StyleInclude Source="avares://Sage/Themes/Default.xaml"/>
+        <StyleInclude Source="avares://Sage/Themes/Icons/Default.xaml"/>
     </Application.Styles>
 </Application>

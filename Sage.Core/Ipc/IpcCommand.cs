@@ -1,8 +1,15 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Sage.Core.Ipc
 {
+    [JsonPolymorphic(TypeDiscriminatorPropertyName = "CommandId")]
+    [JsonDerivedType(typeof(IpcCloseCommand), 0)]
+    [JsonDerivedType(typeof(IpcNopCommand), 1)]
+    [JsonDerivedType(typeof(IpcOpenFileCommand), 2)]
+    [JsonDerivedType(typeof(IpcPlaybackControlCommand), 3)]
+    [JsonDerivedType(typeof(IpcPlaybackQueryCommand), 4)]
+    [JsonDerivedType(typeof(IpcMetadataQueryCommand), 5)]
     public abstract class IpcCommand
     {
         [JsonRequired]

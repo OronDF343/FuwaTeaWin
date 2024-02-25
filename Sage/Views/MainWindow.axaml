@@ -6,8 +6,8 @@
         xmlns:helpers="clr-namespace:Sage.Helpers;assembly=Sage"
         x:Class="Sage.Views.MainWindow"
         x:Name="MainWin"
-        Icon="resm:Sage.Assets.avalonia-logo.ico"
-        HasSystemDecorations="False"
+        Icon="avares://Sage/Assets/avalonia-logo.ico"
+        SystemDecorations="None"
         ShowInTaskbar="True"
         Topmost="True"
         Title="Sage"
@@ -180,7 +180,7 @@
           <i:Interaction.Behaviors>
             <helpers:OverlayOnKeyBehavior FocusRoot="{Binding #MainWin}" />
             <ia:EventTriggerBehavior EventName="PointerReleased">
-              <ia:InvokeCommandAction Command="{Binding SeekCommand}" />
+              <ia:InvokeCommandAction Command="{Binding SeekCommand}" PassEventArgsToCommand="True" />
             </ia:EventTriggerBehavior>
           </i:Interaction.Behaviors>
           <Rectangle Grid.Column="0" Fill="{DynamicResource ThemeAccentBrush3}" Stretch="Fill" />

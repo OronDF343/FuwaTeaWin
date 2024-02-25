@@ -5,9 +5,8 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
 using DryIoc.MefAttributedModel;
-using JetBrains.Annotations;
-using Newtonsoft.Json;
 using Sage.Extensibility.Attributes;
 using Serilog;
 using ExtensionAttribute = Sage.Extensibility.Attributes.ExtensionAttribute;
@@ -19,8 +18,7 @@ namespace Sage.Extensibility
     /// </summary>
     public class Extension
     {
-        private static readonly string MyDirPath =
-            Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
+        private static readonly string MyDirPath = AppContext.BaseDirectory;
 
         /// <summary>
         /// Empty constructor for deserialization.
@@ -35,7 +33,7 @@ namespace Sage.Extensibility
         /// </summary>
         /// <param name="dllFile">The path to the DLL file.</param>
         /// <param name="isRelative">Whether the specified path is relative or absolute.</param>
-        public Extension([NotNull] string dllFile, bool isRelative)
+        public Extension(string dllFile, bool isRelative)
         {
             if (isRelative)
             {
@@ -55,7 +53,7 @@ namespace Sage.Extensibility
         /// Constructor for named assemblies.
         /// </summary>
         /// <param name="assemblyName">The assembly identifier.</param>
-        public Extension([NotNull] AssemblyName assemblyName)
+        public Extension(AssemblyName assemblyName)
         {
             AssemblyName = assemblyName;
         }
@@ -64,7 +62,7 @@ namespace Sage.Extensibility
         /// Constructor for pre-loaded assemblies.
         /// </summary>
         /// <param name="assembly">The assembly.</param>
-        public Extension([NotNull] Assembly assembly)
+        public Extension(Assembly assembly)
         {
             AssemblyName = assembly.GetName();
             Assembly = assembly;
@@ -303,13 +301,11 @@ namespace Sage.Extensibility
         /// <summary>
         /// The relative path to the DLL file.
         /// </summary>
-        [CanBeNull]
-        public string RelativeFilePath { get; set; }
+        public string? RelativeFilePath { get; set; }
 
         /// <summary>
         /// The time at which the DLL file was last modified, in universal coordinated time (UTC).
         /// </summary>
-        [CanBeNull]
         public DateTime? LastWriteTimeUtc { get; set; }
 
         // Extension properties:
@@ -327,20 +323,17 @@ namespace Sage.Extensibility
         /// <summary>
         /// The extension's unique identifier.
         /// </summary>
-        [CanBeNull]
-        public string Key { get; set; }
+        public string? Key { get; set; }
 
         /// <summary>
         /// The API version targeted by the extension.
         /// </summary>
-        [CanBeNull]
         public int? ApiVersion { get; set; }
 
         /// <summary>
         /// The platform filter requested by the extension (if specified).
         /// </summary>
-        [CanBeNull]
-        public PlatformFilterAttribute PlatformFilter { get; set; }
+        public PlatformFilterAttribute? PlatformFilter { get; set; }
 
         /// <summary>
         /// The result of checking the extension metadata.
@@ -350,28 +343,27 @@ namespace Sage.Extensibility
         /// <summary>
         /// The exported registrations from the extension.
         /// </summary>
-        [CanBeNull, JsonIgnore] // Serializing this won't work sadly
-        public IList<ExportedRegistrationInfo> Exports { get; set; }
+        [JsonIgnore] // Serializing this won't work sadly
+        public IList<ExportedRegistrationInfo>? Exports { get; set; }
 
         /// <summary>
         /// The basic information exported by the extension.
         /// </summary>
-        [CanBeNull]
-        public ExtensionBasicInfo BasicInfo { get; set; }
+        public ExtensionBasicInfo? BasicInfo { get; set; }
 
         // Non-serialized properties:
         
         /// <summary>
         /// The absolute path to the DLL file.
         /// </summary>
-        [CanBeNull, JsonIgnore]
-        public string FilePath { get; set; }
+        [JsonIgnore]
+        public string? FilePath { get; set; }
 
         /// <summary>
         /// The assembly instance. Will be null if loading has failed.
         /// </summary>
-        [CanBeNull, JsonIgnore]
-        public Assembly Assembly { get; private set; }
+        [JsonIgnore]
+        public Assembly? Assembly { get; private set; }
 
         /// <summary>
         /// Gets whether the extension is fully loaded successfully.

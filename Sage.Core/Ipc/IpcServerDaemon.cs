@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.IO.Pipes;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Serilog;
 
 namespace Sage.Core.Ipc
@@ -105,6 +105,8 @@ namespace Sage.Core.Ipc
         
         internal class IpcServerInstance : IEquatable<IpcServerInstance>
         {
+            private static readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions(JsonSerializerDefaults.General);
+
             private readonly ILogger _log;
             private readonly string _name;
 
@@ -127,7 +129,7 @@ namespace Sage.Core.Ipc
             {
                 const string magic = "Sage";
 
-                var tIdStr = $"IPC server instance (thread ID {Thread.CurrentThread.ManagedThreadId})";
+                var tIdStr = $"IPC server instance (thread ID {Environment.CurrentManagedThreadId})";
                 NamedPipeServerStream namedPipeServer = null;
                 try
                 {
@@ -154,7 +156,7 @@ namespace Sage.Core.Ipc
                                 IpcCommandsPacket packet = null;
                                 try
                                 {
-                                    packet = JsonConvert.DeserializeObject<IpcCommandsPacket>(Encoding.UTF8.GetString(packetBytes), new IpcCommandJsonConverter());
+                                    packet = JsonSerializer.Deserialize<IpcCommandsPacket>(packetBytes, _jsonOptions);
                                 }
                                 catch (Exception ex)
                                 {
@@ -224,10 +226,9 @@ namespace Sage.Core.Ipc
                             responsePacket.Responses.Add(new IpcResponse(ResponseCode.InvalidPacket));
 
                         // Send response packet
-                        var json = JsonConvert.SerializeObject(responsePacket);
+                        var jsonBytes = JsonSerializer.SerializeToUtf8Bytes(responsePacket);
                         await namedPipeServer.WriteAsync(Encoding.ASCII.GetBytes(magic), cancel);
                         var lengthBytes = new byte[4];
-                        var jsonBytes = Encoding.UTF8.GetBytes(json);
                         BinaryPrimitives.WriteInt32LittleEndian(lengthBytes, jsonBytes.Length);
                         await namedPipeServer.WriteAsync(lengthBytes, cancel);
                         await namedPipeServer.WriteAsync(jsonBytes, cancel);

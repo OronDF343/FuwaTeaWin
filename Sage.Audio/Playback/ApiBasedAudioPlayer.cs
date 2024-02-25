@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.ComponentModel.Composition;
 using CSCore;
 using DryIocAttributes;
-using JetBrains.Annotations;
 
 namespace Sage.Audio.Playback
 {
@@ -26,7 +25,6 @@ namespace Sage.Audio.Playback
             Api = ApiSelector.SelectedImplementation;
         }
 
-        [NotNull]
         protected IAudioApi Api
         {
             get => _api;

@@ -8,7 +8,7 @@ using Sage.Views;
 namespace Sage
 {
     [DoNotNotify]
-    public class App : Application
+    public partial class App : Application
     {
         public override void OnFrameworkInitializationCompleted()
         {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 
 namespace Sage.Lib.Models
 {
@@ -14,14 +13,14 @@ namespace Sage.Lib.Models
         where TInterface : ICanHandle<TInput, TOutput>
     {
         IReadOnlyCollection<TInterface> Implementations { get; }
-        IReadOnlyCollection<TInterface> GetImplementations([NotNull] string format);
-        IReadOnlyCollection<TInterface> this[[NotNull] string format] { get; }
-        IReadOnlyCollection<TInterface> GetImplementations([NotNull] TInput ti);
-        IReadOnlyCollection<TInterface> this[[NotNull] TInput ti] { get; }
+        IReadOnlyCollection<TInterface> GetImplementations(string format);
+        IReadOnlyCollection<TInterface> this[string format] { get; }
+        IReadOnlyCollection<TInterface> GetImplementations(TInput ti);
+        IReadOnlyCollection<TInterface> this[TInput ti] { get; }
         
         // Ascending sort!
-        void ConfigurePriority([NotNull] string format, Func<TInterface, int> priorityFunc);
-        void ConfigurePriority([NotNull] string format, Comparison<TInterface> compareFunc);
+        void ConfigurePriority(string format, Func<TInterface, int> priorityFunc);
+        void ConfigurePriority(string format, Comparison<TInterface> compareFunc);
 
         string FormatOf(TInput ti);
 

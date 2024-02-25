@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using JetBrains.Annotations;
 
 namespace Sage.Lib.Models
 {
@@ -8,7 +7,6 @@ namespace Sage.Lib.Models
     /// </summary>
     public interface ISupportFormats<T>
     {
-        [NotNull]
         IEnumerable<T> SupportedFormats { get; }
 
         bool IsSupported(T format);

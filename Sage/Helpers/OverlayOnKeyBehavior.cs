@@ -13,7 +13,7 @@ namespace Sage.Helpers
     [DoNotNotify]
     public class OverlayOnKeyBehavior : Behavior<Control>
     {
-        public static readonly AvaloniaProperty<InputElement> FocusRootProperty =
+        public static readonly StyledProperty<InputElement> FocusRootProperty =
             AvaloniaProperty.Register<ElementReference, InputElement>(nameof(FocusRoot));
 
         public InputElement FocusRoot { get => GetValue(FocusRootProperty); set => SetValue(FocusRootProperty, value); }

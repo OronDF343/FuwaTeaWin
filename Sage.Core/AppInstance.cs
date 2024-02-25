@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using DryIoc;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using Sage.Core.Ipc;
 using Sage.Extensibility;
 using Sage.Extensibility.Config;
@@ -19,6 +19,7 @@ using Sage.Lib;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.RollingFileAlternate;
+using System.Text.Json;
 
 namespace Sage.Core
 {
@@ -27,8 +28,8 @@ namespace Sage.Core
     /// </summary>
     public sealed class AppInstance : IDisposable
     {
-        private static readonly string MyDirPath =
-            Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
+        private static readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions(JsonSerializerDefaults.General);
+        private static readonly string MyDirPath = AppContext.BaseDirectory;
 
         private Mutex _mutex;
         private string _mutexName;
@@ -68,7 +69,7 @@ namespace Sage.Core
             try
             {
                 var file = Path.Combine(MyDirPath, AppConstants.SettingsFileName);
-                AppSettings = JsonConvert.DeserializeObject<AppSettings>(File.ReadAllText(file));
+                AppSettings = JsonSerializer.Deserialize<AppSettings>(File.ReadAllText(file), _jsonOptions);
             }
             catch (Exception ex)
             {
@@ -334,7 +335,7 @@ namespace Sage.Core
             // Add connection close command
             packet.Commands.Add(new IpcCloseCommand());
             // Serialize packet to JSON string
-            var json = JsonConvert.SerializeObject(packet);
+            var json = JsonSerializer.Serialize(packet, _jsonOptions);
             // Get JSON length in bytes
             var jsonByteCount = Encoding.UTF8.GetByteCount(json);
             // Create packet bytes array with length header (8 bytes) + JSON length in bytes

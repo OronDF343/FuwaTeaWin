@@ -1,18 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <LangVersion>8</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\bin\Debug\</OutputPath>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\bin\Release\</OutputPath>
-    <DebugType>none</DebugType>
-    <DebugSymbols>false</DebugSymbols>
+	  <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,28 +13,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DryIocAttributes.dll" Version="5.0.0" />
-    <PackageReference Include="Fody" Version="6.2.4">
+    <PackageReference Include="DryIocAttributes.dll" Version="7.0.0" />
+    <PackageReference Include="Fody" Version="6.8.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
-    <PackageReference Include="PropertyChanged.Fody" Version="3.2.8" />
-    <PackageReference Include="Serilog" Version="2.9.0" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
-    <PackageReference Include="Serilog.Sinks.Debug" Version="1.0.1" />
+    <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" PrivateAssets="all" />
+    <PackageReference Include="Serilog" Version="3.1.1" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
+    <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
     <PackageReference Include="Serilog.Sinks.RollingFileAlternate" Version="2.0.9" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Sage.Audio\Sage.Audio.csproj" />
     <ProjectReference Include="..\Sage.Extensibility\Sage.Extensibility.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Serilog">
-      <HintPath>C:\Users\Oron\.nuget\packages\serilog\2.7.1\lib\netstandard1.3\Serilog.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>

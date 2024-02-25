@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.Composition;
 using DryIocAttributes;
-using JetBrains.Annotations;
 
 namespace Sage.Extensibility.Config
 {
@@ -13,7 +12,7 @@ namespace Sage.Extensibility.Config
     /// * The class must implement <see cref="IConfigPage"/>
     /// * The [Export] attribute should be present
     /// </remarks>
-    [BaseTypeRequired(typeof(IConfigPage))]
+    //[BaseTypeRequired(typeof(IConfigPage))]
     [MetadataAttribute]
     public class ConfigPageAttribute : ExportManyAttribute, IConfigPageMetadata
     {

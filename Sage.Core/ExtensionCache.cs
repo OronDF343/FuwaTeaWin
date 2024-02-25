@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using JetBrains.Annotations;
 using Sage.Extensibility;
 using Sage.Extensibility.Config;
 
@@ -23,7 +22,6 @@ namespace Sage.Core
         /// </summary>
         /// <param name="path">The relative path to the DLL file.</param>
         /// <returns>An extension object, not initialized.</returns>
-        [NotNull]
         public Extension CreateExtension(string path)
         {
             var ext = FindExtension(path);
@@ -40,8 +38,7 @@ namespace Sage.Core
         /// </summary>
         /// <param name="path">The relative path to the DLL file.</param>
         /// <returns>An extension object, or null if the extension was not found.</returns>
-        [CanBeNull]
-        public Extension FindExtension(string path)
+        public Extension? FindExtension(string path)
         {
             return Extensions.FirstOrDefault(e => e.RelativeFilePath == path);
         }
@@ -49,7 +46,6 @@ namespace Sage.Core
         /// <inheritdoc />
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

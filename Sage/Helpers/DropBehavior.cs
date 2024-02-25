@@ -34,10 +34,10 @@ namespace Sage.Helpers
     [DoNotNotify]
     public class DropBehavior : Behavior<Control>
     {
-        public static readonly AvaloniaProperty<IDropHandler> HandlerProperty =
+        public static readonly StyledProperty<IDropHandler> HandlerProperty =
             AvaloniaProperty.Register<DropBehavior, IDropHandler>(nameof(Handler));
 
-        public static readonly AvaloniaProperty<bool> IsEnabledProperty =
+        public static readonly StyledProperty<bool> IsEnabledProperty =
             AvaloniaProperty.RegisterAttached<Control, bool>("IsEnabled", typeof(DropBehavior), true, true, BindingMode.TwoWay);
 
         public IDropHandler Handler

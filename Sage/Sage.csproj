@@ -1,51 +1,41 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net8.0-windows7.0</TargetFrameworks>
     <ApplicationIcon />
     <StartupObject />
-    <LangVersion>8</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.0|AnyCPU'">
-    <DebugType>none</DebugType>
-    <DebugSymbols>false</DebugSymbols>
-    <OutputPath>..\bin\Release\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.0|AnyCPU'">
-    <OutputPath>..\bin\Debug\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Compile Update="**\*.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="**\*.xaml">
+    <AvaloniaResource Include="**\*.xaml">
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Assets\*" />
+    </AvaloniaResource>
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Assets\avalonia-logo.ico" />
     <None Remove="FodyWeavers.xml" />
-    <None Remove="Themes\Accents\BaseDark.xaml" />
-    <None Remove="Themes\Default.xaml" />
-    <None Remove="Themes\Icons\Default.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\avalonia-logo.ico" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.9.12" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.9.12" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.12" />
-    <PackageReference Include="Avalonia.Xaml.Behaviors" Version="0.9.9" />
-    <PackageReference Include="CommonServiceLocator" Version="2.0.5" />
-    <PackageReference Include="DryIocAttributes.dll" Version="5.0.0" />
-    <PackageReference Include="Fody" Version="6.2.4">
+    <PackageReference Include="Avalonia" Version="11.0.9" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.9" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.9" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.9" />
+    <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.0.6" />
+    <PackageReference Include="DryIocAttributes.dll" Version="7.0.0" />
+    <PackageReference Include="Fody" Version="6.8.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
-    <PackageReference Include="PropertyChanged.Fody" Version="3.2.8" />
-    <PackageReference Include="Serilog" Version="2.9.0" />
+    <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" PrivateAssets="all" />
+    <PackageReference Include="Serilog" Version="3.1.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sage.Audio.Decoders.Wavpack\Sage.Audio.Decoders.Wavpack.csproj" />
@@ -53,24 +43,5 @@
     <ProjectReference Include="..\Sage.Core.Platform.Windows\Sage.Core.Platform.Windows.csproj" />
     <ProjectReference Include="..\Sage.Core\Sage.Core.csproj" />
     <ProjectReference Include="..\Sage.Extensibility\Sage.Extensibility.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Themes\Icons\Default.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Views\MainWindow.axaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="App.xaml.cs">
-      <DependentUpon>App.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.axaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <UpToDateCheckInput Remove="App.axaml" />
   </ItemGroup>
 </Project>

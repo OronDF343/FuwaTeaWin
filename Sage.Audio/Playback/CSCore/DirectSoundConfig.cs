@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using CSCore.DirectSound;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using Sage.Extensibility.Config;
 
 namespace Sage.Audio.Playback.CSCore

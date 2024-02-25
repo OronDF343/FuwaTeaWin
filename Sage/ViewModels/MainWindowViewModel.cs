@@ -78,7 +78,7 @@ namespace Sage.ViewModels
             _playMgr.List = new ObservableCollection<IFileHandle>();
             if (Program.AppInstance.Args.ContainsKey(AppConstants.Arguments.Files))
                 foreach (var file in Program.AppInstance.Args[AppConstants.Arguments.Files])
-                    AddFile(file);
+                    AddFile(new Uri(file));
             // Auto-play
             if (!Program.AppInstance.Args.ContainsKey(AppConstants.Arguments.AddOnly))
                 Play();
@@ -92,9 +92,9 @@ namespace Sage.ViewModels
             this.RaisePropertyChanged(nameof(PercentProgress));
         }
 
-        private void AddFile(string file)
+        private void AddFile(Uri file)
         {
-            try { _playMgr.List.Add(new StandardFileHandle(new FileLocationInfo(new Uri(file)))); }
+            try { _playMgr.List.Add(new StandardFileHandle(new FileLocationInfo(file))); }
             catch (Exception e)
             {
                 Log.Error(e, $"Failed to load file \"{file}\"");
@@ -198,7 +198,7 @@ namespace Sage.ViewModels
         private void Seek(PointerReleasedEventArgs e)
         {
             var src = (Control)e.Source;
-            var pb = src.Parent;
+            var pb = src.GetVisualParent();
             var x = e.GetCurrentPoint(pb).Position.X;
             var w = pb.Bounds.Width;
             _playMgr.Player.Position = Duration * (x / w);
@@ -209,12 +209,12 @@ namespace Sage.ViewModels
 
         private class FileDropHandler : IDropHandler
         {
-            public FileDropHandler(Action<string> onDrop)
+            public FileDropHandler(Action<Uri> onDrop)
             {
                 OnDrop = onDrop;
             }
 
-            public Action<string> OnDrop { get; }
+            public Action<Uri> OnDrop { get; }
 
             public void Enter(object sender, DragEventArgs e)
             {
@@ -241,8 +241,8 @@ namespace Sage.ViewModels
             public void Drop(object sender, DragEventArgs e)
             {
                 if (e.Data.Contains(DataFormats.FileNames))
-                    foreach (var fileName in e.Data.GetFileNames())
-                        OnDrop?.Invoke(fileName);
+                    foreach (var fileName in e.Data.GetFiles())
+                        OnDrop?.Invoke(fileName.Path);
                 e.Handled = true;
             }
         }

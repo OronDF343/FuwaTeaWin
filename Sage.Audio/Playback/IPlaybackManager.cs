@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using Sage.Audio.Effects;
 using Sage.Audio.Files;
 using Sage.Extensibility.Config;

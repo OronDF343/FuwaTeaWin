@@ -1,5 +1,4 @@
 ﻿using System;
-using JetBrains.Annotations;
 using Serilog;
 
 namespace Sage.Lib.MetaText
@@ -62,8 +61,7 @@ namespace Sage.Lib.MetaText
             }
         }
 
-        [CanBeNull]
-        public string GetValue(object source)
+        public string? GetValue(object source)
         {
             try
             {

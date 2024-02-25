@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Runtime.CompilerServices;
-using JetBrains.Annotations;
 using Sage.Extensibility.Config;
 
 namespace Sage.Audio.Effects.Impl
@@ -43,7 +42,6 @@ namespace Sage.Audio.Effects.Impl
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using CSCore.SoundOut;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using Sage.Extensibility.Config;
 
 namespace Sage.Audio.Playback.CSCore

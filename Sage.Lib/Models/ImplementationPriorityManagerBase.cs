@@ -4,8 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using JetBrains.Annotations;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using Sage.Extensibility.Config;
 using Sage.Lib.Collections;
 
@@ -20,7 +19,6 @@ namespace Sage.Lib.Models
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -90,7 +88,6 @@ namespace Sage.Lib.Models
         /// </summary>
         /// <param name="ti"></param>
         /// <returns></returns>
-        [NotNull]
         public abstract string FormatOf(TInput ti);
         
         [JsonIgnore]
@@ -116,7 +113,6 @@ namespace Sage.Lib.Models
             ImplementationDictionary[format].Sort(compareFunc);
         }
 
-        [UsedImplicitly]
         public Dictionary<string, List<string>> SerializedClassNameDictionary
         {
             get => (from g in ImplementationDictionary

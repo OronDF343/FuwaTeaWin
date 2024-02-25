@@ -12,7 +12,7 @@ namespace Sage.Helpers
     [DoNotNotify]
     public class WindowDragBehavior : Behavior<Window>
     {
-        public static readonly AvaloniaProperty<ObservableCollection<ElementReference>> ExcludedElementsProperty =
+        public static readonly StyledProperty<ObservableCollection<ElementReference>> ExcludedElementsProperty =
             AvaloniaProperty
                 .Register<WindowDragBehavior, ObservableCollection<ElementReference>>(nameof(ExcludedElements),
                                                                                       new ObservableCollection<
@@ -81,7 +81,7 @@ namespace Sage.Helpers
     [DoNotNotify]
     public class ElementReference : AvaloniaObject
     {
-        public static readonly AvaloniaProperty<InputElement> BindingProperty =
+        public static readonly StyledProperty<InputElement> BindingProperty =
             AvaloniaProperty.Register<ElementReference, InputElement>(nameof(Binding));
 
         public InputElement Binding { get => GetValue(BindingProperty); set => SetValue(BindingProperty, value); }

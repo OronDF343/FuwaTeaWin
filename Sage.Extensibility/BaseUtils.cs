@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using JetBrains.Annotations;
 using Sage.Extensibility.Attributes;
 
 namespace Sage.Extensibility
@@ -48,7 +47,7 @@ namespace Sage.Extensibility
             }
         }
 
-        public static bool OSVersionMatches([NotNull] this IPlatformFilter filter)
+        public static bool OSVersionMatches(this IPlatformFilter filter)
         {
             var cVer = Environment.OSVersion.Version;
             var fVer = new Version(filter.Version);

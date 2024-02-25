@@ -1,6 +1,5 @@
 ﻿using System;
 using Avalonia;
-using Avalonia.Logging.Serilog;
 using Avalonia.ReactiveUI;
 using Sage.Core;
 using Sage.Extensibility;
@@ -32,6 +31,6 @@ namespace Sage
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()
                 .UseReactiveUI()
-                .LogToDebug();
+                .LogToTrace();
     }
 }

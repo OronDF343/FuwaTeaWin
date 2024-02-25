@@ -4,8 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using JetBrains.Annotations;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using Sage.Extensibility.Config;
 
 namespace Sage.Lib.Models
@@ -15,9 +14,9 @@ namespace Sage.Lib.Models
         protected ImplementationMultiSelectorBase() { }
 
         // ReSharper disable once VirtualMemberCallInConstructor
-        protected ImplementationMultiSelectorBase([NotNull] IList<TInterface> implementations) => Init(implementations);
+        protected ImplementationMultiSelectorBase(IList<TInterface> implementations) => Init(implementations);
 
-        protected virtual void Init([NotNull] IList<TInterface> implementations)
+        protected virtual void Init(IList<TInterface> implementations)
         {
             Implementations = new ReadOnlyCollection<TInterface>(implementations);
         }
@@ -52,7 +51,6 @@ namespace Sage.Lib.Models
             return SelectedImplementationsList.Remove(ti);
         }
 
-        [UsedImplicitly]
         public List<string> SerializedClassNameList
         {
             get => SelectedImplementations.Select(i => i.GetType().AssemblyQualifiedName).ToList();
@@ -66,7 +64,6 @@ namespace Sage.Lib.Models
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

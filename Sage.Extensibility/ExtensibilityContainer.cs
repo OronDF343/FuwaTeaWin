@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using DryIoc;
 using DryIoc.MefAttributedModel;
-using JetBrains.Annotations;
 
 namespace Sage.Extensibility
 {
@@ -16,7 +15,6 @@ namespace Sage.Extensibility
     {
         internal readonly IContainer IocContainer = new Container(rules => rules.WithoutThrowOnRegisteringDisposableTransient()).WithMefAttributedModel();
 
-        [NotNull]
         private readonly Dictionary<string, Extension> _loadedExtensions = new Dictionary<string, Extension>();
         
         /// <summary>
@@ -94,7 +92,7 @@ namespace Sage.Extensibility
         /// <param name="serviceKey">An optional service key.</param>
         public void RegisterInstance<T>(T instance, object serviceKey = null)
         {
-            IocContainer.UseInstance(instance, serviceKey: serviceKey);
+            IocContainer.RegisterInstance(instance, serviceKey: serviceKey);
         }
         
         /// <summary>

@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Runtime.CompilerServices;
 using CSCore;
-using JetBrains.Annotations;
 using Sage.Audio.Decoders;
 using Sage.Audio.Effects;
 using Sage.Audio.Files;
@@ -42,8 +41,7 @@ namespace Sage.Audio.Playback
             Load();
         }
 
-        [CanBeNull]
-        public IAudioPlayer Player
+        public IAudioPlayer? Player
         {
             get => _player;
             set
@@ -57,8 +55,7 @@ namespace Sage.Audio.Playback
             }
         }
 
-        [CanBeNull]
-        public ObservableCollection<IFileHandle> List
+        public ObservableCollection<IFileHandle>? List
         {
             get => _list;
             set
@@ -71,8 +68,7 @@ namespace Sage.Audio.Playback
             }
         }
 
-        [CanBeNull]
-        public IFileHandle NowPlaying =>  List?.Count > 0 ? List[Index] : null;
+        public IFileHandle? NowPlaying =>  List?.Count > 0 ? List[Index] : null;
         public int Index
         {
             get => _index;
@@ -90,7 +86,6 @@ namespace Sage.Audio.Playback
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

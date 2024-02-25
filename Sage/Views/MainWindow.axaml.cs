@@ -1,27 +1,22 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using Avalonia.ReactiveUI;
 using PropertyChanged;
-using ReactiveUI;
 using Sage.ViewModels;
 
 namespace Sage.Views
 {
     [DoNotNotify]
-    public class MainWindow : ReactiveWindow<MainWindowViewModel>
+    public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
+            DataContext = new MainWindowViewModel();
+            //this.AttachDevTools();
         }
 
         private void InitializeComponent()
         {
-            this.WhenActivated(disposables => { /* Handle view activation etc. */ });
             AvaloniaXamlLoader.Load(this);
         }
     }
