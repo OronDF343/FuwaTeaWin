@@ -67,8 +67,8 @@ namespace FuwaTea.Playback.NAudio.Codecs
         public bool CanSeek => true;
     }
 
-    [NAudioExtension("MediaFoundation on Windows 10 and higher (FLAC)")]
-    [OSFilter(FilterActions.Whitelist, PlatformID.Win32NT, FilterRules.GreaterThan, "10.0.0.0")]
+    //[NAudioExtension("MediaFoundation on Windows 10 and higher (FLAC)")]
+    //[OSFilter(FilterActions.Whitelist, PlatformID.Win32NT, FilterRules.GreaterThan, "10.0.0.0")]
     public class MediaFoundationWin10Codec : ICodecProvider
     {
         public WaveStream CreateWaveStream(string path)

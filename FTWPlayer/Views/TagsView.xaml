@@ -5,7 +5,6 @@
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
          xmlns:lex="http://wpflocalizeextension.codeplex.com"
          xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-         xmlns:command="http://www.galasoft.ch/mvvmlight"
          xmlns:converters="clr-namespace:FTWPlayer.Converters"
          xmlns:fuwa="https://github.com/OronDF343/FuwaTeaWin"
          mc:Ignorable="d" 

@@ -5,7 +5,6 @@
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
          xmlns:lex="http://wpflocalizeextension.codeplex.com"
          xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-         xmlns:command="http://www.galasoft.ch/mvvmlight"
          mc:Ignorable="d"
          d:DesignHeight="300" d:DesignWidth="300"
          Style="{DynamicResource {x:Type TabItem}}"

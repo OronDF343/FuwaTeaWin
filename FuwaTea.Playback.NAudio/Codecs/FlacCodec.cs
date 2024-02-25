@@ -23,7 +23,7 @@ using NAudio.Wave;
 namespace FuwaTea.Playback.NAudio.Codecs
 {
     [NAudioExtension("FLAC file reader (non-MF)")]
-    [OSFilter(FilterActions.Whitelist, PlatformID.Win32NT, FilterRules.LessThan, "10.0.0.0")]
+    //[OSFilter(FilterActions.Whitelist, PlatformID.Win32NT, FilterRules.LessThan, "10.0.0.0")]
     public class FlacCodec : ICodecProvider
     {
         public WaveStream CreateWaveStream(string path)
