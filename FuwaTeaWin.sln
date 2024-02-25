@@ -9,6 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sage.Core", "Sage.Core\Sage
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{45541DFF-867F-4965-89B1-2795D516C11C}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		FodyWeavers.xml = FodyWeavers.xml
 	EndProjectSection
 EndProject
