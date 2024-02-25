@@ -1,13 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using CSCore;
 using CSCore.SoundOut;
 
 namespace Sage.Audio.Playback.CSCore
 {
-    [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Library name is CSCore")]
-    [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor", Justification = "By design")]
     public abstract class CSCoreApiBase<TOut, TConfig> : IAudioApi
         where TOut : ISoundOut
         where TConfig : CSCoreApiConfigBase
@@ -37,8 +34,7 @@ namespace Sage.Audio.Playback.CSCore
             // The condition here is required, since this event will be fired LATE when moving to another track, which could cause skipping of tracks if the state isn't checked...
             else if (SoundOut.PlaybackState == PlaybackState.Stopped) OnPlaybackFinished();
         }
-        
-        [SuppressMessage("ReSharper", "EmptyGeneralCatchClause", Justification = "There is no way to know easily if the output is already initialized")]
+
         protected virtual void ConfigOnPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
             if (args.PropertyName == nameof(CSCoreApiConfigBase.MasterVolume))

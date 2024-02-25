@@ -4,8 +4,6 @@ using Avalonia.ReactiveUI;
 using Sage.Core;
 using Sage.Extensibility;
 using Sage.Extensibility.Attributes;
-using Sage.ViewModels;
-using Sage.Views;
 using Serilog;
 
 [assembly: Extension("UI", ExtensibilityConstants.CurrentApiVersion)]

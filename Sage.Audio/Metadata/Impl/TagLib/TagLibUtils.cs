@@ -145,7 +145,7 @@ namespace Sage.Audio.Metadata.Impl.TagLib
                     case CommentsFrame cf:
                         ((IListWithDescriptorsField)tag.Comment).Value.Add(new EntryWithDescriptors(cf.Language, cf.Description, cf.Text));
                         break;
-                    case AttachedPictureFrame apf:
+                    case AttachmentFrame apf:
                         tag.Picture.Add(apf.ToPicture());
                         break;
                     // TODO: POPM has a user field

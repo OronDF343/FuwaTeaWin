@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Windows.Input;
@@ -22,7 +21,6 @@ using Sage.Audio.Playback.CSCore;
 using Sage.Core;
 using Sage.Helpers;
 using Sage.Lib.Collections;
-using Sage.Views;
 using Serilog;
 
 namespace Sage.ViewModels
