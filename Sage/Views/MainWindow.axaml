@@ -6,6 +6,7 @@
         xmlns:helpers="clr-namespace:Sage.Helpers;assembly=Sage"
         x:Class="Sage.Views.MainWindow"
         x:Name="MainWin"
+        Classes="main"
         Icon="avares://Sage/Assets/avalonia-logo.ico"
         SystemDecorations="None"
         ShowInTaskbar="True"
@@ -33,6 +34,7 @@
       </helpers:WindowDragBehavior.ExcludedElements>
     </helpers:WindowDragBehavior>
     <helpers:DropBehavior Handler="{Binding DropHandler}" />
+    <helpers:CloseAnimationBehavior />
   </i:Interaction.Behaviors>
   <Border Background="{DynamicResource ThemeBackgroundBrush}" BorderBrush="{DynamicResource ThemeBorderHighBrush}"
           BorderThickness="{DynamicResource ThemeBorderThickness}" VerticalAlignment="Stretch">

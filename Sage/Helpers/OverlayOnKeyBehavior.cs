@@ -19,7 +19,7 @@ namespace Sage.Helpers
             base.OnAttached();
             FocusRoot.KeyDown += FocusRoot_KeyDown;
             FocusRoot.KeyUp += FocusRoot_KeyUp;
-            AssociatedObject.ZIndex = -1;
+            AssociatedObject.ZIndex = -10;
         }
 
         private void FocusRoot_KeyDown(object sender, KeyEventArgs e)

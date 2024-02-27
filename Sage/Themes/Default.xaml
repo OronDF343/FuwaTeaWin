@@ -1,86 +1,109 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
        xmlns:sys="clr-namespace:System;assembly=mscorlib">
-    <Style Selector="TextBlock">
-      <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}"/>
-    </Style>
-    <Style Selector="TextBlock.scrolling">
-        <Setter Property="FontSize" Value="{DynamicResource FontSizeLarge}" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-    </Style>
-        <Style Selector=":is(Shape).icon">
-          <Setter Property="Stretch" Value="Uniform"/>
-          <Setter Property="Fill" Value="{DynamicResource ThemeForegroundBrush}"/>
-          <Setter Property="Margin" Value="2,0"/>
-        </Style>
+  <Style Selector="TextBlock">
+    <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundBrush}"/>
+  </Style>
+  <Style Selector="TextBlock.scrolling">
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeLarge}" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+  </Style>
+  <Style Selector=":is(Shape).icon">
+    <Setter Property="Stretch" Value="Uniform"/>
+    <Setter Property="Fill" Value="{DynamicResource ThemeForegroundBrush}"/>
+    <Setter Property="Margin" Value="2,0"/>
+  </Style>
   <Style Selector=":is(Shape).iconDisabled">
     <Setter Property="Fill" Value="{DynamicResource ThemeForegroundLowBrush}"/>
   </Style>
-      <Style Selector=":is(Button).icon">
-          <Setter Property="Background" Value="Transparent"/>
-          <Setter Property="BorderThickness" Value="0"/>
-          <Setter Property="Padding" Value="2,4"/>
-          <Setter Property="Height" Value="32"/>
-          <Setter Property="Width" Value="32"/>
-          <Setter Property="VerticalContentAlignment" Value="Center"/>
-          <Setter Property="HorizontalContentAlignment" Value="Center"/>
-      </Style>
+  <Style Selector=":is(Button).icon">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Padding" Value="2,4"/>
+    <Setter Property="Height" Value="32"/>
+    <Setter Property="Width" Value="32"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+  </Style>
   <!-- Order is important - pointerover and pressed must be below checked! -->
   <Style Selector=":is(ToggleButton).noCheck:checked /template/ ContentPresenter">
     <Setter Property="Background" Value="Transparent"/>
   </Style>
-    <Style Selector=":is(Button):pointerover /template/ ContentPresenter">
-        <Setter Property="Background" Value="{DynamicResource ThemeControlMidBrush}"/>
-    </Style>
-    <Style Selector=":is(Button):pressed /template/ ContentPresenter">
-        <Setter Property="Background" Value="{DynamicResource ThemeControlHighBrush}"/>
-    </Style>
-      <Style Selector="Button.prevIcon">
-        <Setter Property="Content" Value="{DynamicResource PreviousIcon}" />
-      </Style>
-      <Style Selector="ToggleButton.playIcon:unchecked">
-          <Setter Property="Content" Value="{DynamicResource PlayIcon}" />
-      </Style>
-      <Style Selector="ToggleButton.playIcon:checked">
-          <Setter Property="Content" Value="{DynamicResource PauseIcon}" />
-      </Style>
-      <Style Selector="Button.pauseIcon">
-          <Setter Property="Content" Value="{DynamicResource PauseIcon}" />
-      </Style>
-      <Style Selector="Button.nextIcon">
-          <Setter Property="Content" Value="{DynamicResource NextIcon}" />
-      </Style>
-      <Style Selector="Button.stopIcon">
-          <Setter Property="Content" Value="{DynamicResource StopIcon}" />
-      </Style>
-      <Style Selector="Button.volumeIcon">
-          <Setter Property="Content" Value="{DynamicResource VolumeIcon}" />
-      </Style>
-      <Style Selector="Button.muteIcon">
-          <Setter Property="Content" Value="{DynamicResource MuteIcon}" />
-      </Style>
-      <Style Selector="ToggleButton.shuffleIcon">
-          <Setter Property="Content" Value="{DynamicResource ShuffleDisabledIcon}" />
-      </Style>
-      <Style Selector="ToggleButton.shuffleIcon:checked">
-          <Setter Property="Content" Value="{DynamicResource ShuffleIcon}" />
-      </Style>
-      <Style Selector="ToggleButton.repeatIcon">
-          <Setter Property="Content" Value="{DynamicResource RepeatDisabledIcon}" />
-      </Style>
-      <Style Selector="ToggleButton.repeatIcon:indeterminate">
-          <Setter Property="Content" Value="{DynamicResource RepeatSingleIcon}" />
-      </Style>
-      <Style Selector="ToggleButton.repeatIcon:checked">
-          <Setter Property="Content" Value="{DynamicResource RepeatIcon}" />
-      </Style>
-      <Style Selector="Button.resizeIcon">
-          <Setter Property="Content" Value="{DynamicResource ResizeIcon}" />
-      </Style>
-      <Style Selector="Button.minimizeIcon">
-          <Setter Property="Content" Value="{DynamicResource MinimizeIcon}" />
-      </Style>
-      <Style Selector="Button.exitIcon">
-          <Setter Property="Content" Value="{DynamicResource ExitIcon}" />
-      </Style>
+  <Style Selector=":is(Button):pointerover /template/ ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource ThemeControlMidBrush}"/>
+  </Style>
+  <Style Selector=":is(Button):pressed /template/ ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource ThemeControlHighBrush}"/>
+  </Style>
+  <Style Selector="Button.prevIcon">
+    <Setter Property="Content" Value="{DynamicResource PreviousIcon}" />
+  </Style>
+  <Style Selector="ToggleButton.playIcon:unchecked">
+    <Setter Property="Content" Value="{DynamicResource PlayIcon}" />
+  </Style>
+  <Style Selector="ToggleButton.playIcon:checked">
+    <Setter Property="Content" Value="{DynamicResource PauseIcon}" />
+  </Style>
+  <Style Selector="Button.pauseIcon">
+    <Setter Property="Content" Value="{DynamicResource PauseIcon}" />
+  </Style>
+  <Style Selector="Button.nextIcon">
+    <Setter Property="Content" Value="{DynamicResource NextIcon}" />
+  </Style>
+  <Style Selector="Button.stopIcon">
+    <Setter Property="Content" Value="{DynamicResource StopIcon}" />
+  </Style>
+  <Style Selector="Button.volumeIcon">
+    <Setter Property="Content" Value="{DynamicResource VolumeIcon}" />
+  </Style>
+  <Style Selector="Button.muteIcon">
+    <Setter Property="Content" Value="{DynamicResource MuteIcon}" />
+  </Style>
+  <Style Selector="ToggleButton.shuffleIcon">
+    <Setter Property="Content" Value="{DynamicResource ShuffleDisabledIcon}" />
+  </Style>
+  <Style Selector="ToggleButton.shuffleIcon:checked">
+    <Setter Property="Content" Value="{DynamicResource ShuffleIcon}" />
+  </Style>
+  <Style Selector="ToggleButton.repeatIcon">
+    <Setter Property="Content" Value="{DynamicResource RepeatDisabledIcon}" />
+  </Style>
+  <Style Selector="ToggleButton.repeatIcon:indeterminate">
+    <Setter Property="Content" Value="{DynamicResource RepeatSingleIcon}" />
+  </Style>
+  <Style Selector="ToggleButton.repeatIcon:checked">
+    <Setter Property="Content" Value="{DynamicResource RepeatIcon}" />
+  </Style>
+  <Style Selector="Button.resizeIcon">
+    <Setter Property="Content" Value="{DynamicResource ResizeIcon}" />
+  </Style>
+  <Style Selector="Button.minimizeIcon">
+    <Setter Property="Content" Value="{DynamicResource MinimizeIcon}" />
+  </Style>
+  <Style Selector="Button.exitIcon">
+    <Setter Property="Content" Value="{DynamicResource ExitIcon}" />
+  </Style>
+  <!-- Window style -->
+  <Style Selector="Window.main">
+    <Style.Animations>
+      <Animation Duration="0:0:0.7" IterationCount="1">
+        <KeyFrame Cue="0%">
+          <Setter Property="Opacity" Value="0.0" />
+        </KeyFrame>
+        <KeyFrame Cue="100%">
+          <Setter Property="Opacity" Value="1.0" />
+        </KeyFrame>
+      </Animation>
+    </Style.Animations>
+    <Style.Resources>
+      <Animation x:Key="CloseAnimation" Duration="0:0:0.7" IterationCount="1">
+        <KeyFrame Cue="0%">
+          <Setter Property="Opacity" Value="1.0" />
+        </KeyFrame>
+        <KeyFrame Cue="100%">
+          <Setter Property="Opacity" Value="0.0" />
+        </KeyFrame>
+      </Animation>
+    </Style.Resources>
+  </Style>
 </Styles>

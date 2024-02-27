@@ -164,8 +164,10 @@ namespace Sage.ViewModels
 
         private void Exit()
         {
-            if (Application.Current.ApplicationLifetime is IControlledApplicationLifetime ctl)
-                ctl.Shutdown();
+            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                desktop.MainWindow.Close();
+            //if (Application.Current.ApplicationLifetime is IControlledApplicationLifetime ctl)
+            //    ctl.Shutdown();
         }
 
         public string Message { get; set; } = "Sage: Music Player (Development Version)";
